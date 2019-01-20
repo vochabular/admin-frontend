@@ -9,7 +9,7 @@ This single-page-application (SPA) is written in Typescript and React and is boo
 ## How to install
 
 - Install a the package manager **[npm](https://nodejs.org/)**
-- Based on the **.env.example** file, set the necessary environment variables in the **.env** file
+- Based on the **.env.example** file, set the necessary environment variables in the **.env** file. The Auth0 variables you can get from the Auth0 Dashboard under "Applications".
 - Clone the git repository with `git clone https://github.com/vochabular/admin-frontend`
 - Install all required packages with `npm install`
 

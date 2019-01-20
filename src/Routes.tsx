@@ -29,7 +29,7 @@ const Routes: React.FunctionComponent<RouteProps> = props => (
       />
       <Route
         exact
-        path="/callback"
+        path="/auth-callback"
         render={props => {
           handleAuthentication(props);
           return <Callback {...props} />;
