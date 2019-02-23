@@ -15,9 +15,9 @@ import Badge from "@material-ui/core/Badge";
 import MenuIcon from "@material-ui/icons/Menu";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import PowerIcon from "@material-ui/icons/PowerSettingsNew";
-import auth0Client from "../auth/Auth";
+import auth0Client from "../../auth/Auth";
 
-import { styles } from "../styles";
+import { styles } from "../../styles";
 
 // TODO: We should have the AppBar in a own component. However, that messes up the layout...
 // import AppBar from "../components/AppBar";

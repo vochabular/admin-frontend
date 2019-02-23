@@ -6,7 +6,7 @@ import Callback from "./components/Callback";
 import history from "./history";
 import PrivateRoute from "./components/PrivateRoute";
 import LandingPage from "./pages/LandingPage";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/Dashboard/Dashboard";
 
 const handleAuthentication = (props: any) => {
   if (/access_token|id_token|error/.test(props.location.hash)) {
