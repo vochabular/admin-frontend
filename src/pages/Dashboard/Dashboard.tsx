@@ -18,6 +18,8 @@ import PowerIcon from "@material-ui/icons/PowerSettingsNew";
 import auth0Client from "../../auth/Auth";
 
 import { styles } from "../../styles";
+import ChapterSection from "./ChapterSection";
+import VoggiSection from "./VoggiSection";
 
 // TODO: We should have the AppBar in a own component. However, that messes up the layout...
 // import AppBar from "../components/AppBar";
@@ -91,14 +93,20 @@ const Dashboard: React.FunctionComponent<Props> = ({ classes }) => {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Typography variant="h4" gutterBottom component="h2">
-          Chapters
-        </Typography>
-        <Typography component="div" className={classes.chartContainer} />
-        <Typography variant="h4" gutterBottom component="h2">
-          Voggi
-        </Typography>
-        <div className={classes.tableContainer} />
+
+        <div>
+          <Typography variant="h4" gutterBottom component="h2">
+            Kapitel
+          </Typography>
+          <ChapterSection />
+        </div>
+
+        <div>
+          <Typography variant="h4" gutterBottom component="h2">
+            Voggi-Liste
+          </Typography>
+          <VoggiSection />
+        </div>
       </main>
     </div>
   );
