@@ -22,8 +22,7 @@ This single-page-application (SPA) is written in Typescript and React and is boo
 
 ### Note:
 
-- We already start using the new [React Hooks API](https://reactjs.org/docs/hooks-intro.html), thus we need to use the alpha version of **react** and **react-dom**
-
+- We already start using the new [React Hooks API](https://reactjs.org/docs/hooks-intro.html)
 - We use TypeScript. Resources:
   - Cheatsheet: https://github.com/sw-yx/react-typescript-cheatsheet
   - Nice repository in TS: https://github.com/jaredpalmer/formik
