@@ -29,85 +29,20 @@ interface Props extends WithStyles<typeof styles> {}
 const Dashboard: React.FunctionComponent<Props> = ({ classes }) => {
   const [isDrawerOpen, toggleDrawer] = useState(false);
   return (
-    <div className={classes.root}>
-      <AppBar
-        //position="absolute"
-        className={classNames(
-          classes.appBar,
-          isDrawerOpen && classes.appBarShift
-        )}
-      >
-        <Toolbar disableGutters={!isDrawerOpen} className={classes.toolbar}>
-          <IconButton
-            color="inherit"
-            aria-label="Open drawer"
-            onClick={() => toggleDrawer(!isDrawerOpen)}
-            className={classNames(
-              classes.menuButton,
-              isDrawerOpen && classes.menuButtonHidden
-            )}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            component="h1"
-            variant="h6"
-            color="inherit"
-            noWrap
-            className={classes.title}
-          >
-            Vochabular Dashboard
-          </Typography>
-          <IconButton color="inherit">
-            <Badge
-              badgeContent={Math.floor(Math.random() * 10)}
-              color="secondary"
-            >
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-          <IconButton color="inherit" onClick={() => auth0Client.logout()}>
-            <PowerIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        variant="permanent"
-        classes={{
-          paper: classNames(
-            classes.drawerPaper,
-            !isDrawerOpen && classes.drawerPaperClose
-          )
-        }}
-        open={isDrawerOpen}
-      >
-        <div className={classes.toolbarIcon}>
-          <IconButton onClick={() => toggleDrawer(!isDrawerOpen)}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </div>
-        <Divider />
-        <List />
-        <Divider />
-        <List />
-      </Drawer>
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
+    <div>
+      <div>
+        <Typography variant="h4" gutterBottom component="h2">
+          Kapitel
+        </Typography>
+        <ChapterSection />
+      </div>
 
-        <div>
-          <Typography variant="h4" gutterBottom component="h2">
-            Kapitel
-          </Typography>
-          <ChapterSection />
-        </div>
-
-        <div>
-          <Typography variant="h4" gutterBottom component="h2">
-            Voggi-Liste
-          </Typography>
-          <VoggiSection />
-        </div>
-      </main>
+      <div>
+        <Typography variant="h4" gutterBottom component="h2">
+          Voggi-Liste
+        </Typography>
+        <VoggiSection />
+      </div>
     </div>
   );
 };
