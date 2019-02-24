@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from "react";
 import classNames from "classnames";
+import { Link } from "react-router-dom";
 
 import { withStyles, WithStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -20,6 +21,7 @@ import auth0Client from "../../auth/Auth";
 import { styles } from "../../styles";
 import ChapterSection from "./ChapterSection";
 import VoggiSection from "./VoggiSection";
+import { Button } from "@material-ui/core";
 
 // TODO: We should have the AppBar in a own component. However, that messes up the layout...
 // import AppBar from "../components/AppBar";
@@ -27,7 +29,6 @@ import VoggiSection from "./VoggiSection";
 interface Props extends WithStyles<typeof styles> {}
 
 const Dashboard: React.FunctionComponent<Props> = ({ classes }) => {
-  const [isDrawerOpen, toggleDrawer] = useState(false);
   return (
     <div>
       <div>
@@ -43,6 +44,9 @@ const Dashboard: React.FunctionComponent<Props> = ({ classes }) => {
         </Typography>
         <VoggiSection />
       </div>
+      <Link to="/settings">
+        <Button>Click me</Button>
+      </Link>
     </div>
   );
 };

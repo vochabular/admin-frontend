@@ -29,8 +29,6 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 function AppBar(props: Props) {
-  const accessibleRoutes = getAllAccessibleRoutes("admin", true);
-
   const { classes, isDrawerOpen, toggleDrawer } = props;
 
   return (

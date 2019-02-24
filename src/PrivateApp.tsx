@@ -3,7 +3,6 @@ import classNames from "classnames";
 import { Switch, Route } from "react-router";
 
 import { withStyles, WithStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
@@ -20,6 +19,9 @@ import { styles } from "src/styles";
 import { getAllAccessibleRoutes } from "src/privateRoutes";
 import NotFound404 from "src/components/404";
 import AppBar from "src/components/AppBar";
+import Settings from "src/pages/Settings/Settings";
+import Drawer from "src/components/Drawer";
+import useToggle from "src/hooks/useToggle";
 
 // TODO: We should have the AppBar in a own component. However, that messes up the layout...
 // import AppBar from "../components/AppBar";
@@ -27,32 +29,15 @@ import AppBar from "src/components/AppBar";
 interface Props extends WithStyles<typeof styles> {}
 
 const PrivateApp: React.FunctionComponent<Props> = ({ classes }) => {
-  const [isDrawerOpen, toggleDrawer] = useState(false);
+  const { toggler: isDrawerOpen, handleToggler: toggleDrawer } = useToggle(
+    false
+  );
   const accessibleRoutes = getAllAccessibleRoutes("admin", false);
 
   return (
     <div className={classes.root}>
       <AppBar isDrawerOpen={isDrawerOpen} toggleDrawer={toggleDrawer} />
-      <Drawer
-        variant="permanent"
-        classes={{
-          paper: classNames(
-            classes.drawerPaper,
-            !isDrawerOpen && classes.drawerPaperClose
-          )
-        }}
-        open={isDrawerOpen}
-      >
-        <div className={classes.toolbarIcon}>
-          <IconButton onClick={() => toggleDrawer(!isDrawerOpen)}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </div>
-        <Divider />
-        <List />
-        <Divider />
-        <List />
-      </Drawer>
+      <Drawer isDrawerOpen={isDrawerOpen} toggleDrawer={toggleDrawer} />
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Switch>

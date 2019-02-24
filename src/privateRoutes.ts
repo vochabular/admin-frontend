@@ -1,8 +1,10 @@
 import * as React from "react";
 
 import DashboardIcon from "@material-ui/icons/Dashboard";
+import SettingsIcon from "@material-ui/icons/Settings";
 
 import Dashboard from "src/pages/Dashboard/Dashboard";
+import Settings from "src/pages/Settings/Settings";
 
 /**
  * Roles defined as constants for reuse...
@@ -42,10 +44,10 @@ export const administrativeRoutes: IPrivateRouteConfig[] = [
   {
     showInDrawer: true,
     allowedRoles: allUsers,
-    component: Dashboard,
+    component: Settings,
     exact: true,
-    label: "Dashboard",
-    icon: DashboardIcon,
+    label: "Settings",
+    icon: SettingsIcon,
     path: "/settings"
   }
 ];
