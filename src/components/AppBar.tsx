@@ -11,10 +11,12 @@ import IconButton from "@material-ui/core/IconButton";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import AppBarMui from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
+
 import Badge from "@material-ui/core/Badge";
 import MenuIcon from "@material-ui/icons/Menu";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import PowerIcon from "@material-ui/icons/PowerSettingsNew";
+
 
 import auth0Client from "src/auth/Auth";
 import { styles } from "src/styles";

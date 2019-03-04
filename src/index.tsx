@@ -7,6 +7,7 @@ import { MuiThemeProvider } from "@material-ui/core";
 
 import "./index.css";
 import App from "./App";
+
 import apolloClient from "./ApolloClient";
 import theme from "./theme";
 import * as serviceWorker from "./serviceWorker";
