@@ -1,6 +1,6 @@
-# admin-frontend
+# admin-frontend [![Netlify Status](https://api.netlify.com/api/v1/badges/d805c211-ac0e-43bf-900d-1fc03acfece5/deploy-status)](https://app.netlify.com/sites/vochabular-admin/deploys)
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/d805c211-ac0e-43bf-900d-1fc03acfece5/deploy-status)](https://app.netlify.com/sites/vochabular-admin/deploys)
+
 
 This is the frontend of the admin interface, used internally [@Vochabular](https://www.vochabular.ch) for the creation, translation, reviewing and publishing of content.
 
