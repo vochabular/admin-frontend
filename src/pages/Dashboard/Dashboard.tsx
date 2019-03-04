@@ -44,9 +44,6 @@ const Dashboard: React.FunctionComponent<Props> = ({ classes }) => {
         </Typography>
         <VoggiSection />
       </div>
-      <Link to="/settings">
-        <Button>Click me</Button>
-      </Link>
     </div>
   );
 };

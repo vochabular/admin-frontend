@@ -8,7 +8,7 @@ import { styles } from "../../styles";
 interface Props extends WithStyles<typeof styles> {}
 
 const Settings: React.FunctionComponent<Props> = ({ classes }) => {
-  return <div>Here goes the settings</div>;
+  return <div>Here we will put the settings...</div>;
 };
 
 export default withStyles(styles)(Settings);
