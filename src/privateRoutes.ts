@@ -2,9 +2,11 @@ import * as React from "react";
 
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import SettingsIcon from "@material-ui/icons/Settings";
+import FormatListIcon from "@material-ui/icons/FormatListNumbered";
 
 import Dashboard from "src/pages/Dashboard/Dashboard";
 import Settings from "src/pages/Settings/Settings";
+import Chapters from "./components/Chapters";
 
 /**
  * Roles defined as constants for reuse...
@@ -37,6 +39,15 @@ export const mainRoutes: IPrivateRouteConfig[] = [
     label: "Dashboard",
     icon: DashboardIcon,
     path: "/"
+  },
+  {
+    showInDrawer: true,
+    allowedRoles: allUsers,
+    component: Chapters,
+    exact: true,
+    label: "Chapters",
+    icon: FormatListIcon,
+    path: "/chapters"
   }
 ];
 
