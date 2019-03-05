@@ -1,18 +1,25 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Router } from "react-router-dom";
+import { ApolloProvider } from "react-apollo";
+import { ApolloProvider as ApolloHooksProvider } from "react-apollo-hooks";
+
 import { MuiThemeProvider } from "@material-ui/core";
 
 import "./index.css";
 import App from "./App";
-import history from "./history";
+
+import apolloClient from "./ApolloClient";
 import theme from "./theme";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
-  <MuiThemeProvider theme={theme}>
-    <App />
-  </MuiThemeProvider>,
+  <ApolloProvider client={apolloClient}>
+    <ApolloHooksProvider client={apolloClient}>
+      <MuiThemeProvider theme={theme}>
+        <App />
+      </MuiThemeProvider>
+    </ApolloHooksProvider>
+  </ApolloProvider>,
   document.getElementById("root")
 );
 

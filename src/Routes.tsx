@@ -6,7 +6,8 @@ import Callback from "./components/Callback";
 import history from "./history";
 import PrivateRoute from "./components/PrivateRoute";
 import LandingPage from "./pages/LandingPage";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import PrivateApp from "./PrivateApp";
 
 const handleAuthentication = (props: any) => {
   if (/access_token|id_token|error/.test(props.location.hash)) {
@@ -35,7 +36,7 @@ const Routes: React.FunctionComponent<RouteProps> = props => (
           return <Callback {...props} />;
         }}
       />
-      <PrivateRoute path="/" {...props} component={Dashboard} />} />
+      <PrivateRoute path="/" {...props} component={PrivateApp} />} />
     </Switch>
   </Router>
 );

@@ -1,10 +1,6 @@
 # admin-frontend [![Netlify Status](https://api.netlify.com/api/v1/badges/d805c211-ac0e-43bf-900d-1fc03acfece5/deploy-status)](https://app.netlify.com/sites/vochabular-admin/deploys)
 
-
-
 This is the frontend of the admin interface, used internally [@Vochabular](https://www.vochabular.ch) for the creation, translation, reviewing and publishing of content.
-
-
 
 ## Introduction
 
@@ -26,7 +22,7 @@ This single-page-application (SPA) is written in Typescript and React and is boo
 
 ### Note:
 
-- We already start using the new [React Hooks API](https://reactjs.org/docs/hooks-intro.html), thus we need to use the alpha version of **react** and **react-dom**
+- We already start using the new [React Hooks API](https://reactjs.org/docs/hooks-intro.html)
 
 - We use TypeScript. Resources:
   - Cheatsheet: https://github.com/sw-yx/react-typescript-cheatsheet
