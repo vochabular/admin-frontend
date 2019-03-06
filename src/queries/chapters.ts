@@ -8,3 +8,13 @@ export const GET_CHAPTERS = gql`
     }
   }
 `;
+
+export const UPSERT_CHAPTER = gql`
+  mutation createChapter($input: IntroduceChapterInput!) {
+    createChapter(input: $input) {
+      chapter {
+        title
+      }
+    }
+  }
+`;

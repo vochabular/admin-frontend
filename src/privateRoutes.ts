@@ -6,7 +6,8 @@ import FormatListIcon from "@material-ui/icons/FormatListNumbered";
 
 import Dashboard from "src/pages/Dashboard/Dashboard";
 import Settings from "src/pages/Settings/Settings";
-import Chapters from "./components/Chapters";
+import Chapters from "./pages/Chapter/Chapters";
+import Chapter from "./pages/Chapter/Chapter";
 
 /**
  * Roles defined as constants for reuse...
@@ -20,11 +21,10 @@ interface IPrivateRouteConfig {
   showInDrawer: boolean;
   component: any; // TODO: Need to find out how to use the proper type!
   exact?: boolean;
-  icon: any; // TODO: Need to find out how to use the proper type!
+  icon?: any; // TODO: Need to find out how to use the proper type!
   path: string;
-
   allowedRoles: string[];
-  label: string;
+  label?: string;
 }
 
 /**
@@ -48,6 +48,13 @@ export const mainRoutes: IPrivateRouteConfig[] = [
     label: "Chapters",
     icon: FormatListIcon,
     path: "/chapters"
+  },
+  {
+    showInDrawer: false,
+    allowedRoles: allUsers,
+    component: Chapter,
+    exact: true,
+    path: "/chapters/:id"
   }
 ];
 
