@@ -1,4 +1,5 @@
 import { createStyles, FormHelperText } from "@material-ui/core";
+import green from "@material-ui/core/colors/green";
 import { Theme } from "@material-ui/core/styles/createMuiTheme";
 
 // Constants
@@ -105,5 +106,11 @@ export const styles = (theme: Theme) =>
     },
     h5: {
       marginBottom: theme.spacing.unit * 2
+    },
+    buttonSuccess: {
+      backgroundColor: green[500],
+      "&:hover": {
+        backgroundColor: green[700]
+      }
     }
   });
