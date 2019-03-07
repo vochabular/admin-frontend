@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Mutation } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { withStyles, WithStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -21,6 +22,7 @@ import { CircularProgress } from "@material-ui/core";
 interface Props extends WithStyles<typeof styles> {}
 
 const NewChapter = ({ classes }: Props) => {
+  const { t } = useTranslation();
   const [values, setValues] = React.useState({
     chapterNumber: "",
     title: "",
@@ -40,7 +42,7 @@ const NewChapter = ({ classes }: Props) => {
   // const upsertChapter = useMutation;
   return (
     <React.Fragment>
-      <Typography variant="h3">Neues Kapitel anlegen</Typography>
+      <Typography variant="h3">{t("chapters:newChapterTitle")}</Typography>
       <Card>
         <CardContent>
           <form autoComplete="off">
@@ -48,7 +50,7 @@ const NewChapter = ({ classes }: Props) => {
               required
               type="number"
               id="chapterNumber"
-              label="Kapitelnummer"
+              label={t("chapters:chapterNumber")}
               value={values.chapterNumber}
               onChange={handleChange("chapterNumber")}
               margin="normal"
@@ -57,9 +59,9 @@ const NewChapter = ({ classes }: Props) => {
             <TextField
               required
               id="title"
-              label="Titel"
+              label={t("title")}
               value={values.title}
-              placeholder={"Titel für das Kapitel"}
+              placeholder={t("title")}
               onChange={handleChange("title")}
               margin="normal"
               fullWidth
@@ -67,9 +69,9 @@ const NewChapter = ({ classes }: Props) => {
             <TextField
               required
               id="description"
-              label="Beschreibung"
+              label={t("description")}
               value={values.description}
-              placeholder={"Beschreibe hier das Kapitel"}
+              placeholder={t("chapters:chapterDescriptionPlaceholder")}
               onChange={handleChange("description")}
               margin="normal"
               fullWidth
@@ -92,7 +94,7 @@ const NewChapter = ({ classes }: Props) => {
                     }
                   >
                     {loading ? <CircularProgress size={24} /> : <SaveIcon />}
-                    Speichern...
+                    {t("save")}...
                   </Button>
                 </React.Fragment>
               )}

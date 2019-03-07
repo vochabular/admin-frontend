@@ -1,0 +1,18 @@
+{
+  "common": {
+    "save": "Speichern",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "title": "Titel",
+    "description": "Beschreibung"
+  },
+  "chapters": {
+    "newChapterTitle": "Neues Kapitel anlegen",
+    "chapterNumber": "Kapitelnummer",
+    "chapterDescriptionPlaceholder": "Um was geht es in diesem Kapitel?"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "language": "Sprache"
+  }
+}
