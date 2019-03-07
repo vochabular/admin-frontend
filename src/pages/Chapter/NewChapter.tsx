@@ -65,6 +65,9 @@ const NewChapter = ({ classes }: Props) => {
               onChange={handleChange("title")}
               margin="normal"
               fullWidth
+              inputProps={{
+                maxLength: 20
+              }}
             />
             <TextField
               required
@@ -75,6 +78,12 @@ const NewChapter = ({ classes }: Props) => {
               onChange={handleChange("description")}
               margin="normal"
               fullWidth
+              multiline
+              inputProps={{
+                maxLength: 300
+              }}
+              rows={3}
+              rowsMax={6}
             />
             <Mutation mutation={UPSERT_CHAPTER}>
               {(createChapter, { data, loading }) => (
