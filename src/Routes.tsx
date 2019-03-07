@@ -15,11 +15,7 @@ const handleAuthentication = (props: any) => {
   }
 };
 
-type RouteProps = {
-  isAuthenticated: boolean;
-};
-
-const Routes: React.FunctionComponent<RouteProps> = props => (
+const Routes: React.FunctionComponent = props => (
   <Router history={history}>
     <Switch>
       <Route

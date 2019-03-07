@@ -7,37 +7,40 @@ import Routes from "./Routes";
 import auth0Client from "./auth/Auth";
 import "./App.css";
 import LandingPage from "./pages/LandingPage";
+import LoadingPage from "./pages/LoadingPage";
 
 // Provide types for the component. You can also use interfaces, but a general rule of thumb is to use `type` for React Component Props and State...
-type AppProps = {
+type IAppProps = {
   name?: string;
 };
 
-type AppState = {
-  authenticated: boolean;
+type IAppState = {
+  initialized: boolean;
 };
 
-class App extends Component<AppProps, AppState> {
-  state: AppState = {
-    authenticated: false
+class App extends Component<IAppProps, IAppState> {
+  public state: IAppState = {
+    initialized: false
   };
+
   /**
-   * On app start, renew the session incase the user has logged in already before
+   * On app start, renew the Auth0 session incase the user has logged in already before.
+   * When everything is done, then set initialized to true
    */
-  componentDidMount() {
+  public async componentDidMount() {
     const { renewSession } = auth0Client;
     if (localStorage.getItem("isLoggedIn") === "true") {
-      renewSession();
-      this.setState({ authenticated: true });
+      await renewSession();
     }
+    this.setState({ initialized: true });
   }
 
   render() {
-    const { authenticated } = this.state;
+    const { initialized } = this.state;
     return (
       <div className="App">
         <CssBaseline />
-        <Routes isAuthenticated={authenticated} />
+        {initialized ? <Routes /> : <LoadingPage />}
       </div>
     );
   }
