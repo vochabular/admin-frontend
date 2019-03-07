@@ -1,0 +1,18 @@
+{
+  "common": {
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "title": "Title",
+    "description": "Description"
+  },
+  "chapters": {
+    "newChapterTitle": "Create new chapter",
+    "chapterNumber": "Chapter number",
+    "chapterDescriptionPlaceholder": "What is the chapter about?"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language"
+  }
+}
