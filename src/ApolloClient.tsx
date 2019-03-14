@@ -7,7 +7,7 @@ export default new ApolloClient({
   request: async operation => {
     operation.setContext({
       headers: {
-        authorization: auth0Client.getIdToken()
+        authorization: 'JWT ' + auth0Client.getIdToken()
       }
     });
   }
