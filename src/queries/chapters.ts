@@ -2,9 +2,13 @@ import gql from "graphql-tag";
 
 export const GET_CHAPTERS = gql`
   {
-    allChapters {
+    chapters {
       id
       title
+      chapterSet {
+        id
+        title
+      }
     }
   }
 `;
