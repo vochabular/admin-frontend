@@ -11,6 +11,7 @@
     "dashboard": "Dashboard"
   },
   "chapters": {
+    "chaptersOverview": "Chapter overview",
     "newChapterTitle": "Create new chapter",
     "chapterNumber": "Chapter number",
     "chapterDescriptionPlaceholder": "What is the chapter about?"
