@@ -56,7 +56,7 @@ class Auth {
         history.push("/");
       } else if (err) {
         history.replace("/");
-        console.log(err);
+        console.error(err);
         alert(`Error: ${err.error}. Check the console for further details.`);
       }
     });
@@ -87,9 +87,6 @@ class Auth {
   /**
    * Updates the current session with a new access token. On error,
    */
-  /**
-   * Updates the current session with a new access token. On error,
-   */
   public renewSession = async (): Promise<void> => {
     return new Promise((resolve, reject) =>
       this.auth0.checkSession({}, (err, authResult) => {
@@ -98,10 +95,6 @@ class Auth {
           resolve();
         } else if (err) {
           this.logout();
-          console.log(err);
-          alert(
-            `Could not get a new token (${err.error}: ${err.errorDescription}).`
-          );
           reject(err);
         }
       })
