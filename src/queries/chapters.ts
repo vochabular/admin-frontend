@@ -5,6 +5,10 @@ export const GET_CHAPTERS = gql`
     chapters {
       id
       title
+      chapterSet {
+        id
+        title
+      }
     }
   }
 `;
