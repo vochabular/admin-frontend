@@ -4,7 +4,11 @@
     "delete": "Delete",
     "edit": "Edit",
     "title": "Title",
-    "description": "Description"
+    "description": "Description",
+    "administrative": "Administrative",
+    "settings": "Settings",
+    "chapters": "Chapters",
+    "dashboard": "Dashboard"
   },
   "chapters": {
     "newChapterTitle": "Create new chapter",

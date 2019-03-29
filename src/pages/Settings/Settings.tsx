@@ -10,10 +10,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 
-import { styles } from "../../styles";
-
-// TODO: We should have the AppBar in a own component. However, that messes up the layout...
-// import AppBar from "../components/AppBar";
+import { styles } from "src/styles";
 
 interface Props extends WithStyles<typeof styles> {}
 
@@ -24,17 +21,6 @@ const Settings: React.FunctionComponent<Props> = ({ classes }) => {
     title: "",
     description: ""
   });
-
-  const handleChange = (name: string) => (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setValues({
-      ...values,
-      [name]: event.currentTarget.value
-    });
-  };
-
-  console.log(Object.keys(i18n.options.resources || {}));
 
   // Note: Pulling the available languages is not so straightforward. So have to loop through the resources object:
   // https://github.com/i18next/i18next/issues/1068

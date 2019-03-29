@@ -7,15 +7,11 @@ import { withStyles, WithStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
-import LoginIcon from "@material-ui/icons/AccountCircle";
-import Avatar from "@material-ui/core/Avatar";
 import SaveIcon from "@material-ui/icons/Save";
 
 import { styles } from "src/styles";
-import theme from "src/theme";
 import { UPSERT_CHAPTER } from "src/queries/chapters";
 import { CircularProgress } from "@material-ui/core";
 

@@ -36,7 +36,7 @@ export const mainRoutes: IPrivateRouteConfig[] = [
     allowedRoles: allUsers,
     component: Dashboard,
     exact: true,
-    label: "Dashboard",
+    label: "dashboard",
     icon: DashboardIcon,
     path: "/"
   },
@@ -45,7 +45,7 @@ export const mainRoutes: IPrivateRouteConfig[] = [
     allowedRoles: allUsers,
     component: Chapters,
     exact: true,
-    label: "Chapters",
+    label: "chapters",
     icon: FormatListIcon,
     path: "/chapters"
   },
@@ -64,7 +64,7 @@ export const administrativeRoutes: IPrivateRouteConfig[] = [
     allowedRoles: allUsers,
     component: Settings,
     exact: true,
-    label: "Settings",
+    label: "settings",
     icon: SettingsIcon,
     path: "/settings"
   }
