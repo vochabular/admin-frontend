@@ -4,6 +4,7 @@ import auth0, {
   Auth0ParseHashError
 } from "auth0-js";
 
+import client from "src/ApolloClient";
 import { AUTH_CONFIG } from "./auth0-variables";
 import history from "../history";
 
@@ -51,9 +52,11 @@ class Auth {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
+        // navigate to the home route
+        history.push("/");
       } else if (err) {
         history.replace("/");
-        console.log(err);
+        console.error(err);
         alert(`Error: ${err.error}. Check the console for further details.`);
       }
     });
@@ -84,18 +87,18 @@ class Auth {
   /**
    * Updates the current session with a new access token. On error,
    */
-  public renewSession = (): void => {
-    this.auth0.checkSession({}, (err, authResult) => {
-      if (authResult && authResult.accessToken && authResult.idToken) {
-        this.setSession(authResult);
-      } else if (err) {
-        this.logout();
-        console.log(err);
-        alert(
-          `Could not get a new token (${err.error}: ${err.errorDescription}).`
-        );
-      }
-    });
+  public renewSession = async (): Promise<void> => {
+    return new Promise((resolve, reject) =>
+      this.auth0.checkSession({}, (err, authResult) => {
+        if (authResult && authResult.accessToken && authResult.idToken) {
+          this.setSession(authResult);
+          resolve();
+        } else if (err) {
+          this.logout();
+          reject(err);
+        }
+      })
+    );
   };
 
   public logout = (): void => {
@@ -109,6 +112,7 @@ class Auth {
 
     // navigate to the home route
     history.replace("/");
+    client.resetStore();
   };
 
   /**
@@ -135,9 +139,6 @@ class Auth {
     this.accessToken = authResult.accessToken;
     this.idToken = authResult.idToken;
     this.expiresAt = expiresAt;
-
-    // navigate to the home route
-    history.replace("/");
   };
 }
 
