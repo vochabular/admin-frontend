@@ -14,6 +14,7 @@ import apolloClient from "./ApolloClient";
 import theme from "./theme";
 import * as serviceWorker from "./serviceWorker";
 
+// TODO: How can we use the values from our .env file?
 Sentry.init({
     dsn: "https://eb0c5dce895e44f1b8775aaaa9f36abd@sentry.io/1427390", // process.env.SENTRY_URL,
     environment: "dev", // process.env.SENTRY_ENVIRONMENT,
