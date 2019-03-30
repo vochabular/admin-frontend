@@ -17,14 +17,12 @@ type IAppProps = {
 };
 
 type IAppState = {
-    initialized: boolean;
-    profile: Auth0UserProfile | {};
+    initialized: boolean
 };
 
 class App extends Component<IAppProps, IAppState> {
     public state: IAppState = {
-        initialized: false,
-        profile: {}
+        initialized: false
     };
 
     /**
@@ -36,21 +34,11 @@ class App extends Component<IAppProps, IAppState> {
         if (localStorage.getItem("isLoggedIn") === "true") {
             await renewSession();
         }
-        auth0Client.getProfile((error: Auth0Error, profile: Auth0UserProfile) => {
-            this.setState({profile});
-            Sentry.configureScope((scope) => {
-                scope.setUser({
-                    "email": profile.email,
-                    "username": profile.nickname
-                });
-                scope.setExtra("user_role", auth0Client.getRoles());
-            });
-        });
         this.setState({initialized: true});
     }
 
     render() {
-        const {initialized, profile} = this.state;
+        const {initialized} = this.state;
         return (
             <div className="App">
                 <CssBaseline/>

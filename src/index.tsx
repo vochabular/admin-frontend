@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { ApolloProvider } from "react-apollo";
-import { ApolloProvider as ApolloHooksProvider } from "react-apollo-hooks";
+import {ApolloProvider} from "react-apollo";
+import {ApolloProvider as ApolloHooksProvider} from "react-apollo-hooks";
 import * as Sentry from '@sentry/browser';
 
-import { MuiThemeProvider } from "@material-ui/core";
+import {MuiThemeProvider} from "@material-ui/core";
 
 import "./index.css";
 import App from "./App";
@@ -15,18 +15,21 @@ import theme from "./theme";
 import * as serviceWorker from "./serviceWorker";
 
 Sentry.init({
-  dsn: "https://eb0c5dce895e44f1b8775aaaa9f36abd@sentry.io/1427390"
+    dsn: "https://eb0c5dce895e44f1b8775aaaa9f36abd@sentry.io/1427390", // process.env.SENTRY_URL,
+    environment: "dev", // process.env.SENTRY_ENVIRONMENT,
+    release: "vochabular-cms-frontend@0.1", // process.env.VERSION
+    debug: true
 });
 
 ReactDOM.render(
-  <ApolloProvider client={apolloClient}>
-    <ApolloHooksProvider client={apolloClient}>
-      <MuiThemeProvider theme={theme}>
-        <App />
-      </MuiThemeProvider>
-    </ApolloHooksProvider>
-  </ApolloProvider>,
-  document.getElementById("root")
+    <ApolloProvider client={apolloClient}>
+        <ApolloHooksProvider client={apolloClient}>
+            <MuiThemeProvider theme={theme}>
+                <App/>
+            </MuiThemeProvider>
+        </ApolloHooksProvider>
+    </ApolloProvider>,
+    document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change
