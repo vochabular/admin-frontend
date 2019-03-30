@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { ApolloProvider } from "react-apollo";
 import { ApolloProvider as ApolloHooksProvider } from "react-apollo-hooks";
+import * as Sentry from '@sentry/browser';
 
 import { MuiThemeProvider } from "@material-ui/core";
 
@@ -12,6 +13,10 @@ import "./i18n";
 import apolloClient from "./ApolloClient";
 import theme from "./theme";
 import * as serviceWorker from "./serviceWorker";
+
+Sentry.init({
+  dsn: "https://eb0c5dce895e44f1b8775aaaa9f36abd@sentry.io/1427390"
+});
 
 ReactDOM.render(
   <ApolloProvider client={apolloClient}>
