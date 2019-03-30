@@ -8,13 +8,18 @@
     "administrative": "Administrative",
     "settings": "Settings",
     "chapters": "Chapters",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "noResultsYetAvailable": "No results available yet"
   },
   "chapters": {
     "chaptersOverview": "Chapter overview",
+    "noChaptersAvailable": "No chapters available yet",
     "newChapterTitle": "Create new chapter",
     "chapterNumber": "Chapter number",
     "chapterDescriptionPlaceholder": "What is the chapter about?"
+  },
+  "voggi": {
+    "voggiList": "Voggi-List"
   },
   "settings": {
     "title": "Settings",

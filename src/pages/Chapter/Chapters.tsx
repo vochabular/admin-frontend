@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useQuery } from "react-apollo-hooks";
 
 import { withStyles, WithStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -12,11 +13,17 @@ import AddIcon from "@material-ui/icons/Add";
 import Fab from "@material-ui/core/Fab";
 
 import { styles } from "src/styles";
+import { GET_CHAPTERS } from "src/queries/chapters";
+import ChapterCard from "src/components/ChapterCard";
+import BusyOrErrorCard from "src/components/BusyOrErrorCard";
+import { chapters_chapters } from "src/queries/__generated__/chapters";
 
 interface Props extends WithStyles<typeof styles> {}
 
 const Chapters = ({ classes }: Props) => {
   const { t } = useTranslation();
+
+  const { data, error, loading } = useQuery(GET_CHAPTERS);
 
   // Note: MUI links together with react-router-dom and Typescript are a bit tricky due to their dynamic nature
   // See the discussion and provided solutions here... https://github.com/mui-org/material-ui/issues/7877
@@ -28,25 +35,16 @@ const Chapters = ({ classes }: Props) => {
       </Typography>
       <Grid container spacing={16}>
         <Grid item xs={12} md={6} lg={6}>
-          <Card>
-            <CardActionArea
-              component={RouterLink}
-              {...{ to: "/chapters/1" } as any}
-            >
-              <CardContent>
-                <Typography
-                  className={classes.title}
-                  color="textSecondary"
-                  gutterBottom
-                >
-                  Kapitel 1
-                </Typography>
-                <Typography variant="h5" component="h2">
-                  Begrüssung
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
+          <BusyOrErrorCard
+            loading={loading}
+            error={error}
+            noResults={!loading && data.chapters && !data.chapters.length}
+          />
+          {data &&
+            data.chapters &&
+            data.chapters.map((c: chapters_chapters) => (
+              <ChapterCard chapter={c} />
+            ))}
         </Grid>
       </Grid>
       <Fab

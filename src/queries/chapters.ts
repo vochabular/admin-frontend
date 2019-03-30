@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 
 export const GET_CHAPTERS = gql`
-  {
+  query chapters {
     chapters {
       id
       title
