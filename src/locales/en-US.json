@@ -7,11 +7,11 @@
     "description": "Description",
     "administrative": "Administrative",
     "settings": "Settings",
-    "chapters": "Chapters",
     "dashboard": "Dashboard",
     "noResultsYetAvailable": "No results available yet"
   },
   "chapters": {
+    "chapters": "Chapters",
     "chaptersOverview": "Chapter overview",
     "noChaptersAvailable": "No chapters available yet",
     "newChapterTitle": "Create new chapter",
