@@ -1,0 +1,28 @@
+{
+  "common": {
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "title": "Title",
+    "description": "Description",
+    "administrative": "Administrative",
+    "settings": "Settings",
+    "dashboard": "Dashboard",
+    "noResultsYetAvailable": "No results available yet"
+  },
+  "chapters": {
+    "chapters": "Chapters",
+    "chaptersOverview": "Chapter overview",
+    "noChaptersAvailable": "No chapters available yet",
+    "newChapterTitle": "Create new chapter",
+    "chapterNumber": "Chapter number",
+    "chapterDescriptionPlaceholder": "What is the chapter about?"
+  },
+  "voggi": {
+    "voggiList": "Voggi-List"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language"
+  }
+}

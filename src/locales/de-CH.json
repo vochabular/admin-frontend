@@ -1,0 +1,28 @@
+{
+  "common": {
+    "save": "Speichern",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "title": "Titel",
+    "description": "Beschreibung",
+    "administrative": "Administratives",
+    "settings": "Einstellungen",
+    "dashboard": "Dashboard",
+    "noResultsYetAvailable": "Keine Resultate bisher verfügbar"
+  },
+  "chapters": {
+    "chapters": "Kapitel",
+    "chaptersOverview": "Kapitelübersicht",
+    "noChaptersAvailable": "No keine Kapitel verfügbar",
+    "newChapterTitle": "Neues Kapitel anlegen",
+    "chapterNumber": "Kapitelnummer",
+    "chapterDescriptionPlaceholder": "Um was geht es in diesem Kapitel?"
+  },
+  "voggi": {
+    "voggiList": "Voggi-Liste"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "language": "Sprache"
+  }
+}

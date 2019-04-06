@@ -13,12 +13,26 @@ This single-page-application (SPA) is written in Typescript and React and is boo
 - Clone the git repository with `git clone https://github.com/vochabular/admin-frontend`
 - Install all required packages with `npm install`
 
-### Additional steps to generate types with Apollo Codegen
+## How to work with React, GraphQL and the Backend
+
+We use GraphQL, a typed query language, as an interface between the SPA Client and the backend. The backend provides with a self-documenting, interactive "Graph" explorer which you can access here:
+
+[https://vochabular-admin-backend.herokuapp.com/api/graphql](https://vochabular-admin-backend.herokuapp.com/api/graphql)
+
+Although the schema is publicly accesible (TODO: Should we want to hide it?), we need to set the JWT tokens in the header somehow to query and mutate actual data. Unfortunately, this requires a workaround since the Graphene provided GraphiQL client doesn't have this enabled as a plugin.
+
+- Use https://graphiql-online.com/ --> Source: https://github.com/hasura/graphql-engine/tree/master/community/tools/graphiql-online
+- Use a native GraphQL client such as Altair that allows setting headers.
+
+## Additional steps to generate types with Apollo Codegen
 
 - Install the apollo package globally:
   `npm install -g apollo`
+- Make sure that the settings in `apollo.config.js` in the root directory are correct
+- Write a new GraphQL query, preferably in the "queries" directory
 - Then generate the types with:
   `apollo client:codegen`
+- This should generate some files in a **generated** folder. You can then import these types and use them in your components...
 
 ### Note:
 

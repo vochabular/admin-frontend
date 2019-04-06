@@ -1,4 +1,5 @@
 import { createStyles, FormHelperText } from "@material-ui/core";
+import green from "@material-ui/core/colors/green";
 import { Theme } from "@material-ui/core/styles/createMuiTheme";
 
 // Constants
@@ -95,7 +96,8 @@ export const styles = (theme: Theme) =>
       flexGrow: 1,
       padding: theme.spacing.unit * 3,
       height: "100vh",
-      overflow: "auto"
+      overflowX: "auto",
+      width: "100%"
     },
     chartContainer: {
       marginLeft: -22
@@ -105,5 +107,16 @@ export const styles = (theme: Theme) =>
     },
     h5: {
       marginBottom: theme.spacing.unit * 2
+    },
+    buttonSuccess: {
+      backgroundColor: green[500],
+      "&:hover": {
+        backgroundColor: green[700]
+      }
+    },
+    fab: {
+      position: "absolute",
+      bottom: theme.spacing.unit * 10,
+      right: theme.spacing.unit * 10
     }
   });
