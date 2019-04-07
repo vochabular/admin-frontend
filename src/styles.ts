@@ -13,6 +13,7 @@ https://material-ui.com/guides/typescript/
 export const styles = (theme: Theme) =>
   createStyles({
     root: {
+      flexGrow: 1,
       display: "flex"
     },
     container: {
@@ -20,6 +21,9 @@ export const styles = (theme: Theme) =>
       flex: 1,
       justifyContent: "center",
       alignItems: "center"
+    },
+    fullWidthContainer: {
+      width: "100%"
     },
     card: {
       display: "flex",

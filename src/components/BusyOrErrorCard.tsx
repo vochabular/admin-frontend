@@ -13,7 +13,7 @@ import { styles } from "../styles";
 interface Props extends WithStyles<typeof styles> {
   error?: ApolloError;
   loading: boolean;
-  noResults: boolean;
+  noResults?: boolean;
 }
 
 const BusyOrErrorCard: React.FunctionComponent<Props> = ({

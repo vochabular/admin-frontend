@@ -17,7 +17,6 @@ import MenuIcon from "@material-ui/icons/Menu";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import PowerIcon from "@material-ui/icons/PowerSettingsNew";
 
-
 import auth0Client from "src/auth/Auth";
 import { styles } from "src/styles";
 import { getAllAccessibleRoutes } from "src/privateRoutes";
@@ -26,12 +25,13 @@ import { getAllAccessibleRoutes } from "src/privateRoutes";
 // import AppBar from "../components/AppBar";
 
 interface Props extends WithStyles<typeof styles> {
+  isDrawerDeactivated?: boolean;
   isDrawerOpen: boolean;
   toggleDrawer: any;
 }
 
 function AppBar(props: Props) {
-  const { classes, isDrawerOpen, toggleDrawer } = props;
+  const { classes, isDrawerOpen, toggleDrawer, isDrawerDeactivated } = props;
 
   return (
     <AppBarMui
@@ -42,17 +42,19 @@ function AppBar(props: Props) {
       )}
     >
       <Toolbar disableGutters={!isDrawerOpen} className={classes.toolbar}>
-        <IconButton
-          color="inherit"
-          aria-label="Open drawer"
-          onClick={() => toggleDrawer(!isDrawerOpen)}
-          className={classNames(
-            classes.menuButton,
-            isDrawerOpen && classes.menuButtonHidden
-          )}
-        >
-          <MenuIcon />
-        </IconButton>
+        {isDrawerDeactivated ? null : (
+          <IconButton
+            color="inherit"
+            aria-label="Open drawer"
+            onClick={() => toggleDrawer(!isDrawerOpen)}
+            className={classNames(
+              classes.menuButton,
+              isDrawerOpen && classes.menuButtonHidden
+            )}
+          >
+            <MenuIcon />
+          </IconButton>
+        )}
         <Typography
           component="h1"
           variant="h6"
