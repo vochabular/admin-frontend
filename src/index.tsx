@@ -19,7 +19,7 @@ Sentry.init({
   dsn: process.env.REACT_APP_SENTRY_URL,
   environment: process.env.NODE_ENV,
   release: `${packageJson.name}@${packageJson.version}`,
-  debug: process.env.NODE_ENV === "development"
+  debug: false // process.env.NODE_ENV === "development"
 });
 
 ReactDOM.render(
