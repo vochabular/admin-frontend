@@ -3,12 +3,23 @@
     "save": "Save",
     "delete": "Delete",
     "edit": "Edit",
+    "back": "Back",
+    "next": "Next",
+    "reset": "Reset",
+    "finish": "Finish",
     "title": "Title",
     "description": "Description",
     "administrative": "Administrative",
     "settings": "Settings",
     "dashboard": "Dashboard",
-    "noResultsYetAvailable": "No results available yet"
+    "noResultsYetAvailable": "No results available yet",
+    "arabic": "Arabic",
+    "english": "English",
+    "persian": "Persian/Farsi",
+    "swissGerman": "Swiss German",
+    "required": "Required!",
+    "tooShort": "Too short!",
+    "tooLong": "Too long!"
   },
   "chapters": {
     "chapters": "Chapters",
@@ -23,6 +34,20 @@
   },
   "settings": {
     "title": "Settings",
-    "language": "Language"
+    "language": "Language",
+    "currentRole": "Current active role",
+    "admin": "Administrator",
+    "translator": "Translator",
+    "approver": "Approver",
+    "content-creator": "Content Creatror",
+    "viewer": "Viewer"
+  },
+  "setupWizard": {
+    "title": "Setup your user account",
+    "chooseDisplayName": "Choose your user name",
+    "chooseLanguages": "Choose your language",
+    "chooseNotifications": "Notifications",
+    "receiveNotifications": "Receive notifications",
+    "allStepsCompletedMessage": "All steps completed - you&apos;re finished"
   }
 }

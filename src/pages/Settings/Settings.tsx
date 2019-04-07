@@ -1,47 +1,78 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import * as Yup from "yup";
+import { useQuery, useMutation } from "react-apollo-hooks";
+import { Form, Formik, FormikActions } from "formik";
 
 import { withStyles, WithStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
+import { Divider, CardActionArea, Button } from "@material-ui/core";
 
 import { styles } from "src/styles";
+import GeneralSection from "src/pages/Settings/SettingsSection/GeneralSection";
+import LanguagesSection from "src/pages/Settings/SettingsSection/LanguagesSection";
+import NotificationSection from "src/pages/Settings/SettingsSection/NotificationSection";
+import i18next from "src/i18n";
+import { GET_SETTINGS, UPDATE_SETTINGS } from "src/queries/settings";
+import auth0Client from "src/auth/Auth";
+
+export const UserSetupSchema = Yup.object().shape({
+  userName: Yup.string()
+    .min(4, i18next.t("tooShort"))
+    .max(50, i18next.t("tooLong"))
+    .required(i18next.t("required")),
+  currentRole: Yup.string().required(i18next.t("required"))
+});
 
 interface Props extends WithStyles<typeof styles> {}
 
 const Settings: React.FunctionComponent<Props> = ({ classes }) => {
   const { t, i18n } = useTranslation();
+  const { data, error, loading } = useQuery(GET_SETTINGS);
+  const updateSettings = useMutation(UPDATE_SETTINGS);
 
-  const [values, setValues] = React.useState({
-    title: "",
-    description: ""
-  });
+  // Here we would now update the backend settings...
+  function handleSave(values: any, actions: FormikActions<any>) {
+    const newSettings = { ...values };
+    updateSettings({ variables: { settings: newSettings } });
+    // TODO: This then has to go to the server...
 
-  // Note: Pulling the available languages is not so straightforward. So have to loop through the resources object:
-  // https://github.com/i18next/i18next/issues/1068
+    auth0Client.changeCurrentRole(newSettings.currentRole);
+    i18n.changeLanguage(newSettings.language);
+    localStorage.setItem("settings", JSON.stringify(newSettings));
+    actions.setSubmitting(false);
+  }
+
   return (
     <React.Fragment>
       <Typography variant="h3">{t("settings:title")}</Typography>
       <Card>
         <CardContent>
-          <FormControl>
-            <InputLabel>{t("settings:language")}</InputLabel>
-            <Select
-              value={i18n.language}
-              onChange={e => i18n.changeLanguage(e.target.value)}
-            >
-              {Object.keys(i18n.options.resources || {}).map((l: string) => (
-                <MenuItem key={l} value={l}>
-                  {l}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <Formik
+            initialValues={data && data.settings}
+            validationSchema={UserSetupSchema}
+            onSubmit={(values, actions) => handleSave(values, actions)}
+            render={({ submitForm, values }) => (
+              <Form>
+                <React.Fragment>
+                  <GeneralSection values={values} />
+                  <Divider />
+                  <LanguagesSection values={values} />
+                  <Divider />
+                  <NotificationSection values={values} />
+                </React.Fragment>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={submitForm}
+                >
+                  {t("save")}
+                </Button>
+              </Form>
+            )}
+          />
         </CardContent>
       </Card>
     </React.Fragment>

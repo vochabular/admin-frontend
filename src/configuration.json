@@ -1,0 +1,8 @@
+{
+  "translatorLanguages": [
+    { "code": "fa-FA", "label": "persian" },
+    { "code": "ar-AR", "label": "arabic" },
+    { "code": "de-CH", "label": "swissGerman" },
+    { "code": "en-US", "label": "english" }
+  ]
+}
