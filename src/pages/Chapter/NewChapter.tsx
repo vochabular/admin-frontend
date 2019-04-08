@@ -48,9 +48,6 @@ const NewChapter = ({ classes }: Props) => {
     }
   }
 
-  // Since useMutation currently doesn't return the second arguments such as loading, we can not use react-apollo-hooks for now...
-  // https://github.com/trojanowski/react-apollo-hooks/issues/90
-  // const upsertChapter = useMutation;
   return (
     <React.Fragment>
       <Card className={classes.card}>
