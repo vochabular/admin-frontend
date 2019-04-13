@@ -31,7 +31,7 @@ Although the schema is publicly accesible (TODO: Should we want to hide it?), we
 - Make sure that the settings in `apollo.config.js` in the root directory are correct
 - Write a new GraphQL query, preferably in the "queries" directory
 - Then generate the types with:
-  `apollo client:codegen`
+  `apollo client:codegen --target typescript`
 - This should generate some files in a **generated** folder. You can then import these types and use them in your components...
 
 ### Note:

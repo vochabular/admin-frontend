@@ -13,6 +13,7 @@ https://material-ui.com/guides/typescript/
 export const styles = (theme: Theme) =>
   createStyles({
     root: {
+      flexGrow: 1,
       display: "flex"
     },
     container: {
@@ -21,11 +22,17 @@ export const styles = (theme: Theme) =>
       justifyContent: "center",
       alignItems: "center"
     },
-    card: {
+    fullWidthContainer: {
+      width: "100%"
+    },
+    card2: {
       display: "flex",
       flexDirection: "column",
       padding: theme.spacing.unit * 4,
       alignItems: "center"
+    },
+    card: {
+      padding: theme.spacing.unit * 4
     },
     landingLogo: {
       display: "flex",
