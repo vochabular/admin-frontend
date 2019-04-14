@@ -7,11 +7,9 @@ import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Paper";
 import CardContent from "@material-ui/core/CardContent";
 import CardActionArea from "@material-ui/core/CardActionArea";
-import AddIcon from "@material-ui/icons/Add";
-import Fab from "@material-ui/core/Fab";
 
 import { styles } from "src/styles";
-import { chapters_chapters } from "src/queries/__generated__/chapters";
+import { chapters_chapters } from "src/queries/__generated__/chapters"; // TODO: Apollo code gen didn't work.
 
 interface Props extends WithStyles<typeof styles> {
     wordgroup: chapters_chapters; // TODO: Should use the generated type!
@@ -27,7 +25,7 @@ const WordGroupCard = ({ classes, wordgroup }: Props) => {
         <Card>
             <CardActionArea
                 component={RouterLink}
-                {...{ to: `/chapters/${wordgroup.id}` } as any}
+                {...{ to: `/wordgroups/${wordgroup.id}` } as any}
             >
                 <CardContent>
                     <Typography
@@ -35,7 +33,8 @@ const WordGroupCard = ({ classes, wordgroup }: Props) => {
                         color="textSecondary"
                         gutterBottom
                     >
-                        {wordgroup.title}
+                        {wordgroup.titleCh}
+                        {wordgroup.titleDe}
                     </Typography>
                     <Typography variant="h5" component="h2">
                         TODO: Render here chapter specific stuff

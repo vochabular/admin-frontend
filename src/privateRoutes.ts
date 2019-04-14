@@ -3,11 +3,14 @@ import * as React from "react";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import SettingsIcon from "@material-ui/icons/Settings";
 import FormatListIcon from "@material-ui/icons/FormatListNumbered";
+import FormatListBulleted from "@material-ui/icons/FormatListBulleted";
 
 import Dashboard from "src/pages/Dashboard/Dashboard";
 import Settings from "src/pages/Settings/Settings";
 import Chapters from "./pages/Chapter/Chapters";
 import Chapter from "./pages/Chapter/Chapter";
+import WordGroups from "./pages/WordGroup/WordGroups"
+import WordGroup from "./pages/WordGroup/WordGroup"
 
 /**
  * Roles defined as constants for reuse...
@@ -55,6 +58,22 @@ export const mainRoutes: IPrivateRouteConfig[] = [
     component: Chapter,
     exact: true,
     path: "/chapters/:id"
+  },
+  {
+    showInDrawer: true,
+    allowedRoles: allUsers,
+    component: WordGroups,
+    exact: true,
+    label: "voCHi Liste",
+    icon: FormatListBulleted,
+    path: "/wordgroups"
+  },
+  {
+    showInDrawer: false,
+    allowedRoles: allUsers,
+    component: WordGroup,
+    exact: true,
+    path: "/wordgroups/:id"
   }
 ];
 

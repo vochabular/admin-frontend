@@ -23,7 +23,7 @@ interface Props
     extends RouteComponentProps<ChapterRouterProps>,
         WithStyles<typeof styles> {}
 
-const Chapter = ({ classes, match }: Props) => {
+const WordGroup = ({ classes, match }: Props) => {
     if (match.params.id === "new") {
         return <NewChapter />;
     }
@@ -34,4 +34,4 @@ const Chapter = ({ classes, match }: Props) => {
     );
 };
 
-export default withStyles(styles, { withTheme: true })(Chapter);
+export default withStyles(styles, { withTheme: true })(WordGroup);

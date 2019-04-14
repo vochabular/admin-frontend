@@ -19,42 +19,33 @@ export const GET_WORDGROUP = gql`
     id
     titleCh
     titleDe
-    fkChapter {
-      id
-    }
-    memberSet {
-      fkWord {
-        wordch {
-          text
-          exampleSentence
-          audio
-        }
-        worden {
-          text
-          exampleSentence
-          audio
-        }
-        wordde {
-          text
-          exampleSentence
-          audio
-        }
-        wordfa {
-          text
-          exampleSentence
-          audio
-        }
-        wordar {
-          text
-          exampleSentence
-          audio
-        }
+    words {
+      wordch {
+        exampleSentence
+        text
+        audio
+      }
+      wordde {
+        exampleSentence
+        text
+        audio
+      }
+      worden {
+        exampleSentence
+        text
+        audio
+      }
+      wordar {
+        exampleSentence
+        text
+        audio
+      }
+      wordfa {
+        exampleSentence
+        text
+        audio
       }
     }
   }
 }
-`;
-
-export const UPSERT_WORDGROUPS = gql`
-  TODO
 `;
