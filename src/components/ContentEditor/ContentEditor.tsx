@@ -10,40 +10,35 @@ import { withStyles, WithStyles } from "@material-ui/core/styles";
 
 import { styles } from "src/styles";
 import theme from "src/theme";
-import BaseComponent from "./components/BaseComponent";
+import ComponentList from "./ComponentList";
 
-/**
- * Wrap with React Memo to avoid rerender
- */
-const ComponentList = React.memo(function ComponentList({ components }: any) {
-  return components.map((component: any, index: number) => (
-    <BaseComponent key={component.id} index={index} data={component} />
-  ));
-});
+interface Props extends WithStyles<typeof styles> {
+  data: any;
+}
 
-interface Props extends WithStyles<typeof styles> {}
+const ContentEditor = ({ classes, data }: Props) => {
+  // TODO: What kind of state do we have to initialize here?
 
-const ContentEditor = ({ classes }: Props) => {
+  /**
+   * Is called when the drag ends. Main function that handles all the logic related to DragAndDrop
+   */
   function onDragEnd(result: DropResult) {
+    // If dropped outside of the list
     if (!result.destination) {
       return;
     }
 
+    // Do nothing if dropped at the same spot
     if (result.destination.index === result.source.index) {
       return;
     }
   }
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="list">
+      <Droppable droppableId="component-list" type="component-list">
         {provided => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
-            <ComponentList
-              components={[
-                { id: 1, data: "TEST 1" },
-                { id: 2, data: "TEST 2" }
-              ]}
-            />
+            <ComponentList components={data} />
             {provided.placeholder}
           </div>
         )}
