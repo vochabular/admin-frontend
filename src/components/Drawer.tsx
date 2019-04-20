@@ -72,9 +72,9 @@ function Drawer(props: Props) {
           const Icon = r.icon;
           return (
             <LinkListItem
-              key={r.path}
+              key={Array.isArray(r.path) ? r.path[0] : r.path}
               button={true}
-              to={r.path}
+              to={Array.isArray(r.path) ? r.path[0] : r.path}
               selected={location === r.path}
             >
               <ListItemIcon>
@@ -94,9 +94,9 @@ function Drawer(props: Props) {
               const Icon = r.icon;
               return (
                 <LinkListItem
-                  key={r.path}
+                  key={Array.isArray(r.path) ? r.path[0] : r.path}
                   button={true}
-                  to={r.path}
+                  to={Array.isArray(r.path) ? r.path[0] : r.path}
                   selected={location === r.path}
                 >
                   <ListItemIcon>
