@@ -24,6 +24,8 @@ const BusyOrErrorCard: React.FunctionComponent<Props> = ({
 }) => {
   const { t } = useTranslation();
 
+  if (!error && !loading && !noResults) return null;
+
   return (
     <Card>
       <CardContent>

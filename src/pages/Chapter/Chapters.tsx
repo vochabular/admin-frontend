@@ -34,18 +34,18 @@ const Chapters = ({ classes }: Props) => {
         {t("chapters:chaptersOverview")}
       </Typography>
       <Grid container spacing={16}>
-        <Grid item xs={12} md={6} lg={6}>
-          <BusyOrErrorCard
-            loading={loading}
-            error={error}
-            noResults={!loading && data.chapters && !data.chapters.length}
-          />
-          {data &&
-            data.chapters &&
-            data.chapters.map((c: chapters_chapters) => (
+        <BusyOrErrorCard
+          loading={loading}
+          error={error}
+          noResults={!loading && data.chapters && !data.chapters.length}
+        />
+        {data &&
+          data.chapters &&
+          data.chapters.map((c: chapters_chapters) => (
+            <Grid item xs={12} sm={6} md={4} key={c.id}>
               <ChapterCard chapter={c} />
-            ))}
-        </Grid>
+            </Grid>
+          ))}
       </Grid>
       <Fab
         size="large"
