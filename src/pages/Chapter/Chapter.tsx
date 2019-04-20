@@ -13,6 +13,7 @@ import { RouteComponentProps } from "react-router-dom";
 import { styles } from "src/styles";
 import theme from "src/theme";
 import NewChapter from "./NewChapter";
+import ChapterEditor from "./ChapterEditor";
 
 // These can come from the router... See the route definitions
 interface ChapterRouterProps {
@@ -30,6 +31,7 @@ const Chapter = ({ classes, match }: Props) => {
   return (
     <React.Fragment>
       <Typography variant="h3">Kapitel {match.params.id}</Typography>
+      <ChapterEditor />
     </React.Fragment>
   );
 };
