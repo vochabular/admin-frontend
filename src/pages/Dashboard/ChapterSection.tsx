@@ -24,7 +24,7 @@ const ChapterSection: React.FunctionComponent<Props> = ({ classes }) => {
   const { t } = useTranslation();
   const { data, error, loading } = useQuery(GET_CHAPTERS);
 
-  if (loading || error || !data.chapters.length)
+  if (loading || error || !data.chapters.length) {
     return (
       <BusyOrErrorCard
         loading={loading}
@@ -32,11 +32,16 @@ const ChapterSection: React.FunctionComponent<Props> = ({ classes }) => {
         noResults={!loading && data.chapters && !data.chapters.length}
       />
     );
-  return data.chapters.map((c: chapters_chapters, i: number) => (
-    <Grid key={i}>
-      <ChapterCard chapter={c} />
+  }
+  return (
+    <Grid container spacing={16}>
+      {data.chapters.map((c: chapters_chapters, i: number) => (
+        <Grid item key={i}>
+          <ChapterCard chapter={c} />
+        </Grid>
+      ))}
     </Grid>
-  ));
+  );
 };
 
 export default withStyles(styles)(ChapterSection);

@@ -42,7 +42,7 @@ const Chapters = ({ classes }: Props) => {
         {data &&
           data.chapters &&
           data.chapters.map((c: chapters_chapters) => (
-            <Grid item xs={12} sm={6} md={4} key={c.id}>
+            <Grid item key={c.id}>
               <ChapterCard chapter={c} />
             </Grid>
           ))}
