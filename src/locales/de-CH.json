@@ -20,6 +20,7 @@
     "required": "Wird benötigt..."
   },
   "chapters": {
+    "chapter": "Kapitel",
     "chapters": "Kapitel",
     "chaptersOverview": "Kapitelübersicht",
     "noChaptersAvailable": "No keine Kapitel verfügbar",

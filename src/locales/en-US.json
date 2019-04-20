@@ -22,6 +22,7 @@
     "tooLong": "Too long!"
   },
   "chapters": {
+    "chapter": "Chapter",
     "chapters": "Chapters",
     "chaptersOverview": "Chapter overview",
     "noChaptersAvailable": "No chapters available yet",
