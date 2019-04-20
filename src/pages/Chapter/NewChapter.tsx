@@ -16,6 +16,7 @@ import { UPSERT_CHAPTER } from "src/queries/chapters";
 import i18next from "src/i18n";
 import history from "src/history";
 import ErrorMessage from "src/components/ErrorMessage";
+import { ChapterInput } from "__generated__/globalTypes";
 
 export const ChapterSchema = Yup.object().shape({
   title: Yup.string()
@@ -37,9 +38,10 @@ const NewChapter = ({ classes }: Props) => {
   // TODO: Unfortunately, react-apollo-hooks doesn't support yet the error, loading object in mutations (unlike with query...)
   const upsertChapter = useMutation(UPSERT_CHAPTER);
 
-  async function handleSave(values: any, actions: FormikActions<any>) {
+  async function handleSave(values: ChapterInput, actions: FormikActions<any>) {
     // TODO: This verbose stuff won't be necessary anymore as soon useMutation also returns a error/loading object.
     try {
+      console.log(values);
       await upsertChapter({ variables: { input: values } });
       history.push("/chapters");
     } catch (e) {
@@ -55,7 +57,7 @@ const NewChapter = ({ classes }: Props) => {
         <CardContent>
           <Formik
             initialValues={{
-              number: "",
+              number: 0,
               title: "",
               description: ""
             }}
