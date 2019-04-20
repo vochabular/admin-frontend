@@ -3,12 +3,21 @@
     "save": "Speichern",
     "delete": "Löschen",
     "edit": "Bearbeiten",
+    "back": "Zurück",
+    "next": "Weiter",
+    "reset": "Zurücksetzen",
+    "finish": "Beenden",
     "title": "Titel",
     "description": "Beschreibung",
     "administrative": "Administratives",
     "settings": "Einstellungen",
     "dashboard": "Dashboard",
-    "noResultsYetAvailable": "Keine Resultate bisher verfügbar"
+    "noResultsYetAvailable": "Keine Resultate bisher verfügbar",
+    "arabic": "Arabisch",
+    "english": "Englisch",
+    "persian": "Persisch/Farsi",
+    "swissGerman": "Schweizer Deutsch",
+    "required": "Wird benötigt..."
   },
   "chapters": {
     "chapters": "Kapitel",
@@ -16,7 +25,7 @@
     "noChaptersAvailable": "No keine Kapitel verfügbar",
     "newChapterTitle": "Neues Kapitel anlegen",
     "chapterNumber": "Kapitelnummer",
-    "chapterDescriptionPlaceholder": "Um was geht es in diesem Kapitel?"
+    "chapterDescription": "Um was geht es in diesem Kapitel?"
   },
   "voggi": {
     "voggiList": "Voggi-Liste"
@@ -24,5 +33,12 @@
   "settings": {
     "title": "Einstellungen",
     "language": "Sprache"
+  },
+  "setupWizard": {
+    "title": "Benutzer einrichten",
+    "chooseDisplayName": "Wähle deinen Benutzername",
+    "chooseLanguages": "Sprachen auswählen",
+    "chooseNotifications": "Benachrichtigungen",
+    "allStepsCompletedMessage": "Alle Schritte beendet - Fortfahren"
   }
 }
