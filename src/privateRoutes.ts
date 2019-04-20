@@ -8,7 +8,6 @@ import Dashboard from "src/pages/Dashboard/Dashboard";
 import Settings from "src/pages/Settings/Settings";
 import Chapters from "./pages/Chapter/Chapters";
 import Chapter from "./pages/Chapter/Chapter";
-import SubChapter from "./pages/Chapter/SubChapter";
 
 /**
  * Roles defined as constants for reuse...

@@ -1,37 +1,74 @@
 import * as React from "react";
+import { RouteComponentProps } from "react-router-dom";
+import { useQuery } from "react-apollo-hooks";
 
 import { withStyles, WithStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
-import LoginIcon from "@material-ui/icons/AccountCircle";
-import Avatar from "@material-ui/core/Avatar";
-import { RouteComponentProps } from "react-router-dom";
 
 import { styles } from "src/styles";
 import theme from "src/theme";
 import NewChapter from "./NewChapter";
-import ChapterEditor from "./ChapterEditor";
+import SubChapterEditor from "./SubChapterEditor";
+import { GET_CHAPTER_BY_ID } from "src/queries/chapters";
+import { chapterById_chapter } from "src/queries/__generated__/chapterById";
+import BusyOrErrorCard from "src/components/BusyOrErrorCard";
+import ChapterCard from "src/components/ChapterCard";
+import { useTranslation } from "react-i18next";
 
 // These can come from the router... See the route definitions
 interface ChapterRouterProps {
-  id: string;
+  chapterId: string;
+  subChapterId: string;
+  componentId: string;
 }
 
 interface Props
   extends RouteComponentProps<ChapterRouterProps>,
     WithStyles<typeof styles> {}
 
+/**
+ * Main chapter component. Gets the chapter id via the route allowing to create links etc. Conditionally loads either the subchapter or the main chapter
+ */
 const Chapter = ({ classes, match }: Props) => {
-  if (match.params.id === "new") {
+  const { chapterId, subChapterId, componentId } = match.params;
+  const { t } = useTranslation();
+
+  // TODO: How do we handle new subchapters?
+  if (chapterId === "new") {
     return <NewChapter />;
   }
+
+  // Either load directly the subchapter or else the chapter
+  const { loading, data, error } = useQuery(GET_CHAPTER_BY_ID, {
+    variables: { id: subChapterId || chapterId }
+  });
+
+  if (loading || error)
+    return (
+      <BusyOrErrorCard
+        loading={loading}
+        error={error}
+        noResults={!loading && data.chapter && !data.chapter.length}
+      />
+    );
+
+  // Render the subchapter screen
+  if (subChapterId) {
+    return (
+      <React.Fragment>
+        <Typography variant="h3">Kapitel ...</Typography>
+        <SubChapterEditor />
+      </React.Fragment>
+    );
+  }
+
+  // Else, then render the chapter overview
   return (
     <React.Fragment>
-      <Typography variant="h3">Kapitel {match.params.id}</Typography>
-      <ChapterEditor />
+      <Typography variant="h3">{t("chapter")}</Typography>
+      {data.chapter.subChapters.map((c: chapterById_chapter) => (
+        <ChapterCard key={c.id} chapter={c} />
+      ))}
     </React.Fragment>
   );
 };
