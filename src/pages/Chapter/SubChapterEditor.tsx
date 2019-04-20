@@ -23,6 +23,9 @@ const mockData = [
 
 interface Props extends WithStyles<typeof styles> {}
 
+/**
+ * The subchapter Editor. Depending on the role, should display different "functionality"
+ */
 const SubChapterEditor = ({ classes }: Props) => {
   return <ContentEditor data={mockData} />;
 };

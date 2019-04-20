@@ -20,8 +20,8 @@ import { ChapterInput } from "__generated__/globalTypes";
 
 export const ChapterSchema = Yup.object().shape({
   title: Yup.string()
-    .min(4, i18next.t("tooShort"))
-    .max(50, i18next.t("tooLong"))
+    .min(1, i18next.t("tooShort"))
+    .max(4, i18next.t("tooLong"))
     .required(i18next.t("required")),
   number: Yup.number()
     .min(1, i18next.t("tooLow"))
@@ -41,8 +41,7 @@ const NewChapter = ({ classes }: Props) => {
   async function handleSave(values: ChapterInput, actions: FormikActions<any>) {
     // TODO: This verbose stuff won't be necessary anymore as soon useMutation also returns a error/loading object.
     try {
-      console.log(values);
-      await upsertChapter({ variables: { input: values } });
+      await upsertChapter({ variables: { input: { chapterData: values } } });
       history.push("/chapters");
     } catch (e) {
       actions.setSubmitting(false);
