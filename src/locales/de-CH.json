@@ -23,10 +23,16 @@
     "chapter": "Kapitel",
     "chapters": "Kapitel",
     "chaptersOverview": "Kapitelübersicht",
-    "noChaptersAvailable": "No keine Kapitel verfügbar",
+    "noChaptersAvailable": "No keine Kapitel verfügbar"
+  },
+  "chapter": {
     "newChapterTitle": "Neues Kapitel anlegen",
-    "chapterNumber": "Kapitelnummer",
-    "chapterDescription": "Um was geht es in diesem Kapitel?"
+    "number": "Kapitelnummer",
+    "numberHelper": "Kapitelnummer",
+    "title": "Vollständige Kapitelnummber",
+    "titleHelper": "Vollständige Kapitelnummer, z.B. 1.2",
+    "description": "Beschreibung",
+    "descriptionHelper": "Die Kapitelbeschreibung"
   },
   "voggi": {
     "voggiList": "Voggi-Liste"
