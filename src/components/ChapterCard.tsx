@@ -12,9 +12,16 @@ import Fab from "@material-ui/core/Fab";
 
 import { styles } from "src/styles";
 import { chapters_chapters } from "src/queries/__generated__/chapters";
+import {
+  chapterById_chapter,
+  chapterById_chapter_subChapters
+} from "src/queries/__generated__/chapterById";
 
 interface Props extends WithStyles<typeof styles> {
-  chapter: chapters_chapters;
+  chapter:
+    | chapters_chapters
+    | chapterById_chapter
+    | chapterById_chapter_subChapters;
 }
 
 const ChapterCard = ({ classes, chapter }: Props) => {

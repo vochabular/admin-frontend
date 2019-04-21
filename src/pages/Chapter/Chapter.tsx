@@ -12,7 +12,11 @@ import theme from "src/theme";
 import NewChapter from "./NewChapter";
 import SubChapterEditor from "./SubChapterEditor";
 import { GET_CHAPTER_BY_ID } from "src/queries/chapters";
-import { chapterById_chapter } from "src/queries/__generated__/chapterById";
+import {
+  chapterById_chapter,
+  chapterById,
+  chapterById_chapter_subChapters
+} from "src/queries/__generated__/chapterById";
 import BusyOrErrorCard from "src/components/BusyOrErrorCard";
 import ChapterCard from "src/components/ChapterCard";
 
@@ -34,24 +38,28 @@ const Chapter = ({ classes, match }: Props) => {
   const { chapterId, subChapterId, componentId } = match.params;
   const { t } = useTranslation();
 
-  // TODO: How do we handle new subchapters?
-  if (chapterId === "new") {
-    return <NewChapter />;
-  }
-
   // Either load directly the subchapter or else the chapter
-  const { loading, data, error } = useQuery(GET_CHAPTER_BY_ID, {
+  const { loading, data, error } = useQuery<chapterById>(GET_CHAPTER_BY_ID, {
     variables: { id: subChapterId || chapterId }
   });
 
-  if (loading || error)
+  if (!data || !data.chapter || loading || error)
     return (
       <BusyOrErrorCard
         loading={loading}
         error={error}
-        noResults={!loading && data.chapter && !data.chapter.length}
+        noResults={!loading && !!data && !data.chapter}
       />
     );
+
+  // TODO: How do we handle new subchapters?
+  if (chapterId === "new" || subChapterId === "new") {
+    return (
+      <NewChapter
+        parentChapter={data && data.chapter && data.chapter.parentChapter!}
+      />
+    );
+  }
 
   // Render the subchapter screen
   if (subChapterId) {
@@ -70,11 +78,18 @@ const Chapter = ({ classes, match }: Props) => {
         {t("chapters:chapter")} {data.chapter.title}
       </Typography>
       <Grid container spacing={16}>
-        {data.chapter.subChapters.map((c: chapterById_chapter) => (
-          <Grid item key={c.id}>
-            <ChapterCard chapter={c} />
-          </Grid>
-        ))}
+        {data.chapter &&
+          data.chapter.subChapters &&
+          data.chapter.subChapters.map(
+            (c: chapterById_chapter_subChapters | null) => {
+              if (!c) return null;
+              return (
+                <Grid item key={c && c.id}>
+                  <ChapterCard chapter={c!} />
+                </Grid>
+              );
+            }
+          )}
       </Grid>
     </React.Fragment>
   );

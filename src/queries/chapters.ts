@@ -12,26 +12,33 @@ export const CHAPTER_HEADER_PART = gql`
   }
 `;
 
+export const COMPONENT_PART = gql`
+  fragment ComponentParts on Component_Type {
+    id
+    data
+    state
+    texts: textSet {
+      id
+      translations: translationSet {
+        id
+        language
+        textField
+      }
+    }
+  }
+`;
+
 export const GET_CHAPTERS = gql`
   query chapters {
     chapters {
       ...ChapterHeaderParts
       components: componentSet {
-        id
-        data
-        state
-        texts: textSet {
-          id
-          translations: translationSet {
-            id
-            language
-            textField
-          }
-        }
+        ...ComponentParts
       }
     }
   }
   ${CHAPTER_HEADER_PART}
+  ${COMPONENT_PART}
 `;
 
 export const GET_CHAPTER_BY_ID = gql`
@@ -42,21 +49,12 @@ export const GET_CHAPTER_BY_ID = gql`
         ...ChapterHeaderParts
       }
       components: componentSet {
-        id
-        data
-        state
-        texts: textSet {
-          id
-          translations: translationSet {
-            id
-            language
-            textField
-          }
-        }
+        ...ComponentParts
       }
     }
   }
   ${CHAPTER_HEADER_PART}
+  ${COMPONENT_PART}
 `;
 
 export const UPSERT_CHAPTER = gql`

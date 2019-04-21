@@ -17,6 +17,11 @@ import i18next from "src/i18n";
 import history from "src/history";
 import ErrorMessage from "src/components/ErrorMessage";
 import { ChapterInput } from "__generated__/globalTypes";
+import {
+  chapterById_chapter,
+  chapterById_chapter_parentChapter
+} from "src/queries/__generated__/chapterById";
+import { chapters_chapters } from "src/queries/__generated__/chapters";
 
 export const ChapterSchema = Yup.object().shape({
   title: Yup.string()
@@ -30,7 +35,9 @@ export const ChapterSchema = Yup.object().shape({
   description: Yup.string().max(200, i18next.t("tooLong"))
 });
 
-interface Props extends WithStyles<typeof styles> {}
+interface Props extends WithStyles<typeof styles> {
+  parentChapter?: chapterById_chapter_parentChapter;
+}
 
 const NewChapter = ({ classes }: Props) => {
   const { t } = useTranslation();
@@ -67,8 +74,8 @@ const NewChapter = ({ classes }: Props) => {
                 <Field
                   type="number"
                   name="number"
-                  label={t("chapter:chapterNumber")}
-                  helperText={t("chapter:chapterNumberHelper")}
+                  label={t("chapter:number")}
+                  helperText={t("chapter:numberHelper")}
                   component={TextField}
                   margin="normal"
                   fullWidth
