@@ -14,6 +14,8 @@ import ChapterCard from "src/components/ChapterCard";
 import BusyOrErrorCard from "src/components/BusyOrErrorCard";
 import { chapters_chapters } from "src/queries/__generated__/chapters";
 import LinkCard from "src/components/LinkCard";
+import auth0Client from "src/auth/Auth";
+import { GET_SETTINGS } from "src/queries/settings";
 
 interface Props extends WithStyles<typeof styles> {}
 
@@ -43,13 +45,15 @@ const Chapters = ({ classes }: Props) => {
               <ChapterCard chapter={c} />
             </Grid>
           ))}
-        <Grid item>
-          <LinkCard
-            path="/chapters/new"
-            icon={<AddIcon />}
-            helperText="createNewChapter"
-          />
-        </Grid>
+        {["admin"].includes(auth0Client.getCurrentRole() || "") ? (
+          <Grid item>
+            <LinkCard
+              path="/chapters/new"
+              icon={<AddIcon />}
+              helperText="createNewChapter"
+            />
+          </Grid>
+        ) : null}
       </Grid>
     </div>
   );

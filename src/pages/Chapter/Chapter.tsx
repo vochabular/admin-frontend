@@ -20,6 +20,7 @@ import {
 import BusyOrErrorCard from "src/components/BusyOrErrorCard";
 import ChapterCard from "src/components/ChapterCard";
 import LinkCard from "src/components/LinkCard";
+import auth0Client from "src/auth/Auth";
 
 // These can come from the router... See the route definitions
 interface ChapterRouterProps {
@@ -98,13 +99,17 @@ const Chapter = ({ classes, match }: Props) => {
               );
             }
           )}
-        <Grid item>
-          <LinkCard
-            path={`/chapters/${data.chapter.id}/new`}
-            icon={<AddIcon />}
-            helperText="createNewSubChapter"
-          />
-        </Grid>
+        {["admin", "content-creator"].includes(
+          auth0Client.getCurrentRole() || ""
+        ) ? (
+          <Grid item>
+            <LinkCard
+              path={`/chapters/${data.chapter.id}/new`}
+              icon={<AddIcon />}
+              helperText="createNewSubChapter"
+            />
+          </Grid>
+        ) : null}
       </Grid>
     </React.Fragment>
   );
