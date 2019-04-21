@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { withStyles, WithStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import { Grid } from "@material-ui/core";
+import AddIcon from "@material-ui/icons/Add";
 
 import { styles } from "src/styles";
 import theme from "src/theme";
@@ -13,12 +14,12 @@ import NewChapter from "./NewChapter";
 import SubChapterEditor from "./SubChapterEditor";
 import { GET_CHAPTER_BY_ID } from "src/queries/chapters";
 import {
-  chapterById_chapter,
   chapterById,
   chapterById_chapter_subChapters
 } from "src/queries/__generated__/chapterById";
 import BusyOrErrorCard from "src/components/BusyOrErrorCard";
 import ChapterCard from "src/components/ChapterCard";
+import LinkCard from "src/components/LinkCard";
 
 // These can come from the router... See the route definitions
 interface ChapterRouterProps {
@@ -38,9 +39,16 @@ const Chapter = ({ classes, match }: Props) => {
   const { chapterId, subChapterId, componentId } = match.params;
   const { t } = useTranslation();
 
+  // If its a new main chapter, don't need to query anything
+  if (chapterId === "new") {
+    return <NewChapter />;
+  }
+
   // Either load directly the subchapter or else the chapter
   const { loading, data, error } = useQuery<chapterById>(GET_CHAPTER_BY_ID, {
-    variables: { id: subChapterId || chapterId }
+    variables: {
+      id: subChapterId && subChapterId !== "new" ? subChapterId : chapterId
+    }
   });
 
   if (!data || !data.chapter || loading || error)
@@ -53,7 +61,7 @@ const Chapter = ({ classes, match }: Props) => {
     );
 
   // TODO: How do we handle new subchapters?
-  if (chapterId === "new" || subChapterId === "new") {
+  if (subChapterId === "new") {
     return (
       <NewChapter
         parentChapter={data && data.chapter && data.chapter.parentChapter!}
@@ -90,6 +98,13 @@ const Chapter = ({ classes, match }: Props) => {
               );
             }
           )}
+        <Grid item>
+          <LinkCard
+            path={`/chapters/${data.chapter.id}/new`}
+            icon={<AddIcon />}
+            helperText="createNewSubChapter"
+          />
+        </Grid>
       </Grid>
     </React.Fragment>
   );

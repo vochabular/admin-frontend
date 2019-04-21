@@ -39,8 +39,11 @@ interface Props extends WithStyles<typeof styles> {
   parentChapter?: chapterById_chapter_parentChapter;
 }
 
-const NewChapter = ({ classes }: Props) => {
+const NewChapter = ({ classes, parentChapter }: Props) => {
   const { t } = useTranslation();
+
+  console.log(parentChapter);
+  const isSubChapter = !!parentChapter;
 
   // TODO: Unfortunately, react-apollo-hooks doesn't support yet the error, loading object in mutations (unlike with query...)
   const upsertChapter = useMutation(UPSERT_CHAPTER);
@@ -49,6 +52,7 @@ const NewChapter = ({ classes }: Props) => {
     // TODO: This verbose stuff won't be necessary anymore as soon useMutation also returns a error/loading object.
     try {
       await upsertChapter({ variables: { input: { chapterData: values } } });
+      // TODO: Need to go "back"
       history.push("/chapters");
     } catch (e) {
       actions.setSubmitting(false);

@@ -6,17 +6,14 @@ import { useQuery } from "react-apollo-hooks";
 import { withStyles, WithStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Paper";
-import CardContent from "@material-ui/core/CardContent";
-import CardActionArea from "@material-ui/core/CardActionArea";
 import AddIcon from "@material-ui/icons/Add";
-import Fab from "@material-ui/core/Fab";
 
 import { styles } from "src/styles";
 import { GET_CHAPTERS } from "src/queries/chapters";
 import ChapterCard from "src/components/ChapterCard";
 import BusyOrErrorCard from "src/components/BusyOrErrorCard";
 import { chapters_chapters } from "src/queries/__generated__/chapters";
+import LinkCard from "src/components/LinkCard";
 
 interface Props extends WithStyles<typeof styles> {}
 
@@ -46,17 +43,14 @@ const Chapters = ({ classes }: Props) => {
               <ChapterCard chapter={c} />
             </Grid>
           ))}
+        <Grid item>
+          <LinkCard
+            path="/chapters/new"
+            icon={<AddIcon />}
+            helperText="createNewChapter"
+          />
+        </Grid>
       </Grid>
-      <Fab
-        size="large"
-        className={classes.fab}
-        color="primary"
-        aria-label="Add"
-        component={RouterLink}
-        {...{ to: "/chapters/new" } as any}
-      >
-        <AddIcon />
-      </Fab>
     </div>
   );
 };
