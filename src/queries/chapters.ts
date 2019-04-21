@@ -8,6 +8,9 @@ export const CHAPTER_HEADER_PART = gql`
     description
     parentChapter: fkBelongsTo {
       id
+      number
+      title
+      description
     }
   }
 `;

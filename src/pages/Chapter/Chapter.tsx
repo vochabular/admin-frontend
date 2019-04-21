@@ -63,11 +63,7 @@ const Chapter = ({ classes, match }: Props) => {
 
   // TODO: How do we handle new subchapters?
   if (subChapterId === "new") {
-    return (
-      <NewChapter
-        parentChapter={data && data.chapter && data.chapter.parentChapter!}
-      />
-    );
+    return <NewChapter parentChapter={data && data.chapter} />;
   }
 
   // Render the subchapter screen

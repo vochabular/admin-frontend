@@ -11,6 +11,9 @@ import { ComponentState } from "./../../../__generated__/globalTypes";
 export interface chapters_chapters_parentChapter {
   __typename: "ChapterType";
   id: string;
+  number: number;
+  title: string;
+  description: string;
 }
 
 export interface chapters_chapters_components_texts_translations {
