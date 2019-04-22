@@ -31,7 +31,7 @@ export const ChapterSchema = Yup.object().shape({
 
 interface Props extends WithStyles<typeof styles> {}
 
-const NewChapter = ({ classes }: Props) => {
+const NewWordGroup = ({ classes }: Props) => {
     const { t } = useTranslation();
 
     // TODO: Unfortunately, react-apollo-hooks doesn't support yet the error, loading object in mutations (unlike with query...)
@@ -113,4 +113,4 @@ const NewChapter = ({ classes }: Props) => {
     );
 };
 
-export default withStyles(styles, { withTheme: true })(NewChapter);
+export default withStyles(styles, { withTheme: true })(NewWordGroup);

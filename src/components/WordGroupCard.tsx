@@ -11,8 +11,27 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import { styles } from "src/styles";
 import { chapters_chapters } from "src/queries/__generated__/chapters"; // TODO: Apollo code gen didn't work.
 
+export interface wordgroups_wordgroups_wordgroupSet {
+    __typename: "WordGroupType";
+    id: string;
+    titleCh: string;
+    titleDe: string;
+}
+
+export interface wordgroups_wordgroups {
+    __typename: "WordGroupType";
+    id: string;
+    titleCh: string;
+    titleDe: string;
+    chapterSet: (wordgroups_wordgroups_wordgroupSet | null)[] | null;
+}
+
+export interface wordgroups {
+    wordgroups: (wordgroups_wordgroups | null)[] | null;
+}
+
 interface Props extends WithStyles<typeof styles> {
-    wordgroup: chapters_chapters; // TODO: Should use the generated type!
+    wordgroup: wordgroups_wordgroups; // TODO: Should use the generated type!
 }
 
 const WordGroupCard = ({ classes, wordgroup }: Props) => {
@@ -33,11 +52,8 @@ const WordGroupCard = ({ classes, wordgroup }: Props) => {
                         color="textSecondary"
                         gutterBottom
                     >
+                        {wordgroup.titleDe} <br/>
                         {wordgroup.titleCh}
-                        {wordgroup.titleDe}
-                    </Typography>
-                    <Typography variant="h5" component="h2">
-                        TODO: Render here chapter specific stuff
                     </Typography>
                 </CardContent>
             </CardActionArea>

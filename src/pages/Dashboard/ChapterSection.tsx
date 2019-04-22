@@ -32,11 +32,11 @@ const ChapterSection: React.FunctionComponent<Props> = ({ classes }) => {
         noResults={!loading && data.chapters && !data.chapters.length}
       />
     );
-  return data.chapters.map((c: chapters_chapters, i: number) => (
-    <Grid key={i}>
+  return ( data.chapters.map((c: chapters_chapters, i: number) => (
+    <Grid item xs={12}  key={i}>
       <ChapterCard chapter={c} />
     </Grid>
-  ));
+  )));
 };
 
 export default withStyles(styles)(ChapterSection);

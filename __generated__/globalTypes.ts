@@ -8,6 +8,9 @@
 
 export interface ChapterInput {
   title: string;
+  fkBelongsToId?: string | null;
+  description: string;
+  number: number;
 }
 
 export interface IntroduceChapterInput {

@@ -14,8 +14,8 @@ export const GET_WORDGROUPS = gql`
 `;
 
 export const GET_WORDGROUP = gql`
-  query wordGroups($id: Int!) {
-  wordGroups(id: $id) {
+  query wordGroup($id: ID) {
+  wordGroup(id: $id) {
     id
     titleCh
     titleDe
