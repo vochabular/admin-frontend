@@ -12,6 +12,11 @@ export const CHAPTER_HEADER_PART = gql`
       title
       description
     }
+    chapterSet {
+      id
+      title
+      description
+    }
   }
 `;
 
