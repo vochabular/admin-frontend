@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Link as RouterLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "react-apollo-hooks";
 
@@ -15,7 +14,8 @@ import BusyOrErrorCard from "src/components/BusyOrErrorCard";
 import { chapters_chapters } from "src/queries/__generated__/chapters";
 import LinkCard from "src/components/LinkCard";
 import auth0Client from "src/auth/Auth";
-import { GET_SETTINGS } from "src/queries/settings";
+import Section from "src/components/Section";
+import SectionCardContainer from "src/components/SectionCardContainer";
 
 interface Props extends WithStyles<typeof styles> {}
 
@@ -28,11 +28,8 @@ const Chapters = ({ classes }: Props) => {
   // See the discussion and provided solutions here... https://github.com/mui-org/material-ui/issues/7877
   // <Button component={Link} {...{ to: "/about" } as any} />
   return (
-    <div>
-      <Typography variant="h3" gutterBottom>
-        {t("chapters:chaptersOverview")}
-      </Typography>
-      <Grid container spacing={16}>
+    <Section title="chapters:chaptersOverview" titleTranslatable={true}>
+      <SectionCardContainer>
         <BusyOrErrorCard
           loading={loading}
           error={error}
@@ -54,8 +51,8 @@ const Chapters = ({ classes }: Props) => {
             />
           </Grid>
         ) : null}
-      </Grid>
-    </div>
+      </SectionCardContainer>
+    </Section>
   );
 };
 

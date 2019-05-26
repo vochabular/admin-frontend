@@ -17,6 +17,7 @@ import { GET_CHAPTERS } from "src/queries/chapters";
 import ChapterCard from "src/components/ChapterCard";
 import BusyOrErrorCard from "src/components/BusyOrErrorCard";
 import { chapters_chapters } from "src/queries/__generated__/chapters";
+import SectionCardContainer from "src/components/SectionCardContainer";
 
 interface Props extends WithStyles<typeof styles> {}
 
@@ -34,13 +35,13 @@ const ChapterSection: React.FunctionComponent<Props> = ({ classes }) => {
     );
   }
   return (
-    <Grid container spacing={16}>
+    <SectionCardContainer>
       {data.chapters.map((c: chapters_chapters, i: number) => (
         <Grid item key={i}>
           <ChapterCard chapter={c} />
         </Grid>
       ))}
-    </Grid>
+    </SectionCardContainer>
   );
 };
 
