@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { useQuery } from "react-apollo-hooks";
 
 import { withStyles, WithStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import AddIcon from "@material-ui/icons/Add";
 
@@ -20,8 +19,6 @@ import SectionCardContainer from "src/components/SectionCardContainer";
 interface Props extends WithStyles<typeof styles> {}
 
 const Chapters = ({ classes }: Props) => {
-  const { t } = useTranslation();
-
   const { data, error, loading } = useQuery(GET_CHAPTERS);
 
   // Note: MUI links together with react-router-dom and Typescript are a bit tricky due to their dynamic nature
