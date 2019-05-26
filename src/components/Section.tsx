@@ -40,7 +40,7 @@ function Section({
   const { t } = useTranslation();
 
   const titleC = titleComponent || (
-    <Typography variant="h3">
+    <Typography variant="h4">
       {titleTranslatable ? t(title || "NoTitleDefined") : title}
     </Typography>
   );
