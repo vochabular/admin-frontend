@@ -9,21 +9,21 @@ import ContentEditor from "src/components/ContentEditor/ContentEditor";
 import Section from "src/components/Section";
 import { useTranslation } from "react-i18next";
 import { formatAgo } from "src/date-fns";
+import TimestampAgo from "src/components/TimestampAgo";
 
-const mockData = [
-  {
-    id: 1,
-    title: "TEST 1",
-    components: [
-      {
-        type: "title",
-        data: { settings: { languages: ["de", "ch", "native"] } }
-      },
-      { type: "text", data: "Sub comp 2" }
-    ]
-  },
-  { id: 2, title: "TEST 2" }
-];
+const mockData = {
+  titleCh: "Kapitel 1",
+  titleDe: "Kapitel 1",
+  components: [
+    {
+      id: 1,
+      type: "title",
+      data: { settings: { languages: ["de", "ch", "native"] } }
+    },
+    { id: 2, type: "text", data: "Sub comp 2" }
+  ],
+  lastSaved: "2019-05-26T18:56:30"
+};
 
 interface Props extends WithStyles<typeof styles> {}
 
@@ -33,24 +33,43 @@ interface Props extends WithStyles<typeof styles> {}
 const SubChapterDetail = ({ classes }: Props) => {
   const { t } = useTranslation();
 
+  const data = mockData;
+
   const title = (
     <Grid container justify="space-around">
       <Grid item>
-        <Typography>ABCD</Typography>
+        <Grid container direction="row" alignItems="center">
+          <Typography variant="caption">
+            {t("titleDe")}
+            {":"}
+          </Typography>
+          <Typography variant="body1">{data.titleDe}</Typography>
+        </Grid>
       </Grid>
       <Grid item>
-        <Typography>ABCD</Typography>
+        <Grid container direction="row" alignItems="center">
+          <Typography variant="caption">
+            {t("titleCh")}
+            {":"}
+          </Typography>
+          <Typography variant="body1">{data.titleCh}</Typography>
+        </Grid>
       </Grid>
       <Grid item>
-        <Typography>{t("lastSaved")}</Typography>
-        <Typography>{formatAgo(new Date())}</Typography>
+        <Grid container direction="row" alignItems="center">
+          <Typography variant="caption">
+            {t("lastSaved")}
+            {":"}
+          </Typography>
+          <TimestampAgo date={new Date(data.lastSaved || 0)} variant="body1" />
+        </Grid>
       </Grid>
     </Grid>
   );
   return (
     <React.Fragment>
       <Section titleComponent={title}>
-        <ContentEditor data={mockData} />
+        <ContentEditor data={data} />
       </Section>
     </React.Fragment>
   );
