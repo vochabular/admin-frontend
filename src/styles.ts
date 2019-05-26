@@ -101,7 +101,7 @@ export const styles = (theme: Theme) =>
     appBarSpacer: theme.mixins.toolbar,
     content: {
       flexGrow: 1,
-      padding: theme.spacing.unit * 3,
+      //padding: theme.spacing.unit * 3,
       height: "100vh",
       overflowX: "auto",
       width: "100%"

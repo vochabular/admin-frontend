@@ -21,6 +21,8 @@ import BusyOrErrorCard from "src/components/BusyOrErrorCard";
 import ChapterCard from "src/components/ChapterCard";
 import LinkCard from "src/components/LinkCard";
 import auth0Client from "src/auth/Auth";
+import Section from "src/components/Section";
+import SectionCardContainer from "src/components/SectionCardContainer";
 
 // These can come from the router... See the route definitions
 interface ChapterRouterProps {
@@ -41,6 +43,7 @@ const Chapter = ({ classes, match }: Props) => {
   const { t } = useTranslation();
 
   // If its a new main chapter, don't need to query anything
+  // TODO: This violates React Hook rules!!!!
   if (chapterId === "new") {
     return <NewChapter />;
   }
@@ -69,20 +72,16 @@ const Chapter = ({ classes, match }: Props) => {
   // Render the subchapter screen
   if (subChapterId) {
     return (
-      <React.Fragment>
-        <Typography variant="h3">{t("chapters:chapter")}</Typography>
+      <Section title="chapters:chapter" titleTranslatable>
         <SubChapterEditor />
-      </React.Fragment>
+      </Section>
     );
   }
 
   // Else, then render the chapter overview
   return (
-    <React.Fragment>
-      <Typography variant="h3">
-        {t("chapters:chapter")} {data.chapter.title}
-      </Typography>
-      <Grid container spacing={16}>
+    <Section title={t("chapters:chapter") + ` ${data.chapter.title}`}>
+      <SectionCardContainer>
         {data.chapter &&
           data.chapter.subChapters &&
           data.chapter.subChapters.map(
@@ -106,8 +105,8 @@ const Chapter = ({ classes, match }: Props) => {
             />
           </Grid>
         ) : null}
-      </Grid>
-    </React.Fragment>
+      </SectionCardContainer>
+    </Section>
   );
 };
 
