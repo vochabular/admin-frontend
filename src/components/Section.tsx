@@ -35,7 +35,8 @@ function Section({
   title,
   titleTranslatable,
   titleComponent,
-  children
+  children,
+  ...otherProps
 }: Props) {
   const { t } = useTranslation();
 
@@ -46,7 +47,7 @@ function Section({
   );
   return (
     <React.Fragment>
-      <Paper square={true} elevation={10} className={classes.header}>
+      <Paper square={true} className={classes.header} {...otherProps}>
         {titleC}
       </Paper>
       {children}
