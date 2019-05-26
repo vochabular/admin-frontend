@@ -17,7 +17,8 @@
     "english": "Englisch",
     "persian": "Persisch/Farsi",
     "swissGerman": "Schweizer Deutsch",
-    "required": "Wird benötigt..."
+    "required": "Wird benötigt...",
+    "lastSaved": "Zuletzt gespeichert:"
   },
   "chapters": {
     "chapter": "Kapitel",

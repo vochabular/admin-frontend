@@ -19,7 +19,8 @@
     "swissGerman": "Swiss German",
     "required": "Required!",
     "tooShort": "Too short!",
-    "tooLong": "Too long!"
+    "tooLong": "Too long!",
+    "lastSaved": "Last saved:"
   },
   "chapters": {
     "chapter": "Chapter",

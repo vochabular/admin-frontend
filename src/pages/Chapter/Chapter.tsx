@@ -11,7 +11,7 @@ import AddIcon from "@material-ui/icons/Add";
 import { styles } from "src/styles";
 import theme from "src/theme";
 import NewChapter from "./NewChapter";
-import SubChapterEditor from "./SubChapterEditor";
+import SubChapterDetail from "./SubChapterDetail";
 import { GET_CHAPTER_BY_ID } from "src/queries/chapters";
 import {
   chapterById,
@@ -73,7 +73,7 @@ const Chapter = ({ classes, match }: Props) => {
   if (subChapterId) {
     return (
       <Section title="chapters:chapter" titleTranslatable>
-        <SubChapterEditor />
+        <SubChapterDetail />
       </Section>
     );
   }
