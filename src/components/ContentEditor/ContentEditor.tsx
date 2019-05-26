@@ -38,7 +38,7 @@ const ContentEditor = ({ classes, data }: Props) => {
       <Droppable droppableId="component-list" type="component-list">
         {provided => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
-            <ComponentList components={data} />
+            <ComponentList components={data.components} />
             {provided.placeholder}
           </div>
         )}
