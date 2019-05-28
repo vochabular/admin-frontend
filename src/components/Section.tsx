@@ -56,7 +56,6 @@ function Section({
 
   return (
     <React.Fragment>
-      {/* @ts-ignore */}
       <Paper square={true} className={classes.header} {...otherProps}>
         {titleC}
       </Paper>
