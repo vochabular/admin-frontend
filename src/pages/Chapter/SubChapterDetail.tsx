@@ -10,6 +10,7 @@ import Section from "src/components/Section";
 import { useTranslation } from "react-i18next";
 import { formatAgo } from "src/date-fns";
 import TimestampAgo from "src/components/TimestampAgo";
+import CommentList from "src/components/ContentEditor/CommentList";
 
 const mockData = {
   titleCh: "Kapitel 1",
@@ -68,8 +69,15 @@ const SubChapterDetail = ({ classes }: Props) => {
   );
   return (
     <React.Fragment>
-      <Section titleComponent={title}>
-        <ContentEditor data={data} />
+      <Section titleComponent={title} greyScale={600}>
+        <Grid container>
+          <Grid item xs={12} sm={9}>
+            <ContentEditor data={data} />
+          </Grid>
+          <Grid item xs={12} sm={3}>
+            <CommentList />
+          </Grid>
+        </Grid>
       </Section>
     </React.Fragment>
   );

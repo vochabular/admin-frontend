@@ -1,16 +1,20 @@
 import React, { ReactNode } from "react";
-import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 
-import { withStyles, WithStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import { createStyles, FormHelperText } from "@material-ui/core";
-import green from "@material-ui/core/colors/green";
+import { withTheme, WithTheme, Color } from "@material-ui/core";
 import { Theme } from "@material-ui/core/styles/createMuiTheme";
 import Paper from "@material-ui/core/Paper";
+import { makeStyles } from "@material-ui/styles";
 
-interface Props extends WithStyles<typeof styles> {
+const useStyles = makeStyles((theme: Theme) => ({
+  header: (greyScale: number) => ({
+    padding: theme.spacing(3),
+    backgroundColor: theme.palette.grey[greyScale as keyof Color]
+  })
+}));
+
+interface Props extends WithTheme {
   /**
    * Title as a raw string. If its a translatable title, then pass for example "chapters:chapter"
    */
@@ -24,6 +28,7 @@ interface Props extends WithStyles<typeof styles> {
    */
   titleComponent?: ReactNode;
   children?: ReactNode;
+  greyScale?: number;
 }
 
 /**
@@ -31,13 +36,16 @@ interface Props extends WithStyles<typeof styles> {
  * @param props
  */
 function Section({
-  classes,
   title,
   titleTranslatable,
   titleComponent,
   children,
+  greyScale = 700,
+  theme,
   ...otherProps
 }: Props) {
+  const classes = useStyles(greyScale);
+
   const { t } = useTranslation();
 
   const titleC = titleComponent || (
@@ -45,8 +53,10 @@ function Section({
       {titleTranslatable ? t(title || "NoTitleDefined") : title}
     </Typography>
   );
+
   return (
     <React.Fragment>
+      {/* @ts-ignore */}
       <Paper square={true} className={classes.header} {...otherProps}>
         {titleC}
       </Paper>
@@ -55,12 +65,4 @@ function Section({
   );
 }
 
-export const styles = (theme: Theme) =>
-  createStyles({
-    header: {
-      padding: theme.spacing.unit * 3,
-      backgroundColor: theme.palette.grey[700]
-    }
-  });
-
-export default withStyles(styles)(Section);
+export default withTheme(Section);

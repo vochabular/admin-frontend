@@ -34,6 +34,7 @@ interface Props extends WithStyles<typeof styles> {
 const ContentEditor = ({ classes, data }: Props) => {
   // TODO: What kind of state do we have to initialize here?
   return (
+    <div>
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="component-list" type="component-list">
         {provided => (
@@ -44,6 +45,7 @@ const ContentEditor = ({ classes, data }: Props) => {
         )}
       </Droppable>
     </DragDropContext>
+    </div>
   );
 };
 
