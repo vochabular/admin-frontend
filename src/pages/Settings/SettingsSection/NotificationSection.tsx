@@ -3,8 +3,6 @@ import { useTranslation } from "react-i18next";
 import { useQuery, useMutation } from "react-apollo-hooks";
 
 import {
-  withStyles,
-  WithStyles,
   FormControl,
   Grid,
   FormControlLabel,
@@ -12,6 +10,7 @@ import {
   FormGroup,
   Checkbox
 } from "@material-ui/core";
+import { withStyles, WithStyles } from "@material-ui/styles";
 
 import { styles } from "src/styles";
 import { GET_SETTINGS, UPDATE_SETTINGS } from "src/queries/settings";

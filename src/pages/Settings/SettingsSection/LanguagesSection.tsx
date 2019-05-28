@@ -1,14 +1,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import {
-  withStyles,
-  WithStyles,
-  MenuItem,
-  Grid,
-  FormControlLabel,
-  Checkbox
-} from "@material-ui/core";
+import { MenuItem, Grid, FormControlLabel, Checkbox } from "@material-ui/core";
+import { withStyles, WithStyles } from "@material-ui/styles";
 
 import { styles } from "src/styles";
 import configurationJSON from "src/configuration.json";

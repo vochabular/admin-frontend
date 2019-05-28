@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { useQuery } from "react-apollo-hooks";
 import { useTranslation } from "react-i18next";
 
-import { withStyles, WithStyles } from "@material-ui/core/styles";
+import { withStyles, WithStyles } from "@material-ui/styles";
 import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";

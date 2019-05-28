@@ -2,7 +2,7 @@ import React, { Fragment, useState } from "react";
 import classNames from "classnames";
 import { useQuery } from "react-apollo-hooks";
 
-import { withStyles, WithStyles } from "@material-ui/core/styles";
+import { withStyles, WithStyles } from "@material-ui/styles";
 import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 

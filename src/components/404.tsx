@@ -30,7 +30,7 @@ const NotFound404 = ({ classes }: Props) => (
       </CardContent>
       <CardActions>
         <Button variant="contained" size="large" color="primary">
-          <LoginIcon style={{ marginRight: theme.spacing.unit }} />
+          <LoginIcon style={{ marginRight: theme.spacing(1) }} />
           Zurück zum Dashboard
         </Button>
       </CardActions>

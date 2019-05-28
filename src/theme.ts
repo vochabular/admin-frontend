@@ -2,9 +2,9 @@ import { createMuiTheme } from "@material-ui/core/styles";
 
 const theme = createMuiTheme({
   direction: "ltr",
-  typography: {
-    useNextVariants: true
-  },
+  // typography: {
+  //  useNextVariants: true,
+  //},
   palette: {
     type: "dark",
     primary: {
