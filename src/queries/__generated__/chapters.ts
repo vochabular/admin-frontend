@@ -16,6 +16,13 @@ export interface chapters_chapters_parentChapter {
   description: string;
 }
 
+export interface chapters_chapters_chapterSet {
+  __typename: "ChapterType";
+  id: string;
+  title: string;
+  description: string;
+}
+
 export interface chapters_chapters_components_texts_translations {
   __typename: "TranslationType";
   id: string;
@@ -44,6 +51,7 @@ export interface chapters_chapters {
   title: string;
   description: string;
   parentChapter: chapters_chapters_parentChapter | null;
+  chapterSet: (chapters_chapters_chapterSet | null)[] | null;
   components: (chapters_chapters_components | null)[] | null;
 }
 

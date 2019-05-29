@@ -1,16 +1,14 @@
 import * as React from "react";
 
 import { withStyles, WithStyles } from "@material-ui/core/styles";
-import { Paper, Grid, Typography } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 
 import { styles } from "src/styles";
-import theme from "src/theme";
 import ContentEditor from "src/components/ContentEditor/ContentEditor";
 import Section from "src/components/Section";
 import { useTranslation } from "react-i18next";
-import { formatAgo } from "src/date-fns";
 import TimestampAgo from "src/components/TimestampAgo";
-import CommentList from "src/components/ContentEditor/CommentList";
+import CommentsWidget from "src/pages/Chapter/CommentsWidget";
 
 const mockData = {
   titleCh: "Kapitel 1",
@@ -75,7 +73,7 @@ const SubChapterDetail = ({ classes }: Props) => {
             <ContentEditor data={data} />
           </Grid>
           <Grid item xs={12} sm={3}>
-            <CommentList />
+            <CommentsWidget query="COMMENTS_QUERY BY CHAPTER, FILTERED BY CONTEXT" />
           </Grid>
         </Grid>
       </Section>
