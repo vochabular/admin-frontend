@@ -102,7 +102,7 @@ const Discussion = ({ classes, data }: Props) => {
   );
 };
 
-export const styles = (theme: Theme) =>
+const styles = (theme: Theme) =>
   createStyles({
     container: {
       backgroundColor: theme.palette.grey[600],
