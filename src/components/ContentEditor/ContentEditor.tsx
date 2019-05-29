@@ -11,6 +11,7 @@ import { withStyles, WithStyles } from "@material-ui/core/styles";
 import { styles } from "src/styles";
 import theme from "src/theme";
 import ComponentList from "./ComponentList";
+import ComponentSelector from "./ComponentSelector";
 
 /**
  * Is called when the drag ends. Main function that handles all the logic related to DragAndDrop
@@ -32,19 +33,24 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 const ContentEditor = ({ classes, data }: Props) => {
+  const [selectedParentComponet, setSelectedParentComponent] = React.useState(
+    undefined
+  );
+
   // TODO: What kind of state do we have to initialize here?
   return (
     <div>
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="component-list" type="component-list">
-        {provided => (
-          <div ref={provided.innerRef} {...provided.droppableProps}>
-            <ComponentList components={data.components} />
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="component-list" type="component-list">
+          {provided => (
+            <div ref={provided.innerRef} {...provided.droppableProps}>
+              <ComponentSelector />
+              <ComponentList components={data.components} />
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
     </div>
   );
 };
