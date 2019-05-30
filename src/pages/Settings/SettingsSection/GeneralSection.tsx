@@ -4,7 +4,8 @@ import { useTranslation } from "react-i18next";
 import { Formik, Field, Form } from "formik";
 import { TextField } from "formik-material-ui";
 
-import { withStyles, WithStyles, Grid, MenuItem } from "@material-ui/core";
+import { Grid, MenuItem } from "@material-ui/core";
+import { withStyles, WithStyles } from "@material-ui/styles";
 
 import { styles } from "src/styles";
 import { GET_SETTINGS, UPDATE_SETTINGS } from "src/queries/settings";

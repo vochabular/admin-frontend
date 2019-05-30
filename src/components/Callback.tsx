@@ -1,7 +1,8 @@
 import React from "react";
 
 import { Theme } from "@material-ui/core/styles/createMuiTheme";
-import { withStyles, WithStyles, createStyles } from "@material-ui/core/styles";
+import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
+
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 /**
@@ -10,7 +11,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 const styles = (theme: Theme) =>
   createStyles({
     progress: {
-      margin: theme.spacing.unit * 2
+      margin: theme.spacing(2)
     }
   });
 

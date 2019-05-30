@@ -19,15 +19,28 @@
     "swissGerman": "Swiss German",
     "required": "Required!",
     "tooShort": "Too short!",
-    "tooLong": "Too long!"
+    "tooLong": "Too long!",
+    "lastSaved": "Last saved"
   },
   "chapters": {
+    "chapter": "Chapter",
     "chapters": "Chapters",
     "chaptersOverview": "Chapter overview",
     "noChaptersAvailable": "No chapters available yet",
-    "newChapterTitle": "Create new chapter",
     "chapterNumber": "Chapter number",
     "chapterDescriptionPlaceholder": "What is the chapter about?"
+  },
+  "chapter": {
+    "chapter": "Chapter",
+    "newChapterTitle": "Create new chapter",
+    "newSubChapterTitle": "Create new subchapter for chapter",
+    "chapterNumber": "Chapter number",
+    "chapterNumberHelper": "The sequential (main) chapter number. For example in 'Chapter 1', then set '1'",
+    "subChapterNumber": "Subchapter number",
+    "subChapterNumberHelper": "The sequentiel subchapter number. For example in 'Chapter 1.3', then set '3'",
+    "newChapterDescription": "Description",
+    "newChapterDescriptionHelper": "The chapter description in german. For example: 'Kennenlernen'",
+    "newSubChapterDescriptionHelper": "The subchapter description (in german). For example: 'Wie geht es dir? Wie geht es Ihnen?'"
   },
   "voggi": {
     "voggiList": "Voggi-List"

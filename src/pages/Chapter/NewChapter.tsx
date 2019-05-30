@@ -16,12 +16,15 @@ import { UPSERT_CHAPTER } from "src/queries/chapters";
 import i18next from "src/i18n";
 import history from "src/history";
 import ErrorMessage from "src/components/ErrorMessage";
+import { ChapterInput } from "__generated__/globalTypes";
+import {
+  chapterById_chapter,
+  chapterById_chapter_parentChapter
+} from "src/queries/__generated__/chapterById";
+import { chapters_chapters } from "src/queries/__generated__/chapters";
+import { Omit } from "src/types/genericHelperTypes";
 
 export const ChapterSchema = Yup.object().shape({
-  title: Yup.string()
-    .min(4, i18next.t("tooShort"))
-    .max(50, i18next.t("tooLong"))
-    .required(i18next.t("required")),
   number: Yup.number()
     .min(1, i18next.t("tooLow"))
     .max(20, i18next.t("tooHigh"))
@@ -29,18 +32,34 @@ export const ChapterSchema = Yup.object().shape({
   description: Yup.string().max(200, i18next.t("tooLong"))
 });
 
-interface Props extends WithStyles<typeof styles> {}
+interface Props extends WithStyles<typeof styles> {
+  parentChapter?: chapterById_chapter_parentChapter;
+}
 
-const NewChapter = ({ classes }: Props) => {
+const NewChapter = ({ classes, parentChapter }: Props) => {
   const { t } = useTranslation();
+
+  const isSubChapter = !!parentChapter;
 
   // TODO: Unfortunately, react-apollo-hooks doesn't support yet the error, loading object in mutations (unlike with query...)
   const upsertChapter = useMutation(UPSERT_CHAPTER);
 
-  async function handleSave(values: any, actions: FormikActions<any>) {
+  async function handleSave(
+    values: Omit<ChapterInput, "title">,
+    actions: FormikActions<any>
+  ) {
     // TODO: This verbose stuff won't be necessary anymore as soon useMutation also returns a error/loading object.
     try {
-      await upsertChapter({ variables: { input: values } });
+      const title = isSubChapter
+        ? `${parentChapter!.number}.${values.number}`
+        : values.number.toString();
+      const fkBelongsToId = isSubChapter ? parentChapter!.id : null;
+      await upsertChapter({
+        variables: {
+          input: { chapterData: { ...values, title, fkBelongsToId } }
+        }
+      });
+      // TODO: Need to go "back"
       history.push("/chapters");
     } catch (e) {
       actions.setSubmitting(false);
@@ -51,12 +70,15 @@ const NewChapter = ({ classes }: Props) => {
   return (
     <React.Fragment>
       <Card className={classes.card}>
-        <Typography variant="h3">{t("chapters:newChapterTitle")}</Typography>
+        <Typography variant="h3">
+          {isSubChapter
+            ? t("chapter:newSubChapterTitle") + ` ${parentChapter!.number}`
+            : t("chapter:newChapterTitle")}
+        </Typography>
         <CardContent>
           <Formik
             initialValues={{
-              number: "",
-              title: "",
+              number: 0,
               description: ""
             }}
             validationSchema={ChapterSchema}
@@ -66,17 +88,16 @@ const NewChapter = ({ classes }: Props) => {
                 <Field
                   type="number"
                   name="number"
-                  label={t("chapter:chapterNumber")}
-                  helperText={t("chapter:chapterNumberHelper")}
-                  component={TextField}
-                  margin="normal"
-                  fullWidth
-                />
-                <Field
-                  type="text"
-                  name="title"
-                  label={t("chapter:title")}
-                  helperText={t("chapter:titleHelper")}
+                  label={t(
+                    isSubChapter
+                      ? "chapter:subChapterNumber"
+                      : "chapter:chapterNumber"
+                  )}
+                  helperText={t(
+                    isSubChapter
+                      ? "chapter:subChapterNumberHelper"
+                      : "chapter:chapterNumberHelper"
+                  )}
                   component={TextField}
                   margin="normal"
                   fullWidth
@@ -84,8 +105,12 @@ const NewChapter = ({ classes }: Props) => {
                 <Field
                   type="text"
                   name="description"
-                  label={t("chapter:description")}
-                  helperText={t("chapter:descriptionHelper")}
+                  label={t("chapter:newChapterDescription")}
+                  helperText={t(
+                    isSubChapter
+                      ? "chapter:newSubChapterDescriptionHelper"
+                      : "chapter:newChapterDescriptionHelper"
+                  )}
                   component={TextField}
                   margin="normal"
                   fullWidth

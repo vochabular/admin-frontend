@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { Switch, Route } from "react-router";
 
-import { withStyles, WithStyles } from "@material-ui/core/styles";
+import { withStyles, WithStyles } from "@material-ui/styles";
 
 import auth0Client from "src/auth/Auth";
 import { styles } from "src/styles";

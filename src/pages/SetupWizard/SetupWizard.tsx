@@ -6,7 +6,8 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import { withStyles, WithStyles, Grid, Paper } from "@material-ui/core";
+import { Grid, Paper } from "@material-ui/core";
+import { withStyles, WithStyles } from "@material-ui/styles";
 
 import { styles } from "src/styles";
 import GeneralSection from "src/pages/Settings/SettingsSection/GeneralSection";
@@ -79,7 +80,7 @@ function SetupWizard({ classes }: Props) {
     <Paper className={classes.card}>
       <Grid
         container
-        spacing={24}
+        spacing={3}
         direction="column"
         justify="center"
         alignItems="stretch"

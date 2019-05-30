@@ -22,7 +22,7 @@ interface IPrivateRouteConfig {
   component: any; // TODO: Need to find out how to use the proper type!
   exact?: boolean;
   icon?: any; // TODO: Need to find out how to use the proper type!
-  path: string;
+  path: string | string[];
   allowedRoles: string[];
   label?: string;
 }
@@ -41,6 +41,20 @@ export const mainRoutes: IPrivateRouteConfig[] = [
     path: "/"
   },
   {
+    showInDrawer: false,
+    allowedRoles: allUsers,
+    component: Chapter,
+    exact: true, // TODO: Unfortunately, this doesn't match even if set to false, so we have to include it twice
+    path: "/chapters/:chapterId"
+  },
+  {
+    showInDrawer: false,
+    allowedRoles: allUsers,
+    component: Chapter,
+    exact: false, // TODO: Unfortunately, this doesn't match even if set to false, so we have to include it twice
+    path: "/chapters/:chapterId/:subChapterId"
+  },
+  {
     showInDrawer: true,
     allowedRoles: allUsers,
     component: Chapters,
@@ -48,13 +62,6 @@ export const mainRoutes: IPrivateRouteConfig[] = [
     label: "chapters",
     icon: FormatListIcon,
     path: "/chapters"
-  },
-  {
-    showInDrawer: false,
-    allowedRoles: allUsers,
-    component: Chapter,
-    exact: true,
-    path: "/chapters/:id"
   }
 ];
 

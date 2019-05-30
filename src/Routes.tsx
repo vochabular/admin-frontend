@@ -6,7 +6,6 @@ import Callback from "./components/Callback";
 import history from "./history";
 import PrivateRoute from "./components/PrivateRoute";
 import LandingPage from "./pages/LandingPage";
-import Dashboard from "./pages/Dashboard/Dashboard";
 import PrivateApp from "./PrivateApp";
 
 const handleAuthentication = (props: any) => {
@@ -32,7 +31,7 @@ const Routes: React.FunctionComponent = props => (
           return <Callback {...props} />;
         }}
       />
-      <PrivateRoute path="/" {...props} component={PrivateApp} />} />
+      <PrivateRoute path="/" {...props} component={PrivateApp} />
     </Switch>
   </Router>
 );

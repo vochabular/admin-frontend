@@ -4,7 +4,7 @@ import { ApolloProvider } from "react-apollo";
 import { ApolloProvider as ApolloHooksProvider } from "react-apollo-hooks";
 import * as Sentry from "@sentry/browser";
 
-import { MuiThemeProvider } from "@material-ui/core";
+import { ThemeProvider } from "@material-ui/styles";
 
 import "./index.css";
 import App from "./App";
@@ -25,9 +25,9 @@ Sentry.init({
 ReactDOM.render(
   <ApolloProvider client={apolloClient}>
     <ApolloHooksProvider client={apolloClient}>
-      <MuiThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
         <App />
-      </MuiThemeProvider>
+      </ThemeProvider>
     </ApolloHooksProvider>
   </ApolloProvider>,
   document.getElementById("root")

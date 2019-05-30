@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { ApolloError } from "apollo-boost";
 
-import { withStyles, WithStyles } from "@material-ui/core/styles";
+import { withStyles, WithStyles } from "@material-ui/styles";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -23,6 +23,8 @@ const BusyOrErrorCard: React.FunctionComponent<Props> = ({
   noResults
 }) => {
   const { t } = useTranslation();
+
+  if (!error && !loading && !noResults) return null;
 
   return (
     <Card>

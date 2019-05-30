@@ -30,7 +30,7 @@ const Forbidden403 = ({ classes }: Props) => (
       </CardContent>
       <CardActions>
         <Button variant="contained" size="large" color="primary">
-          <LoginIcon style={{ marginRight: theme.spacing.unit }} /> Nochmals
+          <LoginIcon style={{ marginRight: theme.spacing(1) }} /> Nochmals
           anmelden via Auth0
         </Button>
       </CardActions>

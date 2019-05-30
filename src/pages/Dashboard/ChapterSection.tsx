@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { useQuery } from "react-apollo-hooks";
 import { useTranslation } from "react-i18next";
 
-import { withStyles, WithStyles } from "@material-ui/core/styles";
+import { withStyles, WithStyles } from "@material-ui/styles";
 import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
@@ -17,6 +17,7 @@ import { GET_CHAPTERS } from "src/queries/chapters";
 import ChapterCard from "src/components/ChapterCard";
 import BusyOrErrorCard from "src/components/BusyOrErrorCard";
 import { chapters_chapters } from "src/queries/__generated__/chapters";
+import SectionCardContainer from "src/components/SectionCardContainer";
 
 interface Props extends WithStyles<typeof styles> {}
 
@@ -24,7 +25,7 @@ const ChapterSection: React.FunctionComponent<Props> = ({ classes }) => {
   const { t } = useTranslation();
   const { data, error, loading } = useQuery(GET_CHAPTERS);
 
-  if (loading || error || !data.chapters.length)
+  if (loading || error || !data.chapters.length) {
     return (
       <BusyOrErrorCard
         loading={loading}
@@ -32,11 +33,16 @@ const ChapterSection: React.FunctionComponent<Props> = ({ classes }) => {
         noResults={!loading && data.chapters && !data.chapters.length}
       />
     );
-  return data.map((c: chapters_chapters, i: number) => (
-    <Grid key={i}>
-      <ChapterCard chapter={c} />
-    </Grid>
-  ));
+  }
+  return (
+    <SectionCardContainer>
+      {data.chapters.map((c: chapters_chapters, i: number) => (
+        <Grid item key={i}>
+          <ChapterCard chapter={c} />
+        </Grid>
+      ))}
+    </SectionCardContainer>
+  );
 };
 
 export default withStyles(styles)(ChapterSection);

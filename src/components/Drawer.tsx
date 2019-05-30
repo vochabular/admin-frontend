@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-import { withStyles, WithStyles } from "@material-ui/core/styles";
+import { withStyles, WithStyles } from "@material-ui/styles";
 import DrawerMui from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import ListItem, { ListItemProps } from "@material-ui/core/ListItem";
@@ -35,6 +35,7 @@ interface ILinkListItemProps extends ListItemProps {
 }
 
 const LinkListItem = (props: ILinkListItemProps) => (
+  // @ts-ignore
   <ListItem {...props} component={Link as any} />
 );
 
@@ -72,9 +73,9 @@ function Drawer(props: Props) {
           const Icon = r.icon;
           return (
             <LinkListItem
-              key={r.path}
+              key={Array.isArray(r.path) ? r.path[0] : r.path}
               button={true}
-              to={r.path}
+              to={Array.isArray(r.path) ? r.path[0] : r.path}
               selected={location === r.path}
             >
               <ListItemIcon>
@@ -94,9 +95,9 @@ function Drawer(props: Props) {
               const Icon = r.icon;
               return (
                 <LinkListItem
-                  key={r.path}
+                  key={Array.isArray(r.path) ? r.path[0] : r.path}
                   button={true}
-                  to={r.path}
+                  to={Array.isArray(r.path) ? r.path[0] : r.path}
                   selected={location === r.path}
                 >
                   <ListItemIcon>

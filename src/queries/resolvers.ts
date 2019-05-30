@@ -9,13 +9,13 @@ export const typeDefs = gql`
     settings: Settings!
   }
 
-  extend type Settings {
-    userName: string
-    currentRole: string
-    language: string
-    translatorLanguages: [string]
-    receiveEventNotifications: boolean
-    hasCompletedSetup: boolean
+  type Settings {
+    userName: String
+    currentRole: String
+    language: String
+    translatorLanguages: [String]
+    receiveEventNotifications: Boolean
+    hasCompletedSetup: Boolean
   }
 
   extend type Mutation {

@@ -28,16 +28,16 @@ export const styles = (theme: Theme) =>
     card2: {
       display: "flex",
       flexDirection: "column",
-      padding: theme.spacing.unit * 4,
+      padding: theme.spacing(4),
       alignItems: "center"
     },
     card: {
-      padding: theme.spacing.unit * 4
+      padding: theme.spacing(4)
     },
     landingLogo: {
       display: "flex",
-      width: theme.spacing.unit * 25,
-      height: theme.spacing.unit * 25
+      width: theme.spacing(25),
+      height: theme.spacing(25)
     },
     logoContainer: {
       display: "flex",
@@ -93,15 +93,15 @@ export const styles = (theme: Theme) =>
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen
       }),
-      width: theme.spacing.unit * 7,
+      width: theme.spacing(7),
       [theme.breakpoints.up("sm")]: {
-        width: theme.spacing.unit * 9
+        width: theme.spacing(9)
       }
     },
     appBarSpacer: theme.mixins.toolbar,
     content: {
       flexGrow: 1,
-      padding: theme.spacing.unit * 3,
+      //padding: theme.spacing.unit * 3,
       height: "100vh",
       overflowX: "auto",
       width: "100%"
@@ -113,7 +113,7 @@ export const styles = (theme: Theme) =>
       height: 320
     },
     h5: {
-      marginBottom: theme.spacing.unit * 2
+      marginBottom: theme.spacing(2)
     },
     buttonSuccess: {
       backgroundColor: green[500],
@@ -123,7 +123,7 @@ export const styles = (theme: Theme) =>
     },
     fab: {
       position: "absolute",
-      bottom: theme.spacing.unit * 10,
-      right: theme.spacing.unit * 10
+      bottom: theme.spacing(10),
+      right: theme.spacing(10)
     }
   });
