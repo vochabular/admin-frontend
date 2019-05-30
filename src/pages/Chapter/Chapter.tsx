@@ -18,7 +18,7 @@ import auth0Client from "auth/Auth";
 import Section from "components/Section";
 import SectionCardContainer from "components/SectionCardContainer";
 import { chapterById } from "queries/__generated__/chapterById";
-import { convertGlobalToDb } from "helpers";
+import { convertGlobalToDbId } from "helpers";
 
 // These can come from the router... See the route definitions
 interface ChapterRouterProps {
@@ -43,8 +43,8 @@ const Chapter = ({ classes, match }: Props) => {
     variables: {
       id:
         subChapterId && subChapterId !== "new"
-          ? convertGlobalToDb(subChapterId)
-          : convertGlobalToDb(chapterId)
+          ? convertGlobalToDbId(subChapterId)
+          : convertGlobalToDbId(chapterId)
     }
   });
 
