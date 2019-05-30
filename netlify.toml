@@ -1,0 +1,19 @@
+# Global settings applied to the whole site.
+#[build]
+#  command = "sed -i s@API_PLACEHOLDER@$API_URL@g netlify.toml && yarn build"
+#  publish = "build"
+
+# Disable sourcemap to uglify code
+[build.environment]
+  GENERATE_SOURCEMAP = "true"
+
+# Disable ugflifcation for branch deploys
+[build.deploy-preview.environment]
+  GENERATE_SOURCEMAP = "true"
+
+
+# This a general rule for Single Page Applications like React
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
