@@ -16,12 +16,12 @@ interface Props extends WithStyles<typeof styles> {}
 const ChapterSection: React.FunctionComponent<Props> = ({ classes }) => {
   const { data, error, loading } = useQuery(GET_CHAPTERS);
 
-  if (loading || error || !data.chapters.length) {
+  if (loading || error || !data.chapters.edges.length) {
     return (
       <BusyOrErrorCard
         loading={loading}
         error={error}
-        noResults={!loading && data.chapters && !data.chapters.length}
+        noResults={!loading && data.chapters && !data.chapters.edges.length}
       />
     );
   }

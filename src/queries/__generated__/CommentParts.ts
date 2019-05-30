@@ -24,6 +24,9 @@ export interface CommentParts_authorName {
 
 export interface CommentParts {
   __typename: "CommentType";
+  /**
+   * The ID of the object.
+   */
   id: string;
   comment: string;
   active: boolean;
