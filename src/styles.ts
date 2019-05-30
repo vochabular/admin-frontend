@@ -25,11 +25,14 @@ export const styles = (theme: Theme) =>
     fullWidthContainer: {
       width: "100%"
     },
-    card: {
+    card2: {
       display: "flex",
       flexDirection: "column",
       padding: theme.spacing.unit * 4,
       alignItems: "center"
+    },
+    card: {
+      padding: theme.spacing.unit * 4
     },
     landingLogo: {
       display: "flex",
