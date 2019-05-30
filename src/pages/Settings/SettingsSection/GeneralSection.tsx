@@ -1,15 +1,13 @@
-import React, { useRef } from "react";
-import { useQuery, useMutation } from "react-apollo-hooks";
+import React from "react";
 import { useTranslation } from "react-i18next";
-import { Formik, Field, Form } from "formik";
+import { Field } from "formik";
 import { TextField } from "formik-material-ui";
 
 import { Grid, MenuItem } from "@material-ui/core";
 import { withStyles, WithStyles } from "@material-ui/styles";
 
-import { styles } from "src/styles";
-import { GET_SETTINGS, UPDATE_SETTINGS } from "src/queries/settings";
-import auth0Client from "src/auth/Auth";
+import { styles } from "styles";
+import auth0Client from "auth/Auth";
 
 interface Props extends WithStyles<typeof styles> {
   settings?: any;
@@ -19,12 +17,14 @@ interface Props extends WithStyles<typeof styles> {
 
 function GeneralSection({ classes, values }: Props) {
   const { t } = useTranslation();
-  const { data, error, loading } = useQuery(GET_SETTINGS);
-  const updateSettings = useMutation(UPDATE_SETTINGS);
+  // const { data } = useQuery(GET_SETTINGS);
 
-  const { settings } = data;
   const roles = auth0Client.getAllowedRoles();
 
+  /*
+    const updateSettings = useMutation(UPDATE_SETTINGS);
+
+  const { settings } = data;
   const handleChange = (name: string) => (
     event:
       | React.ChangeEvent<HTMLInputElement>
@@ -38,6 +38,7 @@ function GeneralSection({ classes, values }: Props) {
       });
     }
   };
+  */
 
   return (
     <Grid item sm={6}>

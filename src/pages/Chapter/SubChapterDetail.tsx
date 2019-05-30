@@ -3,12 +3,12 @@ import * as React from "react";
 import { withStyles, WithStyles } from "@material-ui/core/styles";
 import { Grid, Typography } from "@material-ui/core";
 
-import { styles } from "src/styles";
-import ContentEditor from "src/components/ContentEditor/ContentEditor";
-import Section from "src/components/Section";
+import { styles } from "styles";
+import ContentEditor from "components/ContentEditor/ContentEditor";
+import Section from "components/Section";
 import { useTranslation } from "react-i18next";
-import TimestampAgo from "src/components/TimestampAgo";
-import CommentsWidget from "src/pages/Chapter/CommentsWidget";
+import TimestampAgo from "components/TimestampAgo";
+import CommentsWidget from "pages/Chapter/CommentsWidget";
 
 const mockData = {
   titleCh: "Kapitel 1",

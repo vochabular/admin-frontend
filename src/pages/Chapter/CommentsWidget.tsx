@@ -10,8 +10,16 @@ import {
   WithTheme
 } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
-import { Tabs, Tab, Typography } from "@material-ui/core";
-import DiscussionList from "src/components/DiscussionList";
+import { Tabs, Tab } from "@material-ui/core";
+import DiscussionList from "components/DiscussionList";
+
+const styles = (theme: Theme) =>
+  createStyles({
+    header: {
+      height: "100%",
+      backgroundColor: theme.palette.grey[700]
+    }
+  });
 
 interface Props extends WithStyles<typeof styles>, WithTheme {
   /**
@@ -59,13 +67,5 @@ const CommentsWidget = ({ classes, theme, query }: Props) => {
     </Paper>
   );
 };
-
-export const styles = (theme: Theme) =>
-  createStyles({
-    header: {
-      height: "100%",
-      backgroundColor: theme.palette.grey[700]
-    }
-  });
 
 export default withStyles(styles, { withTheme: true })(CommentsWidget);

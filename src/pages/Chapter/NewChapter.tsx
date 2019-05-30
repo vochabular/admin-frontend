@@ -11,18 +11,14 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 
-import { styles } from "src/styles";
-import { UPSERT_CHAPTER } from "src/queries/chapters";
-import i18next from "src/i18n";
-import history from "src/history";
-import ErrorMessage from "src/components/ErrorMessage";
+import { styles } from "styles";
+import { UPSERT_CHAPTER } from "queries/chapters";
+import i18next from "i18n";
+import history from "myHistory";
+import ErrorMessage from "components/ErrorMessage";
 import { ChapterInput } from "__generated__/globalTypes";
-import {
-  chapterById_chapter,
-  chapterById_chapter_parentChapter
-} from "src/queries/__generated__/chapterById";
-import { chapters_chapters } from "src/queries/__generated__/chapters";
-import { Omit } from "src/types/genericHelperTypes";
+import { chapterById_chapter_parentChapter } from "queries/__generated__/chapterById";
+import { Omit } from "types/genericHelperTypes";
 
 export const ChapterSchema = Yup.object().shape({
   number: Yup.number()

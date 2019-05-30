@@ -8,15 +8,15 @@ import { withStyles, WithStyles } from "@material-ui/styles";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import { Divider, CardActionArea, Button } from "@material-ui/core";
+import { Divider, Button } from "@material-ui/core";
 
-import { styles } from "src/styles";
-import GeneralSection from "src/pages/Settings/SettingsSection/GeneralSection";
-import LanguagesSection from "src/pages/Settings/SettingsSection/LanguagesSection";
-import NotificationSection from "src/pages/Settings/SettingsSection/NotificationSection";
-import i18next from "src/i18n";
-import { GET_SETTINGS, UPDATE_SETTINGS } from "src/queries/settings";
-import auth0Client from "src/auth/Auth";
+import { styles } from "styles";
+import GeneralSection from "pages/Settings/SettingsSection/GeneralSection";
+import LanguagesSection from "pages/Settings/SettingsSection/LanguagesSection";
+import NotificationSection from "pages/Settings/SettingsSection/NotificationSection";
+import i18next from "i18n";
+import { GET_SETTINGS, UPDATE_SETTINGS } from "queries/settings";
+import auth0Client from "auth/Auth";
 
 export const UserSetupSchema = Yup.object().shape({
   userName: Yup.string()
@@ -30,7 +30,7 @@ interface Props extends WithStyles<typeof styles> {}
 
 const Settings: React.FunctionComponent<Props> = ({ classes }) => {
   const { t, i18n } = useTranslation();
-  const { data, error, loading } = useQuery(GET_SETTINGS);
+  const { data } = useQuery(GET_SETTINGS);
   const updateSettings = useMutation(UPDATE_SETTINGS);
 
   // Here we would now update the backend settings...

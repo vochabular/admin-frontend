@@ -1,19 +1,17 @@
-import React, { Fragment, useState } from "react";
+import React from "react";
 import { Switch, Route } from "react-router";
+import { useQuery } from "react-apollo-hooks";
 
 import { withStyles, WithStyles } from "@material-ui/styles";
 
-import auth0Client from "src/auth/Auth";
-import { styles } from "src/styles";
-import { getAllAccessibleRoutes } from "src/privateRoutes";
-import NotFound404 from "src/components/404";
-import AppBar from "src/components/AppBar";
-import Drawer from "src/components/Drawer";
-import useToggle from "src/hooks/useToggle";
+import { styles } from "styles";
+import { getAllAccessibleRoutes } from "privateRoutes";
+import NotFound404 from "components/404";
+import AppBar from "components/AppBar";
+import Drawer from "components/Drawer";
+import useToggle from "hooks/useToggle";
 import SetupWizard from "./pages/SetupWizard/SetupWizard";
-import { Typography } from "@material-ui/core";
 import { GET_SETTINGS } from "./queries/settings";
-import { useQuery } from "react-apollo-hooks";
 import BusyOrErrorCard from "./components/BusyOrErrorCard";
 
 // TODO: We should have the AppBar in a own component. However, that messes up the layout...

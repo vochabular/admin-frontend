@@ -2,7 +2,7 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { ComponentState } from "./../../../__generated__/globalTypes";
+import { ComponentState } from "./../../__generated__/globalTypes";
 
 // ====================================================
 // GraphQL fragment: ComponentParts

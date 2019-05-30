@@ -1,20 +1,19 @@
 import * as React from "react";
-import { useTranslation } from "react-i18next";
 import { useQuery } from "react-apollo-hooks";
 
 import { withStyles, WithStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import AddIcon from "@material-ui/icons/Add";
 
-import { styles } from "src/styles";
-import { GET_CHAPTERS } from "src/queries/chapters";
-import ChapterCard from "src/components/ChapterCard";
-import BusyOrErrorCard from "src/components/BusyOrErrorCard";
-import { chapters_chapters } from "src/queries/__generated__/chapters";
-import LinkCard from "src/components/LinkCard";
-import auth0Client from "src/auth/Auth";
-import Section from "src/components/Section";
-import SectionCardContainer from "src/components/SectionCardContainer";
+import { styles } from "styles";
+import { GET_CHAPTERS } from "queries/chapters";
+import ChapterCard from "components/ChapterCard";
+import BusyOrErrorCard from "components/BusyOrErrorCard";
+import { chapters_chapters } from "queries/__generated__/chapters";
+import LinkCard from "components/LinkCard";
+import auth0Client from "auth/Auth";
+import Section from "components/Section";
+import SectionCardContainer from "components/SectionCardContainer";
 
 interface Props extends WithStyles<typeof styles> {}
 

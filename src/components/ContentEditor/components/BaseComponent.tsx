@@ -2,9 +2,7 @@ import * as React from "react";
 
 import { withStyles, WithStyles } from "@material-ui/core/styles";
 
-import { styles } from "src/styles";
-import theme from "src/theme";
-import ContentEditor from "src/components/ContentEditor/ContentEditor";
+import { styles } from "styles";
 import { Draggable } from "react-beautiful-dnd";
 
 interface Props extends WithStyles<typeof styles> {

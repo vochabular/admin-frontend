@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useQuery } from "react-apollo-hooks";
 
 import {
   withStyles,
@@ -9,8 +8,18 @@ import {
 } from "@material-ui/core/styles";
 import { Grid, Card, Typography, CardContent, Icon } from "@material-ui/core";
 
-import { GET_ALL_COMPONENTTYPES } from "src/queries/componentTypes";
 import { Draggable } from "react-beautiful-dnd";
+
+const styles = (theme: Theme) =>
+  createStyles({
+    container: {
+      backgroundColor: theme.palette.grey[800],
+      padding: theme.spacing(2)
+    },
+    item: {
+      backgroundColor: theme.palette.grey[600]
+    }
+  });
 
 const mockData = {
   componentTypes: [
@@ -34,7 +43,7 @@ const mockData = {
 interface Props extends WithStyles<typeof styles> {}
 
 const ComponentSelector = ({ classes }: Props) => {
-  const { data, loading, error } = useQuery(GET_ALL_COMPONENTTYPES);
+  // const { data, loading, error } = useQuery(GET_ALL_COMPONENTTYPES);
 
   const componentTypes = mockData.componentTypes; // (data && data.componentTypes) || [];
 
@@ -65,16 +74,5 @@ const ComponentSelector = ({ classes }: Props) => {
     </Grid>
   );
 };
-
-const styles = (theme: Theme) =>
-  createStyles({
-    container: {
-      backgroundColor: theme.palette.grey[800],
-      padding: theme.spacing(2)
-    },
-    item: {
-      backgroundColor: theme.palette.grey[600]
-    }
-  });
 
 export default withStyles(styles, { withTheme: true })(ComponentSelector);

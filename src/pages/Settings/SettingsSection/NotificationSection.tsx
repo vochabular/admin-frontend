@@ -12,16 +12,16 @@ import {
 } from "@material-ui/core";
 import { withStyles, WithStyles } from "@material-ui/styles";
 
-import { styles } from "src/styles";
-import { GET_SETTINGS, UPDATE_SETTINGS } from "src/queries/settings";
+import { styles } from "styles";
+import { GET_SETTINGS, UPDATE_SETTINGS } from "queries/settings";
 
 interface Props extends WithStyles<typeof styles> {
   values: any;
 }
 
 function GeneralSection({ classes }: Props) {
-  const { t, i18n } = useTranslation();
-  const { data, error, loading } = useQuery(GET_SETTINGS);
+  const { t } = useTranslation();
+  const { data } = useQuery(GET_SETTINGS);
   const updateSettings = useMutation(UPDATE_SETTINGS);
 
   const handleCheckboxChange = (name: string) => (

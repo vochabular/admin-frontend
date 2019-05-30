@@ -9,14 +9,14 @@ import Typography from "@material-ui/core/Typography";
 import { Grid, Paper } from "@material-ui/core";
 import { withStyles, WithStyles } from "@material-ui/styles";
 
-import { styles } from "src/styles";
-import GeneralSection from "src/pages/Settings/SettingsSection/GeneralSection";
-import LanguagesSection from "src/pages/Settings/SettingsSection/LanguagesSection";
-import NotificationSection from "src/pages/Settings/SettingsSection/NotificationSection";
-import { useQuery, useApolloClient, useMutation } from "react-apollo-hooks";
-import { GET_SETTINGS, UPDATE_SETTINGS } from "src/queries/settings";
-import { Formik, FormikActions, FormikBag, Form } from "formik";
-import { UserSetupSchema } from "src/pages/Settings/Settings";
+import { styles } from "styles";
+import GeneralSection from "pages/Settings/SettingsSection/GeneralSection";
+import LanguagesSection from "pages/Settings/SettingsSection/LanguagesSection";
+import NotificationSection from "pages/Settings/SettingsSection/NotificationSection";
+import { useQuery, useMutation } from "react-apollo-hooks";
+import { GET_SETTINGS, UPDATE_SETTINGS } from "queries/settings";
+import { Formik, FormikActions, Form } from "formik";
+import { UserSetupSchema } from "pages/Settings/Settings";
 
 function getSteps() {
   return [
@@ -43,7 +43,7 @@ interface Props extends WithStyles<typeof styles> {}
 
 function SetupWizard({ classes }: Props) {
   const { t } = useTranslation();
-  const { data, error, loading } = useQuery(GET_SETTINGS);
+  const { data } = useQuery(GET_SETTINGS);
   const updateSettings = useMutation(UPDATE_SETTINGS);
 
   const [activeStep, setActiveStep] = useState(0);

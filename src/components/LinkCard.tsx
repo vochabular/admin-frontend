@@ -7,10 +7,8 @@ import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Paper";
 import CardContent from "@material-ui/core/CardContent";
 import CardActionArea from "@material-ui/core/CardActionArea";
-import AddIcon from "@material-ui/icons/Add";
-import Fab from "@material-ui/core/Fab";
 
-import { styles } from "src/styles";
+import { styles } from "styles";
 
 interface Props extends WithStyles<typeof styles> {
   path: string;

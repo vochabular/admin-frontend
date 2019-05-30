@@ -1,11 +1,9 @@
-import * as React from "react";
-
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import SettingsIcon from "@material-ui/icons/Settings";
 import FormatListIcon from "@material-ui/icons/FormatListNumbered";
 
-import Dashboard from "src/pages/Dashboard/Dashboard";
-import Settings from "src/pages/Settings/Settings";
+import Dashboard from "pages/Dashboard/Dashboard";
+import Settings from "pages/Settings/Settings";
 import Chapters from "./pages/Chapter/Chapters";
 import Chapter from "./pages/Chapter/Chapter";
 
@@ -105,7 +103,8 @@ export function getAllAccessibleRoutes(
   role: string,
   filterOnlyInDrawer: boolean
 ) {
-  return new Array().concat(
+  return [].concat(
+    // @ts-ignore
     getMainRoutes(role, filterOnlyInDrawer),
     getAdministrativeRoutes(role, filterOnlyInDrawer)
   );

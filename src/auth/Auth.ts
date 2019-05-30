@@ -1,14 +1,9 @@
-import auth0, {
-  Auth0DecodedHash,
-  Auth0Error,
-  Auth0ParseHashError,
-  Auth0UserProfile
-} from "auth0-js";
+import auth0, { Auth0DecodedHash, Auth0UserProfile } from "auth0-js";
 
-import client from "src/ApolloClient";
+import client from "ApolloClient";
 import { AUTH_CONFIG } from "./auth0-variables";
-import history from "../history";
-import { GET_SETTINGS } from "src/queries/settings";
+import history from "../myHistory";
+import { GET_SETTINGS } from "queries/settings";
 
 /**
  * This class provides methods for authorization with OAuth provider "Auth0"
@@ -24,20 +19,20 @@ class Auth {
   currentRole: string | undefined;
 
   constructor() {
-    (this.accessToken = undefined),
-      (this.idToken = undefined),
-      (this.userProfile = null),
-      (this.expiresAt = 0),
-      (this.auth0 = new auth0.WebAuth({
-        domain: AUTH_CONFIG.domain || "",
-        clientID: AUTH_CONFIG.clientId || "",
-        redirectUri: AUTH_CONFIG.callbackUrl,
-        responseType: "token id_token",
-        scope: "openid profile email"
-      }));
-    (this.getProfile = this.getProfile.bind(this)),
-      (this.allowedRoles = []),
-      (this.currentRole = undefined);
+    this.accessToken = undefined;
+    this.idToken = undefined;
+    this.userProfile = null;
+    this.expiresAt = 0;
+    this.auth0 = new auth0.WebAuth({
+      domain: AUTH_CONFIG.domain || "",
+      clientID: AUTH_CONFIG.clientId || "",
+      redirectUri: AUTH_CONFIG.callbackUrl,
+      responseType: "token id_token",
+      scope: "openid profile email"
+    });
+    this.getProfile = this.getProfile.bind(this);
+    this.allowedRoles = [];
+    this.currentRole = undefined;
   }
 
   getProfile(callback: Function) {

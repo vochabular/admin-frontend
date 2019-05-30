@@ -4,25 +4,23 @@ import { useQuery } from "react-apollo-hooks";
 import { useTranslation } from "react-i18next";
 
 import { withStyles, WithStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
 import { Grid } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 
-import { styles } from "src/styles";
-import theme from "src/theme";
+import { styles } from "styles";
 import NewChapter from "./NewChapter";
 import SubChapterDetail from "./SubChapterDetail";
-import { GET_CHAPTER_BY_ID } from "src/queries/chapters";
+import { GET_CHAPTER_BY_ID } from "queries/chapters";
 import {
   chapterById,
   chapterById_chapter_subChapters
-} from "src/queries/__generated__/chapterById";
-import BusyOrErrorCard from "src/components/BusyOrErrorCard";
-import ChapterCard from "src/components/ChapterCard";
-import LinkCard from "src/components/LinkCard";
-import auth0Client from "src/auth/Auth";
-import Section from "src/components/Section";
-import SectionCardContainer from "src/components/SectionCardContainer";
+} from "queries/__generated__/chapterById";
+import BusyOrErrorCard from "components/BusyOrErrorCard";
+import ChapterCard from "components/ChapterCard";
+import LinkCard from "components/LinkCard";
+import auth0Client from "auth/Auth";
+import Section from "components/Section";
+import SectionCardContainer from "components/SectionCardContainer";
 
 // These can come from the router... See the route definitions
 interface ChapterRouterProps {
@@ -39,14 +37,8 @@ interface Props
  * Main chapter component. Gets the chapter id via the route allowing to create links etc. Conditionally loads either the subchapter or the main chapter
  */
 const Chapter = ({ classes, match }: Props) => {
-  const { chapterId, subChapterId, componentId } = match.params;
+  const { chapterId, subChapterId } = match.params;
   const { t } = useTranslation();
-
-  // If its a new main chapter, don't need to query anything
-  // TODO: This violates React Hook rules!!!!
-  if (chapterId === "new") {
-    return <NewChapter />;
-  }
 
   // Either load directly the subchapter or else the chapter
   const { loading, data, error } = useQuery<chapterById>(GET_CHAPTER_BY_ID, {
@@ -54,6 +46,12 @@ const Chapter = ({ classes, match }: Props) => {
       id: subChapterId && subChapterId !== "new" ? subChapterId : chapterId
     }
   });
+
+  // If its a new main chapter, don't need to query anything
+  // TODO: This violates React Hook rules!!!!
+  if (chapterId === "new") {
+    return <NewChapter />;
+  }
 
   if (!data || !data.chapter || loading || error)
     return (

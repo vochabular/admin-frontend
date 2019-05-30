@@ -1,15 +1,5 @@
 import * as React from "react";
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  DropResult
-} from "react-beautiful-dnd";
 
-import { withStyles, WithStyles } from "@material-ui/core/styles";
-
-import { styles } from "src/styles";
-import theme from "src/theme";
 import BaseComponent from "./components/BaseComponent";
 
 /**

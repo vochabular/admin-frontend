@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as Sentry from "@sentry/browser";
-import auth0Client from "src/auth/Auth";
+import auth0Client from "auth/Auth";
 import { Auth0Error, Auth0UserProfile } from "auth0-js";
 
 type props = {};
@@ -32,7 +32,11 @@ class ErrorBoundary extends React.Component<props, state> {
   render() {
     if (this.state.error) {
       //render fallback UI
-      return <a onClick={() => Sentry.showReportDialog()}>Report feedback</a>;
+      return (
+        <button onClick={() => Sentry.showReportDialog()}>
+          Report feedback
+        </button>
+      );
     } else {
       //when there's not an error, render children untouched
       return this.props.children;

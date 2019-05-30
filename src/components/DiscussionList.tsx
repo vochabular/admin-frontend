@@ -8,12 +8,28 @@ import {
   createStyles,
   Theme
 } from "@material-ui/core/styles";
-import { GET_ALL_COMMENTS } from "src/queries/comments";
-import { getAllComments } from "src/queries/__generated__/getAllComments";
 import { CircularProgress, Typography } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
+
+import { GET_ALL_COMMENTS } from "queries/comments";
+import { getAllComments } from "queries/__generated__/getAllComments";
 import ErrorMessage from "./ErrorMessage";
 import Discussion from "./Discussion";
+
+const styles = (theme: Theme) =>
+  createStyles({
+    container: {
+      padding: theme.spacing(2),
+      //height: "100%",
+      backgroundColor: theme.palette.grey[500]
+      //height: "300px"
+    },
+    wrapper: {
+      display: "flex",
+      flexFlow: "column",
+      height: "100%"
+    }
+  });
 
 const mockData = {
   comments: [
@@ -101,6 +117,7 @@ const DiscussionList = ({ classes }: Props) => {
   const { data, loading, error } = useQuery<getAllComments>(GET_ALL_COMMENTS);
 
   // const discussions = (data && data.comments) || [];
+  console.log(data);
   const discussions = mockData.comments;
 
   //if (!loading) return <CircularProgress />;
@@ -115,20 +132,5 @@ const DiscussionList = ({ classes }: Props) => {
     </Box>
   );
 };
-
-export const styles = (theme: Theme) =>
-  createStyles({
-    container: {
-      padding: theme.spacing(2),
-      //height: "100%",
-      backgroundColor: theme.palette.grey[500]
-      //height: "300px"
-    },
-    wrapper: {
-      display: "flex",
-      flexFlow: "column",
-      height: "100%"
-    }
-  });
 
 export default withStyles(styles, { withTheme: true })(DiscussionList);
