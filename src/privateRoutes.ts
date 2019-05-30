@@ -62,7 +62,7 @@ export const mainRoutes: IPrivateRouteConfig[] = [
     exact: true,
     label: "chapters",
     icon: FormatListIcon,
-    path: "/chapters/:id"
+    path: "/chapters"
   },
   {
     showInDrawer: true,

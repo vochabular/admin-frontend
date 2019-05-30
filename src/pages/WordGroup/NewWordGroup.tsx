@@ -11,11 +11,11 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 
-import { styles } from "src/styles";
-import { UPSERT_CHAPTER } from "src/queries/chapters";
-import i18next from "src/i18n";
-import history from "src/history";
-import ErrorMessage from "src/components/ErrorMessage";
+import { styles } from "styles";
+import { UPSERT_CHAPTER } from "queries/chapters";
+import i18next from "i18n";
+import history from "myHistory";
+import ErrorMessage from "components/ErrorMessage";
 
 export const ChapterSchema = Yup.object().shape({
     title: Yup.string()

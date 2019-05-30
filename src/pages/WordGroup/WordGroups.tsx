@@ -9,21 +9,21 @@ import Grid from "@material-ui/core/Grid";
 import AddIcon from "@material-ui/icons/Add";
 import Fab from "@material-ui/core/Fab";
 
-import {styles} from "src/styles";
-import {GET_WORDGROUPS} from "src/queries/wordgroups";
-import WordGroupCard from "src/components/WordGroupCard";
-import BusyOrErrorCard from "src/components/BusyOrErrorCard";
-import {wordGroups_wordGroups} from "src/queries/__generated__/wordGroups";
+import {styles} from "styles";
+import {GET_WORDGROUPS} from "queries/wordgroups";
+import WordGroupCard from "components/WordGroupCard";
+import BusyOrErrorCard from "components/BusyOrErrorCard";
+import {wordGroups_wordGroups} from "queries/__generated__/wordGroups";
+import SectionCardContainer from "../../components/SectionCardContainer";
+import {chapters_chapters} from "../../queries/__generated__/chapters";
+import ChapterCard from "../../components/ChapterCard";
+import auth0Client from "../../auth/Auth";
+import LinkCard from "../../components/LinkCard";
+import Section from "../../components/Section";
 
-export interface wordgroups {
-    wordgroups: (wordGroups_wordGroups | null)[] | null;
-}
 
 interface Props extends WithStyles<typeof styles> {
-    wordgroup: wordGroups_wordGroups; // TODO: Should use the generated type!
-}
-
-interface Props extends WithStyles<typeof styles> {
+    wordgroup: wordGroups_wordGroups;
 }
 
 const WordGroups = ({classes}: Props) => {
@@ -35,40 +35,36 @@ const WordGroups = ({classes}: Props) => {
     // See the discussion and provided solutions here... https://github.com/mui-org/material-ui/issues/7877
     // <Button component={Link} {...{ to: "/about" } as any} />
     let content;
-    if (loading || error || !data.wordGroups.length)
+    return (
+        <Section title="chapters:chaptersOverview" titleTranslatable={true}>
+            <SectionCardContainer>
+                {content}
+                {["admin"].includes(auth0Client.getCurrentRole() || "") ? (
+                    <Grid item>
+                        <LinkCard
+                            path="/chapters/new"
+                            icon={<AddIcon />}
+                            helperText="createNewChapter"
+                        />
+                    </Grid>
+                ) : null}
+            </SectionCardContainer>
+        </Section>
+    );
+    if (loading || error || !data.wordGroups.edges.length)
         content = (<BusyOrErrorCard
             loading={loading}
             error={error}
-            noResults={!loading && data.wordGroups && !data.wordGroups.length}
+            noResults={!loading && data.wordGroups.edges && !data.wordGroups.edges.length}
         />);
     else
         content = (data &&
-            data.wordGroups &&
-            data.wordGroups.map((c: wordGroups_wordGroups) => (
-                <WordGroupCard key = {c.id} wordgroup={c}/>
-            )));
-    return (
-        <div>
-            <Typography variant="h3" gutterBottom>
-                {t("chapters:chaptersOverview")}
-            </Typography>
-            <Grid container spacing={16}>
-                <Grid item xs={12} md={6} lg={6}>
-                    {content}
+            data.wordGroups.edges &&
+            data.wordGroups.edges.map((w: wordGroups_wordGroups) => (
+                <Grid item key={w.node.id}>
+                    <WordGroupCard wordgroup={w.node}/>
                 </Grid>
-            </Grid>
-            <Fab
-                size="large"
-                className={classes.fab}
-                color="primary"
-                aria-label="Add"
-                component={RouterLink}
-                {...{to: "/wordgroups/new"} as any}
-            >
-                <AddIcon/>
-            </Fab>
-        </div>
-    );
+            )));
 };
 
 export default withStyles(styles, {withTheme: true})(WordGroups);

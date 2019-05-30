@@ -4,13 +4,10 @@ import {withStyles, WithStyles} from "@material-ui/core/styles";
 import {useQuery} from "react-apollo-hooks";
 import {RouteComponentProps} from "react-router-dom";
 
-import {styles} from "src/styles";
+import {styles} from "styles";
 import NewWordGroup from "./NewWordGroup";
-import {GET_WORDGROUP} from "src/queries/wordgroups";
-import {useTranslation} from "react-i18next";
-import BusyOrErrorCard from "src/components/BusyOrErrorCard";
-import WordGroupCard from "src/components/WordGroupCard";
-import NewChapter from "src/pages/Chapter/NewChapter";
+import {GET_WORDGROUP} from "queries/wordgroups";
+import BusyOrErrorCard from "components/BusyOrErrorCard";
 
 // These can come from the router... See the route definitions
 interface WordGroupRouterProps {
@@ -23,26 +20,28 @@ interface Props
 }
 
 const WordGroup = ({classes, match}: Props) => {
-    const {t} = useTranslation();
-    if (match.params.id === "new") {
-        return <NewWordGroup/>;
-    }
+
     const {data, error, loading} = useQuery(GET_WORDGROUP, {
         variables: {
             'id': match.params.id
-        }
+        },
+        skip: match.params.id === "new"
     });
+
+    if (match.params.id === "new") {
+        return <NewWordGroup/>;
+    }
 
     if (loading || error || !data.wordGroup)
         return (<BusyOrErrorCard
             loading={loading}
             error={error}
-            noResults={!loading && data.wordGroup && !data.wordGroup}
+            noResults={!loading && data.wordGroup.edges && !data.wordGroup.edges}
         />);
 
     return (
         data &&
-        data.wordGroup &&
+        data.wordGroup.edges &&
         <NewWordGroup/>);
 };
 
