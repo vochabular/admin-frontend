@@ -71,7 +71,7 @@ const Comment = ({ classes, data }: Props) => {
         </Avatar>
         <TimestampAgo date={new Date(data.written || 0)} variant="caption" />
       </Grid>
-      <Grid item alignItems="center">
+      <Grid item>
         <Typography>{data.comment}</Typography>
       </Grid>
     </Grid>
