@@ -7,28 +7,9 @@ import { styles } from "../../styles";
 import {useTranslation} from "react-i18next";
 import {GET_WORDGROUPS} from "src/queries/wordgroups";
 import BusyOrErrorCard from "src/components/BusyOrErrorCard";
-import {chapters_chapters} from "src/queries/__generated__/chapters"; // TODO Change to generated type
+import {wordGroups_wordGroups} from "src/queries/__generated__/wordGroups";
 import Grid from "@material-ui/core/Grid";
 import WordGroupCard from "src/components/WordGroupCard";
-
-export interface wordgroups_wordgroups_wordgroupSet {
-    __typename: "WordGroupType";
-    id: string;
-    titleCh: string;
-    titleDe: string;
-}
-
-export interface wordgroups_wordgroups {
-    __typename: "WordGroupType";
-    id: string;
-    titleCh: string;
-    titleDe: string;
-    chapterSet: (wordgroups_wordgroups_wordgroupSet | null)[] | null;
-}
-
-export interface wordgroups {
-    wordgroups: (wordgroups_wordgroups | null)[] | null;
-}
 
 interface Props extends WithStyles<typeof styles> {}
 
@@ -44,7 +25,7 @@ const VoggiSection: React.FunctionComponent<Props> = ({ classes }) => {
             noResults={!loading && data.wordGroups && !data.wordGroups.length}
         />
     );
-  return data.wordGroups.map((w: wordgroups_wordgroups, i: number) => ( // TODO: change type to generated type
+  return data.wordGroups.map((w: wordGroups_wordGroups, i: number) => ( // TODO: change type to generated type
       <Grid container spacing={24} key={i}>
         <WordGroupCard wordgroup={w} />
       </Grid>

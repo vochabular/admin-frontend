@@ -6,9 +6,6 @@ import {useQuery} from "react-apollo-hooks";
 import {withStyles, WithStyles} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Paper";
-import CardContent from "@material-ui/core/CardContent";
-import CardActionArea from "@material-ui/core/CardActionArea";
 import AddIcon from "@material-ui/icons/Add";
 import Fab from "@material-ui/core/Fab";
 
@@ -16,29 +13,14 @@ import {styles} from "src/styles";
 import {GET_WORDGROUPS} from "src/queries/wordgroups";
 import WordGroupCard from "src/components/WordGroupCard";
 import BusyOrErrorCard from "src/components/BusyOrErrorCard";
-import {chapters_chapters} from "src/queries/__generated__/chapters";
-
-export interface wordgroups_wordgroups_wordgroupSet {
-    __typename: "WordGroupType";
-    id: string;
-    titleCh: string;
-    titleDe: string;
-}
-
-export interface wordgroups_wordgroups {
-    __typename: "WordGroupType";
-    id: string;
-    titleCh: string;
-    titleDe: string;
-    chapterSet: (wordgroups_wordgroups_wordgroupSet | null)[] | null;
-}
+import {wordGroups_wordGroups} from "src/queries/__generated__/wordGroups";
 
 export interface wordgroups {
-    wordgroups: (wordgroups_wordgroups | null)[] | null;
+    wordgroups: (wordGroups_wordGroups | null)[] | null;
 }
 
 interface Props extends WithStyles<typeof styles> {
-    wordgroup: wordgroups_wordgroups; // TODO: Should use the generated type!
+    wordgroup: wordGroups_wordGroups; // TODO: Should use the generated type!
 }
 
 interface Props extends WithStyles<typeof styles> {
@@ -62,7 +44,7 @@ const WordGroups = ({classes}: Props) => {
     else
         content = (data &&
             data.wordGroups &&
-            data.wordGroups.map((c: wordgroups_wordgroups) => (
+            data.wordGroups.map((c: wordGroups_wordGroups) => (
                 <WordGroupCard key = {c.id} wordgroup={c}/>
             )));
     return (

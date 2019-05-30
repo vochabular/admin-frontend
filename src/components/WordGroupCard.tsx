@@ -9,29 +9,10 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActionArea from "@material-ui/core/CardActionArea";
 
 import { styles } from "src/styles";
-import { chapters_chapters } from "src/queries/__generated__/chapters"; // TODO: Apollo code gen didn't work.
-
-export interface wordgroups_wordgroups_wordgroupSet {
-    __typename: "WordGroupType";
-    id: string;
-    titleCh: string;
-    titleDe: string;
-}
-
-export interface wordgroups_wordgroups {
-    __typename: "WordGroupType";
-    id: string;
-    titleCh: string;
-    titleDe: string;
-    chapterSet: (wordgroups_wordgroups_wordgroupSet | null)[] | null;
-}
-
-export interface wordgroups {
-    wordgroups: (wordgroups_wordgroups | null)[] | null;
-}
+import { wordGroups_wordGroups } from "src/queries/__generated__/wordGroups";
 
 interface Props extends WithStyles<typeof styles> {
-    wordgroup: wordgroups_wordgroups; // TODO: Should use the generated type!
+    wordgroup: wordGroups_wordGroups;
 }
 
 const WordGroupCard = ({ classes, wordgroup }: Props) => {
