@@ -41,7 +41,7 @@ const Chapter = ({ classes, match }: Props) => {
   const { t } = useTranslation();
 
   // Either load directly the subchapter or else the chapter
-  const { loading, data, error } = useQuery<chapterById>(GET_CHAPTER_BY_ID, {
+  const { loading, data, error } = useQuery<any>(GET_CHAPTER_BY_ID, {
     variables: {
       id: subChapterId && subChapterId !== "new" ? subChapterId : chapterId
     }
@@ -82,16 +82,15 @@ const Chapter = ({ classes, match }: Props) => {
       <SectionCardContainer>
         {data.chapter &&
           data.chapter.subChapters &&
-          data.chapter.subChapters.map(
-            (c: chapterById_chapter_subChapters | null) => {
-              if (!c) return null;
-              return (
-                <Grid item key={c && c.id}>
-                  <ChapterCard chapter={c!} />
-                </Grid>
-              );
-            }
-          )}
+          data.chapter.subChapters &&
+          data.chapter.subChapters.edges.map((c: any | null) => {
+            if (!c) return null;
+            return (
+              <Grid item key={c && c.node.id}>
+                <ChapterCard chapter={c.node} />
+              </Grid>
+            );
+          })}
         {["admin", "content-creator"].includes(
           auth0Client.getCurrentRole() || ""
         ) ? (

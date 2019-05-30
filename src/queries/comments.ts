@@ -17,7 +17,11 @@ export const COMMENT_FRAGMENT = gql`
 export const GET_ALL_COMMENTS = gql`
   query getAllComments {
     comments {
-      ...CommentParts
+      edges {
+        node {
+          ...CommentParts
+        }
+      }
     }
   }
   ${COMMENT_FRAGMENT}
