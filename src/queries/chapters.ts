@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 export const CHAPTER_HEADER_PART = gql`
   fragment ChapterHeaderParts on ChapterType {
     id
+    dbId: id
     number
     title
     description
@@ -13,9 +14,13 @@ export const CHAPTER_HEADER_PART = gql`
       description
     }
     chapterSet {
-      id
-      title
-      description
+      edges {
+        node {
+          id
+          title
+          description
+        }
+      }
     }
   }
 `;
@@ -26,11 +31,19 @@ export const COMPONENT_PART = gql`
     data
     state
     texts: textSet {
-      id
-      translations: translationSet {
-        id
-        language
-        textField
+      edges {
+        node {
+          id
+          translations: translationSet {
+            edges {
+              node {
+                id
+                language
+                textField
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -38,10 +51,18 @@ export const COMPONENT_PART = gql`
 
 export const GET_CHAPTERS = gql`
   query chapters {
-    chapters {
-      ...ChapterHeaderParts
-      components: componentSet {
-        ...ComponentParts
+    chapters(fkBelongsTo_Isnull: true) {
+      edges {
+        node {
+          ...ChapterHeaderParts
+          componentSet {
+            edges {
+              node {
+                ...ComponentParts
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -54,10 +75,18 @@ export const GET_CHAPTER_BY_ID = gql`
     chapter(id: $id) {
       ...ChapterHeaderParts
       subChapters: chapterSet {
-        ...ChapterHeaderParts
+        edges {
+          node {
+            ...ChapterHeaderParts
+          }
+        }
       }
       components: componentSet {
-        ...ComponentParts
+        edges {
+          node {
+            ...ComponentParts
+          }
+        }
       }
     }
   }

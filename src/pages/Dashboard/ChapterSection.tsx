@@ -8,30 +8,40 @@ import { styles } from "styles";
 import { GET_CHAPTERS } from "queries/chapters";
 import ChapterCard from "components/ChapterCard";
 import BusyOrErrorCard from "components/BusyOrErrorCard";
-import { chapters_chapters } from "queries/__generated__/chapters";
+import { chapters } from "queries/__generated__/chapters";
 import SectionCardContainer from "components/SectionCardContainer";
 
 interface Props extends WithStyles<typeof styles> {}
 
 const ChapterSection: React.FunctionComponent<Props> = ({ classes }) => {
-  const { data, error, loading } = useQuery(GET_CHAPTERS);
+  const { data, error, loading } = useQuery<chapters>(GET_CHAPTERS);
 
-  if (loading || error || !data.chapters.length) {
+  if (
+    loading ||
+    error ||
+    (data && data.chapters && !data.chapters.edges.length)
+  ) {
     return (
       <BusyOrErrorCard
         loading={loading}
         error={error}
-        noResults={!loading && data.chapters && !data.chapters.length}
+        noResults={
+          (data && data.chapters && !data.chapters.edges.length) || false
+        }
       />
     );
   }
   return (
     <SectionCardContainer>
-      {data.chapters.map((c: chapters_chapters, i: number) => (
-        <Grid item key={i}>
-          <ChapterCard chapter={c} />
-        </Grid>
-      ))}
+      {data &&
+        data.chapters &&
+        data.chapters.edges.map((c, i: number) =>
+          c && c.node ? (
+            <Grid item key={(c.node && c.node.id) || "-"}>
+              <ChapterCard chapter={c.node} />
+            </Grid>
+          ) : null
+        )}
     </SectionCardContainer>
   );
 };

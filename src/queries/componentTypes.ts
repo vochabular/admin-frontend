@@ -11,7 +11,11 @@ export const COMPONENT_TYPE_FRAGMENT = gql`
 export const GET_ALL_COMPONENTTYPES = gql`
   query getAllComponentTypes {
     componentTypes {
-      ...ComponentTypeParts
+      edges {
+        node {
+          ...ComponentTypeParts
+        }
+      }
     }
   }
   ${COMPONENT_TYPE_FRAGMENT}
