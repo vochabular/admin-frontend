@@ -1,8 +1,6 @@
 import gql from "graphql-tag";
 
 import { GET_SETTINGS } from "./settings";
-import auth0Client from "auth/Auth";
-import i18n from "i18n";
 
 export const typeDefs = gql`
   extend type Query {

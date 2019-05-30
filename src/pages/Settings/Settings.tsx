@@ -8,7 +8,7 @@ import { withStyles, WithStyles } from "@material-ui/styles";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import { Divider, CardActionArea, Button } from "@material-ui/core";
+import { Divider, Button } from "@material-ui/core";
 
 import { styles } from "styles";
 import GeneralSection from "pages/Settings/SettingsSection/GeneralSection";
@@ -30,7 +30,7 @@ interface Props extends WithStyles<typeof styles> {}
 
 const Settings: React.FunctionComponent<Props> = ({ classes }) => {
   const { t, i18n } = useTranslation();
-  const { data, error, loading } = useQuery(GET_SETTINGS);
+  const { data } = useQuery(GET_SETTINGS);
   const updateSettings = useMutation(UPDATE_SETTINGS);
 
   // Here we would now update the backend settings...

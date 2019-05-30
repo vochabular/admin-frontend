@@ -3,8 +3,6 @@ import * as React from "react";
 import { withStyles, WithStyles } from "@material-ui/core/styles";
 
 import { styles } from "styles";
-import theme from "theme";
-import ContentEditor from "components/ContentEditor/ContentEditor";
 import { Draggable } from "react-beautiful-dnd";
 
 interface Props extends WithStyles<typeof styles> {

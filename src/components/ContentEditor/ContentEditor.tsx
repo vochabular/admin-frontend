@@ -1,15 +1,9 @@
 import * as React from "react";
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  DropResult
-} from "react-beautiful-dnd";
+import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 
 import { withStyles, WithStyles } from "@material-ui/core/styles";
 
 import { styles } from "styles";
-import theme from "theme";
 import ComponentList from "./ComponentList";
 import ComponentSelector from "./ComponentSelector";
 
@@ -33,9 +27,11 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 const ContentEditor = ({ classes, data }: Props) => {
+  /*
   const [selectedParentComponet, setSelectedParentComponent] = React.useState(
     undefined
   );
+  */
 
   // TODO: What kind of state do we have to initialize here?
   return (

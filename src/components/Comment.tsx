@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useTranslation } from "react-i18next";
 
 import {
   withStyles,
@@ -9,6 +8,13 @@ import {
 } from "@material-ui/core/styles";
 import { Avatar, Typography, Grid } from "@material-ui/core";
 import TimestampAgo from "./TimestampAgo";
+
+const styles = (theme: Theme) =>
+  createStyles({
+    avatar: {
+      margin: 10
+    }
+  });
 
 /**
  * Generate a random color from a string
@@ -39,8 +45,6 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 const Comment = ({ classes, data }: Props) => {
-  const { t } = useTranslation();
-
   const initialLetters = `${(
     (data.authorName && data.authorName.firstName) ||
     "-"
@@ -73,12 +77,5 @@ const Comment = ({ classes, data }: Props) => {
     </Grid>
   );
 };
-
-export const styles = (theme: Theme) =>
-  createStyles({
-    avatar: {
-      margin: 10
-    }
-  });
 
 export default withStyles(styles, { withTheme: true })(Comment);

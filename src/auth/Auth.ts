@@ -1,9 +1,4 @@
-import auth0, {
-  Auth0DecodedHash,
-  Auth0Error,
-  Auth0ParseHashError,
-  Auth0UserProfile
-} from "auth0-js";
+import auth0, { Auth0DecodedHash, Auth0UserProfile } from "auth0-js";
 
 import client from "ApolloClient";
 import { AUTH_CONFIG } from "./auth0-variables";

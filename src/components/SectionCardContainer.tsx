@@ -5,6 +5,13 @@ import Grid from "@material-ui/core/Grid";
 import { createStyles } from "@material-ui/core";
 import { Theme } from "@material-ui/core/styles/createMuiTheme";
 
+const styles = (theme: Theme) =>
+  createStyles({
+    container: {
+      padding: theme.spacing(2)
+    }
+  });
+
 interface Props extends WithStyles<typeof styles> {
   children?: ReactNode;
 }
@@ -20,12 +27,5 @@ function SectionCardContainer({ classes, children }: Props) {
     </Grid>
   );
 }
-
-export const styles = (theme: Theme) =>
-  createStyles({
-    container: {
-      padding: theme.spacing(2)
-    }
-  });
 
 export default withStyles(styles)(SectionCardContainer);

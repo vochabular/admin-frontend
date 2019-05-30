@@ -1,15 +1,7 @@
-import React, { Fragment, useState } from "react";
-import classNames from "classnames";
+import React from "react";
 import { useQuery } from "react-apollo-hooks";
-import { useTranslation } from "react-i18next";
 
 import { withStyles, WithStyles } from "@material-ui/styles";
-import List from "@material-ui/core/List";
-import Typography from "@material-ui/core/Typography";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import Grid from "@material-ui/core/Grid";
 
 import { styles } from "styles";
@@ -22,7 +14,6 @@ import SectionCardContainer from "components/SectionCardContainer";
 interface Props extends WithStyles<typeof styles> {}
 
 const ChapterSection: React.FunctionComponent<Props> = ({ classes }) => {
-  const { t } = useTranslation();
   const { data, error, loading } = useQuery(GET_CHAPTERS);
 
   if (loading || error || !data.chapters.length) {

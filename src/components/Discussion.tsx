@@ -16,6 +16,16 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Comment from "./Comment";
 import { Divider, TextField, Button, Grid } from "@material-ui/core";
 
+const styles = (theme: Theme) =>
+  createStyles({
+    container: {
+      backgroundColor: theme.palette.grey[600],
+      marginBottom: 20,
+      marginTop: 20,
+      padding: theme.spacing(2)
+    }
+  });
+
 interface Props extends WithStyles<typeof styles> {
   /**
    * TODO: A single discussion
@@ -101,15 +111,5 @@ const Discussion = ({ classes, data }: Props) => {
     </div>
   );
 };
-
-const styles = (theme: Theme) =>
-  createStyles({
-    container: {
-      backgroundColor: theme.palette.grey[600],
-      marginBottom: 20,
-      marginTop: 20,
-      padding: theme.spacing(2)
-    }
-  });
 
 export default withStyles(styles, { withTheme: true })(Discussion);

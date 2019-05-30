@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useTranslation } from "react-i18next";
 import { useQuery } from "react-apollo-hooks";
 
 import { withStyles, WithStyles } from "@material-ui/core/styles";

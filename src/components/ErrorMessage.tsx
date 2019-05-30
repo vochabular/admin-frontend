@@ -13,7 +13,7 @@ interface Props extends WithStyles<typeof styles> {
 const ErrorMessage = ({ classes, error }: Props) => {
   const { t } = useTranslation();
 
-  return <Typography>{error}</Typography>;
+  return <Typography>{t(error || "")}</Typography>;
 };
 
 export default withStyles(styles, { withTheme: true })(ErrorMessage);

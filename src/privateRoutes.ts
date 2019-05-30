@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import SettingsIcon from "@material-ui/icons/Settings";
 import FormatListIcon from "@material-ui/icons/FormatListNumbered";

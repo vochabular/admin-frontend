@@ -7,7 +7,7 @@ import { withStyles, WithStyles } from "@material-ui/styles";
 import { styles } from "styles";
 import configurationJSON from "configuration.json";
 import { Field, FieldArray } from "formik";
-import { TextField, CheckboxWithLabel } from "formik-material-ui";
+import { TextField } from "formik-material-ui";
 
 interface Props extends WithStyles<typeof styles> {
   values?: any;

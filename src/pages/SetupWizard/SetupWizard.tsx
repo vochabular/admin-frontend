@@ -13,9 +13,9 @@ import { styles } from "styles";
 import GeneralSection from "pages/Settings/SettingsSection/GeneralSection";
 import LanguagesSection from "pages/Settings/SettingsSection/LanguagesSection";
 import NotificationSection from "pages/Settings/SettingsSection/NotificationSection";
-import { useQuery, useApolloClient, useMutation } from "react-apollo-hooks";
+import { useQuery, useMutation } from "react-apollo-hooks";
 import { GET_SETTINGS, UPDATE_SETTINGS } from "queries/settings";
-import { Formik, FormikActions, FormikBag, Form } from "formik";
+import { Formik, FormikActions, Form } from "formik";
 import { UserSetupSchema } from "pages/Settings/Settings";
 
 function getSteps() {
@@ -43,7 +43,7 @@ interface Props extends WithStyles<typeof styles> {}
 
 function SetupWizard({ classes }: Props) {
   const { t } = useTranslation();
-  const { data, error, loading } = useQuery(GET_SETTINGS);
+  const { data } = useQuery(GET_SETTINGS);
   const updateSettings = useMutation(UPDATE_SETTINGS);
 
   const [activeStep, setActiveStep] = useState(0);

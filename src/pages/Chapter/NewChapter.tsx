@@ -17,11 +17,7 @@ import i18next from "i18n";
 import history from "myHistory";
 import ErrorMessage from "components/ErrorMessage";
 import { ChapterInput } from "__generated__/globalTypes";
-import {
-  chapterById_chapter,
-  chapterById_chapter_parentChapter
-} from "queries/__generated__/chapterById";
-import { chapters_chapters } from "queries/__generated__/chapters";
+import { chapterById_chapter_parentChapter } from "queries/__generated__/chapterById";
 import { Omit } from "types/genericHelperTypes";
 
 export const ChapterSchema = Yup.object().shape({

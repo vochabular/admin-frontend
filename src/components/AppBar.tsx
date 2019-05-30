@@ -1,14 +1,9 @@
-import React, { Fragment, useState } from "react";
+import React from "react";
 import classNames from "classnames";
-import { Switch, Route } from "react-router";
 
 import { withStyles, WithStyles } from "@material-ui/styles";
-import Drawer from "@material-ui/core/Drawer";
-import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import AppBarMui from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 
@@ -19,7 +14,6 @@ import PowerIcon from "@material-ui/icons/PowerSettingsNew";
 
 import auth0Client from "auth/Auth";
 import { styles } from "styles";
-import { getAllAccessibleRoutes } from "privateRoutes";
 
 // TODO: We should have the AppBar in a own component. However, that messes up the layout...
 // import AppBar from "../components/AppBar";

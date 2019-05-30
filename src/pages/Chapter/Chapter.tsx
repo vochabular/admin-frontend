@@ -4,12 +4,10 @@ import { useQuery } from "react-apollo-hooks";
 import { useTranslation } from "react-i18next";
 
 import { withStyles, WithStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
 import { Grid } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 
 import { styles } from "styles";
-import theme from "theme";
 import NewChapter from "./NewChapter";
 import SubChapterDetail from "./SubChapterDetail";
 import { GET_CHAPTER_BY_ID } from "queries/chapters";
@@ -39,7 +37,7 @@ interface Props
  * Main chapter component. Gets the chapter id via the route allowing to create links etc. Conditionally loads either the subchapter or the main chapter
  */
 const Chapter = ({ classes, match }: Props) => {
-  const { chapterId, subChapterId, componentId } = match.params;
+  const { chapterId, subChapterId } = match.params;
   const { t } = useTranslation();
 
   // Either load directly the subchapter or else the chapter

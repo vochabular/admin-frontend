@@ -20,8 +20,8 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 function GeneralSection({ classes }: Props) {
-  const { t, i18n } = useTranslation();
-  const { data, error, loading } = useQuery(GET_SETTINGS);
+  const { t } = useTranslation();
+  const { data } = useQuery(GET_SETTINGS);
   const updateSettings = useMutation(UPDATE_SETTINGS);
 
   const handleCheckboxChange = (name: string) => (
