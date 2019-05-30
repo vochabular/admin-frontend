@@ -28,7 +28,7 @@ const Chapters = ({ classes }: Props) => {
         <BusyOrErrorCard
           loading={loading}
           error={error}
-          noResults={!loading && data.chapters && !data.chapters.length}
+          noResults={!loading && data.chapters && !data.chapters.edges.length}
         />
         {data &&
           data.chapters &&

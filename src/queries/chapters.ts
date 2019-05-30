@@ -50,7 +50,7 @@ export const COMPONENT_PART = gql`
 
 export const GET_CHAPTERS = gql`
   query chapters {
-    chapters {
+    chapters(fkBelongsTo_Isnull: true) {
       edges {
         node {
           ...ChapterHeaderParts
