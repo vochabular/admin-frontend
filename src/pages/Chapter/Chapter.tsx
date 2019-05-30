@@ -48,8 +48,6 @@ const Chapter = ({ classes, match }: Props) => {
     }
   });
 
-  console.log(data);
-
   // If its a new main chapter, don't need to query anything
   // TODO: This violates React Hook rules!!!!
   if (chapterId === "new") {

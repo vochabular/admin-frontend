@@ -16,8 +16,6 @@ interface Props extends WithStyles<typeof styles> {}
 const ChapterSection: React.FunctionComponent<Props> = ({ classes }) => {
   const { data, error, loading } = useQuery<chapters>(GET_CHAPTERS);
 
-  console.log(data);
-
   if (
     loading ||
     error ||
