@@ -9,7 +9,6 @@ import { styles } from "styles";
 import { GET_CHAPTERS } from "queries/chapters";
 import ChapterCard from "components/ChapterCard";
 import BusyOrErrorCard from "components/BusyOrErrorCard";
-import { chapters_chapters } from "queries/__generated__/chapters";
 import LinkCard from "components/LinkCard";
 import auth0Client from "auth/Auth";
 import Section from "components/Section";
@@ -29,13 +28,15 @@ const Chapters = ({ classes }: Props) => {
         <BusyOrErrorCard
           loading={loading}
           error={error}
-          noResults={!loading && data.chapters && !data.chapters.length}
+          noResults={!loading && data.chapters && !data.chapters.edges.length}
         />
         {data &&
           data.chapters &&
-          data.chapters.map((c: chapters_chapters) => (
-            <Grid item key={c.id}>
-              <ChapterCard chapter={c} />
+          data.chapters &&
+          data.chapters.edges &&
+          data.chapters.edges.map((c: any) => (
+            <Grid item key={c.node.id}>
+              <ChapterCard chapter={c.node} />
             </Grid>
           ))}
         {["admin"].includes(auth0Client.getCurrentRole() || "") ? (

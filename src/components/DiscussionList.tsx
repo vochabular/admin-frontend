@@ -117,7 +117,6 @@ const DiscussionList = ({ classes }: Props) => {
   const { data, loading, error } = useQuery<getAllComments>(GET_ALL_COMMENTS);
 
   // const discussions = (data && data.comments) || [];
-  console.log(data);
   const discussions = mockData.comments;
 
   //if (!loading) return <CircularProgress />;
