@@ -9,6 +9,13 @@ import {
 import { Grid, Card, Typography, CardContent, Icon } from "@material-ui/core";
 
 import { Draggable } from "react-beautiful-dnd";
+import { useQuery } from "react-apollo-hooks";
+import { GET_ALL_COMPONENTTYPES } from "queries/componentTypes";
+import BusyOrErrorCard from "components/BusyOrErrorCard";
+import {
+  getAllComponentTypes,
+  getAllComponentTypes_componentTypes
+} from "queries/__generated__/getAllComponentTypes";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -21,56 +28,42 @@ const styles = (theme: Theme) =>
     }
   });
 
-const mockData = {
-  componentTypes: [
-    {
-      id: 1,
-      name: "title",
-      label: "componentTypes:title",
-      icon: "title",
-      schema: "abcd"
-    },
-    {
-      id: 2,
-      name: "text",
-      label: "componentTypes:text",
-      icon: "format_bold",
-      schema: "text"
-    }
-  ]
-};
-
 interface Props extends WithStyles<typeof styles> {}
 
 const ComponentSelector = ({ classes }: Props) => {
-  // const { data, loading, error } = useQuery(GET_ALL_COMPONENTTYPES);
-
-  const componentTypes = mockData.componentTypes; // (data && data.componentTypes) || [];
+  const { data, loading, error } = useQuery<getAllComponentTypes>(
+    GET_ALL_COMPONENTTYPES
+  );
+  const componentTypes = (data && data.componentTypes) || [];
 
   return (
     <Grid container justify="center" className={classes.container}>
-      {componentTypes.map((c: any, index: number) => (
-        <Draggable key={c.id} draggableId={c.id} index={index}>
-          {(provided, snapshot) => (
-            <Grid
-              item
-              key={c.id}
-              ref={provided.innerRef}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-            >
-              <Card square className={classes.item}>
-                <CardContent>
-                  <Typography color="textSecondary" gutterBottom>
-                    {c.label}
-                  </Typography>
-                  <Icon>{c.icon}</Icon>
-                </CardContent>
-              </Card>
-            </Grid>
-          )}
-        </Draggable>
-      ))}
+      <BusyOrErrorCard error={error} loading={loading} />
+      {componentTypes.map(
+        (c: getAllComponentTypes_componentTypes | null, index: number) =>
+          c && (
+            <Draggable key={c.id} draggableId={c.id} index={index}>
+              {(provided, snapshot) => (
+                <Grid
+                  item
+                  key={c.id}
+                  ref={provided.innerRef}
+                  {...provided.draggableProps}
+                  {...provided.dragHandleProps}
+                >
+                  <Card square className={classes.item}>
+                    <CardContent>
+                      <Typography color="textSecondary" gutterBottom>
+                        {c.name}
+                      </Typography>
+                      <Icon>star</Icon>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              )}
+            </Draggable>
+          )
+      )}
     </Grid>
   );
 };
