@@ -24,7 +24,7 @@ yarn-debug.log*
 yarn-error.log*
 
 #apollo
-__generated__
+# *__generated__*
 
 # IDE
 .idea

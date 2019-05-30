@@ -36,7 +36,7 @@ const LandingPage = ({ classes }: Props) => (
           color="primary"
           onClick={() => auth0Client.login()}
         >
-          <LoginIcon style={{ marginRight: theme.spacing.unit }} /> Anmelden via
+          <LoginIcon style={{ marginRight: theme.spacing(1) }} /> Anmelden via
           Auth0
         </Button>
       </CardActions>

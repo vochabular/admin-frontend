@@ -1,12 +1,10 @@
-import * as React from "react";
-
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import SettingsIcon from "@material-ui/icons/Settings";
 import FormatListIcon from "@material-ui/icons/FormatListNumbered";
 import FormatListBulleted from "@material-ui/icons/FormatListBulleted";
 
-import Dashboard from "src/pages/Dashboard/Dashboard";
-import Settings from "src/pages/Settings/Settings";
+import Dashboard from "pages/Dashboard/Dashboard";
+import Settings from "pages/Settings/Settings";
 import Chapters from "./pages/Chapter/Chapters";
 import Chapter from "./pages/Chapter/Chapter";
 import WordGroups from "./pages/WordGroup/WordGroups"
@@ -25,7 +23,7 @@ interface IPrivateRouteConfig {
   component: any; // TODO: Need to find out how to use the proper type!
   exact?: boolean;
   icon?: any; // TODO: Need to find out how to use the proper type!
-  path: string;
+  path: string | string[];
   allowedRoles: string[];
   label?: string;
 }
@@ -44,19 +42,26 @@ export const mainRoutes: IPrivateRouteConfig[] = [
     path: "/"
   },
   {
+    showInDrawer: false,
+    allowedRoles: allUsers,
+    component: Chapter,
+    exact: true, // TODO: Unfortunately, this doesn't match even if set to false, so we have to include it twice
+    path: "/chapters/:chapterId"
+  },
+  {
+    showInDrawer: false,
+    allowedRoles: allUsers,
+    component: Chapter,
+    exact: false, // TODO: Unfortunately, this doesn't match even if set to false, so we have to include it twice
+    path: "/chapters/:chapterId/:subChapterId"
+  },
+  {
     showInDrawer: true,
     allowedRoles: allUsers,
     component: Chapters,
     exact: true,
     label: "chapters",
     icon: FormatListIcon,
-    path: "/chapters"
-  },
-  {
-    showInDrawer: false,
-    allowedRoles: allUsers,
-    component: Chapter,
-    exact: true,
     path: "/chapters/:id"
   },
   {
@@ -117,7 +122,8 @@ export function getAllAccessibleRoutes(
   role: string,
   filterOnlyInDrawer: boolean
 ) {
-  return new Array().concat(
+  return [].concat(
+    // @ts-ignore
     getMainRoutes(role, filterOnlyInDrawer),
     getAdministrativeRoutes(role, filterOnlyInDrawer)
   );

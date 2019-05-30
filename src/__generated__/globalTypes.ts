@@ -6,6 +6,17 @@
 // START Enums and Input Objects
 //==============================================================
 
+/**
+ * An enumeration.
+ */
+export enum ComponentState {
+  C = "C",
+  F = "F",
+  R = "R",
+  T = "T",
+  U = "U",
+}
+
 export interface ChapterInput {
   title: string;
   fkBelongsToId?: string | null;

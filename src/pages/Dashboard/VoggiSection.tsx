@@ -1,15 +1,15 @@
 import React from "react";
 import { useQuery } from "react-apollo-hooks";
 
-import { withStyles, WithStyles } from "@material-ui/core/styles";
+import { withStyles, WithStyles } from "@material-ui/styles";
 
-import { styles } from "../../styles";
+import { styles } from "styles";
 import {useTranslation} from "react-i18next";
-import {GET_WORDGROUPS} from "src/queries/wordgroups";
-import BusyOrErrorCard from "src/components/BusyOrErrorCard";
-import {wordGroups_wordGroups} from "src/queries/__generated__/wordGroups";
+import {GET_WORDGROUPS} from "queries/wordgroups";
+import BusyOrErrorCard from "components/BusyOrErrorCard";
+import {wordGroups_wordGroups} from "queries/__generated__/wordGroups";
 import Grid from "@material-ui/core/Grid";
-import WordGroupCard from "src/components/WordGroupCard";
+import WordGroupCard from "components/WordGroupCard";
 
 interface Props extends WithStyles<typeof styles> {}
 
