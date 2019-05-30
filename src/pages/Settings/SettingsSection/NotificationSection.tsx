@@ -12,8 +12,8 @@ import {
 } from "@material-ui/core";
 import { withStyles, WithStyles } from "@material-ui/styles";
 
-import { styles } from "src/styles";
-import { GET_SETTINGS, UPDATE_SETTINGS } from "src/queries/settings";
+import { styles } from "styles";
+import { GET_SETTINGS, UPDATE_SETTINGS } from "queries/settings";
 
 interface Props extends WithStyles<typeof styles> {
   values: any;

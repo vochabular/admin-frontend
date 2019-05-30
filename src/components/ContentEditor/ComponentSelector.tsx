@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core/styles";
 import { Grid, Card, Typography, CardContent, Icon } from "@material-ui/core";
 
-import { GET_ALL_COMPONENTTYPES } from "src/queries/componentTypes";
+import { GET_ALL_COMPONENTTYPES } from "queries/componentTypes";
 import { Draggable } from "react-beautiful-dnd";
 
 const mockData = {

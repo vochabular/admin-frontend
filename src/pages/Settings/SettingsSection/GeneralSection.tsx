@@ -7,9 +7,9 @@ import { TextField } from "formik-material-ui";
 import { Grid, MenuItem } from "@material-ui/core";
 import { withStyles, WithStyles } from "@material-ui/styles";
 
-import { styles } from "src/styles";
-import { GET_SETTINGS, UPDATE_SETTINGS } from "src/queries/settings";
-import auth0Client from "src/auth/Auth";
+import { styles } from "styles";
+import { GET_SETTINGS, UPDATE_SETTINGS } from "queries/settings";
+import auth0Client from "auth/Auth";
 
 interface Props extends WithStyles<typeof styles> {
   settings?: any;

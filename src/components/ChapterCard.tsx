@@ -10,12 +10,12 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import AddIcon from "@material-ui/icons/Add";
 import Fab from "@material-ui/core/Fab";
 
-import { styles } from "src/styles";
-import { chapters_chapters } from "src/queries/__generated__/chapters";
+import { styles } from "styles";
+import { chapters_chapters } from "queries/__generated__/chapters";
 import {
   chapterById_chapter,
   chapterById_chapter_subChapters
-} from "src/queries/__generated__/chapterById";
+} from "queries/__generated__/chapterById";
 
 interface Props extends WithStyles<typeof styles> {
   chapter:

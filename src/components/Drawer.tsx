@@ -14,9 +14,9 @@ import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 
-import history from "src/history";
-import { styles } from "src/styles";
-import { getAdministrativeRoutes, getMainRoutes } from "src/privateRoutes";
+import history from "myHistory";
+import { styles } from "styles";
+import { getAdministrativeRoutes, getMainRoutes } from "privateRoutes";
 
 // TODO: We should have the AppBar in a own component. However, that messes up the layout...
 // import AppBar from "../components/AppBar";

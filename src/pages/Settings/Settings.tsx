@@ -10,13 +10,13 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import { Divider, CardActionArea, Button } from "@material-ui/core";
 
-import { styles } from "src/styles";
-import GeneralSection from "src/pages/Settings/SettingsSection/GeneralSection";
-import LanguagesSection from "src/pages/Settings/SettingsSection/LanguagesSection";
-import NotificationSection from "src/pages/Settings/SettingsSection/NotificationSection";
-import i18next from "src/i18n";
-import { GET_SETTINGS, UPDATE_SETTINGS } from "src/queries/settings";
-import auth0Client from "src/auth/Auth";
+import { styles } from "styles";
+import GeneralSection from "pages/Settings/SettingsSection/GeneralSection";
+import LanguagesSection from "pages/Settings/SettingsSection/LanguagesSection";
+import NotificationSection from "pages/Settings/SettingsSection/NotificationSection";
+import i18next from "i18n";
+import { GET_SETTINGS, UPDATE_SETTINGS } from "queries/settings";
+import auth0Client from "auth/Auth";
 
 export const UserSetupSchema = Yup.object().shape({
   userName: Yup.string()

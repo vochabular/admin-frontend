@@ -8,8 +8,8 @@ import {
   createStyles,
   Theme
 } from "@material-ui/core/styles";
-import { GET_ALL_COMMENTS } from "src/queries/comments";
-import { getAllComments } from "src/queries/__generated__/getAllComments";
+import { GET_ALL_COMMENTS } from "queries/comments";
+import { getAllComments } from "queries/__generated__/getAllComments";
 import { CircularProgress, Typography } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import ErrorMessage from "./ErrorMessage";

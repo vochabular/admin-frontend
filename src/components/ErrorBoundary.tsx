@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as Sentry from "@sentry/browser";
-import auth0Client from "src/auth/Auth";
+import auth0Client from "auth/Auth";
 import { Auth0Error, Auth0UserProfile } from "auth0-js";
 
 type props = {};

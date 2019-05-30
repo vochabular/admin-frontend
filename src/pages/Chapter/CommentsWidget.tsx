@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import { Tabs, Tab, Typography } from "@material-ui/core";
-import DiscussionList from "src/components/DiscussionList";
+import DiscussionList from "components/DiscussionList";
 
 interface Props extends WithStyles<typeof styles>, WithTheme {
   /**

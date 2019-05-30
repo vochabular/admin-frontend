@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import { withStyles, WithStyles } from "@material-ui/core/styles";
 
-import { styles } from "src/styles";
+import { styles } from "styles";
 import { Typography } from "@material-ui/core";
 
 interface Props extends WithStyles<typeof styles> {

@@ -8,8 +8,8 @@ import {
 
 import { withStyles, WithStyles } from "@material-ui/core/styles";
 
-import { styles } from "src/styles";
-import theme from "src/theme";
+import { styles } from "styles";
+import theme from "theme";
 import BaseComponent from "./components/BaseComponent";
 
 /**

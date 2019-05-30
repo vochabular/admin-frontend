@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next";
 import { MenuItem, Grid, FormControlLabel, Checkbox } from "@material-ui/core";
 import { withStyles, WithStyles } from "@material-ui/styles";
 
-import { styles } from "src/styles";
-import configurationJSON from "src/configuration.json";
+import { styles } from "styles";
+import configurationJSON from "configuration.json";
 import { Field, FieldArray } from "formik";
 import { TextField, CheckboxWithLabel } from "formik-material-ui";
 

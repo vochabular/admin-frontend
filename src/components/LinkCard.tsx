@@ -10,7 +10,7 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import AddIcon from "@material-ui/icons/Add";
 import Fab from "@material-ui/core/Fab";
 
-import { styles } from "src/styles";
+import { styles } from "styles";
 
 interface Props extends WithStyles<typeof styles> {
   path: string;

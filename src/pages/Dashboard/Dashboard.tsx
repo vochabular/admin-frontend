@@ -6,11 +6,11 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 
-import { styles } from "src/styles";
+import { styles } from "styles";
 import ChapterSection from "./ChapterSection";
 import VoggiSection from "./VoggiSection";
-import ErrorBoundary from "src/components/ErrorBoundary";
-import Section from "src/components/Section";
+import ErrorBoundary from "components/ErrorBoundary";
+import Section from "components/Section";
 
 // TODO: We should have the AppBar in a own component. However, that messes up the layout...
 // import AppBar from "../components/AppBar";

@@ -17,9 +17,9 @@ import MenuIcon from "@material-ui/icons/Menu";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import PowerIcon from "@material-ui/icons/PowerSettingsNew";
 
-import auth0Client from "src/auth/Auth";
-import { styles } from "src/styles";
-import { getAllAccessibleRoutes } from "src/privateRoutes";
+import auth0Client from "auth/Auth";
+import { styles } from "styles";
+import { getAllAccessibleRoutes } from "privateRoutes";
 
 // TODO: We should have the AppBar in a own component. However, that messes up the layout...
 // import AppBar from "../components/AppBar";

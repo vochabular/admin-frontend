@@ -3,9 +3,9 @@ import * as React from "react";
 import Typography from "@material-ui/core/Typography";
 import { TypographyProps } from "@material-ui/core/Typography";
 
-import { styles } from "src/styles";
-import { formatAgo, format } from "src/date-fns";
-import useInterval from "src/hooks/useInterval";
+import { styles } from "styles";
+import { formatAgo, format } from "myDateFns";
+import useInterval from "hooks/useInterval";
 
 interface Props extends TypographyProps {
   date: Date;

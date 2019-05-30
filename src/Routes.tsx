@@ -3,7 +3,7 @@ import { Route, Router, Switch } from "react-router-dom";
 
 import auth0Client from "./auth/Auth";
 import Callback from "./components/Callback";
-import history from "./history";
+import history from "./myHistory";
 import PrivateRoute from "./components/PrivateRoute";
 import LandingPage from "./pages/LandingPage";
 import PrivateApp from "./PrivateApp";

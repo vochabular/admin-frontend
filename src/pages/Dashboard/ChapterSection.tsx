@@ -12,12 +12,12 @@ import CardContent from "@material-ui/core/CardContent";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Grid from "@material-ui/core/Grid";
 
-import { styles } from "src/styles";
-import { GET_CHAPTERS } from "src/queries/chapters";
-import ChapterCard from "src/components/ChapterCard";
-import BusyOrErrorCard from "src/components/BusyOrErrorCard";
-import { chapters_chapters } from "src/queries/__generated__/chapters";
-import SectionCardContainer from "src/components/SectionCardContainer";
+import { styles } from "styles";
+import { GET_CHAPTERS } from "queries/chapters";
+import ChapterCard from "components/ChapterCard";
+import BusyOrErrorCard from "components/BusyOrErrorCard";
+import { chapters_chapters } from "queries/__generated__/chapters";
+import SectionCardContainer from "components/SectionCardContainer";
 
 interface Props extends WithStyles<typeof styles> {}
 
