@@ -11,16 +11,14 @@ import { styles } from "styles";
 import NewChapter from "./NewChapter";
 import SubChapterDetail from "./SubChapterDetail";
 import { GET_CHAPTER_BY_ID } from "queries/chapters";
-import {
-  chapterById,
-  chapterById_chapter_subChapters
-} from "queries/__generated__/chapterById";
 import BusyOrErrorCard from "components/BusyOrErrorCard";
 import ChapterCard from "components/ChapterCard";
 import LinkCard from "components/LinkCard";
 import auth0Client from "auth/Auth";
 import Section from "components/Section";
 import SectionCardContainer from "components/SectionCardContainer";
+import { chapterById } from "queries/__generated__/chapterById";
+import { convertGlobalToDb } from "helpers";
 
 // These can come from the router... See the route definitions
 interface ChapterRouterProps {
@@ -41,11 +39,16 @@ const Chapter = ({ classes, match }: Props) => {
   const { t } = useTranslation();
 
   // Either load directly the subchapter or else the chapter
-  const { loading, data, error } = useQuery<any>(GET_CHAPTER_BY_ID, {
+  const { loading, data, error } = useQuery<chapterById>(GET_CHAPTER_BY_ID, {
     variables: {
-      id: subChapterId && subChapterId !== "new" ? subChapterId : chapterId
+      id:
+        subChapterId && subChapterId !== "new"
+          ? convertGlobalToDb(subChapterId)
+          : convertGlobalToDb(chapterId)
     }
   });
+
+  console.log(data);
 
   // If its a new main chapter, don't need to query anything
   // TODO: This violates React Hook rules!!!!

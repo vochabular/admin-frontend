@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 export const CHAPTER_HEADER_PART = gql`
   fragment ChapterHeaderParts on ChapterType {
     id
+    dbId: id
     number
     title
     description

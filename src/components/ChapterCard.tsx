@@ -9,17 +9,11 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActionArea from "@material-ui/core/CardActionArea";
 
 import { styles } from "styles";
-import { chapters_chapters } from "queries/__generated__/chapters";
-import {
-  chapterById_chapter,
-  chapterById_chapter_subChapters
-} from "queries/__generated__/chapterById";
+import { chapters_chapters_edges_node } from "queries/__generated__/chapters";
+import { chapterById_chapter } from "queries/__generated__/chapterById";
 
 interface Props extends WithStyles<typeof styles> {
-  chapter:
-    | chapters_chapters
-    | chapterById_chapter
-    | chapterById_chapter_subChapters;
+  chapter: chapters_chapters_edges_node | chapterById_chapter;
 }
 
 const ChapterCard = ({ classes, chapter }: Props) => {
