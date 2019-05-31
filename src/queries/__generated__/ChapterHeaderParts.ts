@@ -13,7 +13,8 @@ export interface ChapterHeaderParts_parentChapter {
    */
   id: string;
   number: number;
-  title: string;
+  titleCH: string;
+  titleDE: string;
   description: string;
 }
 
@@ -23,7 +24,8 @@ export interface ChapterHeaderParts_chapterSet_edges_node {
    * The ID of the object.
    */
   id: string;
-  title: string;
+  titleCH: string;
+  titleDE: string;
   description: string;
 }
 
@@ -46,8 +48,13 @@ export interface ChapterHeaderParts {
    * The ID of the object.
    */
   id: string;
+  /**
+   * The ID of the object.
+   */
+  dbId: string;
   number: number;
-  title: string;
+  titleCH: string;
+  titleDE: string;
   description: string;
   parentChapter: ChapterHeaderParts_parentChapter | null;
   chapterSet: ChapterHeaderParts_chapterSet | null;

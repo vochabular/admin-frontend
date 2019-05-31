@@ -2,24 +2,26 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
+import { CommentContext } from "./../../__generated__/globalTypes";
+
 // ====================================================
 // GraphQL query operation: getAllComments
 // ====================================================
 
-export interface getAllComments_comments_edges_node_authorName {
-  __typename: "UserType";
+export interface getAllComments_comments_edges_node_fkComponent {
+  __typename: "Component_Type";
+  /**
+   * The ID of the object.
+   */
   id: string;
+}
+
+export interface getAllComments_comments_edges_node_fkParentComment {
+  __typename: "CommentType";
   /**
-   * Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+   * The ID of the object.
    */
-  username: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  /**
-   * Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
-   */
-  isActive: boolean;
+  id: string;
 }
 
 export interface getAllComments_comments_edges_node {
@@ -28,10 +30,12 @@ export interface getAllComments_comments_edges_node {
    * The ID of the object.
    */
   id: string;
-  comment: string;
+  text: string;
+  context: CommentContext | null;
   active: boolean;
   written: any | null;
-  authorName: getAllComments_comments_edges_node_authorName;
+  fkComponent: getAllComments_comments_edges_node_fkComponent;
+  fkParentComment: getAllComments_comments_edges_node_fkParentComment | null;
 }
 
 export interface getAllComments_comments_edges {
