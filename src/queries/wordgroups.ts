@@ -114,9 +114,35 @@ export const UPDATE_CH_WORD = gql`
     }
 `;
 
-export const UPDATE_CH_WORD = gql`
-    mutation updateCHWord($input: UpdateWordCHInput!) {
-      updateChWord(input: $input) {
+export const UPDATE_EN_WORD = gql`
+    mutation updateENWord($input: UpdateWordENInput!) {
+      updateEnWord(input: $input) {
+        word {
+          id
+          text
+          exampleSentence
+          audio
+        }
+      }
+    }
+`;
+
+export const UPDATE_FA_WORD = gql`
+    mutation updateFAWord($input: UpdateWordFAInput!) {
+      updateFhWord(input: $input) {
+        word {
+          id
+          text
+          exampleSentence
+          audio
+        }
+      }
+    }
+`;
+
+export const UPDATE_AR_WORD = gql`
+    mutation updateARWord($input: UpdateWordARInput!) {
+      updateArWord(input: $input) {
         word {
           id
           text

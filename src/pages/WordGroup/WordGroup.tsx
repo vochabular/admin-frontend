@@ -6,7 +6,7 @@ import {RouteComponentProps} from "react-router-dom";
 
 import {styles} from "styles";
 import NewWordGroup from "./NewWordGroup";
-import {GET_WORDGROUP} from "queries/wordgroups";
+import {GET_WORDGROUP_BY_ID} from "queries/wordgroups";
 import BusyOrErrorCard from "components/BusyOrErrorCard";
 
 // These can come from the router... See the route definitions
@@ -21,7 +21,7 @@ interface Props
 
 const WordGroup = ({classes, match}: Props) => {
 
-    const {data, error, loading} = useQuery(GET_WORDGROUP, {
+    const {data, error, loading} = useQuery(GET_WORDGROUP_BY_ID, {
         variables: {
             'id': match.params.id
         },
