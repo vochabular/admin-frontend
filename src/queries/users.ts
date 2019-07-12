@@ -1,12 +1,14 @@
 import gql from "graphql-tag";
 
 export const USER_FRAGMENT = gql`
-  fragment UserParts on UserType {
+  fragment UserParts on ProfileType {
     id
-    username
-    firstName
-    lastName
-    email
-    isActive
+    firstname
+    lastname
+    roles
+    language
+    translatorLanguages
+    eventNotifications
+    setupCompleted
   }
 `;

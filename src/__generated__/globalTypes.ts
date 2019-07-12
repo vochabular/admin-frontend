@@ -9,6 +9,16 @@
 /**
  * An enumeration.
  */
+export enum CommentContext {
+  A = "A",
+  C = "C",
+  I = "I",
+  T = "T",
+}
+
+/**
+ * An enumeration.
+ */
 export enum ComponentState {
   C = "C",
   F = "F",
@@ -17,8 +27,17 @@ export enum ComponentState {
   U = "U",
 }
 
+/**
+ * An enumeration.
+ */
+export enum ProfileLanguage {
+  DE = "DE",
+  EN = "EN",
+}
+
 export interface ChapterInput {
-  title: string;
+  titleCH: string;
+  titleDE: string;
   fkBelongsToId?: string | null;
   description: string;
   number: number;

@@ -5,19 +5,22 @@ export const CHAPTER_HEADER_PART = gql`
     id
     dbId: id
     number
-    title
+    titleCH
+    titleDE
     description
     parentChapter: fkBelongsTo {
       id
       number
-      title
+      titleCH
+      titleDE
       description
     }
     chapterSet {
       edges {
         node {
           id
-          title
+          titleCH
+          titleDE
           description
         }
       }
@@ -98,7 +101,13 @@ export const UPSERT_CHAPTER = gql`
   mutation createChapter($input: IntroduceChapterInput!) {
     createChapter(input: $input) {
       chapter {
-        title
+        number
+        titleCH
+        titleDE
+        description
+        fkBelongsTo {
+          id
+        }
       }
     }
   }

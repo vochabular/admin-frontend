@@ -10,7 +10,8 @@ import { IntroduceChapterInput } from "./../../__generated__/globalTypes";
 
 export interface createChapter_createChapter_chapter {
   __typename: "ChapterType";
-  title: string;
+  titleCH: string;
+  titleDE: string;
 }
 
 export interface createChapter_createChapter {
