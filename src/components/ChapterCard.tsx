@@ -37,7 +37,7 @@ const ChapterCard = ({ classes, chapter }: Props) => {
             color="textSecondary"
             gutterBottom
           >
-            {t("chapter:chapter")} {chapter.title}
+            {t("chapter:chapter")} {chapter.titleDE} / {chapter.titleCH}
           </Typography>
           <Typography variant="h5" component="h2">
             {chapter.description}

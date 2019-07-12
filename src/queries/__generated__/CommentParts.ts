@@ -2,24 +2,26 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
+import { CommentContext } from "./../../__generated__/globalTypes";
+
 // ====================================================
 // GraphQL fragment: CommentParts
 // ====================================================
 
-export interface CommentParts_authorName {
-  __typename: "UserType";
+export interface CommentParts_fkComponent {
+  __typename: "Component_Type";
+  /**
+   * The ID of the object.
+   */
   id: string;
+}
+
+export interface CommentParts_fkParentComment {
+  __typename: "CommentType";
   /**
-   * Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+   * The ID of the object.
    */
-  username: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  /**
-   * Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
-   */
-  isActive: boolean;
+  id: string;
 }
 
 export interface CommentParts {
@@ -28,8 +30,10 @@ export interface CommentParts {
    * The ID of the object.
    */
   id: string;
-  comment: string;
+  text: string;
+  context: CommentContext | null;
   active: boolean;
   written: any | null;
-  authorName: CommentParts_authorName;
+  fkComponent: CommentParts_fkComponent;
+  fkParentComment: CommentParts_fkParentComment | null;
 }

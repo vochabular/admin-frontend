@@ -15,7 +15,8 @@ export interface chapters_chapters_edges_node_parentChapter {
    */
   id: string;
   number: number;
-  title: string;
+  titleCH: string;
+  titleDE: string;
   description: string;
 }
 
@@ -25,7 +26,8 @@ export interface chapters_chapters_edges_node_chapterSet_edges_node {
    * The ID of the object.
    */
   id: string;
-  title: string;
+  titleCH: string;
+  titleDE: string;
   description: string;
 }
 
@@ -117,8 +119,13 @@ export interface chapters_chapters_edges_node {
    * The ID of the object.
    */
   id: string;
+  /**
+   * The ID of the object.
+   */
+  dbId: string;
   number: number;
-  title: string;
+  titleCH: string;
+  titleDE: string;
   description: string;
   parentChapter: chapters_chapters_edges_node_parentChapter | null;
   chapterSet: chapters_chapters_edges_node_chapterSet | null;

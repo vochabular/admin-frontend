@@ -79,7 +79,7 @@ const Chapter = ({ classes, match }: Props) => {
 
   // Else, then render the chapter overview
   return (
-    <Section title={t("chapters:chapter") + ` ${data.chapter.title}`}>
+    <Section title={t("chapters:chapter") + ` ${data.chapter.titleDE} / ${data.chapter.titleCH}`}>
       <SectionCardContainer>
         {data.chapter &&
           data.chapter.subChapters &&
