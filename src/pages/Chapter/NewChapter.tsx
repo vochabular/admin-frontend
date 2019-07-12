@@ -1,39 +1,41 @@
 import * as React from "react";
-import { useTranslation } from "react-i18next";
+import {useTranslation} from "react-i18next";
 import * as Yup from "yup";
-import { Formik, Form, Field, FormikActions } from "formik";
-import { TextField } from "formik-material-ui";
-import { useMutation } from "react-apollo-hooks";
+import {Formik, Form, Field, FormikActions} from "formik";
+import {TextField} from "formik-material-ui";
+import {useMutation} from "react-apollo-hooks";
 
-import { withStyles, WithStyles } from "@material-ui/core/styles";
+import {withStyles, WithStyles} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 
-import { styles } from "styles";
-import { UPSERT_CHAPTER } from "queries/chapters";
+import {styles} from "styles";
+import {UPSERT_CHAPTER} from "queries/chapters";
 import i18next from "i18n";
 import history from "myHistory";
 import ErrorMessage from "components/ErrorMessage";
-import { ChapterInput } from "__generated__/globalTypes";
-import { chapterById_chapter_parentChapter } from "queries/__generated__/chapterById";
-import { Omit } from "types/genericHelperTypes";
+import {ChapterInput} from "__generated__/globalTypes";
+import {chapterById_chapter_parentChapter} from "queries/__generated__/chapterById";
+import {Omit} from "types/genericHelperTypes";
 
 export const ChapterSchema = Yup.object().shape({
   number: Yup.number()
     .min(1, i18next.t("tooLow"))
     .max(20, i18next.t("tooHigh"))
     .required(i18next.t("required")),
-  description: Yup.string().max(200, i18next.t("tooLong"))
+  description: Yup.string().max(200, i18next.t("tooLong")),
+  titleDE: Yup.string().max(50, i18next.t("tooLong")),
+  titleCH: Yup.string().max(50, i18next.t("tooLong"))
 });
 
 interface Props extends WithStyles<typeof styles> {
   parentChapter?: chapterById_chapter_parentChapter;
 }
 
-const NewChapter = ({ classes, parentChapter }: Props) => {
-  const { t } = useTranslation();
+const NewChapter = ({classes, parentChapter}: Props) => {
+  const {t} = useTranslation();
 
   const isSubChapter = !!parentChapter;
 
@@ -41,7 +43,7 @@ const NewChapter = ({ classes, parentChapter }: Props) => {
   const upsertChapter = useMutation(UPSERT_CHAPTER);
 
   async function handleSave(
-    values: Omit<ChapterInput, "title">,
+    values: Omit<ChapterInput, "titleDE">,
     actions: FormikActions<any>
   ) {
     // TODO: This verbose stuff won't be necessary anymore as soon useMutation also returns a error/loading object.
@@ -52,14 +54,14 @@ const NewChapter = ({ classes, parentChapter }: Props) => {
       const fkBelongsToId = isSubChapter ? parentChapter!.id : null;
       await upsertChapter({
         variables: {
-          input: { chapterData: { ...values, title, fkBelongsToId } }
+          input: {chapterData: {...values, title, fkBelongsToId}}
         }
       });
       // TODO: Need to go "back"
       history.push("/chapters");
     } catch (e) {
       actions.setSubmitting(false);
-      actions.setStatus({ response: `${t("serverError")}: ${e.message}` });
+      actions.setStatus({response: `${t("serverError")}: ${e.message}`});
     }
   }
 
@@ -74,12 +76,14 @@ const NewChapter = ({ classes, parentChapter }: Props) => {
         <CardContent>
           <Formik
             initialValues={{
+              titleDE: "",
+              titleCH: "",
               number: 0,
               description: ""
             }}
             validationSchema={ChapterSchema}
             onSubmit={(values, actions) => handleSave(values, actions)}
-            render={({ submitForm, values, isSubmitting, status }) => (
+            render={({submitForm, values, isSubmitting, status}) => (
               <Form>
                 <Field
                   type="number"
@@ -100,6 +104,36 @@ const NewChapter = ({ classes, parentChapter }: Props) => {
                 />
                 <Field
                   type="text"
+                  name="titleDE"
+                  label={t("chapter:newChapterTitleDE")}
+                  helperText={t(
+                    isSubChapter
+                      ? "chapter:newSubChapterTitleDEHelper"
+                      : "chapter:newChapterTitleDEHelper"
+                  )}
+                  component={TextField}
+                  margin="normal"
+                  fullWidth
+                  multiline
+                  rows="6"
+                />
+                <Field
+                  type="text"
+                  name="titleCH"
+                  label={t("chapter:newChapterTitleCH")}
+                  helperText={t(
+                    isSubChapter
+                      ? "chapter:newSubChapterTitleCHHelper"
+                      : "chapter:newChapterTitleCHHelper"
+                  )}
+                  component={TextField}
+                  margin="normal"
+                  fullWidth
+                  multiline
+                  rows="6"
+                />
+                <Field
+                  type="text"
                   name="description"
                   label={t("chapter:newChapterDescription")}
                   helperText={t(
@@ -115,7 +149,7 @@ const NewChapter = ({ classes, parentChapter }: Props) => {
                 />
 
                 {status && status.response && (
-                  <ErrorMessage error={status.response} />
+                  <ErrorMessage error={status.response}/>
                 )}
                 <Button
                   variant="contained"
@@ -134,4 +168,4 @@ const NewChapter = ({ classes, parentChapter }: Props) => {
   );
 };
 
-export default withStyles(styles, { withTheme: true })(NewChapter);
+export default withStyles(styles, {withTheme: true})(NewChapter);
