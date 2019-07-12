@@ -8,10 +8,10 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActionArea from "@material-ui/core/CardActionArea";
 
 import { styles } from "styles";
-import { wordGroups_wordGroups } from "queries/__generated__/wordGroups";
+import {wordGroups_wordGroups, wordGroups_wordGroups_edges_node} from "queries/__generated__/wordGroups";
 
 interface Props extends WithStyles<typeof styles> {
-    wordgroup: wordGroups_wordGroups;
+    wordgroup: wordGroups_wordGroups_edges_node;
 }
 
 const WordGroupCard = ({ classes, wordgroup }: Props) => {

@@ -129,7 +129,7 @@ export const UPDATE_EN_WORD = gql`
 
 export const UPDATE_FA_WORD = gql`
     mutation updateFAWord($input: UpdateWordFAInput!) {
-      updateFhWord(input: $input) {
+      updateFaWord(input: $input) {
         word {
           id
           text
