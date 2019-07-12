@@ -57,8 +57,7 @@ const NewChapter = ({classes, parentChapter}: Props) => {
           input: {chapterData: {...values, title, fkBelongsToId}}
         }
       });
-      // TODO: Need to go "back"
-      history.push("/chapters");
+      history.push(`/chapters/${parentChapter!.id}`);
     } catch (e) {
       actions.setSubmitting(false);
       actions.setStatus({response: `${t("serverError")}: ${e.message}`});
