@@ -35,7 +35,7 @@ class Auth {
     this.currentRole = undefined;
   }
 
-  getProfile(callback: Function) {
+  public getProfile(callback: Function) {
     if (this.accessToken != null) {
       this.auth0.client.userInfo(this.accessToken, (err, profile) => {
         if (profile) {
@@ -111,11 +111,13 @@ class Auth {
   public changeCurrentRole = (newRole: string): void => {
     if (this.allowedRoles.includes(newRole)) {
       this.currentRole = newRole;
+      /*
       const data: any = client.readQuery({ query: GET_SETTINGS });
       // TODO: Should reset the store smartly. but not that we end up in a loop!
       client.writeData({
         data: { settings: { ...data.settings, currentRole: newRole } }
       });
+      */
     } else {
       throw new Error(
         `Error: The role ${newRole} is not part of the allowed roles ${
@@ -177,10 +179,12 @@ class Auth {
       const allowedRoles = idTokenPayload[namespace]["x-allowed-roles"];
       const defaultRole = idTokenPayload[namespace]["x-default-role"];
 
+      console.log(allowedRoles);
       this.allowedRoles = allowedRoles;
 
       // Set current role to default role if not set or if not anymore part of roles
       if (!this.currentRole || !allowedRoles.includes(this.currentRole)) {
+        console.log(defaultRole);
         this.changeCurrentRole(defaultRole);
       }
     } catch (e) {

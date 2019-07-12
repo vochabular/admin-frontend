@@ -11,18 +11,21 @@ import CardContent from "@material-ui/core/CardContent";
 import { Divider, Button } from "@material-ui/core";
 
 import { styles } from "styles";
-import GeneralSection from "pages/Settings/SettingsSection/GeneralSection";
-import LanguagesSection from "pages/Settings/SettingsSection/LanguagesSection";
+import GeneralSection from "pages/Settings/SettingsSection/PersonalSection";
+import LanguagesSection from "pages/Settings/SettingsSection/AdministrativeSection";
 import NotificationSection from "pages/Settings/SettingsSection/NotificationSection";
 import i18next from "i18n";
 import { GET_SETTINGS, UPDATE_SETTINGS } from "queries/settings";
 import auth0Client from "auth/Auth";
 
 export const UserSetupSchema = Yup.object().shape({
-  userName: Yup.string()
-    .min(4, i18next.t("tooShort"))
-    .max(50, i18next.t("tooLong"))
-    .required(i18next.t("required")),
+  uiLanguage: Yup.string().required(i18next.t("required")),
+  firstname: Yup.string()
+    .required(i18next.t("required"))
+    .max(50, i18next.t("tooLong")),
+  lastname: Yup.string()
+    .required(i18next.t("required"))
+    .max(50, i18next.t("tooLong")),
   currentRole: Yup.string().required(i18next.t("required"))
 });
 

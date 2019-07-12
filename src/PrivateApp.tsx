@@ -13,6 +13,7 @@ import useToggle from "hooks/useToggle";
 import SetupWizard from "./pages/SetupWizard/SetupWizard";
 import { GET_SETTINGS } from "./queries/settings";
 import BusyOrErrorCard from "./components/BusyOrErrorCard";
+import auth0Client from "auth/Auth";
 
 // TODO: We should have the AppBar in a own component. However, that messes up the layout...
 // import AppBar from "../components/AppBar";
@@ -24,14 +25,21 @@ const PrivateApp: React.FunctionComponent<Props> = ({ classes }) => {
     false
   );
 
-  // TODO: Need to actually get the current role from auth0Client. Via a setting to force a rerender?
-  const accessibleRoutes = getAllAccessibleRoutes("admin", false);
+  const currentUserEmail =
+    auth0Client.userProfile && auth0Client.userProfile.name;
 
-  // TODO: Currently, we get the data from the local Apollo cache/state (notice the @client directive in the query!). Later we have to fetch this from the backend!
-  const { data, error, loading } = useQuery(GET_SETTINGS);
+  const { data, error, loading } = useQuery(GET_SETTINGS, {
+    variables: { username: currentUserEmail }
+  });
 
   const hasCompletedSetup =
-    data && data.settings && data.settings.hasCompletedSetup;
+    data && data.profile && data.profile.hasCompletedSetup;
+
+  // TODO: Need to actually get the current role from auth0Client. Via a setting to force a rerender?
+  const accessibleRoutes = getAllAccessibleRoutes(
+    auth0Client.getCurrentRole() || "admin",
+    false
+  );
 
   return (
     <div className={classes.root}>
@@ -46,10 +54,10 @@ const PrivateApp: React.FunctionComponent<Props> = ({ classes }) => {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
 
-        {loading || error ? (
+        {loading ? (
           <BusyOrErrorCard loading={loading} error={error} />
         ) : !hasCompletedSetup ? (
-          <SetupWizard />
+          <SetupWizard profile={data && data.profile} />
         ) : (
           <Switch>
             {accessibleRoutes.map((r: any) => (

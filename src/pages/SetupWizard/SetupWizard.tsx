@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Formik, FormikActions, Form } from "formik";
+import { useMutation } from "react-apollo-hooks";
 
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
@@ -10,13 +12,13 @@ import { Grid, Paper } from "@material-ui/core";
 import { withStyles, WithStyles } from "@material-ui/styles";
 
 import { styles } from "styles";
-import GeneralSection from "pages/Settings/SettingsSection/GeneralSection";
-import LanguagesSection from "pages/Settings/SettingsSection/LanguagesSection";
+import PersonalSection from "pages/Settings/SettingsSection/PersonalSection";
+import AdministrativeSection from "pages/Settings/SettingsSection/AdministrativeSection";
 import NotificationSection from "pages/Settings/SettingsSection/NotificationSection";
-import { useQuery, useMutation } from "react-apollo-hooks";
-import { GET_SETTINGS, UPDATE_SETTINGS } from "queries/settings";
-import { Formik, FormikActions, Form } from "formik";
+import { UPDATE_SETTINGS } from "queries/settings";
 import { UserSetupSchema } from "pages/Settings/Settings";
+import auth0Client from "auth/Auth";
+import i18n from "i18n";
 
 function getSteps() {
   return [
@@ -29,21 +31,33 @@ function getSteps() {
 function getStepContent(step: number) {
   switch (step) {
     case 0:
-      return GeneralSection;
+      return PersonalSection;
     case 1:
-      return LanguagesSection;
+      return AdministrativeSection;
     case 2:
       return NotificationSection;
     default:
-      return GeneralSection;
+      return PersonalSection;
   }
 }
 
-interface Props extends WithStyles<typeof styles> {}
+const defaultProfile = {
+  language: i18n.language,
+  username: "",
+  currentRole: "",
+  translatorLanguages: ""
+};
 
-function SetupWizard({ classes }: Props) {
+interface Props extends WithStyles<typeof styles> {
+  profile?: any;
+}
+
+function SetupWizard({ classes, profile = defaultProfile }: Props) {
   const { t } = useTranslation();
-  const { data } = useQuery(GET_SETTINGS);
+
+  const currentUserEmail =
+    auth0Client.userProfile && auth0Client.userProfile.name;
+
   const updateSettings = useMutation(UPDATE_SETTINGS);
 
   const [activeStep, setActiveStep] = useState(0);
@@ -53,9 +67,7 @@ function SetupWizard({ classes }: Props) {
   async function handleSubmit(values: any, actions: FormikActions<any>) {
     if (activeStep === steps.length - 1) {
       const updatedSettings = { ...values, hasCompletedSetup: true };
-      updateSettings({ variables: { settings: updatedSettings } });
-      // TODO: This then has to go to the server...
-      localStorage.setItem("settings", JSON.stringify(updatedSettings));
+      updateSettings({ variables: { input: updatedSettings } });
     } else {
       handleNext();
       actions.setSubmitting(false);
@@ -89,10 +101,10 @@ function SetupWizard({ classes }: Props) {
           {t("setupWizard:title")}
         </Typography>
         <Formik
-          initialValues={data && data.settings}
+          initialValues={profile}
           validationSchema={UserSetupSchema}
           onSubmit={(values, actions) => handleSubmit(values, actions)}
-          render={({ submitForm, values }) => (
+          render={({ submitForm, values, setFieldValue }) => (
             <Form>
               <Grid item xs={12}>
                 <Stepper activeStep={activeStep}>
@@ -106,7 +118,10 @@ function SetupWizard({ classes }: Props) {
                 </Stepper>
               </Grid>
               <Grid item xs={12}>
-                <ActiveStepContent values={values} />
+                <ActiveStepContent
+                  values={values}
+                  setFieldValue={setFieldValue}
+                />
               </Grid>
               <Grid item xs={12}>
                 <Button disabled={activeStep === 0} onClick={handleBack}>

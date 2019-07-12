@@ -1,14 +1,17 @@
 import gql from "graphql-tag";
 
 export const GET_SETTINGS = gql`
-  query getSettings {
-    settings @client {
-      userName
+  query profile($username: String) {
+    profile(username: $username) {
+      id
+      firstname
+      lastname
+      roles
+      currentRole
       language
       translatorLanguages
-      receiveEventNotifications
-      currentRole
-      hasCompletedSetup
+      eventNotifications
+      setupCompleted
     }
   }
 `;

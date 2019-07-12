@@ -13,7 +13,7 @@ interface Props extends WithStyles<typeof styles> {
   values?: any;
 }
 
-function LanguagesSection({ classes, values }: Props) {
+function AdministrativeSection({ classes, values }: Props) {
   const { t, i18n } = useTranslation();
 
   return (
@@ -61,4 +61,4 @@ function LanguagesSection({ classes, values }: Props) {
   );
 }
 
-export default withStyles(styles)(LanguagesSection);
+export default withStyles(styles)(AdministrativeSection);

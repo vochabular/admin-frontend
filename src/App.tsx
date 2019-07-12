@@ -5,6 +5,7 @@ import Routes from "./Routes";
 import auth0Client from "./auth/Auth";
 import "./App.css";
 import LoadingPage from "./pages/LoadingPage";
+import { Auth0Error, Auth0UserProfile } from "auth0-js";
 
 // Provide types for the component. You can also use interfaces, but a general rule of thumb is to use `type` for React Component Props and State...
 type IAppProps = {
@@ -28,6 +29,9 @@ class App extends Component<IAppProps, IAppState> {
     const { renewSession } = auth0Client;
     if (localStorage.getItem("isLoggedIn") === "true") {
       await renewSession();
+      auth0Client.getProfile((error: Auth0Error, profile: Auth0UserProfile) => {
+        return this.setState({ initialized: true });
+      });
     }
     this.setState({ initialized: true });
   }
