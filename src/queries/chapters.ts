@@ -101,8 +101,13 @@ export const UPSERT_CHAPTER = gql`
   mutation createChapter($input: IntroduceChapterInput!) {
     createChapter(input: $input) {
       chapter {
+        number
         titleCH
         titleDE
+        description
+        fkBelongsTo {
+          id
+        }
       }
     }
   }

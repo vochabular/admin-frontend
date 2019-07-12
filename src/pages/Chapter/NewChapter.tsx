@@ -19,6 +19,8 @@ import ErrorMessage from "components/ErrorMessage";
 import {ChapterInput} from "__generated__/globalTypes";
 import {chapterById_chapter_parentChapter} from "queries/__generated__/chapterById";
 import {Omit} from "types/genericHelperTypes";
+import { convertGlobalToDbId } from "helpers";
+
 
 export const ChapterSchema = Yup.object().shape({
   number: Yup.number()
@@ -48,16 +50,13 @@ const NewChapter = ({classes, parentChapter}: Props) => {
   ) {
     // TODO: This verbose stuff won't be necessary anymore as soon useMutation also returns a error/loading object.
     try {
-      const title = isSubChapter
-        ? `${parentChapter!.number}.${values.number}`
-        : values.number.toString();
-      const fkBelongsToId = isSubChapter ? parentChapter!.id : null;
+      values.fkBelongsToId = isSubChapter ? convertGlobalToDbId(parentChapter!.id) : null;
       await upsertChapter({
         variables: {
-          input: {chapterData: {...values, title, fkBelongsToId}}
+          input: {chapterData: {...values}}
         }
       });
-      history.push(`/chapters/${parentChapter!.id}`);
+      isSubChapter ? history.push(`/chapters/${parentChapter!.id}`) : history.push('/chapters');
     } catch (e) {
       actions.setSubmitting(false);
       actions.setStatus({response: `${t("serverError")}: ${e.message}`});
@@ -69,7 +68,7 @@ const NewChapter = ({classes, parentChapter}: Props) => {
       <Card className={classes.card}>
         <Typography variant="h3">
           {isSubChapter
-            ? t("chapter:newSubChapterTitle") + ` ${parentChapter!.number}`
+            ? t("chapter:newSubChapterTitle") + ` ${parentChapter!.number}: ${parentChapter!.titleDE} / ${parentChapter!.titleCH}`
             : t("chapter:newChapterTitle")}
         </Typography>
         <CardContent>
@@ -77,7 +76,7 @@ const NewChapter = ({classes, parentChapter}: Props) => {
             initialValues={{
               titleDE: "",
               titleCH: "",
-              number: 0,
+              number: 0, // TODO set to next number
               description: ""
             }}
             validationSchema={ChapterSchema}
