@@ -14,8 +14,14 @@ import SetupWizard from "./pages/SetupWizard/SetupWizard";
 import { GET_PROFILE } from "./queries/profile";
 import BusyOrErrorCard from "./components/BusyOrErrorCard";
 import auth0Client from "auth/Auth";
-import { UserParts } from "queries/__generated__/UserParts";
 import { profile } from "queries/__generated__/profile";
+import i18n from "i18n";
+import { useRouter } from "hooks/useRouter";
+import LoadingPage from "pages/LoadingPage";
+
+function isEmpty(obj: object) {
+  return !obj || Object.keys(obj).length === 0;
+}
 
 // TODO: We should have the AppBar in a own component. However, that messes up the layout...
 // import AppBar from "../components/AppBar";
@@ -34,7 +40,22 @@ const PrivateApp: React.FunctionComponent<Props> = ({ classes }) => {
     variables: { username: currentUserEmail }
   });
 
+  /**
+   * Need this hack to "reload", since upon the first request by the user, django has not created yet the user and the profile.
+   * So we reload the page after a while, hoping that the user was created...
+   */
+  if (!loading && data && isEmpty(data)) {
+    setTimeout(function() {
+      window.location.reload();
+    }, 1000);
+    return <LoadingPage />;
+  }
   const hasCompletedSetup = data && data.profile && data.profile.setupCompleted;
+
+  // Set language to default language...
+  if (data && data.profile) {
+    i18n.changeLanguage(data.profile.language.toLowerCase());
+  }
 
   // TODO: Need to actually get the current role from auth0Client. Via a setting to force a rerender?
   const accessibleRoutes = getAllAccessibleRoutes(
