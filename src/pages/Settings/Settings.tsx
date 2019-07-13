@@ -17,9 +17,12 @@ import NotificationSection from "pages/Settings/SettingsSection/NotificationSect
 import i18next from "i18n";
 import { GET_PROFILE, UPDATE_PROFILE } from "queries/profile";
 import auth0Client from "auth/Auth";
+import BusyOrErrorCard from "components/BusyOrErrorCard";
+import { profile_profile, profile } from "queries/__generated__/profile";
+import { updateProfile } from "queries/__generated__/updateProfile";
 
 export const UserSetupSchema = Yup.object().shape({
-  uiLanguage: Yup.string().required(i18next.t("required")),
+  language: Yup.string().required(i18next.t("required")),
   firstname: Yup.string()
     .required(i18next.t("required"))
     .max(50, i18next.t("tooLong")),
@@ -32,52 +35,77 @@ export const UserSetupSchema = Yup.object().shape({
 interface Props extends WithStyles<typeof styles> {}
 
 const Settings: React.FunctionComponent<Props> = ({ classes }) => {
+  const username = auth0Client.userProfile && auth0Client.userProfile.email;
+
   const { t, i18n } = useTranslation();
-  const { data } = useQuery(GET_PROFILE);
-  const updateSettings = useMutation(UPDATE_PROFILE);
+  const { data, loading, error } = useQuery<profile>(GET_PROFILE, {
+    variables: {
+      username: username
+    }
+  });
+
+  const mutateProfile = useMutation<updateProfile>(UPDATE_PROFILE);
 
   // Here we would now update the backend settings...
-  function handleSave(values: any, actions: FormikActions<any>) {
+  async function handleSave(
+    values: profile_profile,
+    actions: FormikActions<any>
+  ) {
     const newSettings = { ...values };
-    updateSettings({ variables: { settings: newSettings } });
-    // TODO: This then has to go to the server...
-
     auth0Client.changeCurrentRole(newSettings.currentRole);
     i18n.changeLanguage(newSettings.language);
-    localStorage.setItem("settings", JSON.stringify(newSettings));
+    const { __typename, ...profile } = newSettings;
+    await mutateProfile({
+      variables: { profile: { username, profileData: profile } }
+    });
     actions.setSubmitting(false);
+  }
+
+  //TODO: Hack until backend has changed type...
+  const initialProfile = data && data.profile && { ...data.profile };
+  if (initialProfile) {
+    // @ts-ignore
+    initialProfile.language = initialProfile.language.toLowerCase();
+    // @ts-ignore
+    initialProfile.translatorLanguages = initialProfile.translatorLanguages.split(
+      ","
+    );
   }
 
   return (
     <React.Fragment>
       <Typography variant="h3">{t("settings:title")}</Typography>
-      <Card>
-        <CardContent>
-          <Formik
-            initialValues={data && data.settings}
-            validationSchema={UserSetupSchema}
-            onSubmit={(values, actions) => handleSave(values, actions)}
-            render={({ submitForm, values }) => (
-              <Form>
-                <React.Fragment>
-                  <GeneralSection values={values} />
-                  <Divider />
-                  <LanguagesSection values={values} />
-                  <Divider />
-                  <NotificationSection values={values} />
-                </React.Fragment>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={submitForm}
-                >
-                  {t("save")}
-                </Button>
-              </Form>
-            )}
-          />
-        </CardContent>
-      </Card>
+
+      <BusyOrErrorCard loading={loading} error={error} />
+      {initialProfile && (
+        <Card>
+          <CardContent>
+            <Formik
+              initialValues={initialProfile}
+              validationSchema={UserSetupSchema}
+              onSubmit={(values, actions) => handleSave(values, actions)}
+              render={({ submitForm, values }) => (
+                <Form>
+                  <React.Fragment>
+                    <GeneralSection values={values} />
+                    <Divider />
+                    <LanguagesSection values={values} />
+                    <Divider />
+                    <NotificationSection values={values} />
+                  </React.Fragment>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={submitForm}
+                  >
+                    {t("save")}
+                  </Button>
+                </Form>
+              )}
+            />
+          </CardContent>
+        </Card>
+      )}
     </React.Fragment>
   );
 };

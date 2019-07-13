@@ -12,9 +12,10 @@ import {
 import { withStyles, WithStyles } from "@material-ui/styles";
 
 import { styles } from "styles";
+import { profile_profile } from "queries/__generated__/profile";
 
 interface Props extends WithStyles<typeof styles> {
-  values: any;
+  values: profile_profile;
 }
 
 function NotificationSection({ classes, values }: Props) {
@@ -27,9 +28,7 @@ function NotificationSection({ classes, values }: Props) {
         <FormGroup>
           <FormControlLabel
             label={t("setupWizard:receiveEventNotifications")}
-            control={
-              <Checkbox disabled={true} checked={values.eventNotifications} />
-            }
+            control={<Checkbox checked={values.eventNotifications} />}
           />
         </FormGroup>
       </FormControl>

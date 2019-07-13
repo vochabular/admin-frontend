@@ -14,6 +14,7 @@ import { withStyles, WithStyles } from "@material-ui/styles";
 import { styles } from "styles";
 import auth0Client from "auth/Auth";
 import i18n from "i18n";
+import { profile_profile } from "queries/__generated__/profile";
 
 const UiLanguageField = (props: TextFieldProps) => (
   <MuiTextField
@@ -38,7 +39,7 @@ const DefaultRoleField = (props: TextFieldProps) => (
 );
 
 interface Props extends WithStyles<typeof styles> {
-  values?: any;
+  values?: profile_profile;
   setFieldValue?: CallableFunction;
 }
 
@@ -47,7 +48,7 @@ function PersonalSection({ classes, values, setFieldValue }: Props) {
 
   const roles = auth0Client.getAllowedRoles();
   return (
-    <Grid item sm={6}>
+    <Grid>
       <Field
         type="text"
         name="language"

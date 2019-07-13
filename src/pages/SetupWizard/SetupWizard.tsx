@@ -18,6 +18,8 @@ import NotificationSection from "pages/Settings/SettingsSection/NotificationSect
 import { UPDATE_PROFILE } from "queries/profile";
 import { UserSetupSchema } from "pages/Settings/Settings";
 import { profile_profile } from "queries/__generated__/profile";
+import auth0Client from "auth/Auth";
+import { updateProfile } from "queries/__generated__/updateProfile";
 
 function getSteps() {
   return [
@@ -46,23 +48,46 @@ interface Props extends WithStyles<typeof styles> {
 
 function SetupWizard({ classes, profile }: Props) {
   const { t } = useTranslation();
-  const updateProfile = useMutation(UPDATE_PROFILE);
+  const mutateProfile = useMutation<updateProfile>(UPDATE_PROFILE);
 
   const [activeStep, setActiveStep] = useState(0);
 
   const steps = getSteps();
 
-  async function handleSubmit(values: any, actions: FormikActions<any>) {
+  async function handleSubmit(
+    values: profile_profile,
+    actions: FormikActions<any>
+  ) {
     if (activeStep === steps.length - 1) {
-      const updatedProfile = { ...values, hasCompletedSetup: true };
-      updateProfile({ variables: { input: updatedProfile } });
+      const updatedProfile = {
+        firstname: values.firstname,
+        lastname: values.lastname,
+        roles: auth0Client.getAllowedRoles().join(","),
+        currentRole: auth0Client.getCurrentRole(),
+        language: values.language,
+        eventNotifications: values.eventNotifications,
+        translatorLanguages:
+          // @ts-ignore
+          values.translatorLanguages && values.translatorLanguages.join(","),
+        setupCompleted: true
+      };
+      const payload = {
+        profile: {
+          username: auth0Client.userProfile && auth0Client.userProfile.email,
+          profileData: updatedProfile
+        }
+      };
+      mutateProfile({
+        variables: payload
+      });
     } else {
-      handleNext();
+      handleNext(actions.validateForm);
       actions.setSubmitting(false);
     }
   }
 
-  function handleNext() {
+  // TODO(df): Need to validate the form on each step!
+  function handleNext(validateForm: CallableFunction) {
     if (activeStep === steps.length - 1) {
       return null;
     }
@@ -80,6 +105,8 @@ function SetupWizard({ classes, profile }: Props) {
   const initialProfile = { ...profile };
   // @ts-ignore
   initialProfile.language = profile.language.toLowerCase();
+  // @ts-ignore
+  initialProfile.translatorLanguages = profile.translatorLanguages.split(",");
 
   return (
     <Paper className={classes.card}>
@@ -97,7 +124,7 @@ function SetupWizard({ classes, profile }: Props) {
           initialValues={initialProfile}
           validationSchema={UserSetupSchema}
           onSubmit={(values, actions) => handleSubmit(values, actions)}
-          render={({ submitForm, values, setFieldValue }) => (
+          render={({ submitForm, values, setFieldValue, validateForm }) => (
             <Form>
               <Grid item xs={12}>
                 <Stepper activeStep={activeStep}>
@@ -124,7 +151,9 @@ function SetupWizard({ classes, profile }: Props) {
                   variant="contained"
                   color="primary"
                   onClick={
-                    activeStep === steps.length - 1 ? submitForm : handleNext
+                    activeStep === steps.length - 1
+                      ? submitForm
+                      : () => handleNext(validateForm)
                   }
                 >
                   {activeStep === steps.length - 1 ? t("finish") : t("next")}

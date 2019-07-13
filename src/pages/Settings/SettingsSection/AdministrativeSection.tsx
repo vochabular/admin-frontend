@@ -1,62 +1,54 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import { MenuItem, Grid, FormControlLabel, Checkbox } from "@material-ui/core";
+import {
+  Grid,
+  FormControlLabel,
+  Checkbox,
+  FormLabel,
+  FormControl
+} from "@material-ui/core";
 import { withStyles, WithStyles } from "@material-ui/styles";
 
 import { styles } from "styles";
 import configurationJSON from "configuration.json";
-import { Field, FieldArray } from "formik";
-import { TextField } from "formik-material-ui";
+import { FieldArray } from "formik";
+import { profile_profile } from "queries/__generated__/profile";
 
 interface Props extends WithStyles<typeof styles> {
-  values?: any;
+  values: profile_profile;
 }
 
 function AdministrativeSection({ classes, values }: Props) {
-  const { t, i18n } = useTranslation();
-
+  const { t } = useTranslation();
   return (
-    <Grid item sm={6}>
-      <Field
-        type="text"
-        name="language"
-        label={t("settings:uiLanguage")}
-        select
-        margin="normal"
-        component={TextField}
-        fullWidth
-      >
-        {Object.keys(i18n.options.resources || {}).map((l: string) => (
-          <MenuItem key={l} value={l}>
-            {l}
-          </MenuItem>
-        ))}
-      </Field>
-
-      <FieldArray
-        name="translatorLanguages"
-        render={arrayHelpers =>
-          configurationJSON.translatorLanguages.map(l => (
-            <FormControlLabel
-              key={l.code}
-              label={t(l.label)}
-              control={
-                <Checkbox
-                  checked={values.translatorLanguages.includes(l.code)}
-                  onChange={e => {
-                    if (e.target.checked) arrayHelpers.push(l.code);
-                    else {
-                      const idx = values.translatorLanguages.indexOf(l.code);
-                      arrayHelpers.remove(idx);
-                    }
-                  }}
-                />
-              }
-            />
-          ))
-        }
-      />
+    <Grid item>
+      <FormControl>
+        <FormLabel>{t("setupWizard:translatorLanguages")}</FormLabel>
+        <FieldArray
+          name="translatorLanguages"
+          render={arrayHelpers =>
+            configurationJSON.translatorLanguages.map(l => (
+              <FormControlLabel
+                key={l.code}
+                label={t(l.label)}
+                control={
+                  <Checkbox
+                    checked={values.translatorLanguages.includes(l.code)}
+                    onChange={e => {
+                      if (e.target.checked) arrayHelpers.push(l.code);
+                      else {
+                        const idx = values.translatorLanguages.indexOf(l.code);
+                        arrayHelpers.remove(idx);
+                      }
+                    }}
+                  />
+                }
+              />
+            ))
+          }
+        />
+      </FormControl>
     </Grid>
   );
 }

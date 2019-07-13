@@ -3,7 +3,6 @@ import gql from "graphql-tag";
 export const GET_PROFILE = gql`
   query profile($username: String) {
     profile(username: $username) {
-      id
       firstname
       lastname
       roles
@@ -20,7 +19,6 @@ export const UPDATE_PROFILE = gql`
   mutation updateProfile($profile: UpdateProfileInput!) {
     updateProfile(input: $profile) {
       profile {
-        id
         firstname
         lastname
         roles
