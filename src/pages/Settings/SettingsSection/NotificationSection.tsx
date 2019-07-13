@@ -13,7 +13,7 @@ import {
 import { withStyles, WithStyles } from "@material-ui/styles";
 
 import { styles } from "styles";
-import { GET_SETTINGS, UPDATE_SETTINGS } from "queries/settings";
+import { GET_PROFILE, UPDATE_PROFILE } from "queries/profile";
 
 interface Props extends WithStyles<typeof styles> {
   values: any;
@@ -21,13 +21,13 @@ interface Props extends WithStyles<typeof styles> {
 
 function GeneralSection({ classes }: Props) {
   const { t } = useTranslation();
-  const { data } = useQuery(GET_SETTINGS);
-  const updateSettings = useMutation(UPDATE_SETTINGS);
+  const { data } = useQuery(GET_PROFILE);
+  const updateProfile = useMutation(UPDATE_PROFILE);
 
   const handleCheckboxChange = (name: string) => (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    updateSettings({ variables: { [name]: event.target.value } });
+    updateProfile({ variables: { [name]: event.target.value } });
   };
 
   return (

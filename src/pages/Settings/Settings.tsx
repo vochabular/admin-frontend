@@ -15,7 +15,7 @@ import GeneralSection from "pages/Settings/SettingsSection/PersonalSection";
 import LanguagesSection from "pages/Settings/SettingsSection/AdministrativeSection";
 import NotificationSection from "pages/Settings/SettingsSection/NotificationSection";
 import i18next from "i18n";
-import { GET_SETTINGS, UPDATE_SETTINGS } from "queries/settings";
+import { GET_PROFILE, UPDATE_PROFILE } from "queries/profile";
 import auth0Client from "auth/Auth";
 
 export const UserSetupSchema = Yup.object().shape({
@@ -33,8 +33,8 @@ interface Props extends WithStyles<typeof styles> {}
 
 const Settings: React.FunctionComponent<Props> = ({ classes }) => {
   const { t, i18n } = useTranslation();
-  const { data } = useQuery(GET_SETTINGS);
-  const updateSettings = useMutation(UPDATE_SETTINGS);
+  const { data } = useQuery(GET_PROFILE);
+  const updateSettings = useMutation(UPDATE_PROFILE);
 
   // Here we would now update the backend settings...
   function handleSave(values: any, actions: FormikActions<any>) {

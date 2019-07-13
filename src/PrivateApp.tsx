@@ -11,9 +11,11 @@ import AppBar from "components/AppBar";
 import Drawer from "components/Drawer";
 import useToggle from "hooks/useToggle";
 import SetupWizard from "./pages/SetupWizard/SetupWizard";
-import { GET_SETTINGS } from "./queries/settings";
+import { GET_PROFILE } from "./queries/profile";
 import BusyOrErrorCard from "./components/BusyOrErrorCard";
 import auth0Client from "auth/Auth";
+import { UserParts } from "queries/__generated__/UserParts";
+import { profile } from "queries/__generated__/profile";
 
 // TODO: We should have the AppBar in a own component. However, that messes up the layout...
 // import AppBar from "../components/AppBar";
@@ -28,12 +30,11 @@ const PrivateApp: React.FunctionComponent<Props> = ({ classes }) => {
   const currentUserEmail =
     auth0Client.userProfile && auth0Client.userProfile.name;
 
-  const { data, error, loading } = useQuery(GET_SETTINGS, {
+  const { data, error, loading } = useQuery<profile>(GET_PROFILE, {
     variables: { username: currentUserEmail }
   });
 
-  const hasCompletedSetup =
-    data && data.profile && data.profile.hasCompletedSetup;
+  const hasCompletedSetup = data && data.profile && data.profile.setupCompleted;
 
   // TODO: Need to actually get the current role from auth0Client. Via a setting to force a rerender?
   const accessibleRoutes = getAllAccessibleRoutes(
@@ -57,7 +58,7 @@ const PrivateApp: React.FunctionComponent<Props> = ({ classes }) => {
         {loading ? (
           <BusyOrErrorCard loading={loading} error={error} />
         ) : !hasCompletedSetup ? (
-          <SetupWizard profile={data && data.profile} />
+          data && <SetupWizard profile={data.profile!} />
         ) : (
           <Switch>
             {accessibleRoutes.map((r: any) => (

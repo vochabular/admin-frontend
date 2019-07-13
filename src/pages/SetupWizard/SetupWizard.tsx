@@ -15,10 +15,11 @@ import { styles } from "styles";
 import PersonalSection from "pages/Settings/SettingsSection/PersonalSection";
 import AdministrativeSection from "pages/Settings/SettingsSection/AdministrativeSection";
 import NotificationSection from "pages/Settings/SettingsSection/NotificationSection";
-import { UPDATE_SETTINGS } from "queries/settings";
+import { UPDATE_PROFILE } from "queries/profile";
 import { UserSetupSchema } from "pages/Settings/Settings";
 import auth0Client from "auth/Auth";
 import i18n from "i18n";
+import { profile_profile } from "queries/__generated__/profile";
 
 function getSteps() {
   return [
@@ -49,16 +50,16 @@ const defaultProfile = {
 };
 
 interface Props extends WithStyles<typeof styles> {
-  profile?: any;
+  profile: profile_profile;
 }
 
-function SetupWizard({ classes, profile = defaultProfile }: Props) {
+function SetupWizard({ classes, profile }: Props) {
   const { t } = useTranslation();
 
   const currentUserEmail =
     auth0Client.userProfile && auth0Client.userProfile.name;
 
-  const updateSettings = useMutation(UPDATE_SETTINGS);
+  const updateProfile = useMutation(UPDATE_PROFILE);
 
   const [activeStep, setActiveStep] = useState(0);
 
@@ -66,8 +67,8 @@ function SetupWizard({ classes, profile = defaultProfile }: Props) {
 
   async function handleSubmit(values: any, actions: FormikActions<any>) {
     if (activeStep === steps.length - 1) {
-      const updatedSettings = { ...values, hasCompletedSetup: true };
-      updateSettings({ variables: { input: updatedSettings } });
+      const updatedProfile = { ...values, hasCompletedSetup: true };
+      updateProfile({ variables: { input: updatedProfile } });
     } else {
       handleNext();
       actions.setSubmitting(false);
@@ -87,6 +88,8 @@ function SetupWizard({ classes, profile = defaultProfile }: Props) {
 
   // Note here: We are getting a "dynamic" component
   const ActiveStepContent: React.ElementType = getStepContent(activeStep);
+
+  console.log(profile);
 
   return (
     <Paper className={classes.card}>
