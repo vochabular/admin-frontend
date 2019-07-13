@@ -3,7 +3,6 @@ import auth0, { Auth0DecodedHash, Auth0UserProfile } from "auth0-js";
 import client from "ApolloClient";
 import { AUTH_CONFIG } from "./auth0-variables";
 import history from "../myHistory";
-import { GET_SETTINGS } from "queries/settings";
 
 /**
  * This class provides methods for authorization with OAuth provider "Auth0"
@@ -178,13 +177,10 @@ class Auth {
       const namespace = "https://admin.vochabular.ch/jwt/claims";
       const allowedRoles = idTokenPayload[namespace]["x-allowed-roles"];
       const defaultRole = idTokenPayload[namespace]["x-default-role"];
-
-      console.log(allowedRoles);
       this.allowedRoles = allowedRoles;
 
       // Set current role to default role if not set or if not anymore part of roles
       if (!this.currentRole || !allowedRoles.includes(this.currentRole)) {
-        console.log(defaultRole);
         this.changeCurrentRole(defaultRole);
       }
     } catch (e) {
