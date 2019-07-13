@@ -16,7 +16,6 @@ import BusyOrErrorCard from "./components/BusyOrErrorCard";
 import auth0Client from "auth/Auth";
 import { profile } from "queries/__generated__/profile";
 import i18n from "i18n";
-import { useRouter } from "hooks/useRouter";
 import LoadingPage from "pages/LoadingPage";
 
 function isEmpty(obj: object) {

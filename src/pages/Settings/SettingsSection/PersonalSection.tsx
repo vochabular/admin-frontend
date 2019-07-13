@@ -8,7 +8,7 @@ import {
 } from "formik-material-ui";
 
 import MuiTextField from "@material-ui/core/TextField";
-import { Grid, MenuItem, FormControl, InputLabel } from "@material-ui/core";
+import { Grid, MenuItem } from "@material-ui/core";
 import { withStyles, WithStyles } from "@material-ui/styles";
 
 import { styles } from "styles";
@@ -38,8 +38,6 @@ const DefaultRoleField = (props: TextFieldProps) => (
 );
 
 interface Props extends WithStyles<typeof styles> {
-  settings?: any;
-  setSettings?: CallableFunction;
   values?: any;
   setFieldValue?: CallableFunction;
 }

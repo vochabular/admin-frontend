@@ -1,6 +1,5 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useQuery, useMutation } from "react-apollo-hooks";
 
 import {
   FormControl,
@@ -13,22 +12,13 @@ import {
 import { withStyles, WithStyles } from "@material-ui/styles";
 
 import { styles } from "styles";
-import { GET_PROFILE, UPDATE_PROFILE } from "queries/profile";
 
 interface Props extends WithStyles<typeof styles> {
   values: any;
 }
 
-function GeneralSection({ classes }: Props) {
+function NotificationSection({ classes, values }: Props) {
   const { t } = useTranslation();
-  const { data } = useQuery(GET_PROFILE);
-  const updateProfile = useMutation(UPDATE_PROFILE);
-
-  const handleCheckboxChange = (name: string) => (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    updateProfile({ variables: { [name]: event.target.value } });
-  };
 
   return (
     <Grid>
@@ -36,15 +26,10 @@ function GeneralSection({ classes }: Props) {
         <FormLabel>{t("setupWizard:eventNotificationsTitle")}</FormLabel>
         <FormGroup>
           <FormControlLabel
-            control={
-              <Checkbox
-                disabled={true} // Disable for now..
-                checked={data.settings.receiveEventNotifications}
-                onChange={handleCheckboxChange("receiveEventNotifications")}
-                value="eventNotifications"
-              />
-            }
             label={t("setupWizard:receiveEventNotifications")}
+            control={
+              <Checkbox disabled={true} checked={values.eventNotifications} />
+            }
           />
         </FormGroup>
       </FormControl>
@@ -52,4 +37,4 @@ function GeneralSection({ classes }: Props) {
   );
 }
 
-export default withStyles(styles)(GeneralSection);
+export default withStyles(styles)(NotificationSection);

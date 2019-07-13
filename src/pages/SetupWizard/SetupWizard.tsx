@@ -17,8 +17,6 @@ import AdministrativeSection from "pages/Settings/SettingsSection/Administrative
 import NotificationSection from "pages/Settings/SettingsSection/NotificationSection";
 import { UPDATE_PROFILE } from "queries/profile";
 import { UserSetupSchema } from "pages/Settings/Settings";
-import auth0Client from "auth/Auth";
-import i18n from "i18n";
 import { profile_profile } from "queries/__generated__/profile";
 
 function getSteps() {
@@ -42,23 +40,12 @@ function getStepContent(step: number) {
   }
 }
 
-const defaultProfile = {
-  language: i18n.language,
-  username: "",
-  currentRole: "",
-  translatorLanguages: ""
-};
-
 interface Props extends WithStyles<typeof styles> {
   profile: profile_profile;
 }
 
 function SetupWizard({ classes, profile }: Props) {
   const { t } = useTranslation();
-
-  const currentUserEmail =
-    auth0Client.userProfile && auth0Client.userProfile.name;
-
   const updateProfile = useMutation(UPDATE_PROFILE);
 
   const [activeStep, setActiveStep] = useState(0);
@@ -89,7 +76,10 @@ function SetupWizard({ classes, profile }: Props) {
   // Note here: We are getting a "dynamic" component
   const ActiveStepContent: React.ElementType = getStepContent(activeStep);
 
-  console.log(profile);
+  //TODO: Hack until backend has changed type...
+  const initialProfile = { ...profile };
+  // @ts-ignore
+  initialProfile.language = profile.language.toLowerCase();
 
   return (
     <Paper className={classes.card}>
@@ -104,7 +94,7 @@ function SetupWizard({ classes, profile }: Props) {
           {t("setupWizard:title")}
         </Typography>
         <Formik
-          initialValues={profile}
+          initialValues={initialProfile}
           validationSchema={UserSetupSchema}
           onSubmit={(values, actions) => handleSubmit(values, actions)}
           render={({ submitForm, values, setFieldValue }) => (
@@ -134,7 +124,7 @@ function SetupWizard({ classes, profile }: Props) {
                   variant="contained"
                   color="primary"
                   onClick={
-                    activeStep === steps.length - 1 ? submitForm : submitForm
+                    activeStep === steps.length - 1 ? submitForm : handleNext
                   }
                 >
                   {activeStep === steps.length - 1 ? t("finish") : t("next")}
