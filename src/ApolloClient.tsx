@@ -8,6 +8,10 @@ import auth0Client from "./auth/Auth";
 import i18n from "./i18n";
 import { typeDefs, resolvers } from "./queries/resolvers";
 
+/**
+ * Here you can define default options that are applied to all queries, mutations.
+ * Note: We currently disable "cached" queries to avoid race-cond, bugs...
+ */
 const defaultOptions: DefaultOptions = {
   watchQuery: {
     fetchPolicy: "network-only",
