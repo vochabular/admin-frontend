@@ -13,7 +13,7 @@ export enum CommentContext {
   A = "A",
   C = "C",
   I = "I",
-  T = "T",
+  T = "T"
 }
 
 /**
@@ -24,7 +24,7 @@ export enum ComponentState {
   F = "F",
   R = "R",
   T = "T",
-  U = "U",
+  U = "U"
 }
 
 /**
@@ -32,7 +32,7 @@ export enum ComponentState {
  */
 export enum ProfileLanguage {
   DE = "DE",
-  EN = "EN",
+  EN = "EN"
 }
 
 export interface ChapterInput {
@@ -64,6 +64,64 @@ export interface UpdateProfileInput {
   username?: string | null;
   profileData?: ProfileInput | null;
   clientMutationId?: string | null;
+}
+
+export interface IntroduceWordGroupInput {
+  wordGroupData?: WordGroupInput | null;
+  clientMutationId?: string | null;
+}
+
+export interface IntroduceWordInput {
+  clientMutationId?: string | null;
+}
+
+export interface TranslatedWordInput {
+  text: string;
+  audio?: string | null;
+  exampleSentence?: string | null;
+}
+
+export interface UpdateWordARInput {
+  wordId?: string | null;
+  wordData?: TranslatedWordInput | null;
+  clientMutationId?: string | null;
+}
+
+export interface UpdateWordCHInput {
+  wordId?: string | null;
+  wordData?: TranslatedWordInput | null;
+  clientMutationId?: string | null;
+}
+
+export interface UpdateWordDEInput {
+  wordId?: string | null;
+  wordData?: TranslatedWordInput | null;
+  clientMutationId?: string | null;
+}
+
+export interface UpdateWordENInput {
+  wordId?: string | null;
+  wordData?: TranslatedWordInput | null;
+  clientMutationId?: string | null;
+}
+
+export interface UpdateWordFAInput {
+  wordId?: string | null;
+  wordData?: TranslatedWordInput | null;
+  clientMutationId?: string | null;
+}
+
+export interface UpdateWordGroupInput {
+  wordGroupId?: string | null;
+  wordGroupData?: WordGroupInput | null;
+  clientMutationId?: string | null;
+}
+
+export interface WordGroupInput {
+  fkChapterId: string;
+  titleDe: string;
+  titleCh: string;
+  words?: (string | null)[] | null;
 }
 
 //==============================================================

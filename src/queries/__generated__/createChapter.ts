@@ -22,6 +22,7 @@ export interface createChapter_createChapter_chapter {
   titleCH: string;
   titleDE: string;
   description: string;
+  languages: string;
   fkBelongsTo: createChapter_createChapter_chapter_fkBelongsTo | null;
 }
 

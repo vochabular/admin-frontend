@@ -1,11 +1,15 @@
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import SettingsIcon from "@material-ui/icons/Settings";
 import FormatListIcon from "@material-ui/icons/FormatListNumbered";
+import FormatListBulleted from "@material-ui/icons/FormatListBulleted";
 
 import Dashboard from "pages/Dashboard/Dashboard";
 import Settings from "pages/Settings/Settings";
 import Chapters from "./pages/Chapter/Chapters";
 import Chapter from "./pages/Chapter/Chapter";
+import WordGroups from "./pages/WordGroup/WordGroups"
+import WordGroup from "./pages/WordGroup/WordGroup"
+import ChapterWordGroups from "./pages/WordGroup/ChapterWordGroups";
 
 /**
  * Roles defined as constants for reuse...
@@ -60,6 +64,29 @@ export const mainRoutes: IPrivateRouteConfig[] = [
     label: "chapters",
     icon: FormatListIcon,
     path: "/chapters"
+  },
+  {
+    showInDrawer: true,
+    allowedRoles: allUsers,
+    component: WordGroups,
+    exact: true,
+    label: "voCHi Liste",
+    icon: FormatListBulleted,
+    path: "/wordgroups"
+  },
+  {
+    showInDrawer: false,
+    allowedRoles: allUsers,
+    component: ChapterWordGroups,
+    exact: true,
+    path: "/wordgroups/chapter/:id"
+  },
+  {
+    showInDrawer: false,
+    allowedRoles: allUsers,
+    component: WordGroup,
+    exact: true,
+    path: "/wordgroups/:id"
   }
 ];
 
