@@ -2,49 +2,88 @@ import gql from "graphql-tag";
 
 export const GET_WORDGROUPS = gql`
   query wordGroups {
-      wordGroups {
-        edges {
-          node {
+  wordGroups {
+    edges {
+      node {
+        id
+        titleCh
+        titleDe
+        fkChapter {
+          id
+        }
+        words {
+          id
+          wordch {
             id
-            titleCh
-            titleDe
-            fkChapter {
-              id
-            }
+            audio
+            text
+            exampleSentence
+          }
+          wordde {
+            id
+            audio
+            text
+            exampleSentence
+          }
+          worden {
+            id
+            audio
+            text
+            exampleSentence
+          }
+          wordar {
+            id
+            audio
+            text
+            exampleSentence
+          }
+          wordfa {
+            id
+            audio
+            text
+            exampleSentence
           }
         }
       }
     }
+  }
+}
 `;
 
 export const GET_WORDGROUP_BY_ID = gql`
-  query wordGroup($id: ID) {
+  query wordGroupById($id: ID) {
   wordGroup(id: $id) {
     id
     titleCh
     titleDe
     words {
+      id
       wordch {
+        id
         exampleSentence
         text
         audio
       }
       wordde {
+        id
         exampleSentence
         text
         audio
       }
       worden {
+        id
         exampleSentence
         text
         audio
       }
       wordar {
+        id
         exampleSentence
         text
         audio
       }
       wordfa {
+        id
         exampleSentence
         text
         audio

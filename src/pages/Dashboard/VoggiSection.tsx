@@ -34,7 +34,7 @@ const VoggiSection: React.FunctionComponent<Props> = ({classes}) => {
       data.wordGroups.edges.map((w: wordGroups_wordGroups_edges) => (
         w && w.node ? (
           <Grid item key={w.node.id}>
-            <WordGroupCard wordgroup={w.node}/>
+            <WordGroupCard wordGroup={w.node}/>
           </Grid>
         ) : null
       ))}

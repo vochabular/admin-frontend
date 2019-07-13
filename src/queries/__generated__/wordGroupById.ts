@@ -3,10 +3,10 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: wordGroup
+// GraphQL query operation: wordGroupById
 // ====================================================
 
-export interface wordGroup_wordGroup_words_wordch {
+export interface wordGroupById_wordGroup_words_wordch {
   __typename: "WordCHType";
   id: string;
   exampleSentence: string | null;
@@ -14,7 +14,7 @@ export interface wordGroup_wordGroup_words_wordch {
   audio: string | null;
 }
 
-export interface wordGroup_wordGroup_words_wordde {
+export interface wordGroupById_wordGroup_words_wordde {
   __typename: "WordDEType";
   id: string;
   exampleSentence: string | null;
@@ -22,7 +22,7 @@ export interface wordGroup_wordGroup_words_wordde {
   audio: string | null;
 }
 
-export interface wordGroup_wordGroup_words_worden {
+export interface wordGroupById_wordGroup_words_worden {
   __typename: "WordENType";
   id: string;
   exampleSentence: string | null;
@@ -30,7 +30,7 @@ export interface wordGroup_wordGroup_words_worden {
   audio: string | null;
 }
 
-export interface wordGroup_wordGroup_words_wordar {
+export interface wordGroupById_wordGroup_words_wordar {
   __typename: "WordARType";
   id: string;
   exampleSentence: string | null;
@@ -38,7 +38,7 @@ export interface wordGroup_wordGroup_words_wordar {
   audio: string | null;
 }
 
-export interface wordGroup_wordGroup_words_wordfa {
+export interface wordGroupById_wordGroup_words_wordfa {
   __typename: "WordFAType";
   id: string;
   exampleSentence: string | null;
@@ -46,17 +46,17 @@ export interface wordGroup_wordGroup_words_wordfa {
   audio: string | null;
 }
 
-export interface wordGroup_wordGroup_words {
+export interface wordGroupById_wordGroup_words {
   __typename: "WordType";
   id: string;
-  wordch: wordGroup_wordGroup_words_wordch | null;
-  wordde: wordGroup_wordGroup_words_wordde | null;
-  worden: wordGroup_wordGroup_words_worden | null;
-  wordar: wordGroup_wordGroup_words_wordar | null;
-  wordfa: wordGroup_wordGroup_words_wordfa | null;
+  wordch: wordGroupById_wordGroup_words_wordch | null;
+  wordde: wordGroupById_wordGroup_words_wordde | null;
+  worden: wordGroupById_wordGroup_words_worden | null;
+  wordar: wordGroupById_wordGroup_words_wordar | null;
+  wordfa: wordGroupById_wordGroup_words_wordfa | null;
 }
 
-export interface wordGroup_wordGroup {
+export interface wordGroupById_wordGroup {
   __typename: "WordGroupType";
   /**
    * The ID of the object.
@@ -64,13 +64,13 @@ export interface wordGroup_wordGroup {
   id: string;
   titleCh: string;
   titleDe: string;
-  words: (wordGroup_wordGroup_words | null)[] | null;
+  words: (wordGroupById_wordGroup_words | null)[] | null;
 }
 
-export interface wordGroup {
-  wordGroup: wordGroup_wordGroup | null;
+export interface wordGroupById {
+  wordGroup: wordGroupById_wordGroup | null;
 }
 
-export interface wordGroupVariables {
+export interface wordGroupByIdVariables {
   id?: string | null;
 }

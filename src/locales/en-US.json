@@ -40,10 +40,25 @@
     "subChapterNumberHelper": "The sequentiel subchapter number. For example in 'Chapter 1.3', then set '3'",
     "newChapterDescription": "Description",
     "newChapterDescriptionHelper": "The chapter description in german. For example: 'Kennenlernen'",
-    "newSubChapterDescriptionHelper": "The subchapter description (in german). For example: 'Wie geht es dir? Wie geht es Ihnen?'"
+    "newSubChapterDescriptionHelper": "The subchapter description (in german). For example: 'Wie geht es dir? Wie geht es Ihnen?'",
+    "newChapterLanguage": "Supported languages",
+    "newChapterLanguageHelper": "The chapter is available in those languages.",
+    "nWordGroups": "# of word groups: "
   },
   "voggi": {
     "voggiList": "Voggi-List"
+  },
+  "wordGroups": {
+    "wordGroup": "Word group",
+    "wordGroupsOverview": "Word group overview for all Chapters",
+    "wordGroupsChapter": "Word groups in chapter",
+    "createNewWordGroup": "Create new word group",
+    "newWordGroupTitle": "Create new word group",
+    "wordGroup:titleDe": "German title",
+    "wordGroup:titleDeHelper": "Title of the word group in standard german.",
+    "wordGroup:titleCh": "Swiss German title",
+    "wordGroup:titleChHelper": "Title of the word group in Swiss German.",
+    "nWords": "# of words: "
   },
   "settings": {
     "title": "Settings",

@@ -9,6 +9,7 @@ import Chapters from "./pages/Chapter/Chapters";
 import Chapter from "./pages/Chapter/Chapter";
 import WordGroups from "./pages/WordGroup/WordGroups"
 import WordGroup from "./pages/WordGroup/WordGroup"
+import ChapterWordGroups from "./pages/WordGroup/ChapterWordGroups";
 
 /**
  * Roles defined as constants for reuse...
@@ -72,6 +73,13 @@ export const mainRoutes: IPrivateRouteConfig[] = [
     label: "voCHi Liste",
     icon: FormatListBulleted,
     path: "/wordgroups"
+  },
+  {
+    showInDrawer: false,
+    allowedRoles: allUsers,
+    component: ChapterWordGroups,
+    exact: true,
+    path: "/wordgroups/chapter/:id"
   },
   {
     showInDrawer: false,

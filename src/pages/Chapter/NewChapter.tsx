@@ -2,24 +2,30 @@ import * as React from "react";
 import {useTranslation} from "react-i18next";
 import * as Yup from "yup";
 import {Formik, Form, Field, FormikActions} from "formik";
-import {TextField} from "formik-material-ui";
-import {useMutation} from "react-apollo-hooks";
+import {TextField, Select} from "formik-material-ui";
+import {useMutation, useQuery} from "react-apollo-hooks";
 
 import {withStyles, WithStyles} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
+import {
+  Button,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  FormHelperText,
+} from '@material-ui/core';
 
 import {styles} from "styles";
 import {UPSERT_CHAPTER} from "queries/chapters";
 import i18next from "i18n";
 import history from "myHistory";
 import ErrorMessage from "components/ErrorMessage";
-import {ChapterInput} from "__generated__/globalTypes";
 import {chapterById_chapter_parentChapter} from "queries/__generated__/chapterById";
-import {Omit} from "types/genericHelperTypes";
-import { convertGlobalToDbId } from "helpers";
+import {convertGlobalToDbId} from "helpers";
+import {GET_LANGUAGES} from "../../queries/languages";
+import {languages} from "../../queries/__generated__/languages";
 
 
 export const ChapterSchema = Yup.object().shape({
@@ -29,7 +35,8 @@ export const ChapterSchema = Yup.object().shape({
     .required(i18next.t("required")),
   description: Yup.string().max(200, i18next.t("tooLong")),
   titleDE: Yup.string().max(50, i18next.t("tooLong")),
-  titleCH: Yup.string().max(50, i18next.t("tooLong"))
+  titleCH: Yup.string().max(50, i18next.t("tooLong")),
+  languages: Yup.string().min(1, i18next.t("tooLow")).max(50, i18next.t("tooHigh")).required(i18next.t("required"))
 });
 
 interface Props extends WithStyles<typeof styles> {
@@ -39,18 +46,21 @@ interface Props extends WithStyles<typeof styles> {
 const NewChapter = ({classes, parentChapter}: Props) => {
   const {t} = useTranslation();
 
+  const {data, error, loading} = useQuery<languages>(GET_LANGUAGES);
+
   const isSubChapter = !!parentChapter;
 
   // TODO: Unfortunately, react-apollo-hooks doesn't support yet the error, loading object in mutations (unlike with query...)
   const upsertChapter = useMutation(UPSERT_CHAPTER);
 
   async function handleSave(
-    values: Omit<ChapterInput, "titleDE">,
+    values: any,
     actions: FormikActions<any>
   ) {
     // TODO: This verbose stuff won't be necessary anymore as soon useMutation also returns a error/loading object.
     try {
       values.fkBelongsToId = isSubChapter ? convertGlobalToDbId(parentChapter!.id) : null;
+      values.languages = values.languages.join(',');
       await upsertChapter({
         variables: {
           input: {chapterData: {...values}}
@@ -63,6 +73,8 @@ const NewChapter = ({classes, parentChapter}: Props) => {
     }
   }
 
+  // @ts-ignore
+  // @ts-ignore
   return (
     <React.Fragment>
       <Card className={classes.card}>
@@ -77,7 +89,8 @@ const NewChapter = ({classes, parentChapter}: Props) => {
               titleDE: "",
               titleCH: "",
               number: 0, // TODO set to next number
-              description: ""
+              description: "",
+              languages: data && data.languages  ? data.languages: []
             }}
             validationSchema={ChapterSchema}
             onSubmit={(values, actions) => handleSave(values, actions)}
@@ -112,8 +125,6 @@ const NewChapter = ({classes, parentChapter}: Props) => {
                   component={TextField}
                   margin="normal"
                   fullWidth
-                  multiline
-                  rows="6"
                 />
                 <Field
                   type="text"
@@ -127,8 +138,6 @@ const NewChapter = ({classes, parentChapter}: Props) => {
                   component={TextField}
                   margin="normal"
                   fullWidth
-                  multiline
-                  rows="6"
                 />
                 <Field
                   type="text"
@@ -145,6 +154,30 @@ const NewChapter = ({classes, parentChapter}: Props) => {
                   multiline
                   rows="6"
                 />
+
+                <FormControl margin="normal"
+                             fullWidth>
+                  <InputLabel shrink={true} htmlFor="languages">
+                    {t("chapter:newChapterLanguage")}
+                  </InputLabel>
+                  <Field
+                    type="text"
+                    name="languages"
+                    component={Select}
+                    multiple={true}
+                    helperText={t("chapter:newChapterLanguageHelper")}
+                    inputProps={{name: 'languages', id: 'languages'}}
+                  >
+                    {data && data.languages ? data.languages.map(l => (
+                      l && l.name && l.description ? (
+                        <MenuItem value={l.name}>
+                          {l.description}
+                        </MenuItem>
+                      ) : <MenuItem/>
+                    )) : (<MenuItem/>)}
+                  </Field>
+                  <FormHelperText>{t("chapter:newChapterLanguageHelper")}</FormHelperText>
+                </FormControl>
 
                 {status && status.response && (
                   <ErrorMessage error={status.response}/>
