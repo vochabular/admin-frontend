@@ -36,7 +36,8 @@ const PrivateApp: React.FunctionComponent<Props> = ({ classes }) => {
     auth0Client.userProfile && auth0Client.userProfile.name;
 
   const { data, error, loading } = useQuery<profile>(GET_PROFILE, {
-    variables: { username: currentUserEmail }
+    variables: { username: currentUserEmail },
+    fetchPolicy: "network-only"
   });
 
   /**

@@ -78,10 +78,8 @@ function SetupWizard({ classes, profile }: Props) {
           profileData: updatedProfile
         }
       };
-      mutateProfile({
-        variables: payload,
-        // Lets reload the query with the previous variables so it the whole tree rerenders...
-        refetchQueries: [getOperationName(GET_PROFILE) || ""]
+      await mutateProfile({
+        variables: payload
       });
     } else {
       handleNext(actions.validateForm);
@@ -107,7 +105,20 @@ function SetupWizard({ classes, profile }: Props) {
   //TODO: Hack until backend has changed type...
   const initialProfile = { ...profile };
   // @ts-ignore
-  initialProfile.translatorLanguages = profile.translatorLanguages.split(",");
+  initialProfile.translatorLanguages =
+    (profile &&
+      profile.translatorLanguages &&
+      profile.translatorLanguages.split(",")) ||
+    "";
+  // @ts-ignore
+  initialProfile.language = (profile && profile.language.toLowerCase()) || "de";
+  initialProfile.currentRole =
+    (profile && profile.currentRole) ||
+    auth0Client.getCurrentRole() ||
+    auth0Client.getAllowedRoles()[0] ||
+    "";
+  initialProfile.firstname = "";
+  initialProfile.lastname = "";
 
   return (
     <Paper className={classes.card}>

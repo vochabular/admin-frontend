@@ -13,7 +13,7 @@ export enum CommentContext {
   A = "A",
   C = "C",
   I = "I",
-  T = "T"
+  T = "T",
 }
 
 /**
@@ -24,7 +24,7 @@ export enum ComponentState {
   F = "F",
   R = "R",
   T = "T",
-  U = "U"
+  U = "U",
 }
 
 /**
@@ -32,7 +32,7 @@ export enum ComponentState {
  */
 export enum ProfileLanguage {
   DE = "DE",
-  EN = "EN"
+  EN = "EN",
 }
 
 export interface ChapterInput {
@@ -49,6 +49,15 @@ export interface IntroduceChapterInput {
   clientMutationId?: string | null;
 }
 
+export interface IntroduceWordGroupInput {
+  wordGroupData?: WordGroupInput | null;
+  clientMutationId?: string | null;
+}
+
+export interface IntroduceWordInput {
+  clientMutationId?: string | null;
+}
+
 export interface ProfileInput {
   firstname?: string | null;
   lastname?: string | null;
@@ -60,25 +69,16 @@ export interface ProfileInput {
   setupCompleted?: boolean | null;
 }
 
-export interface UpdateProfileInput {
-  username?: string | null;
-  profileData?: ProfileInput | null;
-  clientMutationId?: string | null;
-}
-
-export interface IntroduceWordGroupInput {
-  wordGroupData?: WordGroupInput | null;
-  clientMutationId?: string | null;
-}
-
-export interface IntroduceWordInput {
-  clientMutationId?: string | null;
-}
-
 export interface TranslatedWordInput {
   text: string;
   audio?: string | null;
   exampleSentence?: string | null;
+}
+
+export interface UpdateProfileInput {
+  username?: string | null;
+  profileData?: ProfileInput | null;
+  clientMutationId?: string | null;
 }
 
 export interface UpdateWordARInput {

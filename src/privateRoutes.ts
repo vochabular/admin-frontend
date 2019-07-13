@@ -7,8 +7,8 @@ import Dashboard from "pages/Dashboard/Dashboard";
 import Settings from "pages/Settings/Settings";
 import Chapters from "./pages/Chapter/Chapters";
 import Chapter from "./pages/Chapter/Chapter";
-import WordGroups from "./pages/WordGroup/WordGroups"
-import WordGroup from "./pages/WordGroup/WordGroup"
+import WordGroups from "./pages/WordGroup/WordGroups";
+import WordGroup from "./pages/WordGroup/WordGroup";
 import ChapterWordGroups from "./pages/WordGroup/ChapterWordGroups";
 
 /**
@@ -17,7 +17,8 @@ import ChapterWordGroups from "./pages/WordGroup/ChapterWordGroups";
 const ADMIN = "admin";
 const TRANSLATOR = "translator";
 const CONTENT_CREATOR = "content_creator";
-const allUsers = [ADMIN, TRANSLATOR, CONTENT_CREATOR];
+const VIEWER = "viewer";
+const allUsers = [ADMIN, TRANSLATOR, CONTENT_CREATOR, VIEWER];
 
 interface IPrivateRouteConfig {
   showInDrawer: boolean;

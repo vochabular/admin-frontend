@@ -13,14 +13,14 @@ class Auth {
   idToken: string | undefined;
   expiresAt: number;
   auth0: auth0.WebAuth;
-  userProfile: Auth0UserProfile | null;
+  userProfile: Auth0UserProfile | undefined;
   allowedRoles: string[];
   currentRole: string | undefined;
 
   constructor() {
     this.accessToken = undefined;
     this.idToken = undefined;
-    this.userProfile = null;
+    this.userProfile = undefined;
     this.expiresAt = 0;
     this.auth0 = new auth0.WebAuth({
       domain: AUTH_CONFIG.domain || "",
@@ -68,6 +68,7 @@ class Auth {
         this.setSession(authResult);
         // navigate to the home route
         history.push("/");
+        this.getProfile(() => null);
       } else if (err) {
         history.replace("/");
         console.error(err);
@@ -148,7 +149,7 @@ class Auth {
     this.accessToken = undefined;
     this.idToken = undefined;
     this.expiresAt = 0;
-    this.userProfile = null;
+    this.userProfile = undefined;
 
     // Remove isLoggedIn flag from localStorage
     localStorage.removeItem("isLoggedIn");

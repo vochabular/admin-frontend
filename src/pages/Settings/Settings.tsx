@@ -52,6 +52,7 @@ const Settings: React.FunctionComponent<Props> = ({ classes }) => {
     actions: FormikActions<any>
   ) {
     const newSettings = { ...values };
+    delete newSettings.id;
     auth0Client.changeCurrentRole(newSettings.currentRole);
     i18n.changeLanguage(newSettings.language);
     // Note: we need to strip the typename, as otherwise the backend complains and apollo client unfortunately doesn't strip it. TODO(df): need to find a central place to strip typenames generally...
@@ -67,6 +68,10 @@ const Settings: React.FunctionComponent<Props> = ({ classes }) => {
   //TODO: Hack until backend has changed type...
   const initialProfile = data && data.profile && { ...data.profile };
   if (initialProfile) {
+    // @ts-ignore
+    initialProfile.language =
+      (initialProfile.language && initialProfile.language.toLowerCase()) ||
+      "de";
     // @ts-ignore
     initialProfile.translatorLanguages = initialProfile.translatorLanguages.split(
       ","
