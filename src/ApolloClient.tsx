@@ -1,4 +1,4 @@
-import { ApolloClient } from "apollo-client";
+import { ApolloClient, DefaultOptions } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { HttpLink } from "apollo-link-http";
 import { onError } from "apollo-link-error";
@@ -7,6 +7,20 @@ import { ApolloLink, Observable } from "apollo-link";
 import auth0Client from "./auth/Auth";
 import i18n from "./i18n";
 import { typeDefs, resolvers } from "./queries/resolvers";
+
+const defaultOptions: DefaultOptions = {
+  watchQuery: {
+    fetchPolicy: "network-only",
+    errorPolicy: "all"
+  },
+  query: {
+    fetchPolicy: "network-only",
+    errorPolicy: "all"
+  },
+  mutate: {
+    errorPolicy: "all"
+  }
+};
 
 // Setup the cache
 const cache = new InMemoryCache({});
@@ -44,6 +58,7 @@ const requestLink = new ApolloLink(
 );
 
 const client = new ApolloClient({
+  defaultOptions,
   cache,
   link: ApolloLink.from([
     onError(({ graphQLErrors, networkError }) => {
