@@ -54,7 +54,10 @@ const Settings: React.FunctionComponent<Props> = ({ classes }) => {
     const newSettings = { ...values };
     auth0Client.changeCurrentRole(newSettings.currentRole);
     i18n.changeLanguage(newSettings.language);
+    // Note: we need to strip the typename, as otherwise the backend complains and apollo client unfortunately doesn't strip it. TODO(df): need to find a central place to strip typenames generally...
     const { __typename, ...profile } = newSettings;
+    // @ts-ignore
+    profile.translatorLanguages = profile.translatorLanguages.join(",");
     await mutateProfile({
       variables: { profile: { username, profileData: profile } }
     });
