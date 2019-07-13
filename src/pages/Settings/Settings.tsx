@@ -68,8 +68,6 @@ const Settings: React.FunctionComponent<Props> = ({ classes }) => {
   const initialProfile = data && data.profile && { ...data.profile };
   if (initialProfile) {
     // @ts-ignore
-    initialProfile.language = initialProfile.language.toLowerCase();
-    // @ts-ignore
     initialProfile.translatorLanguages = initialProfile.translatorLanguages.split(
       ","
     );

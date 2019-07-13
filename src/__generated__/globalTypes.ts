@@ -13,7 +13,7 @@ export enum CommentContext {
   A = "A",
   C = "C",
   I = "I",
-  T = "T"
+  T = "T",
 }
 
 /**
@@ -24,7 +24,7 @@ export enum ComponentState {
   F = "F",
   R = "R",
   T = "T",
-  U = "U"
+  U = "U",
 }
 
 /**
@@ -32,7 +32,7 @@ export enum ComponentState {
  */
 export enum ProfileLanguage {
   DE = "DE",
-  EN = "EN"
+  EN = "EN",
 }
 
 export interface ChapterInput {
@@ -41,6 +41,7 @@ export interface ChapterInput {
   fkBelongsToId?: string | null;
   description: string;
   number: number;
+  languages: string;
 }
 
 export interface IntroduceChapterInput {

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Formik, FormikActions, Form } from "formik";
 import { useMutation } from "react-apollo-hooks";
+import { getOperationName } from "apollo-link";
 
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
@@ -15,7 +16,7 @@ import { styles } from "styles";
 import PersonalSection from "pages/Settings/SettingsSection/PersonalSection";
 import AdministrativeSection from "pages/Settings/SettingsSection/AdministrativeSection";
 import NotificationSection from "pages/Settings/SettingsSection/NotificationSection";
-import { UPDATE_PROFILE } from "queries/profile";
+import { UPDATE_PROFILE, GET_PROFILE } from "queries/profile";
 import { UserSetupSchema } from "pages/Settings/Settings";
 import { profile_profile } from "queries/__generated__/profile";
 import auth0Client from "auth/Auth";
@@ -78,7 +79,9 @@ function SetupWizard({ classes, profile }: Props) {
         }
       };
       mutateProfile({
-        variables: payload
+        variables: payload,
+        // Lets reload the query with the previous variables so it the whole tree rerenders...
+        refetchQueries: [getOperationName(GET_PROFILE) || ""]
       });
     } else {
       handleNext(actions.validateForm);
@@ -103,8 +106,6 @@ function SetupWizard({ classes, profile }: Props) {
 
   //TODO: Hack until backend has changed type...
   const initialProfile = { ...profile };
-  // @ts-ignore
-  initialProfile.language = profile.language.toLowerCase();
   // @ts-ignore
   initialProfile.translatorLanguages = profile.translatorLanguages.split(",");
 

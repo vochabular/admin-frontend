@@ -10,7 +10,6 @@ import { ProfileLanguage } from "./../../__generated__/globalTypes";
 
 export interface profile_profile {
   __typename: "ProfileType";
-  id: string;
   firstname: string;
   lastname: string;
   roles: string;
