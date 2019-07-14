@@ -66,3 +66,14 @@ export const GET_ACTIVE_COMMENTS = gql`
   }
   ${COMMENT_FRAGMENT}
 `;
+
+export const CREATE_COMMENT = gql`
+  mutation createComment($comment: CommentInput!) {
+    createComment(input: { commentData: $comment }) {
+      comment {
+        ...CommentParts
+      }
+    }
+  }
+  ${COMMENT_FRAGMENT}
+`;
