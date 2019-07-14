@@ -8,6 +8,10 @@ import {
 } from "@material-ui/core/styles";
 import { Avatar, Typography, Grid } from "@material-ui/core";
 import TimestampAgo from "./TimestampAgo";
+import {
+  getAllComments_comments_edges_node,
+  getAllComments_comments_edges_node_commentSet_edges_node
+} from "queries/__generated__/getAllComments";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -41,16 +45,17 @@ interface Props extends WithStyles<typeof styles> {
   /**
    * TODO: A single discussion
    */
-  data: any;
+  data:
+    | getAllComments_comments_edges_node
+    | getAllComments_comments_edges_node_commentSet_edges_node;
 }
 
 const Comment = ({ classes, data }: Props) => {
-  const initialLetters = `${(
-    (data.authorName && data.authorName.firstName) ||
-    "-"
+  const { text = "", written = 0 } = data;
+  const { firstname = "", lastname = "" } = data.fkAuthor || {};
+  const initialLetters = `${(firstname || "-").charAt(0).toUpperCase()}${(
+    lastname || "-"
   )
-    .charAt(0)
-    .toUpperCase()}${((data.authorName && data.authorName.lastName) || "-")
     .charAt(0)
     .toUpperCase()}`;
 
@@ -61,18 +66,16 @@ const Comment = ({ classes, data }: Props) => {
           className={classes.avatar}
           style={{
             backgroundColor: stringToColor(
-              (data.authorName &&
-                data.authorName.firstName + data.authorName.lastName) ||
-                initialLetters
+              firstname + lastname || initialLetters
             )
           }}
         >
           {initialLetters}
         </Avatar>
-        <TimestampAgo date={new Date(data.written || 0)} variant="caption" />
+        <TimestampAgo date={new Date(written)} variant="caption" />
       </Grid>
       <Grid item>
-        <Typography>{data.comment}</Typography>
+        <Typography>{text}</Typography>
       </Grid>
     </Grid>
   );

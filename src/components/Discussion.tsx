@@ -54,7 +54,6 @@ const Discussion = ({ classes, data }: Props) => {
   }
   return (
     <div className={classes.container}>
-      <div>{data.id}</div>
       <Comment data={data} />
       {data &&
         data.commentSet &&
