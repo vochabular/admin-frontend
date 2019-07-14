@@ -94,6 +94,8 @@ export interface chapterById_chapter_subChapters_edges_node {
   titleCH: string;
   titleDE: string;
   description: string;
+  created: any;
+  updated: any;
   parentChapter: chapterById_chapter_subChapters_edges_node_parentChapter | null;
   chapterSet: chapterById_chapter_subChapters_edges_node_chapterSet | null;
 }
@@ -194,6 +196,8 @@ export interface chapterById_chapter {
   titleCH: string;
   titleDE: string;
   description: string;
+  created: any;
+  updated: any;
   parentChapter: chapterById_chapter_parentChapter | null;
   chapterSet: chapterById_chapter_chapterSet | null;
   subChapters: chapterById_chapter_subChapters | null;

@@ -5,10 +5,10 @@
 import { CommentContext, ProfileLanguage } from "./../../__generated__/globalTypes";
 
 // ====================================================
-// GraphQL query operation: getAllComments
+// GraphQL query operation: getActiveComments
 // ====================================================
 
-export interface getAllComments_comments_edges_node_fkAuthor {
+export interface getActiveComments_comments_edges_node_fkAuthor {
   __typename: "ProfileType";
   id: string;
   firstname: string;
@@ -20,7 +20,7 @@ export interface getAllComments_comments_edges_node_fkAuthor {
   setupCompleted: boolean;
 }
 
-export interface getAllComments_comments_edges_node_commentSet_edges_node_fkAuthor {
+export interface getActiveComments_comments_edges_node_commentSet_edges_node_fkAuthor {
   __typename: "ProfileType";
   id: string;
   firstname: string;
@@ -32,7 +32,7 @@ export interface getAllComments_comments_edges_node_commentSet_edges_node_fkAuth
   setupCompleted: boolean;
 }
 
-export interface getAllComments_comments_edges_node_commentSet_edges_node {
+export interface getActiveComments_comments_edges_node_commentSet_edges_node {
   __typename: "CommentType";
   /**
    * The ID of the object.
@@ -42,23 +42,23 @@ export interface getAllComments_comments_edges_node_commentSet_edges_node {
   context: CommentContext | null;
   active: boolean;
   written: any | null;
-  fkAuthor: getAllComments_comments_edges_node_commentSet_edges_node_fkAuthor | null;
+  fkAuthor: getActiveComments_comments_edges_node_commentSet_edges_node_fkAuthor | null;
 }
 
-export interface getAllComments_comments_edges_node_commentSet_edges {
+export interface getActiveComments_comments_edges_node_commentSet_edges {
   __typename: "CommentTypeEdge";
   /**
    * The item at the end of the edge
    */
-  node: getAllComments_comments_edges_node_commentSet_edges_node | null;
+  node: getActiveComments_comments_edges_node_commentSet_edges_node | null;
 }
 
-export interface getAllComments_comments_edges_node_commentSet {
+export interface getActiveComments_comments_edges_node_commentSet {
   __typename: "CommentTypeConnection";
-  edges: (getAllComments_comments_edges_node_commentSet_edges | null)[];
+  edges: (getActiveComments_comments_edges_node_commentSet_edges | null)[];
 }
 
-export interface getAllComments_comments_edges_node_fkComponent {
+export interface getActiveComments_comments_edges_node_fkComponent {
   __typename: "Component_Type";
   /**
    * The ID of the object.
@@ -66,7 +66,7 @@ export interface getAllComments_comments_edges_node_fkComponent {
   id: string;
 }
 
-export interface getAllComments_comments_edges_node_fkParentComment {
+export interface getActiveComments_comments_edges_node_fkParentComment {
   __typename: "CommentType";
   /**
    * The ID of the object.
@@ -74,7 +74,7 @@ export interface getAllComments_comments_edges_node_fkParentComment {
   id: string;
 }
 
-export interface getAllComments_comments_edges_node {
+export interface getActiveComments_comments_edges_node {
   __typename: "CommentType";
   /**
    * The ID of the object.
@@ -84,25 +84,25 @@ export interface getAllComments_comments_edges_node {
   context: CommentContext | null;
   active: boolean;
   written: any | null;
-  fkAuthor: getAllComments_comments_edges_node_fkAuthor | null;
-  commentSet: getAllComments_comments_edges_node_commentSet | null;
-  fkComponent: getAllComments_comments_edges_node_fkComponent;
-  fkParentComment: getAllComments_comments_edges_node_fkParentComment | null;
+  fkAuthor: getActiveComments_comments_edges_node_fkAuthor | null;
+  commentSet: getActiveComments_comments_edges_node_commentSet | null;
+  fkComponent: getActiveComments_comments_edges_node_fkComponent;
+  fkParentComment: getActiveComments_comments_edges_node_fkParentComment | null;
 }
 
-export interface getAllComments_comments_edges {
+export interface getActiveComments_comments_edges {
   __typename: "CommentTypeEdge";
   /**
    * The item at the end of the edge
    */
-  node: getAllComments_comments_edges_node | null;
+  node: getActiveComments_comments_edges_node | null;
 }
 
-export interface getAllComments_comments {
+export interface getActiveComments_comments {
   __typename: "CommentTypeConnection";
-  edges: (getAllComments_comments_edges | null)[];
+  edges: (getActiveComments_comments_edges | null)[];
 }
 
-export interface getAllComments {
-  comments: getAllComments_comments | null;
+export interface getActiveComments {
+  comments: getActiveComments_comments | null;
 }

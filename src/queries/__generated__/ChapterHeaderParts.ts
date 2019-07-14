@@ -56,6 +56,8 @@ export interface ChapterHeaderParts {
   titleCH: string;
   titleDE: string;
   description: string;
+  created: any;
+  updated: any;
   parentChapter: ChapterHeaderParts_parentChapter | null;
   chapterSet: ChapterHeaderParts_chapterSet | null;
 }

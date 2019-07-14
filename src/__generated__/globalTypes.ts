@@ -44,6 +44,15 @@ export interface ChapterInput {
   languages: string;
 }
 
+export interface CommentInput {
+  text: string;
+  active: boolean;
+  fkAuthorId: string;
+  context?: string | null;
+  fkComponentId: string;
+  fkParentCommentId?: string | null;
+}
+
 export interface IntroduceChapterInput {
   chapterData?: ChapterInput | null;
   clientMutationId?: string | null;
