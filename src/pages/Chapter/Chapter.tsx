@@ -72,14 +72,19 @@ const Chapter = ({ classes, match }: Props) => {
   if (subChapterId) {
     return (
       <Section title="chapters:chapter" titleTranslatable>
-        <SubChapterDetail />
+        <SubChapterDetail data={data.chapter} />
       </Section>
     );
   }
 
   // Else, then render the chapter overview
   return (
-    <Section title={t("chapters:chapter") + ` ${data.chapter.titleDE} / ${data.chapter.titleCH}`}>
+    <Section
+      title={
+        t("chapters:chapter") +
+        ` ${data.chapter.titleDE} / ${data.chapter.titleCH}`
+      }
+    >
       <SectionCardContainer>
         {data.chapter &&
           data.chapter.subChapters &&

@@ -12,6 +12,7 @@ import {
 import Paper from "@material-ui/core/Paper";
 import { Tabs, Tab } from "@material-ui/core";
 import DiscussionList from "components/DiscussionList";
+import { GET_ACTIVE_COMMENTS, GET_ALL_COMMENTS } from "queries/comments";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -21,14 +22,9 @@ const styles = (theme: Theme) =>
     }
   });
 
-interface Props extends WithStyles<typeof styles>, WithTheme {
-  /**
-   * TODO: This will be the query passed down, including filters for querying the comments...
-   */
-  query: string;
-}
+interface Props extends WithStyles<typeof styles>, WithTheme {}
 
-const CommentsWidget = ({ classes, theme, query }: Props) => {
+const CommentsWidget = ({ classes, theme }: Props) => {
   const { t } = useTranslation();
   const [activeCommentTab, setActiveCommentTab] = React.useState(0);
 
@@ -56,11 +52,11 @@ const CommentsWidget = ({ classes, theme, query }: Props) => {
         onChangeIndex={handleTabIndexChange}
       >
         <DiscussionList
-          query={query}
+          query={GET_ACTIVE_COMMENTS}
           variables={"TODO: FILTER BY Active AND Context"}
         />
         <DiscussionList
-          query={query}
+          query={GET_ALL_COMMENTS}
           variables={"TODO: ALL (WITH CONTEXT...)"}
         />
       </SwipeableViews>

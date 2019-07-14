@@ -15,6 +15,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 import Comment from "./Comment";
 import { Divider, TextField, Button, Grid } from "@material-ui/core";
+import { getAllComments_comments_edges_node } from "queries/__generated__/getAllComments";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -30,7 +31,7 @@ interface Props extends WithStyles<typeof styles> {
   /**
    * TODO: A single discussion
    */
-  data: any;
+  data: getAllComments_comments_edges_node;
 }
 
 const Discussion = ({ classes, data }: Props) => {
@@ -51,17 +52,22 @@ const Discussion = ({ classes, data }: Props) => {
   ) {
     setNewComment(event.target.value);
   }
-
   return (
     <div className={classes.container}>
       <div>{data.id}</div>
       <Comment data={data} />
-      {data.responses.map((c: any) => (
-        <React.Fragment key={c.id}>
-          <Comment data={c} />
-          <Divider />
-        </React.Fragment>
-      ))}
+      {data &&
+        data.commentSet &&
+        data.commentSet.edges.map(
+          c =>
+            c &&
+            c.node && (
+              <React.Fragment key={c.node.id}>
+                <Comment data={c.node} />
+                <Divider />
+              </React.Fragment>
+            )
+        )}
       <Divider />
       <TextField
         id="new-comment"

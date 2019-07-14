@@ -12,10 +12,7 @@ import { Draggable } from "react-beautiful-dnd";
 import { useQuery } from "react-apollo-hooks";
 import { GET_ALL_COMPONENTTYPES } from "queries/componentTypes";
 import BusyOrErrorCard from "components/BusyOrErrorCard";
-import {
-  getAllComponentTypes,
-  getAllComponentTypes_componentTypes
-} from "queries/__generated__/getAllComponentTypes";
+import { getAllComponentTypes } from "queries/__generated__/getAllComponentTypes";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -34,19 +31,25 @@ const ComponentSelector = ({ classes }: Props) => {
   const { data, loading, error } = useQuery<getAllComponentTypes>(
     GET_ALL_COMPONENTTYPES
   );
-  const componentTypes = (data && data.componentTypes) || [];
+  const componentTypes = data && data.componentTypes;
 
   return (
     <Grid container justify="center" className={classes.container}>
       <BusyOrErrorCard error={error} loading={loading} />
-      {componentTypes.map(
-        (c: getAllComponentTypes_componentTypes | null, index: number) =>
-          c && (
-            <Draggable key={c.id} draggableId={c.id} index={index}>
+      {componentTypes &&
+        componentTypes.edges.map((c, index) => {
+          if (!c || !c.node) return null;
+          const component = c.node;
+          return (
+            <Draggable
+              key={c && c.node && c.node.id}
+              draggableId={component.id}
+              index={index}
+            >
               {(provided, snapshot) => (
                 <Grid
                   item
-                  key={c.id}
+                  key={component.id}
                   ref={provided.innerRef}
                   {...provided.draggableProps}
                   {...provided.dragHandleProps}
@@ -54,7 +57,7 @@ const ComponentSelector = ({ classes }: Props) => {
                   <Card square className={classes.item}>
                     <CardContent>
                       <Typography color="textSecondary" gutterBottom>
-                        {c.name}
+                        {component.name}
                       </Typography>
                       <Icon>star</Icon>
                     </CardContent>
@@ -62,8 +65,8 @@ const ComponentSelector = ({ classes }: Props) => {
                 </Grid>
               )}
             </Draggable>
-          )
-      )}
+          );
+        })}
     </Grid>
   );
 };

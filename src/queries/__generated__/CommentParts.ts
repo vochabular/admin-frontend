@@ -2,26 +2,22 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { CommentContext } from "./../../__generated__/globalTypes";
+import { CommentContext, ProfileLanguage } from "./../../__generated__/globalTypes";
 
 // ====================================================
 // GraphQL fragment: CommentParts
 // ====================================================
 
-export interface CommentParts_fkComponent {
-  __typename: "Component_Type";
-  /**
-   * The ID of the object.
-   */
+export interface CommentParts_fkAuthor {
+  __typename: "ProfileType";
   id: string;
-}
-
-export interface CommentParts_fkParentComment {
-  __typename: "CommentType";
-  /**
-   * The ID of the object.
-   */
-  id: string;
+  firstname: string;
+  lastname: string;
+  roles: string;
+  language: ProfileLanguage;
+  translatorLanguages: string;
+  eventNotifications: boolean;
+  setupCompleted: boolean;
 }
 
 export interface CommentParts {
@@ -34,6 +30,5 @@ export interface CommentParts {
   context: CommentContext | null;
   active: boolean;
   written: any | null;
-  fkComponent: CommentParts_fkComponent;
-  fkParentComment: CommentParts_fkParentComment | null;
+  fkAuthor: CommentParts_fkAuthor | null;
 }

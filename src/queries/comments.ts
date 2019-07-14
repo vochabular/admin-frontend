@@ -8,12 +8,9 @@ export const COMMENT_FRAGMENT = gql`
     context
     active
     written
-    fkComponent{
-        id
-      }
-      fkParentComment{
-        id
-      }
+    fkAuthor {
+      ...UserParts
+    }
   }
   ${USER_FRAGMENT}
 `;
@@ -24,6 +21,45 @@ export const GET_ALL_COMMENTS = gql`
       edges {
         node {
           ...CommentParts
+          commentSet {
+            edges {
+              node {
+                ...CommentParts
+              }
+            }
+          }
+          fkComponent {
+            id
+          }
+          fkParentComment {
+            id
+          }
+        }
+      }
+    }
+  }
+  ${COMMENT_FRAGMENT}
+`;
+
+export const GET_ACTIVE_COMMENTS = gql`
+  query getActiveComments {
+    comments(active: true) {
+      edges {
+        node {
+          ...CommentParts
+          commentSet {
+            edges {
+              node {
+                ...CommentParts
+              }
+            }
+          }
+          fkComponent {
+            id
+          }
+          fkParentComment {
+            id
+          }
         }
       }
     }
