@@ -114,7 +114,7 @@ interface Props extends WithStyles<typeof styles> {
 const DiscussionList = ({ classes }: Props) => {
   const { t } = useTranslation();
 
-  const { data, loading, error } = useQuery<getAllComments>(GET_ALL_COMMENTS);
+  const { loading, error } = useQuery<getAllComments>(GET_ALL_COMMENTS);
 
   // const discussions = (data && data.comments) || [];
   const discussions = mockData.comments;

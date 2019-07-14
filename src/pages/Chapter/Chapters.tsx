@@ -13,11 +13,12 @@ import LinkCard from "components/LinkCard";
 import auth0Client from "auth/Auth";
 import Section from "components/Section";
 import SectionCardContainer from "components/SectionCardContainer";
+import {chapters, chapters_chapters, chapters_chapters_edges} from "../../queries/__generated__/chapters";
 
 interface Props extends WithStyles<typeof styles> {}
 
 const Chapters = ({ classes }: Props) => {
-  const { data, error, loading } = useQuery(GET_CHAPTERS);
+  const { data, error, loading } = useQuery<chapters>(GET_CHAPTERS);
 
   // Note: MUI links together with react-router-dom and Typescript are a bit tricky due to their dynamic nature
   // See the discussion and provided solutions here... https://github.com/mui-org/material-ui/issues/7877
@@ -28,10 +29,9 @@ const Chapters = ({ classes }: Props) => {
         <BusyOrErrorCard
           loading={loading}
           error={error}
-          noResults={!loading && data.chapters && !data.chapters.edges.length}
+          noResults={!loading && data && !!data.chapters && !data.chapters.edges.length}
         />
         {data &&
-          data.chapters &&
           data.chapters &&
           data.chapters.edges &&
           data.chapters.edges.map((c: any) => (

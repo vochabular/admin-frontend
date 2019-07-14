@@ -1,5 +1,9 @@
-import gql from "graphql-tag";
+// import gql from "graphql-tag";
 
+export const typeDefs = ``;
+export const resolvers = {};
+
+/*
 import { GET_SETTINGS } from "./settings";
 
 export const typeDefs = gql`
@@ -39,3 +43,4 @@ export const resolvers = {
     }
   }
 };
+*/

@@ -15,12 +15,14 @@ import * as serviceWorker from "./serviceWorker";
 import packageJson from "../package.json";
 
 // TODO: How can we use the values from our .env file?
-Sentry.init({
-  dsn: process.env.REACT_APP_SENTRY_URL,
-  environment: process.env.NODE_ENV,
-  release: `${packageJson.name}@${packageJson.version}`,
-  debug: false // process.env.NODE_ENV === "development"
-});
+if (process.env.NODE_ENV === "production") {
+  Sentry.init({
+    dsn: process.env.REACT_APP_SENTRY_URL,
+    environment: process.env.NODE_ENV,
+    release: `${packageJson.name}@${packageJson.version}`,
+    debug: false // process.env.NODE_ENV === "development"
+  });
+}
 
 ReactDOM.render(
   <ApolloProvider client={apolloClient}>

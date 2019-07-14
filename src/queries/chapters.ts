@@ -97,6 +97,55 @@ export const GET_CHAPTER_BY_ID = gql`
   ${COMPONENT_PART}
 `;
 
+export const GET_CHAPTER_WORDGROUPS = gql`
+query chapters_wordGroups{
+  chapters {
+    edges {
+      node {
+        id
+        titleDE
+        titleCH
+        parentChapter: fkBelongsTo{
+          id
+        }
+        wordGroups: wordgroupSet{
+          edges {
+            node {
+              id
+            }
+          }
+        }
+      }
+    }
+  }
+}
+`;
+
+export const GET_CHAPTER_WORDGROUPS_BY_CHAPTER_ID = gql`
+query chaptersWordGroupsByChapterId($id: Int) {
+  chapter(id: $id) {
+    id
+    titleDE
+    titleCH
+    parentChapter: fkBelongsTo {
+      id
+    }
+    wordGroups: wordgroupSet {
+      edges {
+        node {
+          id
+          titleCh
+          titleDe
+          words {
+            id
+          }
+        }
+      }
+    }
+  }
+}
+`;
+
 export const UPSERT_CHAPTER = gql`
   mutation createChapter($input: IntroduceChapterInput!) {
     createChapter(input: $input) {
@@ -105,6 +154,7 @@ export const UPSERT_CHAPTER = gql`
         titleCH
         titleDE
         description
+        languages
         fkBelongsTo {
           id
         }
