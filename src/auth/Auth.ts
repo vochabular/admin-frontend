@@ -3,7 +3,6 @@ import auth0, { Auth0DecodedHash, Auth0UserProfile } from "auth0-js";
 import client from "ApolloClient";
 import { AUTH_CONFIG } from "./auth0-variables";
 import history from "../myHistory";
-import { GET_SETTINGS } from "queries/settings";
 
 /**
  * This class provides methods for authorization with OAuth provider "Auth0"
@@ -14,14 +13,14 @@ class Auth {
   idToken: string | undefined;
   expiresAt: number;
   auth0: auth0.WebAuth;
-  userProfile: Auth0UserProfile | null;
+  userProfile: Auth0UserProfile | undefined;
   allowedRoles: string[];
   currentRole: string | undefined;
 
   constructor() {
     this.accessToken = undefined;
     this.idToken = undefined;
-    this.userProfile = null;
+    this.userProfile = undefined;
     this.expiresAt = 0;
     this.auth0 = new auth0.WebAuth({
       domain: AUTH_CONFIG.domain || "",
@@ -35,7 +34,7 @@ class Auth {
     this.currentRole = undefined;
   }
 
-  getProfile(callback: Function) {
+  public getProfile(callback: Function) {
     if (this.accessToken != null) {
       this.auth0.client.userInfo(this.accessToken, (err, profile) => {
         if (profile) {
@@ -69,6 +68,7 @@ class Auth {
         this.setSession(authResult);
         // navigate to the home route
         history.push("/");
+        this.getProfile(() => null);
       } else if (err) {
         history.replace("/");
         console.error(err);
@@ -111,11 +111,13 @@ class Auth {
   public changeCurrentRole = (newRole: string): void => {
     if (this.allowedRoles.includes(newRole)) {
       this.currentRole = newRole;
+      /*
       const data: any = client.readQuery({ query: GET_SETTINGS });
       // TODO: Should reset the store smartly. but not that we end up in a loop!
       client.writeData({
         data: { settings: { ...data.settings, currentRole: newRole } }
       });
+      */
     } else {
       throw new Error(
         `Error: The role ${newRole} is not part of the allowed roles ${
@@ -147,7 +149,7 @@ class Auth {
     this.accessToken = undefined;
     this.idToken = undefined;
     this.expiresAt = 0;
-    this.userProfile = null;
+    this.userProfile = undefined;
 
     // Remove isLoggedIn flag from localStorage
     localStorage.removeItem("isLoggedIn");
@@ -176,7 +178,6 @@ class Auth {
       const namespace = "https://admin.vochabular.ch/jwt/claims";
       const allowedRoles = idTokenPayload[namespace]["x-allowed-roles"];
       const defaultRole = idTokenPayload[namespace]["x-default-role"];
-
       this.allowedRoles = allowedRoles;
 
       // Set current role to default role if not set or if not anymore part of roles

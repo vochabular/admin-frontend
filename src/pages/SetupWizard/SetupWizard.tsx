@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Formik, FormikActions, Form } from "formik";
+import { useMutation } from "react-apollo-hooks";
+import { getOperationName } from "apollo-link";
 
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
@@ -10,13 +13,14 @@ import { Grid, Paper } from "@material-ui/core";
 import { withStyles, WithStyles } from "@material-ui/styles";
 
 import { styles } from "styles";
-import GeneralSection from "pages/Settings/SettingsSection/GeneralSection";
-import LanguagesSection from "pages/Settings/SettingsSection/LanguagesSection";
+import PersonalSection from "pages/Settings/SettingsSection/PersonalSection";
+import AdministrativeSection from "pages/Settings/SettingsSection/AdministrativeSection";
 import NotificationSection from "pages/Settings/SettingsSection/NotificationSection";
-import { useQuery, useMutation } from "react-apollo-hooks";
-import { GET_SETTINGS, UPDATE_SETTINGS } from "queries/settings";
-import { Formik, FormikActions, Form } from "formik";
+import { UPDATE_PROFILE, GET_PROFILE } from "queries/profile";
 import { UserSetupSchema } from "pages/Settings/Settings";
+import { profile_profile } from "queries/__generated__/profile";
+import auth0Client from "auth/Auth";
+import { updateProfile } from "queries/__generated__/updateProfile";
 
 function getSteps() {
   return [
@@ -29,40 +33,62 @@ function getSteps() {
 function getStepContent(step: number) {
   switch (step) {
     case 0:
-      return GeneralSection;
+      return PersonalSection;
     case 1:
-      return LanguagesSection;
+      return AdministrativeSection;
     case 2:
       return NotificationSection;
     default:
-      return GeneralSection;
+      return PersonalSection;
   }
 }
 
-interface Props extends WithStyles<typeof styles> {}
+interface Props extends WithStyles<typeof styles> {
+  profile: profile_profile;
+}
 
-function SetupWizard({ classes }: Props) {
+function SetupWizard({ classes, profile }: Props) {
   const { t } = useTranslation();
-  const { data } = useQuery(GET_SETTINGS);
-  const updateSettings = useMutation(UPDATE_SETTINGS);
+  const mutateProfile = useMutation<updateProfile>(UPDATE_PROFILE);
 
   const [activeStep, setActiveStep] = useState(0);
 
   const steps = getSteps();
 
-  async function handleSubmit(values: any, actions: FormikActions<any>) {
+  async function handleSubmit(
+    values: profile_profile,
+    actions: FormikActions<any>
+  ) {
     if (activeStep === steps.length - 1) {
-      const updatedSettings = { ...values, hasCompletedSetup: true };
-      updateSettings({ variables: { settings: updatedSettings } });
-      // TODO: This then has to go to the server...
-      localStorage.setItem("settings", JSON.stringify(updatedSettings));
+      const updatedProfile = {
+        firstname: values.firstname,
+        lastname: values.lastname,
+        roles: auth0Client.getAllowedRoles().join(","),
+        currentRole: auth0Client.getCurrentRole(),
+        language: values.language,
+        eventNotifications: values.eventNotifications,
+        translatorLanguages:
+          // @ts-ignore
+          values.translatorLanguages && values.translatorLanguages.join(","),
+        setupCompleted: true
+      };
+      const payload = {
+        profile: {
+          username: auth0Client.userProfile && auth0Client.userProfile.email,
+          profileData: updatedProfile
+        }
+      };
+      await mutateProfile({
+        variables: payload
+      });
     } else {
-      handleNext();
+      handleNext(actions.validateForm);
       actions.setSubmitting(false);
     }
   }
 
-  function handleNext() {
+  // TODO(df): Need to validate the form on each step!
+  function handleNext(validateForm: CallableFunction) {
     if (activeStep === steps.length - 1) {
       return null;
     }
@@ -75,6 +101,24 @@ function SetupWizard({ classes }: Props) {
 
   // Note here: We are getting a "dynamic" component
   const ActiveStepContent: React.ElementType = getStepContent(activeStep);
+
+  //TODO: Hack until backend has changed type...
+  const initialProfile = { ...profile };
+  // @ts-ignore
+  initialProfile.translatorLanguages =
+    (profile &&
+      profile.translatorLanguages &&
+      profile.translatorLanguages.split(",")) ||
+    "";
+  // @ts-ignore
+  initialProfile.language = (profile && profile.language.toLowerCase()) || "de";
+  initialProfile.currentRole =
+    (profile && profile.currentRole) ||
+    auth0Client.getCurrentRole() ||
+    auth0Client.getAllowedRoles()[0] ||
+    "";
+  initialProfile.firstname = "";
+  initialProfile.lastname = "";
 
   return (
     <Paper className={classes.card}>
@@ -89,10 +133,10 @@ function SetupWizard({ classes }: Props) {
           {t("setupWizard:title")}
         </Typography>
         <Formik
-          initialValues={data && data.settings}
+          initialValues={initialProfile}
           validationSchema={UserSetupSchema}
           onSubmit={(values, actions) => handleSubmit(values, actions)}
-          render={({ submitForm, values }) => (
+          render={({ submitForm, values, setFieldValue, validateForm }) => (
             <Form>
               <Grid item xs={12}>
                 <Stepper activeStep={activeStep}>
@@ -106,7 +150,10 @@ function SetupWizard({ classes }: Props) {
                 </Stepper>
               </Grid>
               <Grid item xs={12}>
-                <ActiveStepContent values={values} />
+                <ActiveStepContent
+                  values={values}
+                  setFieldValue={setFieldValue}
+                />
               </Grid>
               <Grid item xs={12}>
                 <Button disabled={activeStep === 0} onClick={handleBack}>
@@ -116,7 +163,9 @@ function SetupWizard({ classes }: Props) {
                   variant="contained"
                   color="primary"
                   onClick={
-                    activeStep === steps.length - 1 ? submitForm : submitForm
+                    activeStep === steps.length - 1
+                      ? submitForm
+                      : () => handleNext(validateForm)
                   }
                 >
                   {activeStep === steps.length - 1 ? t("finish") : t("next")}

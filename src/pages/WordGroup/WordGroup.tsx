@@ -9,16 +9,15 @@ import {styles} from "styles";
 import NewWordGroup from "./NewWordGroup";
 import {GET_WORDGROUP_BY_ID} from "queries/wordgroups";
 import BusyOrErrorCard from "components/BusyOrErrorCard";
-import {wordGroup_wordGroup, wordGroup_wordGroup_words} from "../../queries/__generated__/wordGroup";
+import { wordGroup_wordGroup_words} from "../../queries/__generated__/wordGroup";
 import {convertGlobalToDbId} from "../../helpers";
 import {useTranslation} from "react-i18next";
 import Section from "../../components/Section";
 import SectionCardContainer from "../../components/SectionCardContainer";
 import {Grid} from "@material-ui/core";
 import WordCard from "../../components/WordCard";
-import auth0Client from "../../auth/Auth";
 import LinkCard from "../../components/LinkCard";
-import {wordGroupById, wordGroupById_wordGroup} from "../../queries/__generated__/wordGroupById";
+import {wordGroupById} from "../../queries/__generated__/wordGroupById";
 
 // These can come from the router... See the route definitions
 interface WordGroupRouterProps {

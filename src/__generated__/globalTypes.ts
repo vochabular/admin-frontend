@@ -58,10 +58,27 @@ export interface IntroduceWordInput {
   clientMutationId?: string | null;
 }
 
+export interface ProfileInput {
+  firstname?: string | null;
+  lastname?: string | null;
+  roles?: string | null;
+  currentRole?: string | null;
+  language?: string | null;
+  translatorLanguages?: string | null;
+  eventNotifications?: boolean | null;
+  setupCompleted?: boolean | null;
+}
+
 export interface TranslatedWordInput {
   text: string;
   audio?: string | null;
   exampleSentence?: string | null;
+}
+
+export interface UpdateProfileInput {
+  username?: string | null;
+  profileData?: ProfileInput | null;
+  clientMutationId?: string | null;
 }
 
 export interface UpdateWordARInput {

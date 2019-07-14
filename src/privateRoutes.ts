@@ -12,13 +12,15 @@ import WordGroup from "./pages/WordGroup/WordGroup"
 import ChapterWordGroups from "./pages/WordGroup/ChapterWordGroups";
 import NewWord from "./pages/WordGroup/NewWord";
 
+
 /**
  * Roles defined as constants for reuse...
  */
 const ADMIN = "admin";
 const TRANSLATOR = "translator";
 const CONTENT_CREATOR = "content_creator";
-const allUsers = [ADMIN, TRANSLATOR, CONTENT_CREATOR];
+const VIEWER = "viewer";
+const allUsers = [ADMIN, TRANSLATOR, CONTENT_CREATOR, VIEWER];
 
 interface IPrivateRouteConfig {
   showInDrawer: boolean;
