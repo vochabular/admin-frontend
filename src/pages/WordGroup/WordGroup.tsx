@@ -18,7 +18,7 @@ import {Grid} from "@material-ui/core";
 import WordCard from "../../components/WordCard";
 import auth0Client from "../../auth/Auth";
 import LinkCard from "../../components/LinkCard";
-import {wordGroupById_wordGroup} from "../../queries/__generated__/wordGroupById";
+import {wordGroupById, wordGroupById_wordGroup} from "../../queries/__generated__/wordGroupById";
 
 // These can come from the router... See the route definitions
 interface WordGroupRouterProps {
@@ -33,7 +33,7 @@ interface Props
 const WordGroup = ({classes, match}: Props) => {
   const {t} = useTranslation();
 
-  const {loading, data, error} = useQuery<wordGroupById_wordGroup>(GET_WORDGROUP_BY_ID, {
+  const {loading, data, error} = useQuery<wordGroupById>(GET_WORDGROUP_BY_ID, {
     variables: {
       id: convertGlobalToDbId(match.params.id)
     },
@@ -44,7 +44,7 @@ const WordGroup = ({classes, match}: Props) => {
     return <NewWordGroup/>;
   }
 
-  let title_name = ` ${data && data.titleDe ? data.titleDe : ''} / ${data && data.titleCh ? data.titleCh : ''}`;
+  let title_name = ` ${data && data.wordGroup ? data.wordGroup.titleDe : ''} / ${data && data.wordGroup ? data.wordGroup.titleCh : ''}`;
 
   return <Section
     title={t("wordGroups:wordGroup") + ` ${title_name}`}>
@@ -52,25 +52,24 @@ const WordGroup = ({classes, match}: Props) => {
       <BusyOrErrorCard
         loading={loading}
         error={error}
-        noResults={!loading && data && !!data.words && !data.words.length}
+        noResults={!loading && data && !!data.wordGroup && !!data.wordGroup.words && !data.wordGroup.words.length}
       />
       {data &&
-      data.words &&
-      data.words.map((w: wordGroup_wordGroup_words | null) => (
+      data.wordGroup &&
+      data.wordGroup.words &&
+      data.wordGroup.words.map((w: wordGroup_wordGroup_words | null) => (
         w ?
           <Grid item key={w.id}>
             <WordCard word={w}/>
           </Grid> : null
       ))}
-      {["admin"].includes(auth0Client.getCurrentRole() || "") ? (
-        <Grid item>
-          <LinkCard
-            path="/wordgroups/new"
-            icon={<AddIcon/>}
-            helperText="wordGroups:createNewWordGroup"
-          />
-        </Grid>
-      ) : null}
+      <Grid item>
+        <LinkCard
+          path={`/wordgroups/${match.params.id}/add`}
+          icon={<AddIcon/>}
+          helperText="wordGroups:addWordToWordGroup"
+        />
+      </Grid>
     </SectionCardContainer>
   </Section>
 };

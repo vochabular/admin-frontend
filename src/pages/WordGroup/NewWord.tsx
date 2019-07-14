@@ -39,7 +39,7 @@ export const WordGroupSchema = Yup.object().shape({
 interface Props extends WithStyles<typeof styles> {
 }
 
-const NewWordGroup = ({classes}: Props) => {
+const NewWord = ({classes}: Props) => {
   const {t} = useTranslation();
 
   // TODO: Unfortunately, react-apollo-hooks doesn't support yet the error, loading object in mutations (unlike with query...)
@@ -70,7 +70,6 @@ const NewWordGroup = ({classes}: Props) => {
             initialValues={{
               titleDe: "",
               titleCh: "",
-              words: []
             }}
             validationSchema={WordGroupSchema}
             onSubmit={(values, actions) => handleSave(values, actions)}
@@ -115,4 +114,4 @@ const NewWordGroup = ({classes}: Props) => {
   );
 };
 
-export default withStyles(styles, {withTheme: true})(NewWordGroup);
+export default withStyles(styles, {withTheme: true})(NewWord);

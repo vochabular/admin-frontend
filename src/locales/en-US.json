@@ -53,6 +53,7 @@
     "wordGroupsOverview": "Word group overview for all Chapters",
     "wordGroupsChapter": "Word groups in chapter",
     "createNewWordGroup": "Create new word group",
+    "addWordToWordGroup": "Add a new word",
     "newWordGroupTitle": "Create new word group",
     "wordGroup:titleDe": "German title",
     "wordGroup:titleDeHelper": "Title of the word group in standard german.",

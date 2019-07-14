@@ -10,6 +10,7 @@ import Chapter from "./pages/Chapter/Chapter";
 import WordGroups from "./pages/WordGroup/WordGroups"
 import WordGroup from "./pages/WordGroup/WordGroup"
 import ChapterWordGroups from "./pages/WordGroup/ChapterWordGroups";
+import NewWord from "./pages/WordGroup/NewWord";
 
 /**
  * Roles defined as constants for reuse...
@@ -87,6 +88,13 @@ export const mainRoutes: IPrivateRouteConfig[] = [
     component: WordGroup,
     exact: true,
     path: "/wordgroups/:id"
+  },
+  {
+    showInDrawer: false,
+    allowedRoles: allUsers,
+    component: NewWord,
+    exact: true,
+    path: "/wordgroups/:id}/add"
   }
 ];
 
