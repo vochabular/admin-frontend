@@ -16,6 +16,7 @@ class Auth {
   userProfile: Auth0UserProfile | undefined;
   allowedRoles: string[];
   currentRole: string | undefined;
+  dbId: number | undefined;
 
   constructor() {
     this.accessToken = undefined;
@@ -32,6 +33,7 @@ class Auth {
     this.getProfile = this.getProfile.bind(this);
     this.allowedRoles = [];
     this.currentRole = undefined;
+    this.dbId = undefined;
   }
 
   public getProfile(callback: Function) {
@@ -43,6 +45,13 @@ class Auth {
         callback(err, profile);
       });
     }
+  }
+
+  /**
+   * We also need to store the db id of the user somewhere. Bad design (should happen via a hook upon signup and store it in the JWT...)
+   */
+  public setDbId(dbId: number) {
+    this.dbId = dbId;
   }
 
   /**

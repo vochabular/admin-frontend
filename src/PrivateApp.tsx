@@ -52,9 +52,11 @@ const PrivateApp: React.FunctionComponent<Props> = ({ classes }) => {
   }
   const hasCompletedSetup = data && data.profile && data.profile.setupCompleted;
 
-  // Set language to default language...
+  // When we have received the profile data, we can update a few things...
   if (data && data.profile) {
     i18n.changeLanguage(data.profile.language.toLowerCase());
+    // Set the dbId of the user. We need this for our nested mutations (even though this should be set by the backend?)
+    auth0Client.setDbId(Number(data.profile.id));
   }
 
   // TODO: Need to actually get the current role from auth0Client. Via a setting to force a rerender?
