@@ -4,12 +4,16 @@ import { USER_FRAGMENT } from "./users";
 export const COMMENT_FRAGMENT = gql`
   fragment CommentParts on CommentType {
     id
-    comment
+    text
+    context
     active
     written
-    authorName {
-      ...UserParts
-    }
+    fkComponent{
+        id
+      }
+      fkParentComment{
+        id
+      }
   }
   ${USER_FRAGMENT}
 `;
@@ -17,7 +21,11 @@ export const COMMENT_FRAGMENT = gql`
 export const GET_ALL_COMMENTS = gql`
   query getAllComments {
     comments {
-      ...CommentParts
+      edges {
+        node {
+          ...CommentParts
+        }
+      }
     }
   }
   ${COMMENT_FRAGMENT}

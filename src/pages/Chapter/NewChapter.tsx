@@ -1,39 +1,52 @@
 import * as React from "react";
-import { useTranslation } from "react-i18next";
+import {useTranslation} from "react-i18next";
 import * as Yup from "yup";
-import { Formik, Form, Field, FormikActions } from "formik";
-import { TextField } from "formik-material-ui";
-import { useMutation } from "react-apollo-hooks";
+import {Formik, Form, Field, FormikActions} from "formik";
+import {TextField, Select} from "formik-material-ui";
+import {useMutation, useQuery} from "react-apollo-hooks";
 
-import { withStyles, WithStyles } from "@material-ui/core/styles";
+import {withStyles, WithStyles} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
+import {
+  Button,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  FormHelperText,
+} from '@material-ui/core';
 
-import { styles } from "styles";
-import { UPSERT_CHAPTER } from "queries/chapters";
+import {styles} from "styles";
+import {UPSERT_CHAPTER} from "queries/chapters";
 import i18next from "i18n";
 import history from "myHistory";
 import ErrorMessage from "components/ErrorMessage";
-import { ChapterInput } from "__generated__/globalTypes";
-import { chapterById_chapter_parentChapter } from "queries/__generated__/chapterById";
-import { Omit } from "types/genericHelperTypes";
+import {chapterById_chapter_parentChapter} from "queries/__generated__/chapterById";
+import {convertGlobalToDbId} from "helpers";
+import {GET_LANGUAGES} from "../../queries/languages";
+import {languages} from "../../queries/__generated__/languages";
+
 
 export const ChapterSchema = Yup.object().shape({
   number: Yup.number()
     .min(1, i18next.t("tooLow"))
     .max(20, i18next.t("tooHigh"))
     .required(i18next.t("required")),
-  description: Yup.string().max(200, i18next.t("tooLong"))
+  description: Yup.string().max(200, i18next.t("tooLong")),
+  titleDE: Yup.string().max(50, i18next.t("tooLong")),
+  titleCH: Yup.string().max(50, i18next.t("tooLong")),
+  languages: Yup.string().min(1, i18next.t("tooLow")).max(50, i18next.t("tooHigh")).required(i18next.t("required"))
 });
 
 interface Props extends WithStyles<typeof styles> {
   parentChapter?: chapterById_chapter_parentChapter;
 }
 
-const NewChapter = ({ classes, parentChapter }: Props) => {
-  const { t } = useTranslation();
+const NewChapter = ({classes, parentChapter}: Props) => {
+  const {t} = useTranslation();
+
+  const {data, error, loading} = useQuery<languages>(GET_LANGUAGES);
 
   const isSubChapter = !!parentChapter;
 
@@ -41,45 +54,47 @@ const NewChapter = ({ classes, parentChapter }: Props) => {
   const upsertChapter = useMutation(UPSERT_CHAPTER);
 
   async function handleSave(
-    values: Omit<ChapterInput, "title">,
+    values: any,
     actions: FormikActions<any>
   ) {
     // TODO: This verbose stuff won't be necessary anymore as soon useMutation also returns a error/loading object.
     try {
-      const title = isSubChapter
-        ? `${parentChapter!.number}.${values.number}`
-        : values.number.toString();
-      const fkBelongsToId = isSubChapter ? parentChapter!.id : null;
+      values.fkBelongsToId = isSubChapter ? convertGlobalToDbId(parentChapter!.id) : null;
+      values.languages = values.languages.join(',');
       await upsertChapter({
         variables: {
-          input: { chapterData: { ...values, title, fkBelongsToId } }
+          input: {chapterData: {...values}}
         }
       });
-      // TODO: Need to go "back"
-      history.push("/chapters");
+      isSubChapter ? history.push(`/chapters/${parentChapter!.id}`) : history.push('/chapters');
     } catch (e) {
       actions.setSubmitting(false);
-      actions.setStatus({ response: `${t("serverError")}: ${e.message}` });
+      actions.setStatus({response: `${t("serverError")}: ${e.message}`});
     }
   }
 
+  // @ts-ignore
+  // @ts-ignore
   return (
     <React.Fragment>
       <Card className={classes.card}>
         <Typography variant="h3">
           {isSubChapter
-            ? t("chapter:newSubChapterTitle") + ` ${parentChapter!.number}`
+            ? t("chapter:newSubChapterTitle") + ` ${parentChapter!.number}: ${parentChapter!.titleDE} / ${parentChapter!.titleCH}`
             : t("chapter:newChapterTitle")}
         </Typography>
         <CardContent>
           <Formik
             initialValues={{
-              number: 0,
-              description: ""
+              titleDE: "",
+              titleCH: "",
+              number: 0, // TODO set to next number
+              description: "",
+              languages: data && data.languages  ? data.languages: []
             }}
             validationSchema={ChapterSchema}
             onSubmit={(values, actions) => handleSave(values, actions)}
-            render={({ submitForm, values, isSubmitting, status }) => (
+            render={({submitForm, values, isSubmitting, status}) => (
               <Form>
                 <Field
                   type="number"
@@ -93,6 +108,32 @@ const NewChapter = ({ classes, parentChapter }: Props) => {
                     isSubChapter
                       ? "chapter:subChapterNumberHelper"
                       : "chapter:chapterNumberHelper"
+                  )}
+                  component={TextField}
+                  margin="normal"
+                  fullWidth
+                />
+                <Field
+                  type="text"
+                  name="titleDE"
+                  label={t("chapter:newChapterTitleDE")}
+                  helperText={t(
+                    isSubChapter
+                      ? "chapter:newSubChapterTitleDEHelper"
+                      : "chapter:newChapterTitleDEHelper"
+                  )}
+                  component={TextField}
+                  margin="normal"
+                  fullWidth
+                />
+                <Field
+                  type="text"
+                  name="titleCH"
+                  label={t("chapter:newChapterTitleCH")}
+                  helperText={t(
+                    isSubChapter
+                      ? "chapter:newSubChapterTitleCHHelper"
+                      : "chapter:newChapterTitleCHHelper"
                   )}
                   component={TextField}
                   margin="normal"
@@ -114,8 +155,32 @@ const NewChapter = ({ classes, parentChapter }: Props) => {
                   rows="6"
                 />
 
+                <FormControl margin="normal"
+                             fullWidth>
+                  <InputLabel shrink={true} htmlFor="languages">
+                    {t("chapter:newChapterLanguage")}
+                  </InputLabel>
+                  <Field
+                    type="text"
+                    name="languages"
+                    component={Select}
+                    multiple={true}
+                    helperText={t("chapter:newChapterLanguageHelper")}
+                    inputProps={{name: 'languages', id: 'languages'}}
+                  >
+                    {data && data.languages ? data.languages.map(l => (
+                      l && l.name && l.description ? (
+                        <MenuItem value={l.name}>
+                          {l.description}
+                        </MenuItem>
+                      ) : <MenuItem/>
+                    )) : (<MenuItem/>)}
+                  </Field>
+                  <FormHelperText>{t("chapter:newChapterLanguageHelper")}</FormHelperText>
+                </FormControl>
+
                 {status && status.response && (
-                  <ErrorMessage error={status.response} />
+                  <ErrorMessage error={status.response}/>
                 )}
                 <Button
                   variant="contained"
@@ -134,4 +199,4 @@ const NewChapter = ({ classes, parentChapter }: Props) => {
   );
 };
 
-export default withStyles(styles, { withTheme: true })(NewChapter);
+export default withStyles(styles, {withTheme: true})(NewChapter);

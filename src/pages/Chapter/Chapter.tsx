@@ -11,16 +11,14 @@ import { styles } from "styles";
 import NewChapter from "./NewChapter";
 import SubChapterDetail from "./SubChapterDetail";
 import { GET_CHAPTER_BY_ID } from "queries/chapters";
-import {
-  chapterById,
-  chapterById_chapter_subChapters
-} from "queries/__generated__/chapterById";
 import BusyOrErrorCard from "components/BusyOrErrorCard";
 import ChapterCard from "components/ChapterCard";
 import LinkCard from "components/LinkCard";
 import auth0Client from "auth/Auth";
 import Section from "components/Section";
 import SectionCardContainer from "components/SectionCardContainer";
+import { chapterById } from "queries/__generated__/chapterById";
+import { convertGlobalToDbId } from "helpers";
 
 // These can come from the router... See the route definitions
 interface ChapterRouterProps {
@@ -43,7 +41,10 @@ const Chapter = ({ classes, match }: Props) => {
   // Either load directly the subchapter or else the chapter
   const { loading, data, error } = useQuery<chapterById>(GET_CHAPTER_BY_ID, {
     variables: {
-      id: subChapterId && subChapterId !== "new" ? subChapterId : chapterId
+      id:
+        subChapterId && subChapterId !== "new"
+          ? convertGlobalToDbId(subChapterId)
+          : convertGlobalToDbId(chapterId)
     }
   });
 
@@ -78,20 +79,19 @@ const Chapter = ({ classes, match }: Props) => {
 
   // Else, then render the chapter overview
   return (
-    <Section title={t("chapters:chapter") + ` ${data.chapter.title}`}>
+    <Section title={t("chapters:chapter") + ` ${data.chapter.titleDE} / ${data.chapter.titleCH}`}>
       <SectionCardContainer>
         {data.chapter &&
           data.chapter.subChapters &&
-          data.chapter.subChapters.map(
-            (c: chapterById_chapter_subChapters | null) => {
-              if (!c) return null;
-              return (
-                <Grid item key={c && c.id}>
-                  <ChapterCard chapter={c!} />
-                </Grid>
-              );
-            }
-          )}
+          data.chapter.subChapters &&
+          data.chapter.subChapters.edges.map((c: any | null) => {
+            if (!c) return null;
+            return (
+              <Grid item key={c && c.node.id}>
+                <ChapterCard chapter={c.node} />
+              </Grid>
+            );
+          })}
         {["admin", "content-creator"].includes(
           auth0Client.getCurrentRole() || ""
         ) ? (

@@ -19,10 +19,7 @@ We use GraphQL, a typed query language, as an interface between the SPA Client a
 
 [https://vochabular-admin-backend.herokuapp.com/api/graphql](https://vochabular-admin-backend.herokuapp.com/api/graphql)
 
-Although the schema is publicly accesible (TODO: Should we want to hide it?), we need to set the JWT tokens in the header somehow to query and mutate actual data. Unfortunately, this requires a workaround since the Graphene provided GraphiQL client doesn't have this enabled as a plugin.
-
-- Use https://graphiql-online.com/ --> Source: https://github.com/hasura/graphql-engine/tree/master/community/tools/graphiql-online
-- Use a native GraphQL client such as Altair that allows setting headers.
+The schema is publicly available. But if you login first to the [Django admin interface](https://vochabular-admin-backend.herokuapp.com/admin/), then it will use the cookie (?) as a session var
 
 ## Additional steps to generate types with Apollo Codegen
 
