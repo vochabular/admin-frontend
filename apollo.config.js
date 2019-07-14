@@ -1,8 +1,8 @@
 module.exports = {
   client: {
     service: {
-      name: "vochabular-admin-backend",
-      url: "http://vochabular-admin-backend.herokuapp.com/api",
+      name: "vochabular-admin",
+      url: "http://vochabular-admin.herokuapp.com/api",
       // optional headers
       /*
       headers: {

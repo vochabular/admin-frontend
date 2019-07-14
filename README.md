@@ -17,9 +17,9 @@ This single-page-application (SPA) is written in Typescript and React and is boo
 
 We use GraphQL, a typed query language, as an interface between the SPA Client and the backend. The backend provides with a self-documenting, interactive "Graph" explorer which you can access here:
 
-[https://vochabular-admin-backend.herokuapp.com/api/graphql](https://vochabular-admin-backend.herokuapp.com/api/graphql)
+[https://vochabular-admin.herokuapp.com/api/graphql](https://vochabular-admin.herokuapp.com/api/graphql)
 
-The schema is publicly available. But if you login first to the [Django admin interface](https://vochabular-admin-backend.herokuapp.com/admin/), then it will use the cookie (?) as a session var
+The schema is publicly available. But if you login first to the [Django admin interface](https://vochabular-admin.herokuapp.com/admin/), then it will use the cookie (?) as a session var
 
 ## Additional steps to generate types with Apollo Codegen
 
