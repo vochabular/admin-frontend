@@ -96,7 +96,7 @@ export const mainRoutes: IPrivateRouteConfig[] = [
     allowedRoles: allUsers,
     component: NewWord,
     exact: true,
-    path: "/wordgroups/:id}/add"
+    path: "/wordgroups/:id/add"
   }
 ];
 

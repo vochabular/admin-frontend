@@ -12,7 +12,6 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 
 import {styles} from "styles";
-import {UPSERT_CHAPTER} from "queries/chapters";
 import i18next from "i18n";
 import history from "myHistory";
 import ErrorMessage from "components/ErrorMessage";
@@ -23,7 +22,7 @@ import {
   UPDATE_DE_WORD,
   UPDATE_EN_WORD, UPDATE_FA_WORD
 } from "../../queries/wordgroups";
-import {wordGroup_wordGroup} from "../../queries/__generated__/wordGroup";
+import CustomSelect from "../../components/SearchableMultiSelect";
 
 export const WordGroupSchema = Yup.object().shape({
   titleCh: Yup.string()
@@ -35,6 +34,11 @@ export const WordGroupSchema = Yup.object().shape({
     .max(50, i18next.t("tooLong"))
     .required(i18next.t("required")),
 });
+
+const words = [
+  { value: 'foo', label: 'Foo' },
+  { value: 'bar', label: 'Bar' },
+];
 
 interface Props extends WithStyles<typeof styles> {
 }
@@ -93,6 +97,15 @@ const NewWordGroup = ({classes}: Props) => {
                   component={TextField}
                   margin="normal"
                   fullWidth
+                />
+
+                <Field
+                  className="custom-select"
+                  name="words"
+                  options={words}
+                  component={CustomSelect}
+                  placeholder="Select multi languages..."
+                  isMulti={true}
                 />
 
                 {status && status.response && (

@@ -12,7 +12,6 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 
 import {styles} from "styles";
-import {UPSERT_CHAPTER} from "queries/chapters";
 import i18next from "i18n";
 import history from "myHistory";
 import ErrorMessage from "components/ErrorMessage";
@@ -23,7 +22,7 @@ import {
   UPDATE_DE_WORD,
   UPDATE_EN_WORD, UPDATE_FA_WORD
 } from "../../queries/wordgroups";
-import {wordGroup_wordGroup} from "../../queries/__generated__/wordGroup";
+import CustomSelect from "../../components/SearchableMultiSelect";
 
 export const WordGroupSchema = Yup.object().shape({
   titleCh: Yup.string()
@@ -64,12 +63,16 @@ const NewWord = ({classes}: Props) => {
   return (
     <React.Fragment>
       <Card className={classes.card}>
-        <Typography variant="h3">{t("wordGroups:newWordGroupTitle")}</Typography>
+        <Typography variant="h3">{t("words:createNewWord")}</Typography>
         <CardContent>
           <Formik
             initialValues={{
-              titleDe: "",
-              titleCh: "",
+              textDE: "",
+              exampleSentenceDE: "",
+              audioDE: null,
+              textCH: "",
+              exampleSentenceCH: "",
+              audioCH: null,
             }}
             validationSchema={WordGroupSchema}
             onSubmit={(values, actions) => handleSave(values, actions)}
@@ -77,23 +80,58 @@ const NewWord = ({classes}: Props) => {
               <Form>
                 <Field
                   type="text"
-                  name="titleDe"
-                  label={t("wordGroup:titleDe")}
-                  helperText={t("wordGroup:titleDeHelper")}
+                  name="textDE"
+                  label={t("words:textDE")}
+                  helperText={t("words:textDEHelper")}
                   component={TextField}
                   margin="normal"
                   fullWidth
                 />
                 <Field
                   type="text"
-                  name="titleCh"
-                  label={t("wordGroup:titleCh")}
-                  helperText={t("wordGroup:titleChHelper")}
+                  name="exampleSentenceDE"
+                  label={t("words:exampleSentenceDE")}
+                  helperText={t("words:exampleSentenceDEHelper")}
                   component={TextField}
                   margin="normal"
                   fullWidth
                 />
-
+                <Field
+                  type="file"
+                  name="audioDE"
+                  label={t("words:audioDE")}
+                  helperText={t("words:audioDEHelper")}
+                  component={TextField}
+                  margin="normal"
+                  fullWidth
+                />
+                <Field
+                  type="text"
+                  name="textCH"
+                  label={t("words:textCH")}
+                  helperText={t("words:textCHHelper")}
+                  component={TextField}
+                  margin="normal"
+                  fullWidth
+                />
+                <Field
+                  type="text"
+                  name="exampleSentenceCH"
+                  label={t("words:exampleSentenceCH")}
+                  helperText={t("words:exampleSentenceCHHelper")}
+                  component={TextField}
+                  margin="normal"
+                  fullWidth
+                />
+                <Field
+                  type="file"
+                  name="audioCH"
+                  label={t("words:audioCH")}
+                  helperText={t("words:audioCHHelper")}
+                  component={TextField}
+                  margin="normal"
+                  fullWidth
+                />
                 {status && status.response && (
                   <ErrorMessage error={status.response}/>
                 )}
