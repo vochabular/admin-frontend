@@ -9,6 +9,7 @@ import Section from "components/Section";
 import { useTranslation } from "react-i18next";
 import TimestampAgo from "components/TimestampAgo";
 import CommentsWidget from "pages/Chapter/CommentsWidget";
+import { chapterById_chapter } from "queries/__generated__/chapterById";
 
 const mockData = {
   titleCh: "Kapitel 1",
@@ -24,16 +25,17 @@ const mockData = {
   lastSaved: "2019-05-26T18:56:30"
 };
 
-interface Props extends WithStyles<typeof styles> {}
+interface Props extends WithStyles<typeof styles> {
+  data: chapterById_chapter;
+}
 
 /**
  * The subchapter Editor. Depending on the role, should display different "functionality"
  */
-const SubChapterDetail = ({ classes }: Props) => {
+const SubChapterDetail = ({ classes, data }: Props) => {
   const { t } = useTranslation();
 
-  const data = mockData;
-
+  const { titleCH, titleDE, updated } = data;
   const title = (
     <Grid container justify="space-around">
       <Grid item>
@@ -42,7 +44,7 @@ const SubChapterDetail = ({ classes }: Props) => {
             {t("titleDe")}
             {":"}
           </Typography>
-          <Typography variant="body1">{data.titleDe}</Typography>
+          <Typography variant="body1">{titleDE}</Typography>
         </Grid>
       </Grid>
       <Grid item>
@@ -51,7 +53,7 @@ const SubChapterDetail = ({ classes }: Props) => {
             {t("titleCh")}
             {":"}
           </Typography>
-          <Typography variant="body1">{data.titleCh}</Typography>
+          <Typography variant="body1">{titleCH}</Typography>
         </Grid>
       </Grid>
       <Grid item>
@@ -60,7 +62,7 @@ const SubChapterDetail = ({ classes }: Props) => {
             {t("lastSaved")}
             {":"}
           </Typography>
-          <TimestampAgo date={new Date(data.lastSaved || 0)} variant="body1" />
+          <TimestampAgo date={new Date(updated || 0)} variant="body1" />
         </Grid>
       </Grid>
     </Grid>
@@ -73,7 +75,7 @@ const SubChapterDetail = ({ classes }: Props) => {
             <ContentEditor data={data} />
           </Grid>
           <Grid item xs={12} sm={3}>
-            <CommentsWidget query="COMMENTS_QUERY BY CHAPTER, FILTERED BY CONTEXT" />
+            <CommentsWidget />
           </Grid>
         </Grid>
       </Section>

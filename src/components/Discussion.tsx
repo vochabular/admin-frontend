@@ -15,6 +15,17 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 import Comment from "./Comment";
 import { Divider, TextField, Button, Grid } from "@material-ui/core";
+import { getAllComments_comments_edges_node } from "queries/__generated__/getAllComments";
+import { useMutation } from "react-apollo-hooks";
+import {
+  CREATE_COMMENT,
+  GET_ALL_COMMENTS,
+  GET_ACTIVE_COMMENTS
+} from "queries/comments";
+import { createComment } from "queries/__generated__/createComment";
+import auth0Client from "auth/Auth";
+import { convertGlobalToDbId } from "helpers";
+import { getOperationName } from "apollo-link";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -30,56 +41,82 @@ interface Props extends WithStyles<typeof styles> {
   /**
    * TODO: A single discussion
    */
-  data: any;
+  data: getAllComments_comments_edges_node;
 }
 
 const Discussion = ({ classes, data }: Props) => {
   const { t } = useTranslation();
-  const [newComment, setNewComment] = React.useState("");
+  const [reply, setReply] = React.useState("");
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-  function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
+  const createComment = useMutation<createComment>(CREATE_COMMENT);
+
+  function handleOpenMenu(event: React.MouseEvent<HTMLButtonElement>) {
     setAnchorEl(event.currentTarget);
   }
 
-  function handleClose() {
+  function handleCloseMenu() {
     setAnchorEl(null);
   }
 
-  function handleNewCommentInputChange(
-    event: React.ChangeEvent<HTMLInputElement>
-  ) {
-    setNewComment(event.target.value);
+  function handleReplyInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setReply(event.target.value);
   }
+
+  function handleSubmitReply() {
+    createComment({
+      variables: {
+        comment: {
+          text: reply,
+          active: true,
+          fkAuthorId: auth0Client.dbId,
+          fkParentCommentId: convertGlobalToDbId(data.id),
+          fkComponentId: 1 // TODO(df): Need to set this from a shared state, e.g. selected component?
+        }
+      },
+      // TODO(df): This should actually not be necessary, since the return from the mutation should update the store???
+      refetchQueries: [
+        getOperationName(GET_ALL_COMMENTS) || "",
+        getOperationName(GET_ACTIVE_COMMENTS) || ""
+      ]
+    });
+  }
+
+  function handleResolveDiscussion() {}
 
   return (
     <div className={classes.container}>
-      <div>{data.id}</div>
       <Comment data={data} />
-      {data.responses.map((c: any) => (
-        <React.Fragment key={c.id}>
-          <Comment data={c} />
-          <Divider />
-        </React.Fragment>
-      ))}
+      {data &&
+        data.commentSet &&
+        data.commentSet.edges.map(
+          c =>
+            c &&
+            c.node && (
+              <React.Fragment key={c.node.id}>
+                <Comment data={c.node} />
+                <Divider />
+              </React.Fragment>
+            )
+        )}
       <Divider />
       <TextField
-        id="new-comment"
-        label="New comment"
+        id="reply"
+        label={t("reply")}
         fullWidth
         multiline
         //rowsMax="4"
-        value={newComment}
-        onChange={handleNewCommentInputChange}
+        value={reply}
+        onChange={handleReplyInputChange}
         //className={classes.textField}
         margin="normal"
       />
-      {newComment.length ? (
+      {reply.length ? (
         <Button
-          disabled={false}
           id="new-comment"
           variant="contained"
           color="primary"
+          onClick={handleSubmitReply}
         >
           {t("submit")}
         </Button>
@@ -93,7 +130,7 @@ const Discussion = ({ classes, data }: Props) => {
             aria-label="menu"
             aria-owns={anchorEl ? "discussion-action-menu" : undefined}
             aria-haspopup="true"
-            onClick={handleClick}
+            onClick={handleOpenMenu}
           >
             <MoreVertIcon />
           </IconButton>
@@ -101,10 +138,10 @@ const Discussion = ({ classes, data }: Props) => {
             id="discussion-action-menu"
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
-            onClose={handleClose}
+            onClose={handleCloseMenu}
           >
-            <MenuItem onClick={handleClose}>{t("resolve")}</MenuItem>
-            <MenuItem onClick={handleClose}>{t("delete")}</MenuItem>
+            <MenuItem onClick={handleCloseMenu}>{t("resolve")}</MenuItem>
+            <MenuItem onClick={handleCloseMenu}>{t("delete")}</MenuItem>
           </Menu>
         </Grid>
       )}

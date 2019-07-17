@@ -127,6 +127,8 @@ export interface chapters_chapters_edges_node {
   titleCH: string;
   titleDE: string;
   description: string;
+  created: any;
+  updated: any;
   parentChapter: chapters_chapters_edges_node_parentChapter | null;
   chapterSet: chapters_chapters_edges_node_chapterSet | null;
   componentSet: chapters_chapters_edges_node_componentSet | null;

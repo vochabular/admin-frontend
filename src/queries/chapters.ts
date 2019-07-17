@@ -8,6 +8,8 @@ export const CHAPTER_HEADER_PART = gql`
     titleCH
     titleDE
     description
+    created
+    updated
     parentChapter: fkBelongsTo {
       id
       number
@@ -98,19 +100,45 @@ export const GET_CHAPTER_BY_ID = gql`
 `;
 
 export const GET_CHAPTER_WORDGROUPS = gql`
-query chapters_wordGroups{
-  chapters {
-    edges {
-      node {
-        id
-        titleDE
-        titleCH
-        parentChapter: fkBelongsTo{
+  query chapters_wordGroups {
+    chapters {
+      edges {
+        node {
           id
+          titleDE
+          titleCH
+          parentChapter: fkBelongsTo {
+            id
+          }
+          wordGroups: wordgroupSet {
+            edges {
+              node {
+                id
+              }
+            }
+          }
         }
-        wordGroups: wordgroupSet{
-          edges {
-            node {
+      }
+    }
+  }
+`;
+
+export const GET_CHAPTER_WORDGROUPS_BY_CHAPTER_ID = gql`
+  query chaptersWordGroupsByChapterId($id: Int) {
+    chapter(id: $id) {
+      id
+      titleDE
+      titleCH
+      parentChapter: fkBelongsTo {
+        id
+      }
+      wordGroups: wordgroupSet {
+        edges {
+          node {
+            id
+            titleCh
+            titleDe
+            words {
               id
             }
           }
@@ -118,32 +146,6 @@ query chapters_wordGroups{
       }
     }
   }
-}
-`;
-
-export const GET_CHAPTER_WORDGROUPS_BY_CHAPTER_ID = gql`
-query chaptersWordGroupsByChapterId($id: Int) {
-  chapter(id: $id) {
-    id
-    titleDE
-    titleCH
-    parentChapter: fkBelongsTo {
-      id
-    }
-    wordGroups: wordgroupSet {
-      edges {
-        node {
-          id
-          titleCh
-          titleDe
-          words {
-            id
-          }
-        }
-      }
-    }
-  }
-}
 `;
 
 export const UPSERT_CHAPTER = gql`
