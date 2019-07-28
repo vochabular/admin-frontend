@@ -19,8 +19,8 @@ import NotificationSection from "pages/Settings/SettingsSection/NotificationSect
 import { UPDATE_PROFILE, GET_PROFILE } from "queries/profile";
 import { UserSetupSchema } from "pages/Settings/Settings";
 import { profile_profile } from "queries/__generated__/profile";
-import auth0Client from "auth/Auth";
 import { updateProfile } from "queries/__generated__/updateProfile";
+import { useAuth } from "contexts/AuthContext";
 
 function getSteps() {
   return [
@@ -49,6 +49,7 @@ interface Props extends WithStyles<typeof styles> {
 
 function SetupWizard({ classes, profile }: Props) {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const mutateProfile = useMutation<updateProfile>(UPDATE_PROFILE);
 
   const [activeStep, setActiveStep] = useState(0);
@@ -63,8 +64,8 @@ function SetupWizard({ classes, profile }: Props) {
       const updatedProfile = {
         firstname: values.firstname,
         lastname: values.lastname,
-        roles: auth0Client.getAllowedRoles().join(","),
-        currentRole: auth0Client.getCurrentRole(),
+        roles: user && user.allowedRoles.join(","),
+        currentRole: user && user.allowedRoles[0], // TODO(df): need to set this in the AuthContext, based from the userprofile query on startup...
         language: values.language,
         eventNotifications: values.eventNotifications,
         translatorLanguages:
@@ -74,7 +75,7 @@ function SetupWizard({ classes, profile }: Props) {
       };
       const payload = {
         profile: {
-          username: auth0Client.userProfile && auth0Client.userProfile.email,
+          username: user && user.email,
           profileData: updatedProfile
         }
       };
@@ -114,8 +115,7 @@ function SetupWizard({ classes, profile }: Props) {
   initialProfile.language = (profile && profile.language.toLowerCase()) || "de";
   initialProfile.currentRole =
     (profile && profile.currentRole) ||
-    auth0Client.getCurrentRole() ||
-    auth0Client.getAllowedRoles()[0] ||
+    (user && user.currentRole) || // TODO(df): Need to get the current role of the user...
     "";
   initialProfile.firstname = "";
   initialProfile.lastname = "";

@@ -10,7 +10,7 @@ import { CommentContext, ProfileLanguage } from "./../../__generated__/globalTyp
 
 export interface CommentParts_fkAuthor {
   __typename: "ProfileType";
-  id: string;
+  id: any;
   firstname: string;
   lastname: string;
   roles: string;

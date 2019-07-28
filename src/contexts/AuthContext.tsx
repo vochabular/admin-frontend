@@ -4,16 +4,12 @@ import Auth0Client from "@auth0/auth0-spa-js/dist/typings/Auth0Client";
 
 import { Role } from "rbac-rules";
 
-const namespace = "https://admin.vochabular.ch/jwt/claims";
+const namespace = "https://hasura.io/jwt/claims";
 
 /**
  * Properties from the Auth0 IdToken + the custom defined properties (in the Auth0 Rules!)
  */
 interface IUser extends IdToken {
-  userId: string;
-  allowedOrganizations: string[];
-  currentOrganization: string;
-  defaultRole: Role;
   currentRole: Role;
   allowedRoles: Role[];
 }
@@ -29,13 +25,10 @@ interface IOwnIdToken extends IdToken {
 function getUserFromIdToken(idToken: IOwnIdToken): IUser {
   // Strip the namespace, since we want to have a flat user object
   const { [namespace]: customProperties, ...authProperties } = idToken;
+  const allowedRoles = customProperties["x-hasura-allowed-roles"];
   return {
-    userId: customProperties["x-hasura-user-id"],
-    allowedOrganizations: customProperties["x-hasura-allowed-organizations"],
-    currentOrganization: customProperties["x-hasura-current-organization"],
-    defaultRole: customProperties["x-hasura-default-role"],
-    currentRole: customProperties["x-hasura-current-role"],
-    allowedRoles: customProperties["x-hasura-allowed-roles"],
+    allowedRoles,
+    currentRole: allowedRoles[0], // TODO(df): We have to initialize this somehow, then on first settings load, it has to update the current role based on the current set value.
     ...authProperties
   };
 }
@@ -118,19 +111,21 @@ export const AuthProvider = ({
         onRedirectCallback(appState);
       }
       const isAuthenticated = await auth0FromHook.isAuthenticated();
-
       setIsAuthenticated(isAuthenticated);
 
       if (isAuthenticated) {
-        const user = await auth0FromHook.getUser();
-        setUser(getUserFromIdToken(user));
-
+        const auth0User = await auth0FromHook.getUser();
+        const user = getUserFromIdToken(auth0User);
+        setUser(user);
         // TODO(df): Hack to get the id-token, since Auth0 only can return the access-token, we however need the ID token...
         const idToken =
           // @ts-ignore
           auth0FromHook.cache.cache["default::openid profile email"][
             "id_token"
           ];
+        // TODO(df): Hack for now, since I have no idea how to access the context from outside React (in ApolloClient.ts)
+        // @ts-ignore
+        window.idToken = idToken;
         setIdToken(idToken);
       }
       setLoading(false);

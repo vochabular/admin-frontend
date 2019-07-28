@@ -50,7 +50,6 @@ export interface chapters_chapters_edges_node_componentSet_edges_node_texts_edge
    * The ID of the object.
    */
   id: string;
-  language: string;
   textField: string;
 }
 

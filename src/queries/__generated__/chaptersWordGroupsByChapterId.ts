@@ -16,7 +16,7 @@ export interface chaptersWordGroupsByChapterId_chapter_parentChapter {
 
 export interface chaptersWordGroupsByChapterId_chapter_wordGroups_edges_node_words {
   __typename: "WordType";
-  id: string;
+  id: any;
 }
 
 export interface chaptersWordGroupsByChapterId_chapter_wordGroups_edges_node {

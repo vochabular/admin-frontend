@@ -10,7 +10,7 @@ import { CommentInput, CommentContext, ProfileLanguage } from "./../../__generat
 
 export interface createComment_createComment_comment_fkAuthor {
   __typename: "ProfileType";
-  id: string;
+  id: any;
   firstname: string;
   lastname: string;
   roles: string;

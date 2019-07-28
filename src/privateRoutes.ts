@@ -7,11 +7,12 @@ import Dashboard from "pages/Dashboard/Dashboard";
 import Settings from "pages/Settings/Settings";
 import Chapters from "./pages/Chapter/Chapters";
 import Chapter from "./pages/Chapter/Chapter";
-import WordGroups from "./pages/WordGroup/WordGroups"
-import WordGroup from "./pages/WordGroup/WordGroup"
+import WordGroups from "./pages/WordGroup/WordGroups";
+import WordGroup from "./pages/WordGroup/WordGroup";
 import ChapterWordGroups from "./pages/WordGroup/ChapterWordGroups";
+import NewWord from "./pages/WordGroup/NewWord";
+
 import { Role } from "rbac-rules";
-import WordEditor from "./pages/WordGroup/WordEditor";
 
 const allUsers = Object.values(Role);
 
@@ -87,9 +88,9 @@ export const mainRoutes: IPrivateRouteConfig[] = [
   {
     showInDrawer: false,
     allowedRoles: allUsers,
-    component: WordEditor,
+    component: NewWord,
     exact: true,
-    path: "/wordgroups/:id/edit"
+    path: "/wordgroups/:id/add"
   }
 ];
 

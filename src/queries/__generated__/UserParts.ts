@@ -10,7 +10,7 @@ import { ProfileLanguage } from "./../../__generated__/globalTypes";
 
 export interface UserParts {
   __typename: "ProfileType";
-  id: string;
+  id: any;
   firstname: string;
   lastname: string;
   roles: string;

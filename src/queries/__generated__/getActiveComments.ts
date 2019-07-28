@@ -10,7 +10,7 @@ import { CommentContext, ProfileLanguage } from "./../../__generated__/globalTyp
 
 export interface getActiveComments_comments_edges_node_fkAuthor {
   __typename: "ProfileType";
-  id: string;
+  id: any;
   firstname: string;
   lastname: string;
   roles: string;
@@ -22,7 +22,7 @@ export interface getActiveComments_comments_edges_node_fkAuthor {
 
 export interface getActiveComments_comments_edges_node_commentSet_edges_node_fkAuthor {
   __typename: "ProfileType";
-  id: string;
+  id: any;
   firstname: string;
   lastname: string;
   roles: string;

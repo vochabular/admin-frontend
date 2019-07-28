@@ -22,7 +22,6 @@ fragment WordgroupParts on api_wordgroup {
       }
     }
   }
-}
 `;
 
 export const GET_WORDGROUPS = gql`
