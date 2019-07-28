@@ -10,12 +10,14 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import {styles} from "styles";
 import {wordGroups_wordGroups, wordGroups_wordGroups_edges_node} from "queries/__generated__/wordGroups";
 import {wordGroup_wordGroup_words} from "../queries/__generated__/wordGroup";
+import {convertGlobalToDbId} from "../helpers";
 
 interface Props extends WithStyles<typeof styles> {
   word: wordGroup_wordGroup_words;
+  id: string;
 }
 
-const WordCard = ({classes, word}: Props) => {
+const WordCard = ({classes, word, id}: Props) => {
 
   // Note: MUI links together with react-router-dom and Typescript are a bit tricky due to their dynamic nature
   // See the discussion and provided solutions here... https://github.com/mui-org/material-ui/issues/7877
@@ -24,7 +26,7 @@ const WordCard = ({classes, word}: Props) => {
     <Card>
       <CardActionArea
         component={RouterLink}
-        {...{to: `/wordgroups/${word.id}`} as any}
+        {...{to: `/wordgroups/${id}/add`} as any}
       >
         <CardContent>
           <Typography

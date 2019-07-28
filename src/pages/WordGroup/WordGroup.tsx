@@ -59,7 +59,7 @@ const WordGroup = ({classes, match}: Props) => {
       data.wordGroup.words.map((w: wordGroup_wordGroup_words | null) => (
         w ?
           <Grid item key={w.id}>
-            <WordCard word={w}/>
+            <WordCard word={w} id={match.params.id}/>
           </Grid> : null
       ))}
       <Grid item>

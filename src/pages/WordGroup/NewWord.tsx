@@ -16,13 +16,13 @@ import i18next from "i18n";
 import history from "myHistory";
 import ErrorMessage from "components/ErrorMessage";
 import {
-  INSERT_WORDGROUP,
+  CREATE_WORD,
   UPDATE_AR_WORD,
   UPDATE_CH_WORD,
   UPDATE_DE_WORD,
   UPDATE_EN_WORD, UPDATE_FA_WORD
 } from "../../queries/wordgroups";
-import CustomSelect from "../../components/SearchableMultiSelect";
+import {RouteComponentProps} from "react-router";
 
 export const WordGroupSchema = Yup.object().shape({
   titleCh: Yup.string()
@@ -35,14 +35,20 @@ export const WordGroupSchema = Yup.object().shape({
     .required(i18next.t("required")),
 });
 
-interface Props extends WithStyles<typeof styles> {
+interface WordGroupRouterProps {
+  id: string;
 }
 
-const NewWord = ({classes}: Props) => {
+interface Props
+  extends RouteComponentProps<WordGroupRouterProps>,
+    WithStyles<typeof styles> {
+}
+
+const NewWord = ({classes, match}: Props) => {
   const {t} = useTranslation();
 
   // TODO: Unfortunately, react-apollo-hooks doesn't support yet the error, loading object in mutations (unlike with query...)
-  const insertWordGroup = useMutation(INSERT_WORDGROUP);
+  const createWord = useMutation(CREATE_WORD);
   const updateWordDe = useMutation(UPDATE_DE_WORD);
   const updateWordCh = useMutation(UPDATE_CH_WORD);
   const updateWordEn = useMutation(UPDATE_EN_WORD);
@@ -52,8 +58,8 @@ const NewWord = ({classes}: Props) => {
   async function handleSave(values: any, actions: FormikActions<any>) {
     // TODO: This verbose stuff won't be necessary anymore as soon useMutation also returns a error/loading object.
     try {
-      await insertWordGroup({variables: {input: values}});
-      history.push('/wordgroups');
+      await createWord({variables: {input: values}});
+      history.push(`/wordgroups/${match.params.id}`);
     } catch (e) {
       actions.setSubmitting(false);
       actions.setStatus({response: `${t("serverError")}: ${e.message}`});
