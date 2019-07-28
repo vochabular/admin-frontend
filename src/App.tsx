@@ -1,54 +1,53 @@
-import React, { Component } from "react";
+import React from "react";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+
 import CssBaseline from "@material-ui/core/CssBaseline";
 
-import Routes from "./Routes";
-import auth0Client from "./auth/Auth";
 import "./App.css";
 import LoadingPage from "./pages/LoadingPage";
-import { Auth0Error, Auth0UserProfile } from "auth0-js";
+import { useAuth } from "contexts/AuthContext";
+import PrivateApp from "PrivateApp";
+import PrivateRoute from "components/PrivateRoute";
+import NotFound404 from "components/404";
+import LoginPage from "pages/LoginPage";
 
-// Provide types for the component. You can also use interfaces, but a general rule of thumb is to use `type` for React Component Props and State...
-type IAppProps = {
-  name?: string;
+/**
+ * Main app component with routing for logged in users (private) and public routes
+ * Note: Although there are various ways how to define a new React component, to benefit from the best typings, use this style:
+ * export default const Foo: React.FC<IFooProps> = (FooProps) => <Bar />
+ */
+const App: React.FC = () => {
+  const { loading, isAuthenticated } = useAuth();
+  return (
+    <div className="App">
+      <CssBaseline />
+      <BrowserRouter>
+        {loading ? (
+          <LoadingPage />
+        ) : (
+          <Switch>
+            {isAuthenticated && (
+              <Route path="/login" exact render={() => <Redirect to="/" />} />
+            )}
+            {!isAuthenticated && (
+              <Route path="/login" exact component={LoginPage} />
+            )}
+            {!isAuthenticated && (
+              <Route path="/help" exact render={() => <div>Help</div>} />
+            )}
+            {!isAuthenticated && (
+              <Route path="/404" exact component={NotFound404} />
+            )}
+            {!isAuthenticated && (
+              <Route path="/" exact render={() => <Redirect to="/login" />} />
+            )}
+            <PrivateRoute path="/" component={PrivateApp} />
+            <Redirect to="/404" />
+          </Switch>
+        )}
+      </BrowserRouter>
+    </div>
+  );
 };
-
-type IAppState = {
-  initialized: boolean;
-};
-
-class App extends Component<IAppProps, IAppState> {
-  public state: IAppState = {
-    initialized: false
-  };
-
-  /**
-   * On app start, renew the Auth0 session in case the user has logged in already before.
-   * When everything is done, then set initialized to true
-   */
-  public async componentDidMount() {
-    const { renewSession } = auth0Client;
-    if (localStorage.getItem("isLoggedIn") === "true") {
-      await renewSession();
-      auth0Client.getProfile((error: Auth0Error, profile: Auth0UserProfile) => {
-        return this.setState({ initialized: true });
-      });
-    }
-    this.setState({ initialized: true });
-  }
-
-  render() {
-    const { initialized } = this.state;
-    return (
-      <div className="App">
-        <CssBaseline />
-        {initialized ? <Routes /> : <LoadingPage />}
-      </div>
-    );
-  }
-}
 
 export default App;
-
-/* 
-<header className="App-header" />
-*/

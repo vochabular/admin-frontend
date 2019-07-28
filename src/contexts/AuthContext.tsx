@@ -118,7 +118,6 @@ export const AuthProvider = ({
         onRedirectCallback(appState);
       }
       const isAuthenticated = await auth0FromHook.isAuthenticated();
-
       setIsAuthenticated(isAuthenticated);
 
       if (isAuthenticated) {
