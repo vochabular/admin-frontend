@@ -119,7 +119,6 @@ export interface chapterById_chapter_components_edges_node_texts_edges_node_tran
    * The ID of the object.
    */
   id: string;
-  language: string;
   textField: string;
 }
 

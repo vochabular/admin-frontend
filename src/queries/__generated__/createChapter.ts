@@ -8,22 +8,9 @@ import { IntroduceChapterInput } from "./../../__generated__/globalTypes";
 // GraphQL mutation operation: createChapter
 // ====================================================
 
-export interface createChapter_createChapter_chapter_fkBelongsTo {
-  __typename: "ChapterType";
-  /**
-   * The ID of the object.
-   */
-  id: string;
-}
-
 export interface createChapter_createChapter_chapter {
   __typename: "ChapterType";
   number: number;
-  titleCH: string;
-  titleDE: string;
-  description: string;
-  languages: string;
-  fkBelongsTo: createChapter_createChapter_chapter_fkBelongsTo | null;
 }
 
 export interface createChapter_createChapter {

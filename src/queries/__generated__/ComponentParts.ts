@@ -14,7 +14,6 @@ export interface ComponentParts_texts_edges_node_translations_edges_node {
    * The ID of the object.
    */
   id: string;
-  language: string;
   textField: string;
 }
 
