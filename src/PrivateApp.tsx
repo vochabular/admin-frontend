@@ -17,6 +17,7 @@ import auth0Client from "auth/Auth";
 import { profile } from "queries/__generated__/profile";
 import i18n from "i18n";
 import LoadingPage from "pages/LoadingPage";
+import { Role } from "rbac-rules";
 
 function isEmpty(obj: object) {
   return !obj || Object.keys(obj).length === 0;
@@ -61,7 +62,7 @@ const PrivateApp: React.FunctionComponent<Props> = ({ classes }) => {
 
   // TODO: Need to actually get the current role from auth0Client. Via a setting to force a rerender?
   const accessibleRoutes = getAllAccessibleRoutes(
-    auth0Client.getCurrentRole() || "admin",
+    auth0Client.getCurrentRole() || Role.ADMINISTRATOR,
     false
   );
 
