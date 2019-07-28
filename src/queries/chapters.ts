@@ -43,7 +43,6 @@ export const COMPONENT_PART = gql`
             edges {
               node {
                 id
-                language
                 textField
               }
             }
@@ -153,13 +152,6 @@ export const UPSERT_CHAPTER = gql`
     createChapter(input: $input) {
       chapter {
         number
-        titleCH
-        titleDE
-        description
-        languages
-        fkBelongsTo {
-          id
-        }
       }
     }
   }
