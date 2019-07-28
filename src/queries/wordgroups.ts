@@ -1,193 +1,73 @@
 import gql from "graphql-tag";
 
-export const GET_WORDGROUPS = gql`
-  query wordGroups {
-  wordGroups {
-    edges {
-      node {
+export const WORDGROUP_FRAGMENT = gql`
+fragment WordgroupParts on api_wordgroup {
+  fk_chapter_id
+  id
+  title_ch
+  title_de
+  words {
+    id
+    word {
+      id
+      wordTranslations {
+        audio
+        example_sentence
+        language {
+          code
+          name
+        }
+        text
         id
-        titleCh
-        titleDe
-        fkChapter {
-          id
-        }
-        words {
-          id
-          wordch {
-            id
-            audio
-            text
-            exampleSentence
-          }
-          wordde {
-            id
-            audio
-            text
-            exampleSentence
-          }
-          worden {
-            id
-            audio
-            text
-            exampleSentence
-          }
-          wordar {
-            id
-            audio
-            text
-            exampleSentence
-          }
-          wordfa {
-            id
-            audio
-            text
-            exampleSentence
-          }
-        }
       }
     }
   }
 }
+`;
+
+export const GET_WORDGROUPS = gql`
+subscription getWordgroup {
+  api_wordgroup {
+    ...WordgroupParts
+  }
+}
+${WORDGROUP_FRAGMENT}
 `;
 
 export const GET_WORDGROUP_BY_ID = gql`
-  query wordGroupById($id: ID) {
-  wordGroup(id: $id) {
-    id
-    titleCh
-    titleDe
-    words {
+subscription wordgroupById($id: uuid) {
+  api_wordgroup(where: {id: {_eq: $id}}) {
+    ...WordgroupParts
+  }
+}
+${WORDGROUP_FRAGMENT}
+`;
+
+export const INSERT_WORDGROUP = gql`
+mutation insertWordGroup($input: [api_wordgroup_insert_input!]!) {
+  insert_api_wordgroup(objects: $input) {
+    returning {
       id
-      wordch {
-        id
-        exampleSentence
-        text
-        audio
-      }
-      wordde {
-        id
-        exampleSentence
-        text
-        audio
-      }
-      worden {
-        id
-        exampleSentence
-        text
-        audio
-      }
-      wordar {
-        id
-        exampleSentence
-        text
-        audio
-      }
-      wordfa {
-        id
-        exampleSentence
-        text
-        audio
-      }
+      fk_chapter_id
+      title_ch
+      title_de
     }
   }
 }
 `;
 
-export const INSERT_WORDGROUP = gql`
-  mutation createWordGroup($input: IntroduceWordGroupInput!) {
-      createWordGroup(input: $input) {
-        wordGroup {
-          id
-          titleCh
-          titleDe
-        }
-      }
-    }
-`;
-
 export const UPDATE_WORDGROUP = gql`
-  mutation updateWordGroup($input: UpdateWordGroupInput!) {
-      updateWordGroup(input: $input) {
-        wordGroup {
-          id
-          titleCh
-          titleDe
-        }
-      }
+mutation updateWordGroup($id: uuid, $input: api_wordgroup_set_input!) {
+  update_api_wordgroup(where: {id: {_eq: $id}}, _set: $input) {
+    returning {
+      id
+      title_ch
+      title_de
     }
+  }
+}
 `;
 
-export const CREATE_WORD = gql`
-    mutation createWord($input: IntroduceWordInput!) {
-      createWord(input: $input) {
-        word {
-          id
-        }
-      }
-    }
-`;
+export const INSERT_WORD = gql`
 
-export const UPDATE_DE_WORD = gql`
-    mutation updateDEWord($input: UpdateWordDEInput!) {
-      updateDeWord(input: $input) {
-        word {
-          id
-          text
-          exampleSentence
-          audio
-        }
-      }
-    }
-`;
-
-export const UPDATE_CH_WORD = gql`
-    mutation updateCHWord($input: UpdateWordCHInput!) {
-      updateChWord(input: $input) {
-        word {
-          id
-          text
-          exampleSentence
-          audio
-        }
-      }
-    }
-`;
-
-export const UPDATE_EN_WORD = gql`
-    mutation updateENWord($input: UpdateWordENInput!) {
-      updateEnWord(input: $input) {
-        word {
-          id
-          text
-          exampleSentence
-          audio
-        }
-      }
-    }
-`;
-
-export const UPDATE_FA_WORD = gql`
-    mutation updateFAWord($input: UpdateWordFAInput!) {
-      updateFaWord(input: $input) {
-        word {
-          id
-          text
-          exampleSentence
-          audio
-        }
-      }
-    }
-`;
-
-export const UPDATE_AR_WORD = gql`
-    mutation updateARWord($input: UpdateWordARInput!) {
-      updateArWord(input: $input) {
-        word {
-          id
-          text
-          exampleSentence
-          audio
-        }
-      }
-    }
 `;

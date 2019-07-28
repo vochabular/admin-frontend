@@ -16,11 +16,7 @@ import i18next from "i18n";
 import history from "myHistory";
 import ErrorMessage from "components/ErrorMessage";
 import {
-  CREATE_WORD,
-  UPDATE_AR_WORD,
-  UPDATE_CH_WORD,
-  UPDATE_DE_WORD,
-  UPDATE_EN_WORD, UPDATE_FA_WORD
+  UPSERT_WORD,
 } from "../../queries/wordgroups";
 import {RouteComponentProps} from "react-router";
 
@@ -42,23 +38,22 @@ interface WordGroupRouterProps {
 interface Props
   extends RouteComponentProps<WordGroupRouterProps>,
     WithStyles<typeof styles> {
+  values: any
 }
 
-const UpsertWord = ({classes, match}: Props) => {
+const defaultValues = {text: '', audio: '', example_sentence: ''};
+
+const WordEditor = ({classes, match, values = defaultValues}: Props) => {
   const {t} = useTranslation();
 
   // TODO: Unfortunately, react-apollo-hooks doesn't support yet the error, loading object in mutations (unlike with query...)
-  const createWord = useMutation(CREATE_WORD);
-  const updateWordDe = useMutation(UPDATE_DE_WORD);
-  const updateWordCh = useMutation(UPDATE_CH_WORD);
-  const updateWordEn = useMutation(UPDATE_EN_WORD);
-  const updateWordAr = useMutation(UPDATE_AR_WORD);
-  const updateWordFa = useMutation(UPDATE_FA_WORD);
+  const upsertWord = useMutation(UPSERT_WORD);
+
 
   async function handleSave(values: any, actions: FormikActions<any>) {
     // TODO: This verbose stuff won't be necessary anymore as soon useMutation also returns a error/loading object.
     try {
-      await createWord({variables: {input: values}});
+      await upsertWord({variables: {input: values}});
       history.push(`/wordgroups/${match.params.id}`);
     } catch (e) {
       actions.setSubmitting(false);
@@ -158,4 +153,4 @@ const UpsertWord = ({classes, match}: Props) => {
   );
 };
 
-export default withStyles(styles, {withTheme: true})(UpsertWord);
+export default withStyles(styles, {withTheme: true})(WordEditor);

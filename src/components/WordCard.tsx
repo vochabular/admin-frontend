@@ -26,7 +26,7 @@ const WordCard = ({classes, word, id}: Props) => {
     <Card>
       <CardActionArea
         component={RouterLink}
-        {...{to: `/wordgroups/${id}/add`} as any}
+        {...{to: `/wordgroups/${id}/edit`} as any}
       >
         <CardContent>
           <Typography

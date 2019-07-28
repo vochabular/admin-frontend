@@ -16,7 +16,7 @@ import i18next from "i18n";
 import history from "myHistory";
 import ErrorMessage from "components/ErrorMessage";
 import {
-  INSERT_WORDGROUP
+  UPSERT_WORDGROUP
 } from "../../queries/wordgroups";
 import CustomSelect from "../../components/SearchableMultiSelect";
 
@@ -39,16 +39,16 @@ const words = [
 interface Props extends WithStyles<typeof styles> {
 }
 
-const NewWordGroup = ({classes}: Props) => {
+const WordGroupEditor = ({classes}: Props) => {
   const {t} = useTranslation();
 
   // TODO: Unfortunately, react-apollo-hooks doesn't support yet the error, loading object in mutations (unlike with query...)
-  const insertWordGroup = useMutation(INSERT_WORDGROUP);
+  const upsertWordGroup = useMutation(UPSERT_WORDGROUP);
 
   async function handleSave(values: any, actions: FormikActions<any>) {
     // TODO: This verbose stuff won't be necessary anymore as soon useMutation also returns a error/loading object.
     try {
-      await insertWordGroup({variables: {input: values}});
+      await upsertWordGroup({variables: {input: values}});
       history.push('/wordgroups');
     } catch (e) {
       actions.setSubmitting(false);
@@ -119,4 +119,4 @@ const NewWordGroup = ({classes}: Props) => {
   );
 };
 
-export default withStyles(styles, {withTheme: true})(NewWordGroup);
+export default withStyles(styles, {withTheme: true})(WordGroupEditor);

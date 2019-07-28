@@ -6,7 +6,7 @@ import {RouteComponentProps} from "react-router-dom";
 import AddIcon from "@material-ui/icons/Add";
 
 import {styles} from "styles";
-import NewWordGroup from "./NewWordGroup";
+import NewWordGroup from "./WordGroupEditor";
 import {GET_WORDGROUP_BY_ID} from "queries/wordgroups";
 import BusyOrErrorCard from "components/BusyOrErrorCard";
 import { wordGroup_wordGroup_words} from "../../queries/__generated__/wordGroup";
@@ -64,7 +64,7 @@ const WordGroup = ({classes, match}: Props) => {
       ))}
       <Grid item>
         <LinkCard
-          path={`/wordgroups/${match.params.id}/add`}
+          path={`/wordgroups/${match.params.id}/edit`}
           icon={<AddIcon/>}
           helperText="wordGroups:addWordToWordGroup"
         />
