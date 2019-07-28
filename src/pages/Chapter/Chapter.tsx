@@ -1,5 +1,5 @@
 import * as React from "react";
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, Redirect } from "react-router-dom";
 import { useQuery } from "react-apollo-hooks";
 import { useTranslation } from "react-i18next";
 
@@ -19,6 +19,8 @@ import Section from "components/Section";
 import SectionCardContainer from "components/SectionCardContainer";
 import { chapterById } from "queries/__generated__/chapterById";
 import { convertGlobalToDbId } from "helpers";
+import { Permission } from "rbac-rules";
+import Can from "components/Can/Can";
 
 // These can come from the router... See the route definitions
 interface ChapterRouterProps {
@@ -51,7 +53,13 @@ const Chapter = ({ classes, match }: Props) => {
   // If its a new main chapter, don't need to query anything
   // TODO: This violates React Hook rules!!!!
   if (chapterId === "new") {
-    return <NewChapter />;
+    return (
+      <Can
+        perform={Permission.CHAPTER__CREATE}
+        yes={() => <NewChapter />}
+        no={() => <Redirect to="/403" />}
+      />
+    );
   }
 
   if (!data || !data.chapter || loading || error)
@@ -65,7 +73,14 @@ const Chapter = ({ classes, match }: Props) => {
 
   // TODO: How do we handle new subchapters?
   if (subChapterId === "new") {
-    return <NewChapter parentChapter={data && data.chapter} />;
+    if (!data) return null;
+    return (
+      <Can
+        perform={Permission.CHAPTER__CREATE}
+        yes={() => <NewChapter parentChapter={data.chapter || undefined} />}
+        no={() => <Redirect to="/403" />}
+      />
+    );
   }
 
   // Render the subchapter screen

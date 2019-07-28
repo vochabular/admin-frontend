@@ -44,7 +44,7 @@ interface Props
     WithStyles<typeof styles> {
 }
 
-const NewWord = ({classes, match}: Props) => {
+const UpsertWord = ({classes, match}: Props) => {
   const {t} = useTranslation();
 
   // TODO: Unfortunately, react-apollo-hooks doesn't support yet the error, loading object in mutations (unlike with query...)
@@ -158,4 +158,4 @@ const NewWord = ({classes, match}: Props) => {
   );
 };
 
-export default withStyles(styles, {withTheme: true})(NewWord);
+export default withStyles(styles, {withTheme: true})(UpsertWord);
