@@ -2,17 +2,17 @@ import gql from "graphql-tag";
 
 export const WORDGROUP_FRAGMENT = gql`
 fragment WordgroupParts on api_wordgroup {
-  fk_chapter_id
+  parentChapterId: fk_chapter_id
   id
-  title_ch
-  title_de
+  titleCh: title_ch
+  titleDe: title_de
   words {
     id
     word {
       id
-      wordTranslations {
+      translations {
         audio
-        example_sentence
+        exampleSentence: example_sentence
         language {
           code
           name
@@ -25,48 +25,46 @@ fragment WordgroupParts on api_wordgroup {
 `;
 
 export const GET_WORDGROUPS = gql`
-subscription getWordgroup {
-  api_wordgroup {
-    ...WordgroupParts
+  subscription subscribeWordGroups {
+    wordGroups: api_wordgroup {
+      ...WordgroupParts
+    }
   }
-}
-${WORDGROUP_FRAGMENT}
+  ${WORDGROUP_FRAGMENT}
 `;
 
 export const GET_WORDGROUP_BY_ID = gql`
-subscription wordgroupById($id: uuid) {
-  api_wordgroup(where: {id: {_eq: $id}}) {
-    ...WordgroupParts
+  subscription subscribeWordGroupById($id: uuid) {
+    wordGroup: api_wordgroup(where: { id: { _eq: $id } }) {
+      ...WordgroupParts
+    }
   }
-}
-${WORDGROUP_FRAGMENT}
+  ${WORDGROUP_FRAGMENT}
 `;
 
 export const INSERT_WORDGROUP = gql`
-mutation insertWordGroup($input: [api_wordgroup_insert_input!]!) {
-  insert_api_wordgroup(objects: $input) {
-    returning {
-      id
-      fk_chapter_id
-      title_ch
-      title_de
+  mutation insertWordGroup($input: [api_wordgroup_insert_input!]!) {
+    insert_api_wordgroup(objects: $input) {
+      returning {
+        id
+        parentChapterId: fk_chapter_id
+        titleCh: title_ch
+        titleDe: title_de
+      }
     }
   }
-}
 `;
 
 export const UPDATE_WORDGROUP = gql`
-mutation updateWordGroup($id: uuid, $input: api_wordgroup_set_input!) {
-  update_api_wordgroup(where: {id: {_eq: $id}}, _set: $input) {
-    returning {
-      id
-      title_ch
-      title_de
+  mutation updateWordGroup($id: uuid, $input: api_wordgroup_set_input!) {
+    update_api_wordgroup(where: { id: { _eq: $id } }, _set: $input) {
+      returning {
+        id
+        titleCh: title_ch
+        titleDe: title_de
+      }
     }
   }
-}
 `;
 
-export const INSERT_WORD = gql`
-
-`;
+export const INSERT_WORD = gql``;
