@@ -47,9 +47,12 @@ const PrivateApp: React.FunctionComponent<Props> = ({ classes }) => {
    * So we reload the page after a while, hoping that the user was created...
    */
   if (!loading && data && isEmpty(data)) {
+    console.log(data, error);
+    /*
     setTimeout(function() {
       window.location.reload();
     }, 1000);
+    */
     return <LoadingPage />;
   }
 

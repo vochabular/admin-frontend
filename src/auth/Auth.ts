@@ -185,7 +185,7 @@ class Auth {
    */
   private updateRoles = (idTokenPayload: any): void => {
     try {
-      const namespace = "https://admin.vochabular.ch/jwt/claims";
+      const namespace = "https://hasura.io/jwt/claims";
       const allowedRoles = idTokenPayload[namespace]["x-allowed-roles"];
       const defaultRole = idTokenPayload[namespace]["x-default-role"];
       this.allowedRoles = allowedRoles;

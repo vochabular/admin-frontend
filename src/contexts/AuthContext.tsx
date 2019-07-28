@@ -4,7 +4,7 @@ import Auth0Client from "@auth0/auth0-spa-js/dist/typings/Auth0Client";
 
 import { Role } from "rbac-rules";
 
-const namespace = "https://admin.vochabular.ch/jwt/claims";
+const namespace = "https://hasura.io/jwt/claims";
 
 /**
  * Properties from the Auth0 IdToken + the custom defined properties (in the Auth0 Rules!)
