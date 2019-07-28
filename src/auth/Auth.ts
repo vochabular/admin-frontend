@@ -3,6 +3,7 @@ import auth0, { Auth0DecodedHash, Auth0UserProfile } from "auth0-js";
 import client from "ApolloClient";
 import { AUTH_CONFIG } from "./auth0-variables";
 import history from "../myHistory";
+import { Role } from "rbac-rules";
 
 /**
  * This class provides methods for authorization with OAuth provider "Auth0"
@@ -14,8 +15,8 @@ class Auth {
   expiresAt: number;
   auth0: auth0.WebAuth;
   userProfile: Auth0UserProfile | undefined;
-  allowedRoles: string[];
-  currentRole: string | undefined;
+  allowedRoles: Role[];
+  currentRole: Role | undefined;
   dbId: number | undefined;
 
   constructor() {
@@ -110,14 +111,14 @@ class Auth {
   /**
    * @returns Return the current set role of the current user...
    */
-  public getCurrentRole = (): string | undefined => {
+  public getCurrentRole = (): Role | undefined => {
     return this.currentRole;
   };
 
   /**
    * Changes the current role of a user
    */
-  public changeCurrentRole = (newRole: string): void => {
+  public changeCurrentRole = (newRole: Role): void => {
     if (this.allowedRoles.includes(newRole)) {
       this.currentRole = newRole;
       /*

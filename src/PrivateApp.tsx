@@ -17,6 +17,8 @@ import auth0Client from "auth/Auth";
 import { profile } from "queries/__generated__/profile";
 import i18n from "i18n";
 import LoadingPage from "pages/LoadingPage";
+import { Role } from "rbac-rules";
+import { useAuth } from "contexts/AuthContext";
 
 function isEmpty(obj: object) {
   return !obj || Object.keys(obj).length === 0;
@@ -28,12 +30,12 @@ function isEmpty(obj: object) {
 interface Props extends WithStyles<typeof styles> {}
 
 const PrivateApp: React.FunctionComponent<Props> = ({ classes }) => {
+  const { user } = useAuth();
   const { toggler: isDrawerOpen, handleToggler: toggleDrawer } = useToggle(
     false
   );
 
-  const currentUserEmail =
-    auth0Client.userProfile && auth0Client.userProfile.name;
+  const currentUserEmail = user && user.email;
 
   const { data, error, loading } = useQuery<profile>(GET_PROFILE, {
     variables: { username: currentUserEmail },
@@ -50,6 +52,7 @@ const PrivateApp: React.FunctionComponent<Props> = ({ classes }) => {
     }, 1000);
     return <LoadingPage />;
   }
+
   const hasCompletedSetup = data && data.profile && data.profile.setupCompleted;
 
   // When we have received the profile data, we can update a few things...
@@ -61,7 +64,7 @@ const PrivateApp: React.FunctionComponent<Props> = ({ classes }) => {
 
   // TODO: Need to actually get the current role from auth0Client. Via a setting to force a rerender?
   const accessibleRoutes = getAllAccessibleRoutes(
-    auth0Client.getCurrentRole() || "admin",
+    auth0Client.getCurrentRole() || Role.ADMINISTRATOR,
     false
   );
 

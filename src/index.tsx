@@ -13,6 +13,7 @@ import apolloClient from "./ApolloClient";
 import theme from "./theme";
 import * as serviceWorker from "./serviceWorker";
 import packageJson from "../package.json";
+import { AuthProvider, onRedirectCallback } from "contexts/AuthContext";
 
 // TODO: How can we use the values from our .env file?
 if (process.env.NODE_ENV === "production") {
@@ -25,13 +26,20 @@ if (process.env.NODE_ENV === "production") {
 }
 
 ReactDOM.render(
-  <ApolloProvider client={apolloClient}>
-    <ApolloHooksProvider client={apolloClient}>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
-    </ApolloHooksProvider>
-  </ApolloProvider>,
+  <AuthProvider
+    domain={process.env.REACT_APP_AUTH0_DOMAIN}
+    client_id={process.env.REACT_APP_AUTH0_CLIENTID}
+    redirect_uri={window.location.origin}
+    onRedirectCallback={onRedirectCallback}
+  >
+    <ApolloProvider client={apolloClient}>
+      <ApolloHooksProvider client={apolloClient}>
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
+      </ApolloHooksProvider>
+    </ApolloProvider>
+  </AuthProvider>,
   document.getElementById("root")
 );
 

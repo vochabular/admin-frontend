@@ -10,10 +10,11 @@ import { GET_CHAPTERS } from "queries/chapters";
 import ChapterCard from "components/ChapterCard";
 import BusyOrErrorCard from "components/BusyOrErrorCard";
 import LinkCard from "components/LinkCard";
-import auth0Client from "auth/Auth";
 import Section from "components/Section";
 import SectionCardContainer from "components/SectionCardContainer";
-import {chapters, chapters_chapters, chapters_chapters_edges} from "../../queries/__generated__/chapters";
+import { chapters } from "../../queries/__generated__/chapters";
+import Can from "components/Can/Can";
+import { Permission } from "rbac-rules";
 
 interface Props extends WithStyles<typeof styles> {}
 
@@ -29,7 +30,9 @@ const Chapters = ({ classes }: Props) => {
         <BusyOrErrorCard
           loading={loading}
           error={error}
-          noResults={!loading && data && !!data.chapters && !data.chapters.edges.length}
+          noResults={
+            !loading && data && !!data.chapters && !data.chapters.edges.length
+          }
         />
         {data &&
           data.chapters &&
@@ -39,15 +42,19 @@ const Chapters = ({ classes }: Props) => {
               <ChapterCard chapter={c.node} />
             </Grid>
           ))}
-        {["admin"].includes(auth0Client.getCurrentRole() || "") ? (
-          <Grid item>
-            <LinkCard
-              path="/chapters/new"
-              icon={<AddIcon />}
-              helperText="createNewChapter"
-            />
-          </Grid>
-        ) : null}
+        <Can
+          perform={Permission.CHAPTER__CREATE}
+          yes={() => (
+            <Grid item>
+              <LinkCard
+                path="/chapters/new"
+                icon={<AddIcon />}
+                helperText="createNewChapter"
+              />
+            </Grid>
+          )}
+          no={() => console.log("Nothing!!!")}
+        />
       </SectionCardContainer>
     </Section>
   );

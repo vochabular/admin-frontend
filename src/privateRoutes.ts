@@ -7,20 +7,14 @@ import Dashboard from "pages/Dashboard/Dashboard";
 import Settings from "pages/Settings/Settings";
 import Chapters from "./pages/Chapter/Chapters";
 import Chapter from "./pages/Chapter/Chapter";
-import WordGroups from "./pages/WordGroup/WordGroups"
-import WordGroup from "./pages/WordGroup/WordGroup"
+import WordGroups from "./pages/WordGroup/WordGroups";
+import WordGroup from "./pages/WordGroup/WordGroup";
 import ChapterWordGroups from "./pages/WordGroup/ChapterWordGroups";
 import NewWord from "./pages/WordGroup/NewWord";
 
+import { Role } from "rbac-rules";
 
-/**
- * Roles defined as constants for reuse...
- */
-const ADMIN = "admin";
-const TRANSLATOR = "translator";
-const CONTENT_CREATOR = "content_creator";
-const VIEWER = "viewer";
-const allUsers = [ADMIN, TRANSLATOR, CONTENT_CREATOR, VIEWER];
+const allUsers = Object.values(Role);
 
 interface IPrivateRouteConfig {
   showInDrawer: boolean;
@@ -28,7 +22,7 @@ interface IPrivateRouteConfig {
   exact?: boolean;
   icon?: any; // TODO: Need to find out how to use the proper type!
   path: string | string[];
-  allowedRoles: string[];
+  allowedRoles: Role[];
   label?: string;
 }
 
@@ -112,7 +106,7 @@ export const administrativeRoutes: IPrivateRouteConfig[] = [
   }
 ];
 
-export function getMainRoutes(role: string, filterOnlyInDrawer: boolean) {
+export function getMainRoutes(role: Role, filterOnlyInDrawer: boolean) {
   return mainRoutes.filter(
     e =>
       e.allowedRoles.includes(role) &&
@@ -121,7 +115,7 @@ export function getMainRoutes(role: string, filterOnlyInDrawer: boolean) {
 }
 
 export function getAdministrativeRoutes(
-  role: string,
+  role: Role,
   filterOnlyInDrawer: boolean
 ) {
   return administrativeRoutes.filter(
@@ -137,7 +131,7 @@ export function getAdministrativeRoutes(
  * @param filterOnlyInDrawer True if you want only the routes that should be in the drawer
  */
 export function getAllAccessibleRoutes(
-  role: string,
+  role: Role,
   filterOnlyInDrawer: boolean
 ) {
   return [].concat(
