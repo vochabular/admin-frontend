@@ -52,7 +52,7 @@ const PrivateApp: React.FunctionComponent<Props> = ({ classes }) => {
     }, 1000);
     return <LoadingPage />;
   }
-  console.log(data);
+
   const hasCompletedSetup = data && data.profile && data.profile.setupCompleted;
 
   // When we have received the profile data, we can update a few things...
