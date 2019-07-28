@@ -1,16 +1,13 @@
+require("dotenv").config();
+
 module.exports = {
   client: {
     service: {
-      name: "vochabular-admin",
-      url: "http://vochabular-admin.herokuapp.com/api",
-      // optional headers
-      /*
+      name: "vochabular-admin-hasura",
+      url: process.env.REACT_APP_BACKEND_URL,
       headers: {
-        authorization: "Bearer lkjfalkfjadkfjeopknavadf"
-      },
-      */
-      // optional disable SSL validation check
-      skipSSLValidation: true
+        "x-hasura-admin-secret": process.env.REACT_APP_ADMIN_SECRET
+      }
     }
   }
 };
