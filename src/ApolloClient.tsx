@@ -31,8 +31,14 @@ const cache = new InMemoryCache({});
 
 // On each request, set the current idToken in the header
 const request = async (operation: any) => {
+  /**
+   * TODO(df): Need to get the token from the new AuthContext
+   * Something like: console.log(AuthContext["_currentValue"]);
+   */
   operation.setContext({
     headers: {
+      // Authorization: `Bearer ${idToken}`,
+      // "X-Hasura-Role": currentRole,
       authorization: "JWT " + auth0Client.getIdToken()
     }
   });
