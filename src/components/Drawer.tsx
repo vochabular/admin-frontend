@@ -17,6 +17,7 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import history from "myHistory";
 import { styles } from "styles";
 import { getAdministrativeRoutes, getMainRoutes } from "privateRoutes";
+import { Role } from "rbac-rules";
 
 // TODO: We should have the AppBar in a own component. However, that messes up the layout...
 // import AppBar from "../components/AppBar";
@@ -40,10 +41,10 @@ const LinkListItem = (props: ILinkListItemProps) => (
 );
 
 function Drawer(props: Props) {
-  // TODO: Need to set the role based on the auth0 client!
-  const currentRole = "admin";
-  const mainRoutes = getMainRoutes(currentRole || "", true);
-  const administrativeRoutes = getAdministrativeRoutes(currentRole || "", true);
+  // TODO(df): Need to set the role based on the auth0 client!
+  const currentRole = Role.ADMINISTRATOR;
+  const mainRoutes = getMainRoutes(currentRole, true);
+  const administrativeRoutes = getAdministrativeRoutes(currentRole, true);
 
   const { classes, isDrawerOpen, toggleDrawer } = props;
   // Get location to check which menu item should be active
