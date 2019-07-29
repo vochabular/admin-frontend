@@ -48,7 +48,7 @@ interface Props extends WithStyles<typeof styles> {
 const NewChapter = ({ classes, parentChapter }: Props) => {
   const { t } = useTranslation();
 
-  const { data, error, loading } = useQuery<getLanguages>(GET_LANGUAGES);
+  const { data } = useQuery<getLanguages>(GET_LANGUAGES);
 
   const isSubChapter = !!parentChapter;
 
@@ -76,8 +76,6 @@ const NewChapter = ({ classes, parentChapter }: Props) => {
     }
   }
 
-  // @ts-ignore
-  // @ts-ignore
   return (
     <React.Fragment>
       <Card className={classes.card}>

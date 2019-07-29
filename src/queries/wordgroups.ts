@@ -1,5 +1,21 @@
 import gql from "graphql-tag";
 
+export const WORD_FRAGMENT = gql`
+  fragment WordParts on api_word {
+    id
+    translations {
+      id
+      text
+      audio
+      exampleSentence: example_sentence
+      language {
+        code
+        name
+      }
+    }
+  }
+`;
+
 export const WORDGROUP_FRAGMENT = gql`
   fragment WordgroupParts on api_wordgroup {
     parentChapterId: fk_chapter_id
@@ -9,20 +25,11 @@ export const WORDGROUP_FRAGMENT = gql`
     words {
       id
       word {
-        id
-        translations {
-          audio
-          exampleSentence: example_sentence
-          language {
-            code
-            name
-          }
-          text
-          id
-        }
+        ...WordParts
       }
     }
   }
+  ${WORD_FRAGMENT}
 `;
 
 export const GET_WORDGROUPS = gql`
@@ -43,42 +50,15 @@ export const GET_WORDGROUP_BY_ID = gql`
   ${WORDGROUP_FRAGMENT}
 `;
 
-export const INSERT_WORDGROUP = gql`
-  mutation insertWordGroup($input: [api_wordgroup_insert_input!]!) {
-    insert_api_wordgroup(objects: $input) {
-      returning {
-        id
-        parentChapterId: fk_chapter_id
-        titleCh: title_ch
-        titleDe: title_de
-      }
-    }
-  }
-`;
-
-export const UPDATE_WORDGROUP = gql`
-  mutation updateWordGroup($id: uuid, $input: api_wordgroup_set_input!) {
-    update_api_wordgroup(where: { id: { _eq: $id } }, _set: $input) {
-      returning {
-        id
-        titleCh: title_ch
-        titleDe: title_de
-      }
-    }
-  }
-`;
-
 export const UPSERT_WORDGROUP = gql`
   mutation upsertWordGroup($input: [api_wordgroup_insert_input!]!) {
     insert_api_wordgroup(objects: $input) {
       returning {
-        id
-        parentChapterId: fk_chapter_id
-        titleCh: title_ch
-        titleDe: title_de
+        ...WordgroupParts
       }
     }
   }
+  ${WORDGROUP_FRAGMENT}
 `;
 
 /**
@@ -92,11 +72,23 @@ export const UPSERT_WORD = gql`
   ) {
     insert_api_word(
       on_conflict: { constraint: api_word_pkey, update_columns: [id] }
-      objects: [{ id: $wordId, translations: { data: [$input] } }]
+      objects: [
+        {
+          id: $wordId
+          translations: {
+            data: [$input]
+            on_conflict: {
+              constraint: api_wordtranslation_pkey
+              update_columns: [text, audio]
+            }
+          }
+        }
+      ]
     ) {
       returning {
-        id
+        ...WordParts
       }
     }
   }
+  ${WORD_FRAGMENT}
 `;

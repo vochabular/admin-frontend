@@ -9,7 +9,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActionArea from "@material-ui/core/CardActionArea";
 
 import { styles } from "styles";
-import {chapters_wordGroups_chapters_edges_node} from "../queries/__generated__/chapters_wordGroups";
+import { chapters_wordGroups_chapters_edges_node } from "../queries/__generated__/chapters_wordGroups";
 
 interface Props extends WithStyles<typeof styles> {
   chapter: chapters_wordGroups_chapters_edges_node;
@@ -21,7 +21,6 @@ const VoggiChapterCard = ({ classes, chapter }: Props) => {
   // Note: MUI links together with react-router-dom and Typescript are a bit tricky due to their dynamic nature
   // See the discussion and provided solutions here... https://github.com/mui-org/material-ui/issues/7877
   // <Button component={Link} {...{ to: "/about" } as any} />
-  const isSubChapter = !!chapter.parentChapter;
   const path = `/wordgroups/chapter/${chapter.id}`;
   return (
     <Card>
@@ -35,7 +34,8 @@ const VoggiChapterCard = ({ classes, chapter }: Props) => {
             {t("chapter:chapter")} {chapter.titleDE} / {chapter.titleCH}
           </Typography>
           <Typography variant="h5" component="h2">
-            {t("chapter:nWordGroups")} {chapter.wordGroups ? chapter.wordGroups.edges.length: 0}
+            {t("chapter:nWordGroups")}{" "}
+            {chapter.wordGroups ? chapter.wordGroups.edges.length : 0}
           </Typography>
         </CardContent>
       </CardActionArea>

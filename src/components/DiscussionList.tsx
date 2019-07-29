@@ -16,11 +16,11 @@ import {
 } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 
-import { GET_ALL_COMMENTS, CREATE_COMMENT } from "queries/comments";
+import { CREATE_COMMENT } from "queries/comments";
 import { getAllComments } from "queries/__generated__/getAllComments";
 import ErrorMessage from "./ErrorMessage";
 import Discussion from "./Discussion";
-import { createComment } from "queries/__generated__/createComment";
+import { createComment as createCommentType } from "queries/__generated__/createComment";
 import auth0Client from "auth/Auth";
 import { getOperationName } from "apollo-link";
 
@@ -48,7 +48,7 @@ const DiscussionList = ({ classes, query }: Props) => {
   const { t } = useTranslation();
   const [newComment, setNewComment] = React.useState("");
 
-  const createComment = useMutation<createComment>(CREATE_COMMENT);
+  const createComment = useMutation<createCommentType>(CREATE_COMMENT);
 
   // TODO(df): Pass variables (chapter, context) down.
   const { data, loading, error } = useQuery<getAllComments>(query);

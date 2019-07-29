@@ -7,7 +7,6 @@ import { ApolloLink, Observable } from "apollo-link";
 import auth0Client from "./auth/Auth";
 import i18n from "./i18n";
 import { typeDefs, resolvers } from "./queries/resolvers";
-import { AuthContext } from "contexts/AuthContext";
 
 /**
  * Here you can define default options that are applied to all queries, mutations.

@@ -22,7 +22,7 @@ import {
   GET_ALL_COMMENTS,
   GET_ACTIVE_COMMENTS
 } from "queries/comments";
-import { createComment } from "queries/__generated__/createComment";
+import { createComment as createCommentType } from "queries/__generated__/createComment";
 import auth0Client from "auth/Auth";
 import { convertGlobalToDbId } from "helpers";
 import { getOperationName } from "apollo-link";
@@ -49,7 +49,7 @@ const Discussion = ({ classes, data }: Props) => {
   const [reply, setReply] = React.useState("");
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-  const createComment = useMutation<createComment>(CREATE_COMMENT);
+  const createComment = useMutation<createCommentType>(CREATE_COMMENT);
 
   function handleOpenMenu(event: React.MouseEvent<HTMLButtonElement>) {
     setAnchorEl(event.currentTarget);
@@ -81,8 +81,6 @@ const Discussion = ({ classes, data }: Props) => {
       ]
     });
   }
-
-  function handleResolveDiscussion() {}
 
   return (
     <div className={classes.container}>
