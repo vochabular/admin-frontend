@@ -20,7 +20,6 @@ import { CREATE_COMMENT } from "queries/comments";
 import { getAllComments } from "queries/__generated__/getAllComments";
 import ErrorMessage from "./ErrorMessage";
 import Discussion from "./Discussion";
-import { createComment as createCommentType } from "queries/__generated__/createComment";
 import auth0Client from "auth/Auth";
 import { getOperationName } from "apollo-link";
 
@@ -48,7 +47,9 @@ const DiscussionList = ({ classes, query }: Props) => {
   const { t } = useTranslation();
   const [newComment, setNewComment] = React.useState("");
 
-  const createComment = useMutation<createCommentType>(CREATE_COMMENT);
+  const [createComment, { loading: mutationLoading }] = useMutation(
+    CREATE_COMMENT
+  );
 
   // TODO(df): Pass variables (chapter, context) down.
   const { data, loading, error } = useQuery<getAllComments>(query);
@@ -99,7 +100,7 @@ const DiscussionList = ({ classes, query }: Props) => {
       />
       {!!newComment.length && (
         <Button
-          disabled={false}
+          disabled={mutationLoading}
           id="submit-new-comment"
           variant="contained"
           color="primary"

@@ -18,7 +18,6 @@ import NotificationSection from "pages/Settings/SettingsSection/NotificationSect
 import { UPDATE_PROFILE } from "queries/profile";
 import { UserSetupSchema } from "pages/Settings/Settings";
 import { profile_profile } from "queries/__generated__/profile";
-import { updateProfile } from "queries/__generated__/updateProfile";
 import { useAuth } from "contexts/AuthContext";
 
 function getSteps() {
@@ -49,7 +48,7 @@ interface Props extends WithStyles<typeof styles> {
 function SetupWizard({ classes, profile }: Props) {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const mutateProfile = useMutation<updateProfile>(UPDATE_PROFILE);
+  const [mutateProfile] = useMutation(UPDATE_PROFILE);
 
   const [activeStep, setActiveStep] = useState(0);
 

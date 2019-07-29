@@ -19,7 +19,6 @@ import { GET_PROFILE, UPDATE_PROFILE } from "queries/profile";
 import auth0Client from "auth/Auth";
 import BusyOrErrorCard from "components/BusyOrErrorCard";
 import { profile_profile, profile } from "queries/__generated__/profile";
-import { updateProfile } from "queries/__generated__/updateProfile";
 import { Role } from "rbac-rules";
 
 export const UserSetupSchema = Yup.object().shape({
@@ -45,7 +44,7 @@ const Settings: React.FunctionComponent<Props> = ({ classes }) => {
     }
   });
 
-  const mutateProfile = useMutation<updateProfile>(UPDATE_PROFILE);
+  const [mutateProfile] = useMutation(UPDATE_PROFILE);
 
   // Here we would now update the backend settings...
   async function handleSave(

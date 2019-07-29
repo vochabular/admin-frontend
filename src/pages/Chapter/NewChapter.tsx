@@ -53,7 +53,7 @@ const NewChapter = ({ classes, parentChapter }: Props) => {
   const isSubChapter = !!parentChapter;
 
   // TODO: Unfortunately, react-apollo-hooks doesn't support yet the error, loading object in mutations (unlike with query...)
-  const upsertChapter = useMutation(UPSERT_CHAPTER);
+  const [upsertChapter, { loading }] = useMutation(UPSERT_CHAPTER);
 
   async function handleSave(values: any, actions: FormikActions<any>) {
     // TODO: This verbose stuff won't be necessary anymore as soon useMutation also returns a error/loading object.
@@ -194,7 +194,7 @@ const NewChapter = ({ classes, parentChapter }: Props) => {
                 <Button
                   variant="contained"
                   color="primary"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || loading}
                   onClick={submitForm}
                 >
                   {t("save")}

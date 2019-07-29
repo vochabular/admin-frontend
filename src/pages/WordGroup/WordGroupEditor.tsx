@@ -1,23 +1,21 @@
 import * as React from "react";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import * as Yup from "yup";
-import {Formik, Form, Field, FormikActions} from "formik";
-import {TextField} from "formik-material-ui";
-import {useMutation} from "react-apollo-hooks";
+import { Formik, Form, Field, FormikActions } from "formik";
+import { TextField } from "formik-material-ui";
+import { useMutation } from "react-apollo-hooks";
 
-import {withStyles, WithStyles} from "@material-ui/core/styles";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 
-import {styles} from "styles";
+import { styles } from "styles";
 import i18next from "i18n";
 import history from "myHistory";
 import ErrorMessage from "components/ErrorMessage";
-import {
-  UPSERT_WORDGROUP
-} from "../../queries/wordgroups";
+import { UPSERT_WORDGROUP } from "../../queries/wordgroups";
 import CustomSelect from "../../components/SearchableMultiSelect";
 
 export const WordGroupSchema = Yup.object().shape({
@@ -28,38 +26,36 @@ export const WordGroupSchema = Yup.object().shape({
   titleDe: Yup.string()
     .min(4, i18next.t("tooShort"))
     .max(50, i18next.t("tooLong"))
-    .required(i18next.t("required")),
+    .required(i18next.t("required"))
 });
 
-const words = [
-  { value: 'foo', label: 'Foo' },
-  { value: 'bar', label: 'Bar' },
-];
+const words = [{ value: "foo", label: "Foo" }, { value: "bar", label: "Bar" }];
 
-interface Props extends WithStyles<typeof styles> {
-}
+interface Props extends WithStyles<typeof styles> {}
 
-const WordGroupEditor = ({classes}: Props) => {
-  const {t} = useTranslation();
+const WordGroupEditor = ({ classes }: Props) => {
+  const { t } = useTranslation();
 
-  // TODO: Unfortunately, react-apollo-hooks doesn't support yet the error, loading object in mutations (unlike with query...)
-  const upsertWordGroup = useMutation(UPSERT_WORDGROUP);
+  // TODO:
+  const [upsertWordGroup] = useMutation(UPSERT_WORDGROUP);
 
   async function handleSave(values: any, actions: FormikActions<any>) {
     // TODO: This verbose stuff won't be necessary anymore as soon useMutation also returns a error/loading object.
     try {
-      await upsertWordGroup({variables: {input: values}});
-      history.push('/wordgroups');
+      await upsertWordGroup({ variables: { input: values } });
+      history.push("/wordgroups");
     } catch (e) {
       actions.setSubmitting(false);
-      actions.setStatus({response: `${t("serverError")}: ${e.message}`});
+      actions.setStatus({ response: `${t("serverError")}: ${e.message}` });
     }
   }
 
   return (
     <React.Fragment>
       <Card className={classes.card}>
-        <Typography variant="h3">{t("wordGroups:newWordGroupTitle")}</Typography>
+        <Typography variant="h3">
+          {t("wordGroups:newWordGroupTitle")}
+        </Typography>
         <CardContent>
           <Formik
             initialValues={{
@@ -69,7 +65,7 @@ const WordGroupEditor = ({classes}: Props) => {
             }}
             validationSchema={WordGroupSchema}
             onSubmit={(values, actions) => handleSave(values, actions)}
-            render={({submitForm, values, isSubmitting, status}) => (
+            render={({ submitForm, values, isSubmitting, status }) => (
               <Form>
                 <Field
                   type="text"
@@ -100,7 +96,7 @@ const WordGroupEditor = ({classes}: Props) => {
                 />
 
                 {status && status.response && (
-                  <ErrorMessage error={status.response}/>
+                  <ErrorMessage error={status.response} />
                 )}
                 <Button
                   variant="contained"
@@ -119,4 +115,4 @@ const WordGroupEditor = ({classes}: Props) => {
   );
 };
 
-export default withStyles(styles, {withTheme: true})(WordGroupEditor);
+export default withStyles(styles, { withTheme: true })(WordGroupEditor);
