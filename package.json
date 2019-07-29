@@ -43,7 +43,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "types": "apollo client:codegen --target typescript --globalTypesFile=src/__generated__/globalTypes.ts --excludes=src/queries/wordgroups.ts"
+    "types": "apollo client:codegen --target typescript --globalTypesFile=src/__generated__/globalTypes.ts"
   },
   "eslintConfig": {
     "extends": "react-app"
