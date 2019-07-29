@@ -2,31 +2,35 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { UpdateWordGroupInput } from "./../../__generated__/globalTypes";
+import { api_wordgroup_set_input } from "./../../__generated__/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: updateWordGroup
 // ====================================================
 
-export interface updateWordGroup_updateWordGroup_wordGroup {
-  __typename: "WordGroupType";
-  /**
-   * The ID of the object.
-   */
-  id: string;
+export interface updateWordGroup_update_api_wordgroup_returning {
+  __typename: "api_wordgroup";
+  id: any;
   titleCh: string;
   titleDe: string;
 }
 
-export interface updateWordGroup_updateWordGroup {
-  __typename: "UpdateWordGroupPayload";
-  wordGroup: updateWordGroup_updateWordGroup_wordGroup | null;
+export interface updateWordGroup_update_api_wordgroup {
+  __typename: "api_wordgroup_mutation_response";
+  /**
+   * data of the affected rows by the mutation
+   */
+  returning: updateWordGroup_update_api_wordgroup_returning[];
 }
 
 export interface updateWordGroup {
-  updateWordGroup: updateWordGroup_updateWordGroup | null;
+  /**
+   * update data of the table: "api_wordgroup"
+   */
+  update_api_wordgroup: updateWordGroup_update_api_wordgroup | null;
 }
 
 export interface updateWordGroupVariables {
-  input: UpdateWordGroupInput;
+  id?: any | null;
+  input: api_wordgroup_set_input;
 }
