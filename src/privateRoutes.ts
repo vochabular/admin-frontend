@@ -10,7 +10,7 @@ import Chapter from "./pages/Chapter/Chapter";
 import WordGroups from "./pages/WordGroup/WordGroups";
 import WordGroup from "./pages/WordGroup/WordGroup";
 import ChapterWordGroups from "./pages/WordGroup/ChapterWordGroups";
-import NewWord from "./pages/WordGroup/NewWord";
+import WordEditor from "./pages/WordGroup/WordEditor";
 
 import { Role } from "rbac-rules";
 
@@ -88,7 +88,7 @@ export const mainRoutes: IPrivateRouteConfig[] = [
   {
     showInDrawer: false,
     allowedRoles: allUsers,
-    component: NewWord,
+    component: WordEditor,
     exact: true,
     path: "/wordgroups/:id/add"
   }
