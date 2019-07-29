@@ -1,24 +1,25 @@
 import gql from "graphql-tag";
 
 export const WORDGROUP_FRAGMENT = gql`
-fragment WordgroupParts on api_wordgroup {
-  parentChapterId: fk_chapter_id
-  id
-  titleCh: title_ch
-  titleDe: title_de
-  words {
+  fragment WordgroupParts on api_wordgroup {
+    parentChapterId: fk_chapter_id
     id
-    word {
+    titleCh: title_ch
+    titleDe: title_de
+    words {
       id
-      translations {
-        audio
-        exampleSentence: example_sentence
-        language {
-          code
-          name
-        }
-        text
+      word {
         id
+        translations {
+          audio
+          exampleSentence: example_sentence
+          language {
+            code
+            name
+          }
+          text
+          id
+        }
       }
     }
   }
@@ -34,8 +35,8 @@ export const GET_WORDGROUPS = gql`
 `;
 
 export const GET_WORDGROUP_BY_ID = gql`
-  subscription subscribeWordGroupById($id: uuid) {
-    wordGroup: api_wordgroup(where: { id: { _eq: $id } }) {
+  subscription subscribeWordGroupById($id: uuid!) {
+    wordGroup: api_wordgroup_by_pk(id: $id) {
       ...WordgroupParts
     }
   }
@@ -67,4 +68,17 @@ export const UPDATE_WORDGROUP = gql`
   }
 `;
 
-export const INSERT_WORD = gql``;
+export const UPSERT_WORDGROUP = gql`
+  mutation upsertWordGroup($input: [api_wordgroup_insert_input!]!) {
+    insert_api_wordgroup(objects: $input) {
+      returning {
+        id
+        parentChapterId: fk_chapter_id
+        titleCh: title_ch
+        titleDe: title_de
+      }
+    }
+  }
+`;
+
+export const UPSERT_WORD = gql``;
