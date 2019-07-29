@@ -81,4 +81,22 @@ export const UPSERT_WORDGROUP = gql`
   }
 `;
 
-export const UPSERT_WORD = gql``;
+/**
+ * See here why we are "updating" (--> actually not, just using it since otherwise the nested upsert would fail..) the ID column:
+ * https://docs.hasura.io/1.0/graphql/manual/mutations/upsert.html
+ */
+export const UPSERT_WORD = gql`
+  mutation upsertWord(
+    $wordId: uuid!
+    $input: api_wordtranslation_insert_input!
+  ) {
+    insert_api_word(
+      on_conflict: { constraint: api_word_pkey, update_columns: [id] }
+      objects: [{ id: $wordId, translations: { data: [$input] } }]
+    ) {
+      returning {
+        id
+      }
+    }
+  }
+`;
