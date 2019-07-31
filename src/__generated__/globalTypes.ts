@@ -19,17 +19,6 @@ export enum CommentContext {
 /**
  * An enumeration.
  */
-export enum ComponentState {
-  C = "C",
-  F = "F",
-  R = "R",
-  T = "T",
-  U = "U",
-}
-
-/**
- * An enumeration.
- */
 export enum ProfileLanguage {
   DE = "DE",
   EN = "EN",
@@ -247,18 +236,6 @@ export interface api_wordgroup_obj_rel_insert_input {
 export interface api_wordgroup_on_conflict {
   constraint: api_wordgroup_constraint;
   update_columns: api_wordgroup_update_column[];
-}
-
-/**
- * input type for updating data in table "api_wordgroup"
- */
-export interface api_wordgroup_set_input {
-  created?: any | null;
-  fk_chapter_id?: any | null;
-  id?: any | null;
-  title_ch?: string | null;
-  title_de?: string | null;
-  updated?: any | null;
 }
 
 /**

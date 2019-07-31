@@ -22,10 +22,10 @@ import { UPSERT_CHAPTER } from "queries/chapters";
 import i18next from "i18n";
 import history from "myHistory";
 import ErrorMessage from "components/ErrorMessage";
-import { chapterById_chapter_parentChapter } from "queries/__generated__/chapterById";
 import { convertGlobalToDbId } from "helpers";
 import { GET_LANGUAGES } from "../../queries/languages";
 import { getLanguages } from "queries/__generated__/getLanguages";
+import { getChapterById_chapter_parentChapter } from "queries/__generated__/getChapterById";
 
 export const ChapterSchema = Yup.object().shape({
   number: Yup.number()
@@ -42,7 +42,7 @@ export const ChapterSchema = Yup.object().shape({
 });
 
 interface Props extends WithStyles<typeof styles> {
-  parentChapter?: chapterById_chapter_parentChapter;
+  parentChapter?: getChapterById_chapter_parentChapter;
 }
 
 const NewChapter = ({ classes, parentChapter }: Props) => {

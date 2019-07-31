@@ -9,10 +9,10 @@ import Section from "components/Section";
 import { useTranslation } from "react-i18next";
 import TimestampAgo from "components/TimestampAgo";
 import CommentsWidget from "pages/Chapter/CommentsWidget";
-import { chapterById_chapter } from "queries/__generated__/chapterById";
+import { getChapterById_chapter } from "queries/__generated__/getChapterById";
 
 interface Props extends WithStyles<typeof styles> {
-  data: chapterById_chapter;
+  data: getChapterById_chapter;
 }
 
 /**

@@ -14,14 +14,14 @@ export interface WordgroupParts_words_word_translations_language {
 
 export interface WordgroupParts_words_word_translations {
   __typename: "api_wordtranslation";
+  id: any;
+  text: string;
   audio: string | null;
   exampleSentence: string | null;
   /**
    * An object relationship
    */
   language: WordgroupParts_words_word_translations_language;
-  text: string;
-  id: any;
 }
 
 export interface WordgroupParts_words_word {

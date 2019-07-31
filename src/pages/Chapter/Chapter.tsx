@@ -16,10 +16,9 @@ import ChapterCard from "components/ChapterCard";
 import LinkCard from "components/LinkCard";
 import Section from "components/Section";
 import SectionCardContainer from "components/SectionCardContainer";
-import { chapterById } from "queries/__generated__/chapterById";
-import { convertGlobalToDbId } from "helpers";
 import { Permission } from "rbac-rules";
 import Can from "components/Can/Can";
+import { getChapterById } from "queries/__generated__/getChapterById";
 
 // These can come from the router... See the route definitions
 interface ChapterRouterProps {
@@ -40,12 +39,9 @@ const Chapter = ({ classes, match }: Props) => {
   const { t } = useTranslation();
 
   // Either load directly the subchapter or else the chapter
-  const { loading, data, error } = useQuery<chapterById>(GET_CHAPTER_BY_ID, {
+  const { loading, data, error } = useQuery<getChapterById>(GET_CHAPTER_BY_ID, {
     variables: {
-      id:
-        subChapterId && subChapterId !== "new"
-          ? convertGlobalToDbId(subChapterId)
-          : convertGlobalToDbId(chapterId)
+      id: subChapterId && subChapterId !== "new" ? subChapterId : chapterId
     }
   });
 
@@ -102,8 +98,7 @@ const Chapter = ({ classes, match }: Props) => {
       <SectionCardContainer>
         {data.chapter &&
           data.chapter.subChapters &&
-          data.chapter.subChapters &&
-          data.chapter.subChapters.edges.map((c: any | null) => {
+          data.chapter.subChapters.map((c: any | null) => {
             if (!c) return null;
             return (
               <Grid item key={c && c.node.id}>

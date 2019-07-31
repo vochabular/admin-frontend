@@ -14,14 +14,14 @@ export interface subscribeWordGroupById_wordGroup_words_word_translations_langua
 
 export interface subscribeWordGroupById_wordGroup_words_word_translations {
   __typename: "api_wordtranslation";
+  id: any;
+  text: string;
   audio: string | null;
   exampleSentence: string | null;
   /**
    * An object relationship
    */
   language: subscribeWordGroupById_wordGroup_words_word_translations_language;
-  text: string;
-  id: any;
 }
 
 export interface subscribeWordGroupById_wordGroup_words_word {
