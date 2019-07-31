@@ -1,6 +1,7 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQuery, useMutation } from "react-apollo-hooks";
+import { getOperationName } from "apollo-link";
 
 import {
   withStyles,
@@ -20,8 +21,7 @@ import { CREATE_COMMENT } from "queries/comments";
 import { getAllComments } from "queries/__generated__/getAllComments";
 import ErrorMessage from "./ErrorMessage";
 import Discussion from "./Discussion";
-import auth0Client from "auth/Auth";
-import { getOperationName } from "apollo-link";
+import { useAuth } from "contexts/AuthContext";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -45,7 +45,8 @@ interface Props extends WithStyles<typeof styles> {
 
 const DiscussionList = ({ classes, query }: Props) => {
   const { t } = useTranslation();
-  const [newComment, setNewComment] = React.useState("");
+  const [newComment, setNewComment] = useState("");
+  const { user } = useAuth();
 
   const [createComment, { loading: mutationLoading }] = useMutation(
     CREATE_COMMENT
@@ -67,7 +68,7 @@ const DiscussionList = ({ classes, query }: Props) => {
         comment: {
           text: newComment,
           active: true,
-          fkAuthorId: auth0Client.dbId,
+          fkAuthorId: user && user.userId,
           // fkParentCommentId: null,
           fkComponentId: 1
         }

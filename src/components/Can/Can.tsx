@@ -50,7 +50,7 @@ interface CanProps {
    * Alternative: Pass a "Yes" and "No" Component that should get rendered accordingly
    */
   yes: CallableFunction;
-  no: CallableFunction;
+  no?: CallableFunction;
 }
 
 /**
@@ -67,7 +67,7 @@ const Can = ({ role, perform, data, yes, no }: CanProps) => {
     data
   )
     ? yes()
-    : no();
+    : (no && no()) || null;
 };
 
 export default Can;

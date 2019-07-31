@@ -10,6 +10,7 @@ const namespace = "https://hasura.io/jwt/claims";
  * Properties from the Auth0 IdToken + the custom defined properties (in the Auth0 Rules!)
  */
 interface IUser extends IdToken {
+  userId: String;
   currentRole: Role;
   allowedRoles: Role[];
 }
@@ -26,7 +27,9 @@ function getUserFromIdToken(idToken: IOwnIdToken): IUser {
   // Strip the namespace, since we want to have a flat user object
   const { [namespace]: customProperties, ...authProperties } = idToken;
   const allowedRoles = customProperties["x-hasura-allowed-roles"];
+  const userId = customProperties["x-hasura-user-id"];
   return {
+    userId,
     allowedRoles,
     currentRole: allowedRoles[0], // TODO(df): We have to initialize this somehow, then on first settings load, it has to update the current role based on the current set value.
     ...authProperties
@@ -49,6 +52,7 @@ export interface IAuthContext {
   getTokenSilently: CallableFunction;
   getTokenWithPopup: CallableFunction;
   logout: CallableFunction;
+  changeCurrentRole: CallableFunction;
 }
 
 const initialAuthContext: IAuthContext = {
@@ -63,7 +67,8 @@ const initialAuthContext: IAuthContext = {
   loginWithRedirect: () => console.info("Initializing..."),
   getTokenSilently: () => console.info("Initializing..."),
   getTokenWithPopup: () => console.info("Initializing..."),
-  logout: () => console.info("Initializing...")
+  logout: () => console.info("Initializing..."),
+  changeCurrentRole: () => console.info("Initializing...")
 };
 
 /**
@@ -160,6 +165,12 @@ export const AuthProvider = ({
     setUser(getUserFromIdToken(user));
   };
 
+  const changeCurrentRole = (newRole: Role) => {
+    const updatedUser: IUser = Object.assign(user!);
+    updatedUser.currentRole = newRole;
+    setUser(updatedUser);
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -180,7 +191,8 @@ export const AuthProvider = ({
           auth0Client && auth0Client.getTokenWithPopup(p),
         logout: (p: LogoutOptions) =>
           auth0Client &&
-          auth0Client.logout(p || { returnTo: window.location.origin })
+          auth0Client.logout(p || { returnTo: window.location.origin }),
+        changeCurrentRole
       }}
     >
       {children}

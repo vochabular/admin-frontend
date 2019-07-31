@@ -14,7 +14,6 @@ import { GET_CHAPTER_BY_ID } from "queries/chapters";
 import BusyOrErrorCard from "components/BusyOrErrorCard";
 import ChapterCard from "components/ChapterCard";
 import LinkCard from "components/LinkCard";
-import auth0Client from "auth/Auth";
 import Section from "components/Section";
 import SectionCardContainer from "components/SectionCardContainer";
 import { chapterById } from "queries/__generated__/chapterById";
@@ -112,17 +111,20 @@ const Chapter = ({ classes, match }: Props) => {
               </Grid>
             );
           })}
-        {["admin", "content-creator"].includes(
-          auth0Client.getCurrentRole() || ""
-        ) ? (
-          <Grid item>
-            <LinkCard
-              path={`/chapters/${data.chapter.id}/new`}
-              icon={<AddIcon />}
-              helperText="createNewSubChapter"
-            />
-          </Grid>
-        ) : null}
+        <Can
+          perform={Permission.CHAPTER__CREATE}
+          yes={() => (
+            <Grid item>
+              <LinkCard
+                path={`/chapters/${data &&
+                  data.chapter &&
+                  data.chapter.id}/new`}
+                icon={<AddIcon />}
+                helperText="createNewSubChapter"
+              />
+            </Grid>
+          )}
+        />
       </SectionCardContainer>
     </Section>
   );

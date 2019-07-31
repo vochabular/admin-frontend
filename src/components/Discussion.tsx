@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import {
@@ -22,9 +22,9 @@ import {
   GET_ALL_COMMENTS,
   GET_ACTIVE_COMMENTS
 } from "queries/comments";
-import auth0Client from "auth/Auth";
 import { convertGlobalToDbId } from "helpers";
 import { getOperationName } from "apollo-link";
+import { useAuth } from "contexts/AuthContext";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -45,8 +45,9 @@ interface Props extends WithStyles<typeof styles> {
 
 const Discussion = ({ classes, data }: Props) => {
   const { t } = useTranslation();
-  const [reply, setReply] = React.useState("");
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [reply, setReply] = useState("");
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const { user } = useAuth();
 
   const [createComment, { loading }] = useMutation(CREATE_COMMENT);
 
@@ -68,7 +69,7 @@ const Discussion = ({ classes, data }: Props) => {
         comment: {
           text: reply,
           active: true,
-          fkAuthorId: auth0Client.dbId,
+          fkAuthorId: user && user.userId,
           fkParentCommentId: convertGlobalToDbId(data.id),
           fkComponentId: 1 // TODO(df): Need to set this from a shared state, e.g. selected component?
         }

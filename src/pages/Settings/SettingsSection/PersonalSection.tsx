@@ -12,9 +12,9 @@ import { Grid, MenuItem } from "@material-ui/core";
 import { withStyles, WithStyles } from "@material-ui/styles";
 
 import { styles } from "styles";
-import auth0Client from "auth/Auth";
 import i18n from "i18n";
 import { profile_profile } from "queries/__generated__/profile";
+import { useAuth } from "contexts/AuthContext";
 
 const UiLanguageField = (props: TextFieldProps) => (
   <MuiTextField
@@ -27,16 +27,19 @@ const UiLanguageField = (props: TextFieldProps) => (
   />
 );
 
-const DefaultRoleField = (props: TextFieldProps) => (
-  <MuiTextField
-    {...fieldToTextField(props)}
-    onChange={(event: any) => {
-      const { value } = event.target;
-      auth0Client.changeCurrentRole(value);
-      props.form.setFieldValue(props.field.name, value ? value : "");
-    }}
-  />
-);
+const DefaultRoleField = (props: TextFieldProps) => {
+  const { changeCurrentRole } = useAuth();
+  return (
+    <MuiTextField
+      {...fieldToTextField(props)}
+      onChange={(event: any) => {
+        const { value } = event.target;
+        changeCurrentRole(value);
+        props.form.setFieldValue(props.field.name, value ? value : "");
+      }}
+    />
+  );
+};
 
 interface Props extends WithStyles<typeof styles> {
   values?: profile_profile;
@@ -46,7 +49,9 @@ interface Props extends WithStyles<typeof styles> {
 function PersonalSection({ classes, values, setFieldValue }: Props) {
   const { t } = useTranslation();
 
-  const roles = auth0Client.getAllowedRoles();
+  const { user } = useAuth();
+
+  const roles = (user && user.allowedRoles) || [];
   return (
     <Grid>
       <Field

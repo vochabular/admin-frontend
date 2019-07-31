@@ -4,8 +4,6 @@ import { HttpLink } from "apollo-link-http";
 import { onError } from "apollo-link-error";
 import { ApolloLink, Observable } from "apollo-link";
 
-import auth0Client from "./auth/Auth";
-import i18n from "./i18n";
 import { typeDefs, resolvers } from "./queries/resolvers";
 
 /**
@@ -73,6 +71,10 @@ const client = new ApolloClient({
   defaultOptions,
   cache,
   link: ApolloLink.from([
+    /**
+     * TODO(df): Central error handling. For example, on mutation error, we should show a "error" notification. When no network, we should alert the user...
+     *
+     */
     onError(({ graphQLErrors, networkError }) => {
       if (graphQLErrors) {
         // TODO: We should send something to sentry...
@@ -80,7 +82,7 @@ const client = new ApolloClient({
       }
       if (networkError) {
         // TODO: We should logout the user, if the network error is actually a 400 or something...
-        // handleNetworkError / auth0Client.logout();
+        // handleNetworkError
       }
     }),
     requestLink,
@@ -90,33 +92,6 @@ const client = new ApolloClient({
   ]),
   typeDefs: typeDefs,
   resolvers: resolvers
-});
-
-// These are the default values, if nothing is set in localStorage/the backend
-const defaultSettings = {
-  __typename: "Settings",
-  userName: "",
-  currentRole: (auth0Client && auth0Client.getCurrentRole()) || "viewer",
-  language: i18n.language,
-  translatorLanguages: [],
-  receiveEventNotifications: false,
-  hasCompletedSetup: false
-};
-
-// Get the initial state for settings
-const settings = JSON.parse(
-  localStorage.getItem("settings") || JSON.stringify(defaultSettings)
-);
-
-/**
- * Write the default/initial values to the cache
- */
-client.cache.writeData({
-  data: {
-    settings: {
-      ...settings
-    }
-  }
 });
 
 export default client;

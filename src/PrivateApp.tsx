@@ -13,7 +13,6 @@ import useToggle from "hooks/useToggle";
 import SetupWizard from "./pages/SetupWizard/SetupWizard";
 import { GET_PROFILE } from "./queries/profile";
 import BusyOrErrorCard from "./components/BusyOrErrorCard";
-import auth0Client from "auth/Auth";
 import { profile } from "queries/__generated__/profile";
 import i18n from "i18n";
 import LoadingPage from "pages/LoadingPage";
@@ -60,12 +59,13 @@ const PrivateApp: React.FunctionComponent<Props> = ({ classes }) => {
   if (data && data.profile) {
     i18n.changeLanguage(data.profile.language.toLowerCase());
     // Set the dbId of the user. We need this for our nested mutations (even though this should be set by the backend?)
-    auth0Client.setDbId(Number(data.profile.id));
+    // auth0Client.setDbId(Number(data.profile.id));
+    // TODO(df): Need to set this dbId somehow.
   }
 
-  // TODO: Need to actually get the current role from auth0Client. Via a setting to force a rerender?
+  //
   const accessibleRoutes = getAllAccessibleRoutes(
-    auth0Client.getCurrentRole() || Role.ADMINISTRATOR,
+    (user && user.currentRole) || Role.VIEWER,
     false
   );
 

@@ -16,10 +16,10 @@ import LanguagesSection from "pages/Settings/SettingsSection/AdministrativeSecti
 import NotificationSection from "pages/Settings/SettingsSection/NotificationSection";
 import i18next from "i18n";
 import { GET_PROFILE, UPDATE_PROFILE } from "queries/profile";
-import auth0Client from "auth/Auth";
 import BusyOrErrorCard from "components/BusyOrErrorCard";
 import { profile_profile, profile } from "queries/__generated__/profile";
 import { Role } from "rbac-rules";
+import { useAuth } from "contexts/AuthContext";
 
 export const UserSetupSchema = Yup.object().shape({
   language: Yup.string().required(i18next.t("required")),
@@ -35,7 +35,8 @@ export const UserSetupSchema = Yup.object().shape({
 interface Props extends WithStyles<typeof styles> {}
 
 const Settings: React.FunctionComponent<Props> = ({ classes }) => {
-  const username = auth0Client.userProfile && auth0Client.userProfile.email;
+  const { user, changeCurrentRole } = useAuth();
+  const username = user && user.email;
 
   const { t, i18n } = useTranslation();
   const { data, loading, error } = useQuery<profile>(GET_PROFILE, {
@@ -56,7 +57,7 @@ const Settings: React.FunctionComponent<Props> = ({ classes }) => {
 
     // @ts-ignore
     const currentRole: Role = Role[newSettings.currentRole];
-    auth0Client.changeCurrentRole(currentRole);
+    changeCurrentRole(currentRole);
     i18n.changeLanguage(newSettings.language);
     // Note: we need to strip the typename, as otherwise the backend complains and apollo client unfortunately doesn't strip it. TODO(df): need to find a central place to strip typenames generally...
     const { __typename, ...profile } = newSettings;
