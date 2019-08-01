@@ -1,8 +1,11 @@
-import { ApolloClient, DefaultOptions } from "apollo-client";
+import { ApolloClient, DefaultOptions, ApolloError } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { HttpLink } from "apollo-link-http";
 import { onError } from "apollo-link-error";
-import { ApolloLink, Observable } from "apollo-link";
+import { ApolloLink, Observable, split } from "apollo-link";
+import { WebSocketLink } from "apollo-link-ws";
+import { GraphQLError } from "graphql";
+import { getMainDefinition } from "apollo-utilities";
 
 import { typeDefs, resolvers } from "./queries/resolvers";
 
@@ -27,21 +30,72 @@ const defaultOptions: DefaultOptions = {
 // Setup the cache
 const cache = new InMemoryCache({});
 
-// On each request, set the current idToken in the header
-const request = async (operation: any) => {
-  /**
-   * TODO(df): Need to get the token from the new AuthContext
-   * Something like: console.log(AuthContext["_currentValue"]);
-   */
+/**
+ * Returns a request options object
+ */
+function getRequestParameters() {
   // @ts-ignore
   const idToken = window.idToken;
-  operation.setContext({
+  return {
     headers: {
-      // Authorization: `Bearer ${idToken}`,
+      // TODO(df): Set current role, set userid...
       // "X-Hasura-Role": currentRole,
-      authorization: "Bearer " + idToken
+      Authorization: `Bearer ${idToken}`
     }
+  };
+}
+
+/**
+ * Handles GraphQL error. Note that you can not use async/await... https://github.com/apollographql/apollo-link/issues/646#issuecomment-423279220
+ * @param {} graphQLErrors
+ */
+function handleGraphQLError(graphQLErrors: ApolloError["graphQLErrors"]) {
+  graphQLErrors.map(({ message, locations, path }: GraphQLError) => {
+    return console.error(
+      `[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(
+        locations
+      )}, Path: ${path}`
+    );
   });
+}
+
+/**
+ * Handles Network errors such as token expired, invalid etc...
+ * @param {} networkError
+ */
+function handleNetworkError(networkError: ApolloError["networkError"]) {
+  // TODO: Wrong types, altough available:
+  // See here https://github.com/apollographql/apollo-link/issues/300
+  // @ts-ignore
+  const { statusCode, result } = networkError;
+  if (statusCode === 400) {
+    // Handle case when token has expired...
+    if (
+      result &&
+      result.errors &&
+      result.errors[0] &&
+      result.errors[0].message === "Could not verify JWT: JWTExpired"
+    ) {
+      console.info("ID Token has expired! Attempting to refresh...");
+      try {
+        // TODO: REFRESH TOKEN AND TRY AGAIN...
+        // auth0Client.renewSession().then(() => console.log("Session renwed!"));
+      } catch (e) {
+        throw new Error(e);
+      }
+    } else {
+      console.error(networkError);
+      console.error(JSON.stringify(networkError));
+    }
+  } else {
+    console.error(`General network error: ${JSON.stringify(networkError)}`);
+  }
+}
+
+// On each request, set the current idToken in the header
+const request = async (operation: any) => {
+  const params = getRequestParameters();
+  operation.setContext(params);
 };
 
 // Here we can chain
@@ -67,6 +121,38 @@ const requestLink = new ApolloLink(
     })
 );
 
+// Create an http link:
+const httpLink = new HttpLink({
+  uri: process.env.REACT_APP_BACKEND_URL
+});
+
+// Create a WebSocket link:
+const wsLink = new WebSocketLink({
+  options: {
+    connectionParams: getRequestParameters(),
+    lazy: true,
+    reconnect: true,
+    timeout: 30000
+  },
+  uri:
+    (process.env.REACT_APP_BACKEND_URL &&
+      process.env.REACT_APP_BACKEND_URL.replace("https://", "wss://")) ||
+    ""
+});
+
+// using the ability to split links, you can send data to each link
+// depending on what kind of operation is being sent
+const link = split(
+  // split based on operation type
+  ({ query }: any) => {
+    // @ts-ignore
+    const { kind, operation } = getMainDefinition(query);
+    return kind === "OperationDefinition" && operation === "subscription";
+  },
+  wsLink,
+  httpLink
+);
+
 const client = new ApolloClient({
   defaultOptions,
   cache,
@@ -86,9 +172,7 @@ const client = new ApolloClient({
       }
     }),
     requestLink,
-    new HttpLink({
-      uri: process.env.REACT_APP_BACKEND_URL
-    })
+    link
   ]),
   typeDefs: typeDefs,
   resolvers: resolvers
