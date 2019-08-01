@@ -1,5 +1,5 @@
 import React from "react";
-import { useQuery } from "react-apollo-hooks";
+import { useQuery, useSubscription } from "react-apollo-hooks";
 
 import { withStyles, WithStyles } from "@material-ui/styles";
 import Grid from "@material-ui/core/Grid";
@@ -14,7 +14,7 @@ import { subscribeWordGroups } from "queries/__generated__/subscribeWordGroups";
 interface Props extends WithStyles<typeof styles> {}
 
 const VoggiSection: React.FunctionComponent<Props> = ({ classes }) => {
-  const { data, error, loading } = useQuery<subscribeWordGroups>(
+  const { data, error, loading } = useSubscription<subscribeWordGroups>(
     GET_WORDGROUPS
   );
 
