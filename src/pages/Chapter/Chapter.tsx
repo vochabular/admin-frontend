@@ -98,11 +98,11 @@ const Chapter = ({ classes, match }: Props) => {
       <SectionCardContainer>
         {data.chapter &&
           data.chapter.subChapters &&
-          data.chapter.subChapters.map((c: any | null) => {
+          data.chapter.subChapters.map(c => {
             if (!c) return null;
             return (
-              <Grid item key={c && c.node.id}>
-                <ChapterCard chapter={c.node} />
+              <Grid item key={c.id}>
+                <ChapterCard chapter={c} />
               </Grid>
             );
           })}
