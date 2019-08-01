@@ -161,14 +161,18 @@ const client = new ApolloClient({
      * TODO(df): Central error handling. For example, on mutation error, we should show a "error" notification. When no network, we should alert the user...
      *
      */
-    onError(({ graphQLErrors, networkError }) => {
-      if (graphQLErrors) {
+    onError(e => {
+      if (e.graphQLErrors) {
         // TODO: We should send something to sentry...
         // sendToLoggingService(graphQLErrors);
+        handleGraphQLError(e.graphQLErrors);
       }
-      if (networkError) {
+      if (e.networkError) {
         // TODO: We should logout the user, if the network error is actually a 400 or something...
         // handleNetworkError
+        handleNetworkError(e.networkError);
+      } else {
+        throw e;
       }
     }),
     requestLink,
