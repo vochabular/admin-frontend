@@ -8,6 +8,7 @@ import { GraphQLError } from "graphql";
 import { getMainDefinition } from "apollo-utilities";
 
 import { typeDefs, resolvers } from "./queries/resolvers";
+import { SubscriptionClient } from "subscriptions-transport-ws";
 
 /**
  * Here you can define default options that are applied to all queries, mutations.
@@ -31,16 +32,17 @@ const defaultOptions: DefaultOptions = {
 const cache = new InMemoryCache({});
 
 /**
- * Returns a request options object
+ * This is a "fake" async call. This resolves however the case, that the IdToken is briefly undefined!
+ * TODO(df): Maybe it would be better, if the client is setup only in the private app?
  */
-function getRequestParameters() {
+async function getAsyncConnectionParams() {
   // @ts-ignore
   const idToken = window.idToken;
+  const currentRole = "administrator";
   return {
     headers: {
-      // TODO(df): Set current role, set userid...
-      // "X-Hasura-Role": currentRole,
-      Authorization: `Bearer ${idToken}`
+      Authorization: `Bearer ${idToken}`,
+      "X-Hasura-Role": currentRole
     }
   };
 }
@@ -94,7 +96,7 @@ function handleNetworkError(networkError: ApolloError["networkError"]) {
 
 // On each request, set the current idToken in the header
 const request = async (operation: any) => {
-  const params = getRequestParameters();
+  const params = await getAsyncConnectionParams();
   operation.setContext(params);
 };
 
@@ -126,19 +128,20 @@ const httpLink = new HttpLink({
   uri: process.env.REACT_APP_BACKEND_URL
 });
 
+const wssUrl =
+  (process.env.REACT_APP_BACKEND_URL &&
+    process.env.REACT_APP_BACKEND_URL.replace("https://", "wss://")) ||
+  "";
+
 // Create a WebSocket link:
-const wsLink = new WebSocketLink({
-  options: {
-    connectionParams: getRequestParameters(),
+const wsLink = new WebSocketLink(
+  new SubscriptionClient(wssUrl, {
+    connectionParams: async () => getAsyncConnectionParams(),
     lazy: true,
     reconnect: true,
     timeout: 30000
-  },
-  uri:
-    (process.env.REACT_APP_BACKEND_URL &&
-      process.env.REACT_APP_BACKEND_URL.replace("https://", "wss://")) ||
-    ""
-});
+  })
+);
 
 // using the ability to split links, you can send data to each link
 // depending on what kind of operation is being sent
