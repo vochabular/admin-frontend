@@ -7,7 +7,8 @@ const check = (
   action: Permission,
   data: any
 ) => {
-  const permissions = rules[role as any];
+  const roleKey = Object.keys(Role).find(key => Role[key as any] === role);
+  const permissions = rules[roleKey as any];
   if (!permissions) {
     // role is not present in the rules
     return false;
@@ -59,7 +60,6 @@ interface CanProps {
 const Can = ({ role, perform, data, yes, no }: CanProps) => {
   const { user } = useAuth();
   if (!role && !user) return null;
-
   return check(
     rules,
     role || (user && user.currentRole) || Role.VIEWER,
