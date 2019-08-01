@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQuery, useMutation } from "react-apollo-hooks";
-import { getOperationName } from "apollo-link";
+import { getOperationName, DocumentNode } from "apollo-link";
 
 import {
   withStyles,
@@ -39,7 +39,7 @@ const styles = (theme: Theme) =>
   });
 
 interface Props extends WithStyles<typeof styles> {
-  query: string;
+  query: DocumentNode;
   variables: string;
 }
 
