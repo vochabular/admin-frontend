@@ -2,6 +2,10 @@ import { combineReducers } from "redux";
 
 import contentEditor from "./contentEditorSlice";
 
-export default combineReducers({
+const rootReducer = combineReducers({
   contentEditor
 });
+
+export default rootReducer;
+
+export type AppState = ReturnType<typeof rootReducer>;
