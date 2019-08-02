@@ -74,7 +74,8 @@
     "exampleSentenceCH": "Swiss German example sentence",
     "exampleSentenceCHHelper": "E.g. Iich gaa go Poschte.",
     "audioCH": "Audio file",
-    "audioCHHelper": "Swiss German audio file with spoken word and sentence"
+    "audioCHHelper": "Swiss German audio file with spoken word and sentence",
+    "emptyWord": "No translations"
   },
   "settings": {
     "title": "Settings",

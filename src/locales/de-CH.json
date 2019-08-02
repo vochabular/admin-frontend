@@ -69,7 +69,8 @@
     "exampleSentenceCH": "Schweizerdeutscher Beispielsatz",
     "exampleSentenceCHHelper": "Bsp: Iich gaa go Poschte.",
     "audioCH": "Höraufnahme Schweizerdeutsch",
-    "audioCHHelper": "Höraufnahme Wort und Beispielsatz"
+    "audioCHHelper": "Höraufnahme Wort und Beispielsatz",
+    "emptyWord": "Keine Übersetzungen"
   },
   "settings": {
     "title": "Einstellungen",

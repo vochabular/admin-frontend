@@ -48,7 +48,7 @@ const WordGroup = ({ classes, match }: Props) => {
   } / ${data && data.wordGroup ? data.wordGroup.titleCh : ""}`;
 
   return (
-    <Section title={t("wordGroups:wordGroup") + ` ${title_name}`}>
+    <Section title={t("words:wordGroup") + ` ${title_name}`}>
       <SectionCardContainer>
         <BusyOrErrorCard
           loading={loading}
