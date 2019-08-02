@@ -6,6 +6,7 @@ import { Role } from "rbac-rules";
 
 type TGlobalApp = {
   idToken: string;
+  userId: string;
   currentRole: Role;
 };
 
@@ -45,7 +46,7 @@ function getUserFromIdToken(idToken: IOwnIdToken): IUser {
   return {
     userId,
     allowedRoles,
-    currentRole: allowedRoles[0], // TODO(df): We have to initialize this somehow, then on first settings load, it has to update the current role based on the current set value.
+    currentRole: allowedRoles[0],
     ...authProperties
   };
 }
@@ -145,7 +146,8 @@ export const AuthProvider = ({
         // TODO(df): Hack for now, since I have no idea how to access the context from outside React (in ApolloClient.ts)
         window.VoCHabularAdminFrontend = {
           idToken,
-          currentRole: user.currentRole
+          currentRole: user.currentRole,
+          userId: ""
         };
         setIdToken(idToken);
       }
@@ -184,6 +186,7 @@ export const AuthProvider = ({
   const changeCurrentRole = (newRole: Role) => {
     const updatedUser: IUser = Object.assign(user!);
     updatedUser.currentRole = newRole;
+    window.VoCHabularAdminFrontend.currentRole = newRole;
     setUser(updatedUser);
   };
 

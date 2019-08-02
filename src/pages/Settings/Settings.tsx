@@ -55,9 +55,6 @@ const Settings: React.FunctionComponent<Props> = ({ classes }) => {
     const newSettings = { ...values };
     delete newSettings.id;
 
-    // @ts-ignore
-    const currentRole: Role = Role[newSettings.currentRole];
-    changeCurrentRole(currentRole);
     i18n.changeLanguage(newSettings.language);
     // Note: we need to strip the typename, as otherwise the backend complains and apollo client unfortunately doesn't strip it. TODO(df): need to find a central place to strip typenames generally...
     const { __typename, ...profile } = newSettings;
