@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { ApolloProvider } from "react-apollo";
 import { ApolloProvider as ApolloHooksProvider } from "react-apollo-hooks";
 import * as Sentry from "@sentry/browser";
+import { Provider } from "react-redux";
 
 import { ThemeProvider } from "@material-ui/styles";
 
@@ -14,6 +15,9 @@ import theme from "./theme";
 import * as serviceWorker from "./serviceWorker";
 import packageJson from "../package.json";
 import { AuthProvider, onRedirectCallback } from "contexts/AuthContext";
+import configureAppStore from "configureStore";
+
+const store = configureAppStore();
 
 // TODO: How can we use the values from our .env file?
 if (process.env.NODE_ENV === "production") {
@@ -26,20 +30,22 @@ if (process.env.NODE_ENV === "production") {
 }
 
 ReactDOM.render(
-  <AuthProvider
-    domain={process.env.REACT_APP_AUTH0_DOMAIN}
-    client_id={process.env.REACT_APP_AUTH0_CLIENTID}
-    redirect_uri={window.location.origin}
-    onRedirectCallback={onRedirectCallback}
-  >
-    <ApolloProvider client={apolloClient}>
-      <ApolloHooksProvider client={apolloClient}>
-        <ThemeProvider theme={theme}>
-          <App />
-        </ThemeProvider>
-      </ApolloHooksProvider>
-    </ApolloProvider>
-  </AuthProvider>,
+  <Provider store={store}>
+    <AuthProvider
+      domain={process.env.REACT_APP_AUTH0_DOMAIN}
+      client_id={process.env.REACT_APP_AUTH0_CLIENTID}
+      redirect_uri={window.location.origin}
+      onRedirectCallback={onRedirectCallback}
+    >
+      <ApolloProvider client={apolloClient}>
+        <ApolloHooksProvider client={apolloClient}>
+          <ThemeProvider theme={theme}>
+            <App />
+          </ThemeProvider>
+        </ApolloHooksProvider>
+      </ApolloProvider>
+    </AuthProvider>
+  </Provider>,
   document.getElementById("root")
 );
 
