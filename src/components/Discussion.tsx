@@ -15,7 +15,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 import Comment from "./Comment";
 import { Divider, TextField, Button, Grid } from "@material-ui/core";
-import { getAllComments_comments_edges_node } from "queries/__generated__/getAllComments";
+import { subscribeAllComments_comments } from "queries/__generated__/subscribeAllComments";
 import { useMutation } from "react-apollo-hooks";
 import {
   CREATE_COMMENT,
@@ -40,7 +40,7 @@ interface Props extends WithStyles<typeof styles> {
   /**
    * TODO: A single discussion
    */
-  data: getAllComments_comments_edges_node;
+  data: subscribeAllComments_comments;
 }
 
 const Discussion = ({ classes, data }: Props) => {
@@ -86,17 +86,12 @@ const Discussion = ({ classes, data }: Props) => {
     <div className={classes.container}>
       <Comment data={data} />
       {data &&
-        data.commentSet &&
-        data.commentSet.edges.map(
-          c =>
-            c &&
-            c.node && (
-              <React.Fragment key={c.node.id}>
-                <Comment data={c.node} />
-                <Divider />
-              </React.Fragment>
-            )
-        )}
+        data.answers.map(c => (
+          <React.Fragment key={c.id}>
+            <Comment data={c} />
+            <Divider />
+          </React.Fragment>
+        ))}
       <Divider />
       <TextField
         id="reply"

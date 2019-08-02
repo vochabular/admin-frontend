@@ -9,11 +9,15 @@
 export interface subscribeAllComments_comments_author {
   __typename: "api_profile";
   id: any;
+  firstname: string;
+  lastname: string;
 }
 
 export interface subscribeAllComments_comments_answers_author {
   __typename: "api_profile";
   id: any;
+  firstname: string;
+  lastname: string;
 }
 
 export interface subscribeAllComments_comments_answers {

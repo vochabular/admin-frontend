@@ -25,7 +25,7 @@ import ErrorMessage from "components/ErrorMessage";
 import { convertGlobalToDbId } from "helpers";
 import { GET_LANGUAGES } from "../../queries/languages";
 import { getLanguages } from "queries/__generated__/getLanguages";
-import { getChapterById_chapter_parentChapter } from "queries/__generated__/getChapterById";
+import { subscribeChapterById_chapter_parentChapter } from "queries/__generated__/subscribeChapterById";
 
 export const ChapterSchema = Yup.object().shape({
   number: Yup.number()
@@ -42,7 +42,7 @@ export const ChapterSchema = Yup.object().shape({
 });
 
 interface Props extends WithStyles<typeof styles> {
-  parentChapter?: getChapterById_chapter_parentChapter;
+  parentChapter?: subscribeChapterById_chapter_parentChapter;
 }
 
 const NewChapter = ({ classes, parentChapter }: Props) => {

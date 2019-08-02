@@ -18,7 +18,7 @@ import Section from "components/Section";
 import SectionCardContainer from "components/SectionCardContainer";
 import { Permission } from "rbac-rules";
 import Can from "components/Can/Can";
-import { getChapterById } from "queries/__generated__/getChapterById";
+import { subscribeChapterById } from "queries/__generated__/subscribeChapterById";
 
 // These can come from the router... See the route definitions
 interface ChapterRouterProps {
@@ -39,7 +39,7 @@ const Chapter = ({ classes, match }: Props) => {
   const { t } = useTranslation();
 
   // Either load directly the subchapter or else the chapter
-  const { loading, data, error } = useSubscription<getChapterById>(
+  const { loading, data, error } = useSubscription<subscribeChapterById>(
     GET_CHAPTER_BY_ID,
     {
       variables: {

@@ -11,6 +11,8 @@ import { api_comment_insert_input } from "./../../__generated__/globalTypes";
 export interface createComment_insert_api_comment_returning_author {
   __typename: "api_profile";
   id: any;
+  firstname: string;
+  lastname: string;
 }
 
 export interface createComment_insert_api_comment_returning {

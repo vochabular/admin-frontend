@@ -9,6 +9,8 @@
 export interface CommentParts_author {
   __typename: "api_profile";
   id: any;
+  firstname: string;
+  lastname: string;
 }
 
 export interface CommentParts {

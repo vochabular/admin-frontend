@@ -18,7 +18,7 @@ import {
 import Box from "@material-ui/core/Box";
 
 import { CREATE_COMMENT } from "queries/comments";
-import { getAllComments } from "queries/__generated__/getAllComments";
+import { subscribeAllComments } from "queries/__generated__/subscribeAllComments";
 import ErrorMessage from "./ErrorMessage";
 import Discussion from "./Discussion";
 import { useAuth } from "contexts/AuthContext";
@@ -53,7 +53,7 @@ const DiscussionList = ({ classes, query }: Props) => {
   );
 
   // TODO(df): Pass variables (chapter, context) down.
-  const { data, loading, error } = useSubscription<getAllComments>(query);
+  const { data, loading, error } = useSubscription<subscribeAllComments>(query);
   const discussions = data && data.comments;
 
   function handleNewCommentInputChange(
@@ -82,9 +82,7 @@ const DiscussionList = ({ classes, query }: Props) => {
       {loading && <CircularProgress />}
       <ErrorMessage error={error && error.message} />
       {discussions ? (
-        discussions.edges.map(
-          d => d && d.node && <Discussion key={d.node.id} data={d.node} />
-        )
+        discussions.map(d => <Discussion key={d.id} data={d} />)
       ) : (
         <Typography>{t("noCommentsYet")}</Typography>
       )}

@@ -10,6 +10,8 @@ export const COMMENT_FRAGMENT = gql`
     written
     author {
       id
+      firstname
+      lastname
     }
   }
   ${USER_FRAGMENT}

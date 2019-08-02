@@ -1,11 +1,17 @@
 import { createSlice, PayloadAction } from "redux-starter-kit";
 
 import { Role } from "../rbac-rules";
-import { getChapterById_chapter_components } from "../queries/__generated__/getChapterById";
+import { subscribeChapterById_chapter_components } from "../queries/__generated__/subscribeChapterById";
 
-export type SelectedComponent = getChapterById_chapter_components | undefined;
+export type SelectedComponent =
+  | subscribeChapterById_chapter_components
+  | undefined;
 
 export interface IContentEditorState {
+  /**
+   * The id of the selected sub-chapter
+   */
+  currentChapterId: string | undefined;
   /**
    * The current editors role. Typically, a user will only have one. But those with multiple roles may want to switch quickly the context of the editor.
    */
@@ -17,6 +23,7 @@ export interface IContentEditorState {
 }
 
 const initialState: IContentEditorState = {
+  currentChapterId: undefined,
   editorRole: Role.VIEWER,
   selectedComponent: undefined
 };
@@ -25,6 +32,12 @@ export const { actions, reducer } = createSlice({
   slice: "content-editor",
   initialState,
   reducers: {
+    setCurrentChapter(
+      state: IContentEditorState,
+      { payload }: PayloadAction<string>
+    ) {
+      state.currentChapterId = payload;
+    },
     setEditorRole(
       state: IContentEditorState,
       { payload }: PayloadAction<Role>

@@ -1,6 +1,7 @@
 import * as React from "react";
 import SwipeableViews from "react-swipeable-views";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
 import {
   withStyles,
@@ -13,6 +14,8 @@ import Paper from "@material-ui/core/Paper";
 import { Tabs, Tab } from "@material-ui/core";
 import DiscussionList from "components/DiscussionList";
 import { GET_ACTIVE_COMMENTS, GET_ALL_COMMENTS } from "queries/comments";
+import { TAppState } from "reducers";
+import { IContentEditorState } from "reducers/contentEditorSlice";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -27,6 +30,11 @@ interface Props extends WithStyles<typeof styles>, WithTheme {}
 const CommentsWidget = ({ classes, theme }: Props) => {
   const { t } = useTranslation();
   const [activeCommentTab, setActiveCommentTab] = React.useState(0);
+
+  const { selectedComponent, editorRole } = useSelector<
+    TAppState,
+    IContentEditorState
+  >(state => state.contentEditor);
 
   function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
     setActiveCommentTab(newValue);
