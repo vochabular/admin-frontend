@@ -21,11 +21,13 @@ export interface createComment_insert_api_comment_returning {
   text: string;
   context: string | null;
   active: boolean;
-  written: any | null;
+  created: any;
+  updated: any;
   /**
    * An object relationship
    */
   author: createComment_insert_api_comment_returning_author | null;
+  componentId: any;
 }
 
 export interface createComment_insert_api_comment {

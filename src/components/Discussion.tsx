@@ -22,9 +22,9 @@ import {
   GET_ALL_COMMENTS,
   GET_ACTIVE_COMMENTS
 } from "queries/comments";
-import { convertGlobalToDbId } from "helpers";
 import { getOperationName } from "apollo-link";
 import { useAuth } from "contexts/AuthContext";
+import { createComment } from "queries/__generated__/createComment";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -49,7 +49,9 @@ const Discussion = ({ classes, data }: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { user } = useAuth();
 
-  const [createComment, { loading }] = useMutation(CREATE_COMMENT);
+  const [createComment, { loading }] = useMutation<createComment>(
+    CREATE_COMMENT
+  );
 
   function handleOpenMenu(event: React.MouseEvent<HTMLButtonElement>) {
     setAnchorEl(event.currentTarget);
@@ -69,17 +71,13 @@ const Discussion = ({ classes, data }: Props) => {
         comment: {
           text: reply,
           active: true,
-          fkAuthorId: user && user.userId,
-          fkParentCommentId: convertGlobalToDbId(data.id),
-          fkComponentId: 1 // TODO(df): Need to set this from a shared state, e.g. selected component?
+          fk_author_id: user!.userId,
+          fk_parent_comment_id: data.id,
+          fk_component_id: data.componentId
         }
-      },
-      // TODO(df): This should actually not be necessary, since the return from the mutation should update the store???
-      refetchQueries: [
-        getOperationName(GET_ALL_COMMENTS) || "",
-        getOperationName(GET_ACTIVE_COMMENTS) || ""
-      ]
+      }
     });
+    setReply("");
   }
 
   return (

@@ -49,7 +49,7 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 const Comment = ({ classes, data }: Props) => {
-  const { text = "", written = 0 } = data;
+  const { text = "", created = 0, updated = 0 } = data;
   const { firstname = "", lastname = "" } = data.author || {};
   const initialLetters = `${(firstname || "-").charAt(0).toUpperCase()}${(
     lastname || "-"
@@ -70,7 +70,7 @@ const Comment = ({ classes, data }: Props) => {
         >
           {initialLetters}
         </Avatar>
-        <TimestampAgo date={new Date(written)} variant="caption" />
+        <TimestampAgo date={new Date(created)} variant="caption" />
       </Grid>
       <Grid item>
         <Typography>{text}</Typography>

@@ -7,21 +7,23 @@ export const COMMENT_FRAGMENT = gql`
     text
     context
     active
-    written
+    created
+    updated
     author {
       id
       firstname
       lastname
     }
+    componentId: fk_component_id
   }
   ${USER_FRAGMENT}
 `;
 
 export const GET_ALL_COMMENTS = gql`
   subscription subscribeAllComments {
-    comments: api_comment {
+    comments: api_comment(where: { fk_parent_comment_id: { _is_null: true } }) {
       ...CommentParts
-      answers {
+      answers(order_by: { created: asc_nulls_first }) {
         ...CommentParts
       }
     }
@@ -31,9 +33,11 @@ export const GET_ALL_COMMENTS = gql`
 
 export const GET_ACTIVE_COMMENTS = gql`
   subscription subscribeActiveComments {
-    comments: api_comment(where: { active: { _eq: true } }) {
+    comments: api_comment(
+      where: { fk_parent_comment_id: { _is_null: true }, active: { _eq: true } }
+    ) {
       ...CommentParts
-      answers {
+      answers(order_by: { created: asc_nulls_first }) {
         ...CommentParts
       }
     }

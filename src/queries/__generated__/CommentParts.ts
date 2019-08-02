@@ -19,9 +19,11 @@ export interface CommentParts {
   text: string;
   context: string | null;
   active: boolean;
-  written: any | null;
+  created: any;
+  updated: any;
   /**
    * An object relationship
    */
   author: CommentParts_author | null;
+  componentId: any;
 }

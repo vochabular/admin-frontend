@@ -403,9 +403,18 @@ export interface api_comment_insert_input {
   fk_component_id?: any | null;
   fk_parent_comment_id?: any | null;
   id?: any | null;
+  parentComment?: api_comment_obj_rel_insert_input | null;
   text?: string | null;
   updated?: any | null;
   written?: any | null;
+}
+
+/**
+ * input type for inserting object relation for remote table "api_comment"
+ */
+export interface api_comment_obj_rel_insert_input {
+  data: api_comment_insert_input;
+  on_conflict?: api_comment_on_conflict | null;
 }
 
 /**

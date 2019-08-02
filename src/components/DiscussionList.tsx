@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQuery, useMutation, useSubscription } from "react-apollo-hooks";
 import { getOperationName, DocumentNode } from "apollo-link";
+import { useSelector } from "react-redux";
 
 import {
   withStyles,
@@ -22,6 +23,8 @@ import { subscribeAllComments } from "queries/__generated__/subscribeAllComments
 import ErrorMessage from "./ErrorMessage";
 import Discussion from "./Discussion";
 import { useAuth } from "contexts/AuthContext";
+import { TAppState } from "reducers";
+import { IContentEditorState } from "reducers/contentEditorSlice";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -48,6 +51,10 @@ const DiscussionList = ({ classes, query }: Props) => {
   const [newComment, setNewComment] = useState("");
   const { user } = useAuth();
 
+  const { selectedComponent } = useSelector<TAppState, IContentEditorState>(
+    state => state.contentEditor
+  );
+
   const [createComment, { loading: mutationLoading }] = useMutation(
     CREATE_COMMENT
   );
@@ -68,13 +75,14 @@ const DiscussionList = ({ classes, query }: Props) => {
         comment: {
           text: newComment,
           active: true,
-          fkAuthorId: user && user.userId,
-          // fkParentCommentId: null,
-          fkComponentId: 1
+          fk_author_id: user!.userId,
+          fk_parent_comment_id: null,
+          fk_component_id: selectedComponent!.id
         }
       },
       refetchQueries: [getOperationName(query) || ""]
     });
+    setNewComment("");
   }
 
   return (
@@ -86,27 +94,31 @@ const DiscussionList = ({ classes, query }: Props) => {
       ) : (
         <Typography>{t("noCommentsYet")}</Typography>
       )}
-      <TextField
-        id="new-comment"
-        label={t("newComment")}
-        fullWidth
-        multiline
-        //rowsMax="4"
-        value={newComment}
-        onChange={handleNewCommentInputChange}
-        //className={classes.textField}
-        margin="normal"
-      />
-      {!!newComment.length && (
-        <Button
-          disabled={mutationLoading}
-          id="submit-new-comment"
-          variant="contained"
-          color="primary"
-          onClick={handleSubmitNewComment}
-        >
-          {t("submit")}
-        </Button>
+      {selectedComponent && (
+        <>
+          <TextField
+            id="new-comment"
+            label={t("newComment")}
+            fullWidth
+            multiline
+            //rowsMax="4"
+            value={newComment}
+            onChange={handleNewCommentInputChange}
+            //className={classes.textField}
+            margin="normal"
+          />
+          {!!newComment.length && (
+            <Button
+              disabled={mutationLoading}
+              id="submit-new-comment"
+              variant="contained"
+              color="primary"
+              onClick={handleSubmitNewComment}
+            >
+              {t("submit")}
+            </Button>
+          )}
+        </>
       )}
     </Box>
   );

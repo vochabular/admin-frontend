@@ -26,11 +26,13 @@ export interface subscribeAllComments_comments_answers {
   text: string;
   context: string | null;
   active: boolean;
-  written: any | null;
+  created: any;
+  updated: any;
   /**
    * An object relationship
    */
   author: subscribeAllComments_comments_answers_author | null;
+  componentId: any;
 }
 
 export interface subscribeAllComments_comments {
@@ -39,11 +41,13 @@ export interface subscribeAllComments_comments {
   text: string;
   context: string | null;
   active: boolean;
-  written: any | null;
+  created: any;
+  updated: any;
   /**
    * An object relationship
    */
   author: subscribeAllComments_comments_author | null;
+  componentId: any;
   /**
    * An array relationship
    */
