@@ -19,6 +19,8 @@ import SectionCardContainer from "components/SectionCardContainer";
 import { Permission } from "rbac-rules";
 import Can from "components/Can/Can";
 import { subscribeChapterById } from "queries/__generated__/subscribeChapterById";
+import { useDispatch } from "react-redux";
+import { actions } from "reducers/contentEditorSlice";
 
 // These can come from the router... See the route definitions
 interface ChapterRouterProps {
@@ -37,6 +39,7 @@ interface Props
 const Chapter = ({ classes, match }: Props) => {
   const { chapterId, subChapterId } = match.params;
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   // Either load directly the subchapter or else the chapter
   const { loading, data, error } = useSubscription<subscribeChapterById>(
@@ -83,6 +86,7 @@ const Chapter = ({ classes, match }: Props) => {
 
   // Render the subchapter screen
   if (subChapterId) {
+    dispatch(actions.setCurrentChapter(subChapterId));
     return (
       <Section title="chapters:chapter" titleTranslatable>
         <SubChapterDetail data={data.chapter} />

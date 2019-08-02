@@ -17,12 +17,7 @@ import Comment from "./Comment";
 import { Divider, TextField, Button, Grid } from "@material-ui/core";
 import { subscribeAllComments_comments } from "queries/__generated__/subscribeAllComments";
 import { useMutation } from "react-apollo-hooks";
-import {
-  CREATE_COMMENT,
-  GET_ALL_COMMENTS,
-  GET_ACTIVE_COMMENTS
-} from "queries/comments";
-import { getOperationName } from "apollo-link";
+import { CREATE_COMMENT } from "queries/comments";
 import { useAuth } from "contexts/AuthContext";
 import { createComment } from "queries/__generated__/createComment";
 

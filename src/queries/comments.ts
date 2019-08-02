@@ -20,8 +20,13 @@ export const COMMENT_FRAGMENT = gql`
 `;
 
 export const GET_ALL_COMMENTS = gql`
-  subscription subscribeAllComments {
-    comments: api_comment(where: { fk_parent_comment_id: { _is_null: true } }) {
+  subscription subscribeAllComments($chapterId: uuid!) {
+    comments: api_comment(
+      where: {
+        component: { chapter: { id: { _eq: $chapterId } } }
+        fk_parent_comment_id: { _is_null: true }
+      }
+    ) {
       ...CommentParts
       answers(order_by: { created: asc_nulls_first }) {
         ...CommentParts
@@ -32,9 +37,13 @@ export const GET_ALL_COMMENTS = gql`
 `;
 
 export const GET_ACTIVE_COMMENTS = gql`
-  subscription subscribeActiveComments {
+  subscription subscribeActiveComments($chapterId: uuid!) {
     comments: api_comment(
-      where: { fk_parent_comment_id: { _is_null: true }, active: { _eq: true } }
+      where: {
+        component: { chapter: { id: { _eq: $chapterId } } }
+        fk_parent_comment_id: { _is_null: true }
+        active: { _eq: true }
+      }
     ) {
       ...CommentParts
       answers(order_by: { created: asc_nulls_first }) {

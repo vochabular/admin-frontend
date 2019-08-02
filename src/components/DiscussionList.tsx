@@ -51,16 +51,20 @@ const DiscussionList = ({ classes, query }: Props) => {
   const [newComment, setNewComment] = useState("");
   const { user } = useAuth();
 
-  const { selectedComponent } = useSelector<TAppState, IContentEditorState>(
-    state => state.contentEditor
-  );
+  const { selectedComponent, currentChapterId } = useSelector<
+    TAppState,
+    IContentEditorState
+  >(state => state.contentEditor);
 
   const [createComment, { loading: mutationLoading }] = useMutation(
     CREATE_COMMENT
   );
 
   // TODO(df): Pass variables (chapter, context) down.
-  const { data, loading, error } = useSubscription<subscribeAllComments>(query);
+  const { data, loading, error } = useSubscription<subscribeAllComments>(
+    query,
+    { variables: { chapterId: currentChapterId } }
+  );
   const discussions = data && data.comments;
 
   function handleNewCommentInputChange(
