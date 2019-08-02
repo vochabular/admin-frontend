@@ -13,7 +13,12 @@ export interface getAllComponentTypes_componentTypes_edges_node {
    */
   id: string;
   name: string;
+  label: string;
+  icon: string;
+  base: boolean;
   schema: string;
+  created: any;
+  updated: any;
 }
 
 export interface getAllComponentTypes_componentTypes_edges {

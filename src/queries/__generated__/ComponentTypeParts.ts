@@ -13,5 +13,10 @@ export interface ComponentTypeParts {
    */
   id: string;
   name: string;
+  label: string;
+  icon: string;
+  base: boolean;
   schema: string;
+  created: any;
+  updated: any;
 }

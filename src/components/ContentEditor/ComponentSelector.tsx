@@ -31,6 +31,7 @@ const ComponentSelector = ({ classes }: Props) => {
   const { data, loading, error } = useQuery<getAllComponentTypes>(
     GET_ALL_COMPONENTTYPES
   );
+
   const componentTypes = data && data.componentTypes;
 
   return (
@@ -59,7 +60,7 @@ const ComponentSelector = ({ classes }: Props) => {
                       <Typography color="textSecondary" gutterBottom>
                         {component.name}
                       </Typography>
-                      <Icon>star</Icon>
+                      <Icon>{component.icon}</Icon>
                     </CardContent>
                   </Card>
                 </Grid>
