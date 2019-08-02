@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useQuery, useMutation } from "react-apollo-hooks";
+import { useQuery, useMutation, useSubscription } from "react-apollo-hooks";
 import { getOperationName, DocumentNode } from "apollo-link";
 
 import {
@@ -53,7 +53,7 @@ const DiscussionList = ({ classes, query }: Props) => {
   );
 
   // TODO(df): Pass variables (chapter, context) down.
-  const { data, loading, error } = useQuery<getAllComments>(query);
+  const { data, loading, error } = useSubscription<getAllComments>(query);
   const discussions = data && data.comments;
 
   function handleNewCommentInputChange(
