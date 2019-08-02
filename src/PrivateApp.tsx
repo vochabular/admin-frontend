@@ -29,7 +29,7 @@ function isEmpty(obj: object) {
 interface Props extends WithStyles<typeof styles> {}
 
 const PrivateApp: React.FunctionComponent<Props> = ({ classes }) => {
-  const { user } = useAuth();
+  const { user, changeCurrentRole } = useAuth();
   const { toggler: isDrawerOpen, handleToggler: toggleDrawer } = useToggle(
     false
   );
@@ -58,12 +58,9 @@ const PrivateApp: React.FunctionComponent<Props> = ({ classes }) => {
   // When we have received the profile data, we can update a few things...
   if (data && data.profile) {
     i18n.changeLanguage(data.profile.language.toLowerCase());
-    // Set the dbId of the user. We need this for our nested mutations (even though this should be set by the backend?)
-    // auth0Client.setDbId(Number(data.profile.id));
-    // TODO(df): Need to set this dbId somehow.
+    changeCurrentRole(data.profile.currentRole);
   }
 
-  //
   const accessibleRoutes = getAllAccessibleRoutes(
     (user && user.currentRole) || Role.VIEWER,
     false
