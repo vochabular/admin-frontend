@@ -5,7 +5,7 @@ import { getChapterById_chapter_components } from "../queries/__generated__/getC
 
 export type SelectedComponent = getChapterById_chapter_components | undefined;
 
-interface IContentEditorState {
+export interface IContentEditorState {
   /**
    * The current editors role. Typically, a user will only have one. But those with multiple roles may want to switch quickly the context of the editor.
    */
