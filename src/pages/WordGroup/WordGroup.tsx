@@ -30,7 +30,13 @@ const WordGroup = ({ classes, match }: Props) => {
   const { t } = useTranslation();
 
   const { loading, data, error } = useQuery<subscribeWordGroupById>(
-    GET_WORDGROUP_BY_ID
+    GET_WORDGROUP_BY_ID,
+    {
+      variables: {
+        id: match.params.id
+      },
+      skip: match.params.id === "new"
+    }
   );
 
   if (match.params.id === "new") {
