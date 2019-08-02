@@ -4,6 +4,20 @@ import Auth0Client from "@auth0/auth0-spa-js/dist/typings/Auth0Client";
 
 import { Role } from "rbac-rules";
 
+type TGlobalApp = {
+  idToken: string;
+  currentRole: Role;
+};
+
+/**
+ * This is necessary as a workaround to share data from React Context to parts of the code outside of React (Apollo Client)
+ */
+declare global {
+  interface Window {
+    VoCHabularAdminFrontend: TGlobalApp;
+  }
+}
+
 const namespace = "https://hasura.io/jwt/claims";
 
 /**
@@ -123,14 +137,16 @@ export const AuthProvider = ({
         const user = getUserFromIdToken(auth0User);
         setUser(user);
         // TODO(df): Hack to get the id-token, since Auth0 only can return the access-token, we however need the ID token...
-        const idToken =
+        const idToken: string =
           // @ts-ignore
           auth0FromHook.cache.cache["default::openid profile email"][
             "id_token"
           ];
         // TODO(df): Hack for now, since I have no idea how to access the context from outside React (in ApolloClient.ts)
-        // @ts-ignore
-        window.idToken = idToken;
+        window.VoCHabularAdminFrontend = {
+          idToken,
+          currentRole: user.currentRole
+        };
         setIdToken(idToken);
       }
       setLoading(false);

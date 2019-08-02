@@ -36,9 +36,7 @@ const cache = new InMemoryCache({});
  * TODO(df): Maybe it would be better, if the client is setup only in the private app?
  */
 async function getAsyncConnectionParams() {
-  // @ts-ignore
-  const idToken = window.idToken;
-  const currentRole = "administrator";
+  const { idToken, currentRole } = window.VoCHabularAdminFrontend;
   return {
     headers: {
       Authorization: `Bearer ${idToken}`,
