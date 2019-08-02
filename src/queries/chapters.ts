@@ -54,7 +54,7 @@ export const GET_CHAPTERS = gql`
 `;
 
 export const GET_CHAPTER_BY_ID = gql`
-  query getChapterById($id: uuid!) {
+  subscription subscribeChapterById($id: uuid!) {
     chapter: api_chapter_by_pk(id: $id) {
       ...ChapterHeaderParts
       subChapters {

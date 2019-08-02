@@ -1,6 +1,6 @@
 import * as React from "react";
 import { RouteComponentProps, Redirect } from "react-router-dom";
-import { useQuery } from "react-apollo-hooks";
+import { useSubscription } from "react-apollo-hooks";
 import { useTranslation } from "react-i18next";
 
 import { withStyles, WithStyles } from "@material-ui/core/styles";
@@ -39,11 +39,14 @@ const Chapter = ({ classes, match }: Props) => {
   const { t } = useTranslation();
 
   // Either load directly the subchapter or else the chapter
-  const { loading, data, error } = useQuery<getChapterById>(GET_CHAPTER_BY_ID, {
-    variables: {
-      id: subChapterId && subChapterId !== "new" ? subChapterId : chapterId
+  const { loading, data, error } = useSubscription<getChapterById>(
+    GET_CHAPTER_BY_ID,
+    {
+      variables: {
+        id: subChapterId && subChapterId !== "new" ? subChapterId : chapterId
+      }
     }
-  });
+  );
 
   // If its a new main chapter, don't need to query anything
   // TODO: This violates React Hook rules!!!!
