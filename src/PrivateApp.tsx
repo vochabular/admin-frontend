@@ -18,6 +18,7 @@ import i18n from "i18n";
 import LoadingPage from "pages/LoadingPage";
 import { Role } from "rbac-rules";
 import { useAuth } from "contexts/AuthContext";
+import { setUser } from "@sentry/core";
 
 function isEmpty(obj: object) {
   return !obj || Object.keys(obj).length === 0;
@@ -29,7 +30,7 @@ function isEmpty(obj: object) {
 interface Props extends WithStyles<typeof styles> {}
 
 const PrivateApp: React.FunctionComponent<Props> = ({ classes }) => {
-  const { user, changeCurrentRole } = useAuth();
+  const { user, changeCurrentRole, setUserId } = useAuth();
   const { toggler: isDrawerOpen, handleToggler: toggleDrawer } = useToggle(
     false
   );
@@ -59,6 +60,7 @@ const PrivateApp: React.FunctionComponent<Props> = ({ classes }) => {
   if (data && data.profile) {
     i18n.changeLanguage(data.profile.language.toLowerCase());
     changeCurrentRole(data.profile.currentRole);
+    setUserId(data.profile.id);
   }
 
   const accessibleRoutes = getAllAccessibleRoutes(
