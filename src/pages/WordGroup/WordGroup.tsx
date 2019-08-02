@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { withStyles, WithStyles } from "@material-ui/core/styles";
-import { useQuery } from "react-apollo-hooks";
+import {useSubscription} from "react-apollo-hooks";
 import { RouteComponentProps } from "react-router-dom";
 import AddIcon from "@material-ui/icons/Add";
 
@@ -29,7 +29,7 @@ interface Props
 const WordGroup = ({ classes, match }: Props) => {
   const { t } = useTranslation();
 
-  const { loading, data, error } = useQuery<subscribeWordGroupById>(
+  const { loading, data, error } = useSubscription<subscribeWordGroupById>(
     GET_WORDGROUP_BY_ID,
     {
       variables: {
