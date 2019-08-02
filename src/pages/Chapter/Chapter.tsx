@@ -99,7 +99,6 @@ const Chapter = ({ classes, match }: Props) => {
         {data.chapter &&
           data.chapter.subChapters &&
           data.chapter.subChapters.map(c => {
-            if (!c) return null;
             return (
               <Grid item key={c.id}>
                 <ChapterCard chapter={c} />
