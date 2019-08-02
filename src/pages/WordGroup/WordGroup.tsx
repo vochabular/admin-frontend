@@ -9,7 +9,6 @@ import { styles } from "styles";
 import NewWordGroup from "./WordGroupEditor";
 import { GET_WORDGROUP_BY_ID } from "queries/wordgroups";
 import BusyOrErrorCard from "components/BusyOrErrorCard";
-import { convertGlobalToDbId } from "../../helpers";
 import { useTranslation } from "react-i18next";
 import Section from "../../components/Section";
 import SectionCardContainer from "../../components/SectionCardContainer";
@@ -31,13 +30,7 @@ const WordGroup = ({ classes, match }: Props) => {
   const { t } = useTranslation();
 
   const { loading, data, error } = useQuery<subscribeWordGroupById>(
-    GET_WORDGROUP_BY_ID,
-    {
-      variables: {
-        id: convertGlobalToDbId(match.params.id)
-      },
-      skip: match.params.id === "new"
-    }
+    GET_WORDGROUP_BY_ID
   );
 
   if (match.params.id === "new") {
