@@ -58,9 +58,7 @@ const NewChapter = ({ classes, parentChapter }: Props) => {
   async function handleSave(values: any, actions: FormikActions<any>) {
     // TODO: This verbose stuff won't be necessary anymore as soon useMutation also returns a error/loading object.
     try {
-      values.fkBelongsToId = isSubChapter
-        ? convertGlobalToDbId(parentChapter!.id)
-        : null;
+      values.fkBelongsToId = isSubChapter ? parentChapter!.id : null;
       values.languages = values.languages.join(",");
       await upsertChapter({
         variables: {
@@ -168,13 +166,14 @@ const NewChapter = ({ classes, parentChapter }: Props) => {
                     name="languages"
                     component={Select}
                     multiple={true}
-                    helperText={t("chapter:newChapterLanguageHelper")}
                     inputProps={{ name: "languages", id: "languages" }}
                   >
                     {data && data.languages ? (
                       data.languages.map(l =>
                         l && l.code && l.name ? (
-                          <MenuItem value={l.code}>{l.name}</MenuItem>
+                          <MenuItem key={l.code} value={l.code}>
+                            {l.name}
+                          </MenuItem>
                         ) : (
                           <MenuItem />
                         )
