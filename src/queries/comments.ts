@@ -64,3 +64,22 @@ export const CREATE_COMMENT = gql`
   }
   ${COMMENT_FRAGMENT}
 `;
+
+export const RESOLVE_COMMENT = gql`
+  mutation resolveComment($id: uuid!) {
+    update_api_comment(_set: { active: false }, where: { id: { _eq: $id } }) {
+      returning {
+        ...CommentParts
+      }
+    }
+  }
+  ${COMMENT_FRAGMENT}
+`;
+
+export const DELETE_COMMENT = gql`
+  mutation deleteComment($id: uuid!) {
+    delete_api_comment(where: { id: { _eq: $id } }) {
+      affected_rows
+    }
+  }
+`;

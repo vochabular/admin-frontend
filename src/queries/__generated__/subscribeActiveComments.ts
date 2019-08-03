@@ -60,3 +60,7 @@ export interface subscribeActiveComments {
    */
   comments: subscribeActiveComments_comments[];
 }
+
+export interface subscribeActiveCommentsVariables {
+  chapterId: any;
+}

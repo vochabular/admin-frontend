@@ -281,20 +281,6 @@ export enum api_wordtranslation_update_column {
   word_id = "word_id",
 }
 
-export interface ChapterInput {
-  description: string;
-  fkBelongsToId?: string | null;
-  languages: string;
-  number: number;
-  titleCH: string;
-  titleDE: string;
-}
-
-export interface IntroduceChapterInput {
-  chapterData?: ChapterInput | null;
-  clientMutationId?: string | null;
-}
-
 export interface ProfileInput {
   currentRole?: string | null;
   eventNotifications?: boolean | null;

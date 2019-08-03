@@ -17,9 +17,15 @@ import Comment from "./Comment";
 import { Divider, TextField, Button, Grid } from "@material-ui/core";
 import { subscribeAllComments_comments } from "queries/__generated__/subscribeAllComments";
 import { useMutation } from "react-apollo-hooks";
-import { CREATE_COMMENT } from "queries/comments";
+import {
+  CREATE_COMMENT,
+  RESOLVE_COMMENT,
+  DELETE_COMMENT
+} from "queries/comments";
 import { useAuth } from "contexts/AuthContext";
 import { createComment as TcreateComment } from "queries/__generated__/createComment";
+import { resolveComment as TresolveComment } from "queries/__generated__/resolveComment";
+import { deleteComment as TdeleteComment } from "queries/__generated__/deleteComment";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -48,6 +54,14 @@ const Discussion = ({ classes, data }: Props) => {
     CREATE_COMMENT
   );
 
+  const [resolveComment, { loading: resolveLoading }] = useMutation<
+    TresolveComment
+  >(RESOLVE_COMMENT);
+
+  const [deleteComment, { loading: deleteLoading }] = useMutation<
+    TdeleteComment
+  >(DELETE_COMMENT);
+
   function handleOpenMenu(event: React.MouseEvent<HTMLButtonElement>) {
     setAnchorEl(event.currentTarget);
   }
@@ -75,6 +89,15 @@ const Discussion = ({ classes, data }: Props) => {
     setReply("");
   }
 
+  function handleResolveDiscussion() {
+    resolveComment({ variables: { id: data && data.id } });
+    handleCloseMenu();
+  }
+
+  function handleDeleteDiscussion() {
+    deleteComment({ variables: { id: data && data.id } });
+    handleCloseMenu();
+  }
   return (
     <div className={classes.container}>
       <Comment data={data} />
@@ -108,11 +131,7 @@ const Discussion = ({ classes, data }: Props) => {
           {t("submit")}
         </Button>
       ) : (
-        <Grid container justify="space-between">
-          <Button variant="contained" color="primary">
-            <CheckIcon />
-            {t("resolve")}
-          </Button>
+        <Grid container justify="space-between" direction="row-reverse">
           <IconButton
             aria-label="menu"
             aria-owns={anchorEl ? "discussion-action-menu" : undefined}
@@ -127,9 +146,25 @@ const Discussion = ({ classes, data }: Props) => {
             open={Boolean(anchorEl)}
             onClose={handleCloseMenu}
           >
-            <MenuItem onClick={handleCloseMenu}>{t("resolve")}</MenuItem>
-            <MenuItem onClick={handleCloseMenu}>{t("delete")}</MenuItem>
+            <MenuItem
+              onClick={handleResolveDiscussion}
+              disabled={data && !data.active}
+            >
+              {t("resolve")}
+            </MenuItem>
+            <MenuItem onClick={handleDeleteDiscussion}>{t("delete")}</MenuItem>
           </Menu>
+          {data && data.active ? (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleResolveDiscussion}
+              disabled={resolveLoading}
+            >
+              <CheckIcon />
+              {t("resolve")}
+            </Button>
+          ) : null}
         </Grid>
       )}
     </div>
