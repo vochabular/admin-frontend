@@ -16,6 +16,8 @@ import * as serviceWorker from "./serviceWorker";
 import packageJson from "../package.json";
 import { AuthProvider, onRedirectCallback } from "contexts/AuthContext";
 import configureAppStore from "configureStore";
+import { Router } from "react-router-dom";
+import myHistory from "myHistory";
 
 const store = configureAppStore();
 
@@ -40,7 +42,9 @@ ReactDOM.render(
       <ApolloProvider client={apolloClient}>
         <ApolloHooksProvider client={apolloClient}>
           <ThemeProvider theme={theme}>
-            <App />
+            <Router history={myHistory}>
+              <App />
+            </Router>
           </ThemeProvider>
         </ApolloHooksProvider>
       </ApolloProvider>
