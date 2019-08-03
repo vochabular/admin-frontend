@@ -21,23 +21,17 @@ import Can from "components/Can/Can";
 import { subscribeChapterById } from "queries/__generated__/subscribeChapterById";
 import { useDispatch } from "react-redux";
 import { actions } from "reducers/contentEditorSlice";
+import { string } from "prop-types";
 
-// These can come from the router... See the route definitions
-interface ChapterRouterProps {
+interface ChapterContentProps {
   chapterId: string;
-  subChapterId: string;
-  componentId: string;
+  subChapterId: string | undefined;
 }
 
-interface Props
-  extends RouteComponentProps<ChapterRouterProps>,
-    WithStyles<typeof styles> {}
-
 /**
- * Main chapter component. Gets the chapter id via the route allowing to create links etc. Conditionally loads either the subchapter or the main chapter
+ * Actually loads the content of the chapter depending whether it is a main chapter or a subchapter...
  */
-const Chapter = ({ classes, match }: Props) => {
-  const { chapterId, subChapterId } = match.params;
+const ChapterContent = ({ chapterId, subChapterId }: ChapterContentProps) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -51,18 +45,6 @@ const Chapter = ({ classes, match }: Props) => {
     }
   );
 
-  // If its a new main chapter, don't need to query anything
-  // TODO: This violates React Hook rules!!!!
-  if (chapterId === "new") {
-    return (
-      <Can
-        perform={Permission.CHAPTER__CREATE}
-        yes={() => <NewChapter />}
-        no={() => <Redirect to="/403" />}
-      />
-    );
-  }
-
   if (!data || !data.chapter || loading || error)
     return (
       <BusyOrErrorCard
@@ -72,7 +54,6 @@ const Chapter = ({ classes, match }: Props) => {
       />
     );
 
-  // TODO: How do we handle new subchapters?
   if (subChapterId === "new") {
     if (!data) return null;
     return (
@@ -129,6 +110,36 @@ const Chapter = ({ classes, match }: Props) => {
       </SectionCardContainer>
     </Section>
   );
+};
+
+// These can come from the router... See the route definitions
+interface ChapterRouterProps {
+  chapterId: string;
+  subChapterId: string;
+  componentId: string;
+}
+
+interface Props
+  extends RouteComponentProps<ChapterRouterProps>,
+    WithStyles<typeof styles> {}
+
+/**
+ * Chapter wrapper Component, necessary to return early in case of a new chapter. Gets the chapter id via the route allowing to create links etc.
+ */
+const Chapter = ({ classes, match }: Props) => {
+  const { chapterId, subChapterId } = match.params;
+
+  // If its a new main chapter, don't need to query anything
+  if (chapterId === "new") {
+    return (
+      <Can
+        perform={Permission.CHAPTER__CREATE}
+        yes={() => <NewChapter />}
+        no={() => <Redirect to="/403" />}
+      />
+    );
+  }
+  return <ChapterContent chapterId={chapterId} subChapterId={subChapterId} />;
 };
 
 export default withStyles(styles, { withTheme: true })(Chapter);
