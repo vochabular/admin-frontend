@@ -49,7 +49,7 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 const Comment = ({ classes, data }: Props) => {
-  const { text = "", created = 0, updated = 0 } = data;
+  const { text = "", created = 0 } = data;
   const { firstname = "", lastname = "" } = data.author || {};
   const initialLetters = `${(firstname || "-").charAt(0).toUpperCase()}${(
     lastname || "-"

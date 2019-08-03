@@ -18,7 +18,6 @@ import i18n from "i18n";
 import LoadingPage from "pages/LoadingPage";
 import { Role } from "rbac-rules";
 import { useAuth } from "contexts/AuthContext";
-import { setUser } from "@sentry/core";
 
 function isEmpty(obj: object) {
   return !obj || Object.keys(obj).length === 0;

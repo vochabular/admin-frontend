@@ -18,7 +18,6 @@ import i18next from "i18n";
 import { GET_PROFILE, UPDATE_PROFILE } from "queries/profile";
 import BusyOrErrorCard from "components/BusyOrErrorCard";
 import { profile_profile, profile } from "queries/__generated__/profile";
-import { Role } from "rbac-rules";
 import { useAuth } from "contexts/AuthContext";
 
 export const UserSetupSchema = Yup.object().shape({
@@ -35,7 +34,7 @@ export const UserSetupSchema = Yup.object().shape({
 interface Props extends WithStyles<typeof styles> {}
 
 const Settings: React.FunctionComponent<Props> = ({ classes }) => {
-  const { user, changeCurrentRole } = useAuth();
+  const { user } = useAuth();
   const username = user && user.email;
 
   const { t, i18n } = useTranslation();

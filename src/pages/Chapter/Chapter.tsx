@@ -21,7 +21,6 @@ import Can from "components/Can/Can";
 import { subscribeChapterById } from "queries/__generated__/subscribeChapterById";
 import { useDispatch } from "react-redux";
 import { actions } from "reducers/contentEditorSlice";
-import { string } from "prop-types";
 
 interface ChapterContentProps {
   chapterId: string;

@@ -19,7 +19,7 @@ import { subscribeAllComments_comments } from "queries/__generated__/subscribeAl
 import { useMutation } from "react-apollo-hooks";
 import { CREATE_COMMENT } from "queries/comments";
 import { useAuth } from "contexts/AuthContext";
-import { createComment } from "queries/__generated__/createComment";
+import { createComment as TcreateComment } from "queries/__generated__/createComment";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -44,7 +44,7 @@ const Discussion = ({ classes, data }: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { user } = useAuth();
 
-  const [createComment, { loading }] = useMutation<createComment>(
+  const [createComment, { loading }] = useMutation<TcreateComment>(
     CREATE_COMMENT
   );
 
