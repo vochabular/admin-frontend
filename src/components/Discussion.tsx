@@ -95,7 +95,9 @@ const Discussion = ({ classes, data }: Props) => {
   }
 
   function handleDeleteDiscussion() {
-    deleteComment({ variables: { id: data && data.id } });
+    const ids = data && data.answers.map(a => a.id);
+    ids.push(data && data.id);
+    deleteComment({ variables: { ids } });
     handleCloseMenu();
   }
   return (

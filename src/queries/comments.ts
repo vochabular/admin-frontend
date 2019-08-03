@@ -77,8 +77,8 @@ export const RESOLVE_COMMENT = gql`
 `;
 
 export const DELETE_COMMENT = gql`
-  mutation deleteComment($id: uuid!) {
-    delete_api_comment(where: { id: { _eq: $id } }) {
+  mutation deleteComment($ids: [uuid!]) {
+    delete_api_comment(where: { id: { _in: $ids } }) {
       affected_rows
     }
   }
