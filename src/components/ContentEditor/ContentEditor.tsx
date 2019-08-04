@@ -6,7 +6,7 @@ import { withStyles, WithStyles } from "@material-ui/core/styles";
 import { styles } from "styles";
 import ComponentList from "./ComponentList";
 import ComponentSelector from "./ComponentSelector";
-import { chapterById_chapter } from "queries/__generated__/chapterById";
+import { subscribeChapterById_chapter } from "queries/__generated__/subscribeChapterById";
 
 /**
  * Is called when the drag ends. Main function that handles all the logic related to DragAndDrop
@@ -24,7 +24,7 @@ function onDragEnd(result: DropResult) {
 }
 
 interface Props extends WithStyles<typeof styles> {
-  data: chapterById_chapter;
+  data: subscribeChapterById_chapter;
 }
 
 const ContentEditor = ({ classes, data }: Props) => {
@@ -42,9 +42,7 @@ const ContentEditor = ({ classes, data }: Props) => {
           {provided => (
             <div ref={provided.innerRef} {...provided.droppableProps}>
               <ComponentSelector />
-              <ComponentList
-                components={(data.components && data.components.edges) || []}
-              />
+              <ComponentList components={data.components || []} />
               {provided.placeholder}
             </div>
           )}

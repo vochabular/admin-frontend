@@ -7,57 +7,37 @@
 // ====================================================
 
 export interface ChapterHeaderParts_parentChapter {
-  __typename: "ChapterType";
-  /**
-   * The ID of the object.
-   */
-  id: string;
+  __typename: "api_chapter";
+  id: any;
   number: number;
   titleCH: string;
   titleDE: string;
   description: string;
 }
 
-export interface ChapterHeaderParts_chapterSet_edges_node {
-  __typename: "ChapterType";
-  /**
-   * The ID of the object.
-   */
-  id: string;
+export interface ChapterHeaderParts_subChapters {
+  __typename: "api_chapter";
+  id: any;
   titleCH: string;
   titleDE: string;
   description: string;
 }
 
-export interface ChapterHeaderParts_chapterSet_edges {
-  __typename: "ChapterTypeEdge";
-  /**
-   * The item at the end of the edge
-   */
-  node: ChapterHeaderParts_chapterSet_edges_node | null;
-}
-
-export interface ChapterHeaderParts_chapterSet {
-  __typename: "ChapterTypeConnection";
-  edges: (ChapterHeaderParts_chapterSet_edges | null)[];
-}
-
 export interface ChapterHeaderParts {
-  __typename: "ChapterType";
-  /**
-   * The ID of the object.
-   */
-  id: string;
-  /**
-   * The ID of the object.
-   */
-  dbId: string;
+  __typename: "api_chapter";
+  id: any;
   number: number;
   titleCH: string;
   titleDE: string;
   description: string;
   created: any;
   updated: any;
+  /**
+   * An object relationship
+   */
   parentChapter: ChapterHeaderParts_parentChapter | null;
-  chapterSet: ChapterHeaderParts_chapterSet | null;
+  /**
+   * An array relationship
+   */
+  subChapters: ChapterHeaderParts_subChapters[];
 }

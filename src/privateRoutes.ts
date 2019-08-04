@@ -10,6 +10,8 @@ import Chapter from "./pages/Chapter/Chapter";
 import WordGroups from "./pages/WordGroup/WordGroups";
 import WordGroup from "./pages/WordGroup/WordGroup";
 import ChapterWordGroups from "./pages/WordGroup/ChapterWordGroups";
+import WordEditor from "./pages/WordGroup/WordEditor";
+
 import { Role } from "rbac-rules";
 
 const allUsers = Object.values(Role);
@@ -82,6 +84,13 @@ export const mainRoutes: IPrivateRouteConfig[] = [
     component: WordGroup,
     exact: true,
     path: "/wordgroups/:id"
+  },
+  {
+    showInDrawer: false,
+    allowedRoles: allUsers,
+    component: WordEditor,
+    exact: true,
+    path: "/wordgroups/:id/add"
   }
 ];
 

@@ -2,46 +2,49 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { CommentInput, CommentContext, ProfileLanguage } from "./../../__generated__/globalTypes";
+import { api_comment_insert_input } from "./../../__generated__/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: createComment
 // ====================================================
 
-export interface createComment_createComment_comment_fkAuthor {
-  __typename: "ProfileType";
-  id: string;
+export interface createComment_insert_api_comment_returning_author {
+  __typename: "api_profile";
+  id: any;
   firstname: string;
   lastname: string;
-  roles: string;
-  language: ProfileLanguage;
-  translatorLanguages: string;
-  eventNotifications: boolean;
-  setupCompleted: boolean;
 }
 
-export interface createComment_createComment_comment {
-  __typename: "CommentType";
-  /**
-   * The ID of the object.
-   */
-  id: string;
+export interface createComment_insert_api_comment_returning {
+  __typename: "api_comment";
+  id: any;
   text: string;
-  context: CommentContext | null;
+  context: string | null;
   active: boolean;
-  written: any | null;
-  fkAuthor: createComment_createComment_comment_fkAuthor | null;
+  created: any;
+  updated: any;
+  /**
+   * An object relationship
+   */
+  author: createComment_insert_api_comment_returning_author | null;
+  componentId: any;
 }
 
-export interface createComment_createComment {
-  __typename: "IntroduceCommentPayload";
-  comment: createComment_createComment_comment | null;
+export interface createComment_insert_api_comment {
+  __typename: "api_comment_mutation_response";
+  /**
+   * data of the affected rows by the mutation
+   */
+  returning: createComment_insert_api_comment_returning[];
 }
 
 export interface createComment {
-  createComment: createComment_createComment | null;
+  /**
+   * insert data into the table: "api_comment"
+   */
+  insert_api_comment: createComment_insert_api_comment | null;
 }
 
 export interface createCommentVariables {
-  comment: CommentInput;
+  comment: api_comment_insert_input;
 }

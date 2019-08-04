@@ -1,73 +1,51 @@
 import gql from "graphql-tag";
 
 export const CHAPTER_HEADER_PART = gql`
-  fragment ChapterHeaderParts on ChapterType {
+  fragment ChapterHeaderParts on api_chapter {
     id
-    dbId: id
     number
     titleCH
     titleDE
     description
     created
     updated
-    parentChapter: fkBelongsTo {
+    parentChapter {
       id
       number
       titleCH
       titleDE
       description
     }
-    chapterSet {
-      edges {
-        node {
-          id
-          titleCH
-          titleDE
-          description
-        }
-      }
+    subChapters {
+      id
+      titleCH
+      titleDE
+      description
     }
   }
 `;
 
 export const COMPONENT_PART = gql`
-  fragment ComponentParts on Component_Type {
+  fragment ComponentParts on api_component {
     id
     data
     state
-    texts: textSet {
-      edges {
-        node {
-          id
-          translations: translationSet {
-            edges {
-              node {
-                id
-                language
-                textField
-              }
-            }
-          }
-        }
+    texts {
+      id
+      translations {
+        id
+        textField: text_field
       }
     }
   }
 `;
 
 export const GET_CHAPTERS = gql`
-  query chapters {
-    chapters(fkBelongsTo_Isnull: true) {
-      edges {
-        node {
-          ...ChapterHeaderParts
-          componentSet {
-            edges {
-              node {
-                ...ComponentParts
-              }
-            }
-          }
-        }
+  query getChapters {
+    chapters: api_chapter(where: { fk_belongs_to_id: { _is_null: true } }) {
+      ...ChapterHeaderParts
+      components {
+        ...ComponentParts
       }
     }
   }
@@ -76,22 +54,14 @@ export const GET_CHAPTERS = gql`
 `;
 
 export const GET_CHAPTER_BY_ID = gql`
-  query chapterById($id: Int) {
-    chapter(id: $id) {
+  subscription subscribeChapterById($id: uuid!) {
+    chapter: api_chapter_by_pk(id: $id) {
       ...ChapterHeaderParts
-      subChapters: chapterSet {
-        edges {
-          node {
-            ...ChapterHeaderParts
-          }
-        }
+      subChapters {
+        ...ChapterHeaderParts
       }
-      components: componentSet {
-        edges {
-          node {
-            ...ComponentParts
-          }
-        }
+      components {
+        ...ComponentParts
       }
     }
   }
@@ -149,17 +119,10 @@ export const GET_CHAPTER_WORDGROUPS_BY_CHAPTER_ID = gql`
 `;
 
 export const UPSERT_CHAPTER = gql`
-  mutation createChapter($input: IntroduceChapterInput!) {
-    createChapter(input: $input) {
-      chapter {
-        number
-        titleCH
-        titleDE
-        description
-        languages
-        fkBelongsTo {
-          id
-        }
+  mutation createChapter($input: api_chapter_insert_input!) {
+    insert_api_chapter(objects: [$input]) {
+      returning {
+        id
       }
     }
   }

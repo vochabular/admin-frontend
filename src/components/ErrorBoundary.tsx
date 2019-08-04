@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as Sentry from "@sentry/browser";
-import auth0Client from "auth/Auth";
-import { Auth0Error, Auth0UserProfile } from "auth0-js";
+
+import { AuthContext } from "contexts/AuthContext";
 
 type props = {};
 type state = { error: boolean };
@@ -11,21 +11,23 @@ class ErrorBoundary extends React.Component<props, state> {
     super(props);
     this.state = { error: false };
   }
+  // Assign a contextType to read the current auth context.
+  // React will find the closest Auth Provider above and use its value.
+  static contextType = AuthContext;
 
   componentDidCatch(error: Error, errorInfo: any) {
+    const { user } = this.context;
     this.setState({ error: true });
-    auth0Client.getProfile((error: Auth0Error, profile: Auth0UserProfile) => {
-      Sentry.withScope(scope => {
-        scope.setUser({
-          email: profile.email,
-          username: profile.nickname
-        });
-        scope.setExtra("user_role", auth0Client.getCurrentRole());
-        Object.keys(errorInfo).forEach(key => {
-          scope.setExtra(key, errorInfo[key]);
-        });
-        Sentry.captureException(error);
+    Sentry.withScope(scope => {
+      scope.setUser({
+        email: user.email,
+        username: user.nickname
       });
+      scope.setExtra("user_role", user.currentRole);
+      Object.keys(errorInfo).forEach(key => {
+        scope.setExtra(key, errorInfo[key]);
+      });
+      Sentry.captureException(error);
     });
   }
 

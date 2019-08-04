@@ -1,6 +1,6 @@
 import * as React from "react";
 import { RouteComponentProps, Redirect } from "react-router-dom";
-import { useQuery } from "react-apollo-hooks";
+import { useSubscription } from "react-apollo-hooks";
 import { useTranslation } from "react-i18next";
 
 import { withStyles, WithStyles } from "@material-ui/core/styles";
@@ -14,53 +14,35 @@ import { GET_CHAPTER_BY_ID } from "queries/chapters";
 import BusyOrErrorCard from "components/BusyOrErrorCard";
 import ChapterCard from "components/ChapterCard";
 import LinkCard from "components/LinkCard";
-import auth0Client from "auth/Auth";
 import Section from "components/Section";
 import SectionCardContainer from "components/SectionCardContainer";
-import { chapterById } from "queries/__generated__/chapterById";
-import { convertGlobalToDbId } from "helpers";
 import { Permission } from "rbac-rules";
 import Can from "components/Can/Can";
+import { subscribeChapterById } from "queries/__generated__/subscribeChapterById";
+import { useDispatch } from "react-redux";
+import { actions } from "reducers/contentEditorSlice";
 
-// These can come from the router... See the route definitions
-interface ChapterRouterProps {
+interface ChapterContentProps {
   chapterId: string;
-  subChapterId: string;
-  componentId: string;
+  subChapterId: string | undefined;
 }
 
-interface Props
-  extends RouteComponentProps<ChapterRouterProps>,
-    WithStyles<typeof styles> {}
-
 /**
- * Main chapter component. Gets the chapter id via the route allowing to create links etc. Conditionally loads either the subchapter or the main chapter
+ * Actually loads the content of the chapter depending whether it is a main chapter or a subchapter...
  */
-const Chapter = ({ classes, match }: Props) => {
-  const { chapterId, subChapterId } = match.params;
+const ChapterContent = ({ chapterId, subChapterId }: ChapterContentProps) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   // Either load directly the subchapter or else the chapter
-  const { loading, data, error } = useQuery<chapterById>(GET_CHAPTER_BY_ID, {
-    variables: {
-      id:
-        subChapterId && subChapterId !== "new"
-          ? convertGlobalToDbId(subChapterId)
-          : convertGlobalToDbId(chapterId)
+  const { loading, data, error } = useSubscription<subscribeChapterById>(
+    GET_CHAPTER_BY_ID,
+    {
+      variables: {
+        id: subChapterId && subChapterId !== "new" ? subChapterId : chapterId
+      }
     }
-  });
-
-  // If its a new main chapter, don't need to query anything
-  // TODO: This violates React Hook rules!!!!
-  if (chapterId === "new") {
-    return (
-      <Can
-        perform={Permission.CHAPTER__CREATE}
-        yes={() => <NewChapter />}
-        no={() => <Redirect to="/403" />}
-      />
-    );
-  }
+  );
 
   if (!data || !data.chapter || loading || error)
     return (
@@ -71,7 +53,6 @@ const Chapter = ({ classes, match }: Props) => {
       />
     );
 
-  // TODO: How do we handle new subchapters?
   if (subChapterId === "new") {
     if (!data) return null;
     return (
@@ -85,6 +66,7 @@ const Chapter = ({ classes, match }: Props) => {
 
   // Render the subchapter screen
   if (subChapterId) {
+    dispatch(actions.setCurrentChapter(subChapterId));
     return (
       <Section title="chapters:chapter" titleTranslatable>
         <SubChapterDetail data={data.chapter} />
@@ -103,29 +85,60 @@ const Chapter = ({ classes, match }: Props) => {
       <SectionCardContainer>
         {data.chapter &&
           data.chapter.subChapters &&
-          data.chapter.subChapters &&
-          data.chapter.subChapters.edges.map((c: any | null) => {
-            if (!c) return null;
+          data.chapter.subChapters.map(c => {
             return (
-              <Grid item key={c && c.node.id}>
-                <ChapterCard chapter={c.node} />
+              <Grid item key={c.id}>
+                <ChapterCard chapter={c} />
               </Grid>
             );
           })}
-        {["admin", "content-creator"].includes(
-          auth0Client.getCurrentRole() || ""
-        ) ? (
-          <Grid item>
-            <LinkCard
-              path={`/chapters/${data.chapter.id}/new`}
-              icon={<AddIcon />}
-              helperText="createNewSubChapter"
-            />
-          </Grid>
-        ) : null}
+        <Can
+          perform={Permission.CHAPTER__CREATE}
+          yes={() => (
+            <Grid item>
+              <LinkCard
+                path={`/chapters/${data &&
+                  data.chapter &&
+                  data.chapter.id}/new`}
+                icon={<AddIcon />}
+                helperText="createNewSubChapter"
+              />
+            </Grid>
+          )}
+        />
       </SectionCardContainer>
     </Section>
   );
+};
+
+// These can come from the router... See the route definitions
+interface ChapterRouterProps {
+  chapterId: string;
+  subChapterId: string;
+  componentId: string;
+}
+
+interface Props
+  extends RouteComponentProps<ChapterRouterProps>,
+    WithStyles<typeof styles> {}
+
+/**
+ * Chapter wrapper Component, necessary to return early in case of a new chapter. Gets the chapter id via the route allowing to create links etc.
+ */
+const Chapter = ({ classes, match }: Props) => {
+  const { chapterId, subChapterId } = match.params;
+
+  // If its a new main chapter, don't need to query anything
+  if (chapterId === "new") {
+    return (
+      <Can
+        perform={Permission.CHAPTER__CREATE}
+        yes={() => <NewChapter />}
+        no={() => <Redirect to="/403" />}
+      />
+    );
+  }
+  return <ChapterContent chapterId={chapterId} subChapterId={subChapterId} />;
 };
 
 export default withStyles(styles, { withTheme: true })(Chapter);

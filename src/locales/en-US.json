@@ -53,12 +53,28 @@
     "wordGroupsOverview": "Word group overview for all Chapters",
     "wordGroupsChapter": "Word groups in chapter",
     "createNewWordGroup": "Create new word group",
+    "addWordToWordGroup": "Add a new word",
     "newWordGroupTitle": "Create new word group",
     "wordGroup:titleDe": "German title",
     "wordGroup:titleDeHelper": "Title of the word group in standard german.",
     "wordGroup:titleCh": "Swiss German title",
     "wordGroup:titleChHelper": "Title of the word group in Swiss German.",
     "nWords": "# of words: "
+  },
+  "words": {
+    "createNewWord": "Create a new word",
+    "textDE": "German word",
+    "textDEHelper": "The word in german (e.g. Einkaufen)",
+    "exampleSentenceDE": "German example sentence",
+    "exampleSentenceDEHelper": "E.g. Ich gehe einkaufen.",
+    "audioDE": "Audio file",
+    "audioDEHelper": "German audio file with spoken word and sentence",
+    "textCH": "Swiss German word",
+    "textCHHelper": "The word in swiss german (e.g. Poschte)",
+    "exampleSentenceCH": "Swiss German example sentence",
+    "exampleSentenceCHHelper": "E.g. Iich gaa go Poschte.",
+    "audioCH": "Audio file",
+    "audioCHHelper": "Swiss German audio file with spoken word and sentence"
   },
   "settings": {
     "title": "Settings",

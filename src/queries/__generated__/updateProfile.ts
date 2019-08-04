@@ -10,7 +10,7 @@ import { UpdateProfileInput, ProfileLanguage } from "./../../__generated__/globa
 
 export interface updateProfile_updateProfile_profile {
   __typename: "ProfileType";
-  id: string;
+  id: any;
   firstname: string;
   lastname: string;
   roles: string;

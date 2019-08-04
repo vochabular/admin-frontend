@@ -1,12 +1,6 @@
 import React, { useEffect } from "react";
-import {
-  Route,
-  Redirect,
-  RouteComponentProps,
-  RouteProps
-} from "react-router-dom";
+import { Route, RouteComponentProps, RouteProps } from "react-router-dom";
 
-import auth0Client from "../auth/Auth";
 import { useAuth } from "contexts/AuthContext";
 import LoadingPage from "pages/LoadingPage";
 
@@ -22,7 +16,7 @@ const PrivateRoute: React.FC<IPrivateRouteProps> = ({
   component: Component,
   ...rest
 }) => {
-  const { loading, isAuthenticated, loginWithRedirect, user } = useAuth();
+  const { loading, isAuthenticated, loginWithRedirect } = useAuth();
 
   // TODO(df): Needs to come from where?
   const path = "/";
@@ -30,8 +24,7 @@ const PrivateRoute: React.FC<IPrivateRouteProps> = ({
   useEffect(() => {
     const fn = async () => {
       if (!loading && !isAuthenticated) {
-        console.log("Redirecting...");
-        console.log(path);
+        console.info("Redirecting...");
         await loginWithRedirect({
           appState: { targetUrl: path }
         });

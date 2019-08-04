@@ -4,7 +4,12 @@ export const COMPONENT_TYPE_FRAGMENT = gql`
   fragment ComponentTypeParts on ComponentTypeType {
     id
     name
+    label
+    icon
+    base
     schema
+    created
+    updated
   }
 `;
 

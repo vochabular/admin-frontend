@@ -9,24 +9,10 @@ import Section from "components/Section";
 import { useTranslation } from "react-i18next";
 import TimestampAgo from "components/TimestampAgo";
 import CommentsWidget from "pages/Chapter/CommentsWidget";
-import { chapterById_chapter } from "queries/__generated__/chapterById";
-
-const mockData = {
-  titleCh: "Kapitel 1",
-  titleDe: "Kapitel 1",
-  components: [
-    {
-      id: 1,
-      type: "title",
-      data: { settings: { languages: ["de", "ch", "native"] } }
-    },
-    { id: 2, type: "text", data: "Sub comp 2" }
-  ],
-  lastSaved: "2019-05-26T18:56:30"
-};
+import { subscribeChapterById_chapter } from "queries/__generated__/subscribeChapterById";
 
 interface Props extends WithStyles<typeof styles> {
-  data: chapterById_chapter;
+  data: subscribeChapterById_chapter;
 }
 
 /**

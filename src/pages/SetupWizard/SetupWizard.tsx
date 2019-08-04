@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Formik, FormikActions, Form } from "formik";
 import { useMutation } from "react-apollo-hooks";
-import { getOperationName } from "apollo-link";
 
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
@@ -16,10 +15,9 @@ import { styles } from "styles";
 import PersonalSection from "pages/Settings/SettingsSection/PersonalSection";
 import AdministrativeSection from "pages/Settings/SettingsSection/AdministrativeSection";
 import NotificationSection from "pages/Settings/SettingsSection/NotificationSection";
-import { UPDATE_PROFILE, GET_PROFILE } from "queries/profile";
+import { UPDATE_PROFILE } from "queries/profile";
 import { UserSetupSchema } from "pages/Settings/Settings";
 import { profile_profile } from "queries/__generated__/profile";
-import { updateProfile } from "queries/__generated__/updateProfile";
 import { useAuth } from "contexts/AuthContext";
 
 function getSteps() {
@@ -50,7 +48,7 @@ interface Props extends WithStyles<typeof styles> {
 function SetupWizard({ classes, profile }: Props) {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const mutateProfile = useMutation<updateProfile>(UPDATE_PROFILE);
+  const [mutateProfile] = useMutation(UPDATE_PROFILE);
 
   const [activeStep, setActiveStep] = useState(0);
 

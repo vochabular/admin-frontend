@@ -4,12 +4,28 @@ import Auth0Client from "@auth0/auth0-spa-js/dist/typings/Auth0Client";
 
 import { Role } from "rbac-rules";
 
-const namespace = "https://admin.vochabular.ch/jwt/claims";
+type TGlobalApp = {
+  idToken: string;
+  userId: string;
+  currentRole: Role;
+};
+
+/**
+ * This is necessary as a workaround to share data from React Context to parts of the code outside of React (Apollo Client)
+ */
+declare global {
+  interface Window {
+    VoCHabularAdminFrontend: TGlobalApp;
+  }
+}
+
+const namespace = "https://hasura.io/jwt/claims";
 
 /**
  * Properties from the Auth0 IdToken + the custom defined properties (in the Auth0 Rules!)
  */
 interface IUser extends IdToken {
+  userId: String;
   currentRole: Role;
   allowedRoles: Role[];
 }
@@ -26,9 +42,12 @@ function getUserFromIdToken(idToken: IOwnIdToken): IUser {
   // Strip the namespace, since we want to have a flat user object
   const { [namespace]: customProperties, ...authProperties } = idToken;
   const allowedRoles = customProperties["x-hasura-allowed-roles"];
+  // TODO(df): We should set the userId based on the id stored in the JWT. So, Auth0 needs to query the userId on login!
+  // const userId = customProperties["x-hasura-user-id"];
   return {
+    userId: "",
     allowedRoles,
-    currentRole: allowedRoles[0], // TODO(df): We have to initialize this somehow, then on first settings load, it has to update the current role based on the current set value.
+    currentRole: allowedRoles[0],
     ...authProperties
   };
 }
@@ -49,6 +68,8 @@ export interface IAuthContext {
   getTokenSilently: CallableFunction;
   getTokenWithPopup: CallableFunction;
   logout: CallableFunction;
+  changeCurrentRole: CallableFunction;
+  setUserId: CallableFunction;
 }
 
 const initialAuthContext: IAuthContext = {
@@ -63,7 +84,9 @@ const initialAuthContext: IAuthContext = {
   loginWithRedirect: () => console.info("Initializing..."),
   getTokenSilently: () => console.info("Initializing..."),
   getTokenWithPopup: () => console.info("Initializing..."),
-  logout: () => console.info("Initializing...")
+  logout: () => console.info("Initializing..."),
+  changeCurrentRole: () => console.info("Initializing..."),
+  setUserId: () => console.info("Initializing...")
 };
 
 /**
@@ -118,14 +141,17 @@ export const AuthProvider = ({
         const user = getUserFromIdToken(auth0User);
         setUser(user);
         // TODO(df): Hack to get the id-token, since Auth0 only can return the access-token, we however need the ID token...
-        const idToken =
+        const idToken: string =
           // @ts-ignore
           auth0FromHook.cache.cache["default::openid profile email"][
             "id_token"
           ];
         // TODO(df): Hack for now, since I have no idea how to access the context from outside React (in ApolloClient.ts)
-        // @ts-ignore
-        window.idToken = idToken;
+        window.VoCHabularAdminFrontend = {
+          idToken,
+          currentRole: user.currentRole,
+          userId: ""
+        };
         setIdToken(idToken);
       }
       setLoading(false);
@@ -160,6 +186,19 @@ export const AuthProvider = ({
     setUser(getUserFromIdToken(user));
   };
 
+  const changeCurrentRole = (newRole: Role) => {
+    const updatedUser: IUser = Object.assign(user!);
+    updatedUser.currentRole = newRole;
+    window.VoCHabularAdminFrontend.currentRole = newRole;
+    setUser(updatedUser);
+  };
+
+  const setUserId = (userId: string) => {
+    const updatedUser: IUser = Object.assign(user!);
+    updatedUser.userId = userId;
+    setUser(updatedUser);
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -180,7 +219,9 @@ export const AuthProvider = ({
           auth0Client && auth0Client.getTokenWithPopup(p),
         logout: (p: LogoutOptions) =>
           auth0Client &&
-          auth0Client.logout(p || { returnTo: window.location.origin })
+          auth0Client.logout(p || { returnTo: window.location.origin }),
+        changeCurrentRole,
+        setUserId
       }}
     >
       {children}

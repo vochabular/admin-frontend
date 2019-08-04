@@ -1,13 +1,14 @@
-import { ApolloClient, DefaultOptions } from "apollo-client";
+import { ApolloClient, DefaultOptions, ApolloError } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { HttpLink } from "apollo-link-http";
 import { onError } from "apollo-link-error";
-import { ApolloLink, Observable } from "apollo-link";
+import { ApolloLink, Observable, split } from "apollo-link";
+import { WebSocketLink } from "apollo-link-ws";
+import { GraphQLError } from "graphql";
+import { getMainDefinition } from "apollo-utilities";
 
-import auth0Client from "./auth/Auth";
-import i18n from "./i18n";
 import { typeDefs, resolvers } from "./queries/resolvers";
-import { AuthContext } from "contexts/AuthContext";
+import { SubscriptionClient } from "subscriptions-transport-ws";
 
 /**
  * Here you can define default options that are applied to all queries, mutations.
@@ -30,21 +31,71 @@ const defaultOptions: DefaultOptions = {
 // Setup the cache
 const cache = new InMemoryCache({});
 
+/**
+ * This is a "fake" async call. This resolves however the case, that the IdToken is briefly undefined!
+ * TODO(df): Maybe it would be better, if the client is setup only in the private app?
+ */
+async function getAsyncConnectionParams() {
+  const { idToken, currentRole } = window.VoCHabularAdminFrontend;
+  return {
+    headers: {
+      Authorization: `Bearer ${idToken}`,
+      "X-Hasura-Role": currentRole
+    }
+  };
+}
+
+/**
+ * Handles GraphQL error. Note that you can not use async/await... https://github.com/apollographql/apollo-link/issues/646#issuecomment-423279220
+ * @param {} graphQLErrors
+ */
+function handleGraphQLError(graphQLErrors: ApolloError["graphQLErrors"]) {
+  graphQLErrors.map(({ message, locations, path }: GraphQLError) => {
+    return console.error(
+      `[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(
+        locations
+      )}, Path: ${path}`
+    );
+  });
+}
+
+/**
+ * Handles Network errors such as token expired, invalid etc...
+ * @param {} networkError
+ */
+function handleNetworkError(networkError: ApolloError["networkError"]) {
+  // TODO: Wrong types, altough available:
+  // See here https://github.com/apollographql/apollo-link/issues/300
+  // @ts-ignore
+  const { statusCode, result } = networkError;
+  if (statusCode === 400) {
+    // Handle case when token has expired...
+    if (
+      result &&
+      result.errors &&
+      result.errors[0] &&
+      result.errors[0].message === "Could not verify JWT: JWTExpired"
+    ) {
+      console.info("ID Token has expired! Attempting to refresh...");
+      try {
+        // TODO: REFRESH TOKEN AND TRY AGAIN...
+        // auth0Client.renewSession().then(() => console.log("Session renwed!"));
+      } catch (e) {
+        throw new Error(e);
+      }
+    } else {
+      console.error(networkError);
+      console.error(JSON.stringify(networkError));
+    }
+  } else {
+    console.error(`General network error: ${JSON.stringify(networkError)}`);
+  }
+}
+
 // On each request, set the current idToken in the header
 const request = async (operation: any) => {
-  /**
-   * TODO(df): Need to get the token from the new AuthContext
-   * Something like: console.log(AuthContext["_currentValue"]);
-   */
-  // @ts-ignore
-  const idToken = window.idToken;
-  operation.setContext({
-    headers: {
-      // Authorization: `Bearer ${idToken}`,
-      // "X-Hasura-Role": currentRole,
-      authorization: "Bearer " + idToken
-    }
-  });
+  const params = await getAsyncConnectionParams();
+  operation.setContext(params);
 };
 
 // Here we can chain
@@ -70,54 +121,66 @@ const requestLink = new ApolloLink(
     })
 );
 
+// Create an http link:
+const httpLink = new HttpLink({
+  uri: process.env.REACT_APP_BACKEND_URL
+});
+
+const wssUrl =
+  (process.env.REACT_APP_BACKEND_URL &&
+    process.env.REACT_APP_BACKEND_URL.replace("https://", "wss://")) ||
+  "";
+
+// Create a WebSocket link:
+const wsLink = new WebSocketLink(
+  new SubscriptionClient(wssUrl, {
+    connectionParams: async () => getAsyncConnectionParams(),
+    lazy: true,
+    reconnect: true,
+    timeout: 30000
+  })
+);
+
+// using the ability to split links, you can send data to each link
+// depending on what kind of operation is being sent
+const link = split(
+  // split based on operation type
+  ({ query }: any) => {
+    // @ts-ignore
+    const { kind, operation } = getMainDefinition(query);
+    return kind === "OperationDefinition" && operation === "subscription";
+  },
+  wsLink,
+  httpLink
+);
+
 const client = new ApolloClient({
   defaultOptions,
   cache,
   link: ApolloLink.from([
-    onError(({ graphQLErrors, networkError }) => {
-      if (graphQLErrors) {
+    /**
+     * TODO(df): Central error handling. For example, on mutation error, we should show a "error" notification. When no network, we should alert the user...
+     *
+     */
+    onError(e => {
+      if (e.graphQLErrors) {
         // TODO: We should send something to sentry...
         // sendToLoggingService(graphQLErrors);
+        handleGraphQLError(e.graphQLErrors);
       }
-      if (networkError) {
+      if (e.networkError) {
         // TODO: We should logout the user, if the network error is actually a 400 or something...
-        // handleNetworkError / auth0Client.logout();
+        // handleNetworkError
+        handleNetworkError(e.networkError);
+      } else {
+        throw e;
       }
     }),
     requestLink,
-    new HttpLink({
-      uri: process.env.REACT_APP_BACKEND_URL
-    })
+    link
   ]),
   typeDefs: typeDefs,
   resolvers: resolvers
-});
-
-// These are the default values, if nothing is set in localStorage/the backend
-const defaultSettings = {
-  __typename: "Settings",
-  userName: "",
-  currentRole: (auth0Client && auth0Client.getCurrentRole()) || "viewer",
-  language: i18n.language,
-  translatorLanguages: [],
-  receiveEventNotifications: false,
-  hasCompletedSetup: false
-};
-
-// Get the initial state for settings
-const settings = JSON.parse(
-  localStorage.getItem("settings") || JSON.stringify(defaultSettings)
-);
-
-/**
- * Write the default/initial values to the cache
- */
-client.cache.writeData({
-  data: {
-    settings: {
-      ...settings
-    }
-  }
 });
 
 export default client;

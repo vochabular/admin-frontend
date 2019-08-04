@@ -12,14 +12,14 @@ import BusyOrErrorCard from "components/BusyOrErrorCard";
 import LinkCard from "components/LinkCard";
 import Section from "components/Section";
 import SectionCardContainer from "components/SectionCardContainer";
-import { chapters } from "../../queries/__generated__/chapters";
 import Can from "components/Can/Can";
 import { Permission } from "rbac-rules";
+import { getChapters } from "queries/__generated__/getChapters";
 
 interface Props extends WithStyles<typeof styles> {}
 
 const Chapters = ({ classes }: Props) => {
-  const { data, error, loading } = useQuery<chapters>(GET_CHAPTERS);
+  const { data, error, loading } = useQuery<getChapters>(GET_CHAPTERS);
 
   // Note: MUI links together with react-router-dom and Typescript are a bit tricky due to their dynamic nature
   // See the discussion and provided solutions here... https://github.com/mui-org/material-ui/issues/7877
@@ -31,15 +31,14 @@ const Chapters = ({ classes }: Props) => {
           loading={loading}
           error={error}
           noResults={
-            !loading && data && !!data.chapters && !data.chapters.edges.length
+            !loading && data && !!data.chapters && !data.chapters.length
           }
         />
         {data &&
           data.chapters &&
-          data.chapters.edges &&
-          data.chapters.edges.map((c: any) => (
-            <Grid item key={c.node.id}>
-              <ChapterCard chapter={c.node} />
+          data.chapters.map(c => (
+            <Grid item key={c.id}>
+              <ChapterCard chapter={c} />
             </Grid>
           ))}
         <Can

@@ -1,193 +1,94 @@
 import gql from "graphql-tag";
 
-export const GET_WORDGROUPS = gql`
-  query wordGroups {
-  wordGroups {
-    edges {
-      node {
-        id
-        titleCh
-        titleDe
-        fkChapter {
-          id
-        }
-        words {
-          id
-          wordch {
-            id
-            audio
-            text
-            exampleSentence
-          }
-          wordde {
-            id
-            audio
-            text
-            exampleSentence
-          }
-          worden {
-            id
-            audio
-            text
-            exampleSentence
-          }
-          wordar {
-            id
-            audio
-            text
-            exampleSentence
-          }
-          wordfa {
-            id
-            audio
-            text
-            exampleSentence
-          }
-        }
+export const WORD_FRAGMENT = gql`
+  fragment WordParts on api_word {
+    id
+    translations {
+      id
+      text
+      audio
+      exampleSentence: example_sentence
+      language {
+        code
+        name
       }
     }
   }
-}
+`;
+
+export const WORDGROUP_FRAGMENT = gql`
+  fragment WordgroupParts on api_wordgroup {
+    parentChapterId: fk_chapter_id
+    id
+    titleCh: title_ch
+    titleDe: title_de
+    words {
+      id
+      word {
+        ...WordParts
+      }
+    }
+  }
+  ${WORD_FRAGMENT}
+`;
+
+export const GET_WORDGROUPS = gql`
+  subscription subscribeWordGroups {
+    wordGroups: api_wordgroup {
+      ...WordgroupParts
+    }
+  }
+  ${WORDGROUP_FRAGMENT}
 `;
 
 export const GET_WORDGROUP_BY_ID = gql`
-  query wordGroupById($id: ID) {
-  wordGroup(id: $id) {
-    id
-    titleCh
-    titleDe
-    words {
-      id
-      wordch {
-        id
-        exampleSentence
-        text
-        audio
-      }
-      wordde {
-        id
-        exampleSentence
-        text
-        audio
-      }
-      worden {
-        id
-        exampleSentence
-        text
-        audio
-      }
-      wordar {
-        id
-        exampleSentence
-        text
-        audio
-      }
-      wordfa {
-        id
-        exampleSentence
-        text
-        audio
+  subscription subscribeWordGroupById($id: uuid!) {
+    wordGroup: api_wordgroup_by_pk(id: $id) {
+      ...WordgroupParts
+    }
+  }
+  ${WORDGROUP_FRAGMENT}
+`;
+
+export const UPSERT_WORDGROUP = gql`
+  mutation upsertWordGroup($input: [api_wordgroup_insert_input!]!) {
+    insert_api_wordgroup(objects: $input) {
+      returning {
+        ...WordgroupParts
       }
     }
   }
-}
+  ${WORDGROUP_FRAGMENT}
 `;
 
-export const INSERT_WORDGROUP = gql`
-  mutation createWordGroup($input: IntroduceWordGroupInput!) {
-      createWordGroup(input: $input) {
-        wordGroup {
-          id
-          titleCh
-          titleDe
+/**
+ * See here why we are "updating" (--> actually not, just using it since otherwise the nested upsert would fail..) the ID column:
+ * https://docs.hasura.io/1.0/graphql/manual/mutations/upsert.html
+ */
+export const UPSERT_WORD = gql`
+  mutation upsertWord(
+    $wordId: uuid!
+    $input: api_wordtranslation_insert_input!
+  ) {
+    insert_api_word(
+      on_conflict: { constraint: api_word_pkey, update_columns: [id] }
+      objects: [
+        {
+          id: $wordId
+          translations: {
+            data: [$input]
+            on_conflict: {
+              constraint: api_wordtranslation_pkey
+              update_columns: [text, audio]
+            }
+          }
         }
+      ]
+    ) {
+      returning {
+        ...WordParts
       }
     }
-`;
-
-export const UPDATE_WORDGROUP = gql`
-  mutation updateWordGroup($input: UpdateWordGroupInput!) {
-      updateWordGroup(input: $input) {
-        wordGroup {
-          id
-          titleCh
-          titleDe
-        }
-      }
-    }
-`;
-
-export const CREATE_WORD = gql`
-    mutation createWord($input: IntroduceWordInput!) {
-      createWord(input: $input) {
-        word {
-          id
-        }
-      }
-    }
-`;
-
-export const UPDATE_DE_WORD = gql`
-    mutation updateDEWord($input: UpdateWordDEInput!) {
-      updateDeWord(input: $input) {
-        word {
-          id
-          text
-          exampleSentence
-          audio
-        }
-      }
-    }
-`;
-
-export const UPDATE_CH_WORD = gql`
-    mutation updateCHWord($input: UpdateWordCHInput!) {
-      updateChWord(input: $input) {
-        word {
-          id
-          text
-          exampleSentence
-          audio
-        }
-      }
-    }
-`;
-
-export const UPDATE_EN_WORD = gql`
-    mutation updateENWord($input: UpdateWordENInput!) {
-      updateEnWord(input: $input) {
-        word {
-          id
-          text
-          exampleSentence
-          audio
-        }
-      }
-    }
-`;
-
-export const UPDATE_FA_WORD = gql`
-    mutation updateFAWord($input: UpdateWordFAInput!) {
-      updateFaWord(input: $input) {
-        word {
-          id
-          text
-          exampleSentence
-          audio
-        }
-      }
-    }
-`;
-
-export const UPDATE_AR_WORD = gql`
-    mutation updateARWord($input: UpdateWordARInput!) {
-      updateArWord(input: $input) {
-        word {
-          id
-          text
-          exampleSentence
-          audio
-        }
-      }
-    }
+  }
+  ${WORD_FRAGMENT}
 `;

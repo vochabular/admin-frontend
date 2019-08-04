@@ -12,8 +12,8 @@ import MenuIcon from "@material-ui/icons/Menu";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import PowerIcon from "@material-ui/icons/PowerSettingsNew";
 
-import auth0Client from "auth/Auth";
 import { styles } from "styles";
+import { useAuth } from "contexts/AuthContext";
 
 // TODO: We should have the AppBar in a own component. However, that messes up the layout...
 // import AppBar from "../components/AppBar";
@@ -26,6 +26,7 @@ interface Props extends WithStyles<typeof styles> {
 
 function AppBar(props: Props) {
   const { classes, isDrawerOpen, toggleDrawer, isDrawerDeactivated } = props;
+  const { logout } = useAuth();
 
   return (
     <AppBarMui
@@ -66,7 +67,7 @@ function AppBar(props: Props) {
             <NotificationsIcon />
           </Badge>
         </IconButton>
-        <IconButton color="inherit" onClick={() => auth0Client.logout()}>
+        <IconButton color="inherit" onClick={() => logout()}>
           <PowerIcon />
         </IconButton>
       </Toolbar>

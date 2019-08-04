@@ -2,39 +2,32 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { IntroduceChapterInput } from "./../../__generated__/globalTypes";
+import { api_chapter_insert_input } from "./../../__generated__/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: createChapter
 // ====================================================
 
-export interface createChapter_createChapter_chapter_fkBelongsTo {
-  __typename: "ChapterType";
+export interface createChapter_insert_api_chapter_returning {
+  __typename: "api_chapter";
+  id: any;
+}
+
+export interface createChapter_insert_api_chapter {
+  __typename: "api_chapter_mutation_response";
   /**
-   * The ID of the object.
+   * data of the affected rows by the mutation
    */
-  id: string;
-}
-
-export interface createChapter_createChapter_chapter {
-  __typename: "ChapterType";
-  number: number;
-  titleCH: string;
-  titleDE: string;
-  description: string;
-  languages: string;
-  fkBelongsTo: createChapter_createChapter_chapter_fkBelongsTo | null;
-}
-
-export interface createChapter_createChapter {
-  __typename: "IntroduceChapterPayload";
-  chapter: createChapter_createChapter_chapter | null;
+  returning: createChapter_insert_api_chapter_returning[];
 }
 
 export interface createChapter {
-  createChapter: createChapter_createChapter | null;
+  /**
+   * insert data into the table: "api_chapter"
+   */
+  insert_api_chapter: createChapter_insert_api_chapter | null;
 }
 
 export interface createChapterVariables {
-  input: IntroduceChapterInput;
+  input: api_chapter_insert_input;
 }

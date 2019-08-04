@@ -5,6 +5,7 @@ import {withStyles, WithStyles} from "@material-ui/core/styles";
 import {useQuery} from "react-apollo-hooks";
 import {RouteComponentProps} from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
+import AddIcon from "@material-ui/icons/Add";
 
 import {styles} from "styles";
 import BusyOrErrorCard from "components/BusyOrErrorCard";
@@ -17,6 +18,7 @@ import {
   chaptersWordGroupsByChapterId_chapter_wordGroups_edges
 } from "../../queries/__generated__/chaptersWordGroupsByChapterId";
 import WordGroupCard from "../../components/WordGroupCard";
+import LinkCard from "../../components/LinkCard";
 
 interface WordGroupRouterProps {
   id: string;
@@ -55,6 +57,13 @@ const ChapterWordGroups = ({classes, match}: Props) => {
             <WordGroupCard wordGroup={w.node}/>
           </Grid> : null
       ))}
+      <Grid item>
+        <LinkCard
+          path={`/wordgroups/new`}
+          icon={<AddIcon/>}
+          helperText="wordGroups:createNewWordGroup"
+        />
+      </Grid>
     </SectionCardContainer>
   </Section>;
 };

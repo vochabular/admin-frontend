@@ -1,25 +1,25 @@
 import * as React from "react";
-import {Link as RouterLink} from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
-import {withStyles, WithStyles} from "@material-ui/core/styles";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Paper";
 import CardContent from "@material-ui/core/CardContent";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 import CardActionArea from "@material-ui/core/CardActionArea";
-import {styles} from "styles";
-import {wordGroups_wordGroups_edges_node} from "queries/__generated__/wordGroups";
-import {
-  chaptersWordGroupsByChapterId_chapter_wordGroups_edges_node
-} from "../queries/__generated__/chaptersWordGroupsByChapterId";
+import { styles } from "styles";
+import { chaptersWordGroupsByChapterId_chapter_wordGroups_edges_node } from "../queries/__generated__/chaptersWordGroupsByChapterId";
+import { subscribeWordGroups_wordGroups } from "queries/__generated__/subscribeWordGroups";
 
 interface Props extends WithStyles<typeof styles> {
-  wordGroup: wordGroups_wordGroups_edges_node | chaptersWordGroupsByChapterId_chapter_wordGroups_edges_node;
+  wordGroup:
+    | subscribeWordGroups_wordGroups
+    | chaptersWordGroupsByChapterId_chapter_wordGroups_edges_node;
 }
 
-const WordGroupCard = ({classes, wordGroup}: Props) => {
-  const {t} = useTranslation();
+const WordGroupCard = ({ classes, wordGroup }: Props) => {
+  const { t } = useTranslation();
   // Note: MUI links together with react-router-dom and Typescript are a bit tricky due to their dynamic nature
   // See the discussion and provided solutions here... https://github.com/mui-org/material-ui/issues/7877
   // <Button component={Link} {...{ to: "/about" } as any} />
@@ -27,7 +27,7 @@ const WordGroupCard = ({classes, wordGroup}: Props) => {
     <Card>
       <CardActionArea
         component={RouterLink}
-        {...{to: `/wordgroups/${wordGroup.id}`} as any}
+        {...{ to: `/wordgroups/${wordGroup.id}` } as any}
       >
         <CardContent>
           <Typography
@@ -35,9 +35,11 @@ const WordGroupCard = ({classes, wordGroup}: Props) => {
             color="textSecondary"
             gutterBottom
           >
-            {wordGroup.titleDe} <br/>
-            {wordGroup.titleCh} <br/>
-            {t("wordGroups:nWords") + wordGroup && wordGroup.words ? wordGroup.words.length : 0}
+            {wordGroup.titleDe} <br />
+            {wordGroup.titleCh} <br />
+            {t("wordGroups:nWords") + wordGroup && wordGroup.words
+              ? wordGroup.words.length
+              : 0}
           </Typography>
         </CardContent>
       </CardActionArea>
@@ -45,4 +47,4 @@ const WordGroupCard = ({classes, wordGroup}: Props) => {
   );
 };
 
-export default withStyles(styles, {withTheme: true})(WordGroupCard);
+export default withStyles(styles, { withTheme: true })(WordGroupCard);

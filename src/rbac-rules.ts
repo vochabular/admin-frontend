@@ -10,7 +10,7 @@
 export enum Role {
   ADMINISTRATOR = "administrator",
   APPROVER = "approver",
-  CONTENT_CREATOR = "creator-creator",
+  CONTENT_CREATOR = "content-creator",
   TRANSLATOR = "translator",
   VIEWER = "viewer"
 }

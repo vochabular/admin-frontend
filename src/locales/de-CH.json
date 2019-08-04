@@ -48,12 +48,28 @@
     "wordGroupsOverview": "Wortgruppe Übersicht nach Kapitel",
     "wordGroupsChapter": "Wortgruppen im Kapitel",
     "createNewWordGroup": "Neue Wortgruppe anlegen",
+    "addWordToWordGroup": "Neues Wort hinzufügen",
     "newWordGroupTitle": "Neue Wortguppe anlegen",
     "wordGroup:titleDe": "Deutscher Titel",
     "wordGroup:titleDeHelper": "Der Titel dieser Wortgruppe auf Schriftdeutsch.",
     "wordGroup:titleCh": "Schweizerdeutscher Titel",
     "wordGroup:titleChHelper": "Der Titel dieser Wortgruppe auf Schweizerdeutsch.",
     "nWords": "# Wörter: "
+  },
+  "words": {
+    "createNewWord": "Neues Wort erstellen",
+    "textDE": "Deutsches Wort",
+    "textDEHelper": "Das Wort auf deutsch. (Bsp.: Einkaufen)",
+    "exampleSentenceDE": "Deutscher Beispielsatz",
+    "exampleSentenceDEHelper": "Bsp: Ich gehe heute Einkaufen.",
+    "audioDE": "Höraufnahme Deutsch",
+    "audioDEHelper": "Höraufnahme Wort und Beispielsatz",
+    "textCH": "Schweizerdeutsches Wort",
+    "textCHHelper": "Das Wort auf schweizerdeutsch. (Bsp. Poschte)",
+    "exampleSentenceCH": "Schweizerdeutscher Beispielsatz",
+    "exampleSentenceCHHelper": "Bsp: Iich gaa go Poschte.",
+    "audioCH": "Höraufnahme Schweizerdeutsch",
+    "audioCHHelper": "Höraufnahme Wort und Beispielsatz"
   },
   "settings": {
     "title": "Einstellungen",
