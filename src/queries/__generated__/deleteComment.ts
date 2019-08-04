@@ -22,5 +22,5 @@ export interface deleteComment {
 }
 
 export interface deleteCommentVariables {
-  id: any;
+  ids?: any[] | null;
 }
