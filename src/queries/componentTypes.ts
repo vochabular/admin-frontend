@@ -21,3 +21,15 @@ export const GET_ALL_COMPONENTTYPES = gql`
   }
   ${COMPONENT_TYPE_FRAGMENT}
 `;
+
+export const GET_COMPONENTTYPE_BY_ID = gql`
+  query getComponentTypeById($id: uuid!) {
+    type: api_componenttype_by_pk(id: $id) {
+      ...ComponentTypeParts
+      children {
+        ...ComponentTypeParts
+      }
+    }
+  }
+  ${COMPONENT_TYPE_FRAGMENT}
+`;

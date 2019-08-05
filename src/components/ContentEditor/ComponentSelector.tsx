@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useSelector } from "react-redux";
 
 import {
   withStyles,
@@ -10,9 +11,30 @@ import { Grid, Card, Typography, CardContent, Icon } from "@material-ui/core";
 
 import { Draggable } from "react-beautiful-dnd";
 import { useQuery } from "react-apollo-hooks";
-import { GET_ALL_COMPONENTTYPES } from "queries/componentTypes";
+import {
+  GET_ALL_COMPONENTTYPES,
+  GET_COMPONENTTYPE_BY_ID
+} from "queries/componentTypes";
 import BusyOrErrorCard from "components/BusyOrErrorCard";
-import { getAllComponentTypes } from "queries/__generated__/getAllComponentTypes";
+import {
+  getAllComponentTypes,
+  getAllComponentTypes_types
+} from "queries/__generated__/getAllComponentTypes";
+import { TAppState } from "reducers";
+import { IContentEditorState } from "reducers/contentEditorSlice";
+import {
+  getComponentTypeById,
+  getComponentTypeById_type_children
+} from "queries/__generated__/getComponentTypeById";
+
+/**
+ * A user-defined type-guard: See here: https://www.typescriptlang.org/docs/handbook/advanced-types.html
+ */
+function isByIdResult(
+  result: getAllComponentTypes | getComponentTypeById
+): result is getComponentTypeById {
+  return (result as getComponentTypeById).type !== undefined;
+}
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -28,16 +50,36 @@ const styles = (theme: Theme) =>
 interface Props extends WithStyles<typeof styles> {}
 
 const ComponentSelector = ({ classes }: Props) => {
-  // TODO(df): Need to query the component types, either by top level or by
-  const { data, loading, error } = useQuery<getAllComponentTypes>(
-    GET_ALL_COMPONENTTYPES
+  const { selectedComponent } = useSelector<TAppState, IContentEditorState>(
+    state => state.contentEditor
   );
 
-  const types = (data && data.types) || [];
+  // TODO(df): Need to query the component types, either by top level or by
+  const { data, loading, error } = useQuery<
+    getAllComponentTypes | getComponentTypeById
+  >(
+    !selectedComponent ? GET_ALL_COMPONENTTYPES : GET_COMPONENTTYPE_BY_ID,
+    !selectedComponent
+      ? undefined
+      : { variables: { id: selectedComponent.type.id } }
+  );
+
+  let types:
+    | getAllComponentTypes_types
+    | getComponentTypeById_type_children[] = [];
+  if (data && !isByIdResult(data)) {
+    types = data.types || [];
+  } else if (data) {
+    types = (data.type && data.type.children) || [];
+  }
 
   return (
     <Grid container justify="center" className={classes.container}>
-      <BusyOrErrorCard error={error} loading={loading} />
+      <BusyOrErrorCard
+        error={error}
+        loading={loading}
+        noResults={!types.length}
+      />
       {types.map((component, index) => {
         return (
           <Draggable
