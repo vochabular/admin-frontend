@@ -28,6 +28,7 @@ const styles = (theme: Theme) =>
 interface Props extends WithStyles<typeof styles> {}
 
 const ComponentSelector = ({ classes }: Props) => {
+  // TODO(df): Need to query the component types, either by top level or by
   const { data, loading, error } = useQuery<getAllComponentTypes>(
     GET_ALL_COMPONENTTYPES
   );

@@ -30,6 +30,11 @@ export const COMPONENT_PART = gql`
     id
     data
     state
+    type {
+      id
+      name
+      icon
+    }
     texts {
       id
       translations {
@@ -53,6 +58,9 @@ export const GET_CHAPTERS = gql`
   ${COMPONENT_PART}
 `;
 
+/**
+ * Since recursion is explicitly not allowed in the GraphQL-Spec (is an attack vector, see: https://github.com/graphql/graphql-spec/issues/91#issuecomment-254895093) we have to explicitly model the levels
+ */
 export const GET_CHAPTER_BY_ID = gql`
   subscription subscribeChapterById($id: uuid!) {
     chapter: api_chapter_by_pk(id: $id) {
@@ -62,6 +70,18 @@ export const GET_CHAPTER_BY_ID = gql`
       }
       components {
         ...ComponentParts
+        children {
+          ...ComponentParts
+          children {
+            ...ComponentParts
+            children {
+              ...ComponentParts
+              children {
+                ...ComponentParts
+              }
+            }
+          }
+        }
       }
     }
   }

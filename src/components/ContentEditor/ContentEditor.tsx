@@ -28,27 +28,30 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 const ContentEditor = ({ classes, data }: Props) => {
-  /*
-  const [selectedParentComponet, setSelectedParentComponent] = React.useState(
-    undefined
-  );
-  */
-
-  // TODO: What kind of state do we have to initialize here?
   return (
-    <div>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="component-list" type="component-list">
-          {provided => (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
-              <ComponentSelector />
-              <ComponentList components={data.components || []} />
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-    </div>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable
+        droppableId="component-selector"
+        type="component-selector" //TODO(df): Needs to be "dynamic". Either the (top-level) component selector, or else the actual components type + uuid, since it should only be droppable over the current selected component!
+        isDropDisabled
+        direction="horizontal"
+      >
+        {provided => (
+          <div ref={provided.innerRef} {...provided.droppableProps}>
+            <ComponentSelector />
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+      <Droppable droppableId="component-list" type="component-list">
+        {provided => (
+          <div ref={provided.innerRef} {...provided.droppableProps}>
+            <ComponentList components={data.components || []} />
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
   );
 };
 

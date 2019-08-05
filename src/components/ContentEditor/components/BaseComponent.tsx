@@ -1,11 +1,13 @@
 import * as React from "react";
 
 import { withStyles, WithStyles } from "@material-ui/core/styles";
+import { DragHandle } from "@material-ui/icons";
 
 import { styles } from "styles";
 import { Draggable } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
 import { actions } from "reducers/contentEditorSlice";
+import { IconButton } from "@material-ui/core";
 
 interface Props extends WithStyles<typeof styles> {
   index: number;
@@ -20,13 +22,15 @@ const BaseComponent = ({ classes, index, data }: Props) => {
   );
   return (
     <Draggable draggableId={data.id} index={index}>
-      {provided => (
+      {(provided, snapshot) => (
         <div
           ref={provided.innerRef}
-          {...provided.dragHandleProps}
           {...provided.draggableProps}
           onClick={selectComponent}
         >
+          <IconButton aria-label="drag" {...provided.dragHandleProps}>
+            <DragHandle />
+          </IconButton>
           Text: {index}
         </div>
       )}
