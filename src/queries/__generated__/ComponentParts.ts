@@ -6,6 +6,13 @@
 // GraphQL fragment: ComponentParts
 // ====================================================
 
+export interface ComponentParts_type {
+  __typename: "api_componenttype";
+  id: any;
+  name: string;
+  icon: string;
+}
+
 export interface ComponentParts_texts_translations {
   __typename: "api_translation";
   id: any;
@@ -26,6 +33,10 @@ export interface ComponentParts {
   id: any;
   data: string;
   state: string;
+  /**
+   * An object relationship
+   */
+  type: ComponentParts_type;
   /**
    * An array relationship
    */

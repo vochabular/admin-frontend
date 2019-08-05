@@ -33,42 +33,39 @@ const ComponentSelector = ({ classes }: Props) => {
     GET_ALL_COMPONENTTYPES
   );
 
-  const componentTypes = data && data.componentTypes;
+  const types = (data && data.types) || [];
 
   return (
     <Grid container justify="center" className={classes.container}>
       <BusyOrErrorCard error={error} loading={loading} />
-      {componentTypes &&
-        componentTypes.edges.map((c, index) => {
-          if (!c || !c.node) return null;
-          const component = c.node;
-          return (
-            <Draggable
-              key={c && c.node && c.node.id}
-              draggableId={component.id}
-              index={index}
-            >
-              {(provided, snapshot) => (
-                <Grid
-                  item
-                  key={component.id}
-                  ref={provided.innerRef}
-                  {...provided.draggableProps}
-                  {...provided.dragHandleProps}
-                >
-                  <Card square className={classes.item}>
-                    <CardContent>
-                      <Typography color="textSecondary" gutterBottom>
-                        {component.name}
-                      </Typography>
-                      <Icon>{component.icon}</Icon>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              )}
-            </Draggable>
-          );
-        })}
+      {types.map((component, index) => {
+        return (
+          <Draggable
+            key={component.id}
+            draggableId={component.id}
+            index={index}
+          >
+            {(provided, snapshot) => (
+              <Grid
+                item
+                key={component.id}
+                ref={provided.innerRef}
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+              >
+                <Card square className={classes.item}>
+                  <CardContent>
+                    <Typography color="textSecondary" gutterBottom>
+                      {component.name}
+                    </Typography>
+                    <Icon>{component.icon}</Icon>
+                  </CardContent>
+                </Card>
+              </Grid>
+            )}
+          </Draggable>
+        );
+      })}
     </Grid>
   );
 };

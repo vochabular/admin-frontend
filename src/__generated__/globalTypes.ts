@@ -424,8 +424,8 @@ export interface api_component_arr_rel_insert_input {
  */
 export interface api_component_insert_input {
   chapter?: api_chapter_obj_rel_insert_input | null;
+  children?: api_component_arr_rel_insert_input | null;
   comments?: api_comment_arr_rel_insert_input | null;
-  componentType?: api_componenttype_obj_rel_insert_input | null;
   created?: any | null;
   data?: string | null;
   fk_chapter_id?: any | null;
@@ -435,9 +435,10 @@ export interface api_component_insert_input {
   id?: any | null;
   lockedByUser?: api_profile_obj_rel_insert_input | null;
   locked_ts?: any | null;
-  parentComponent?: api_component_obj_rel_insert_input | null;
+  parent?: api_component_obj_rel_insert_input | null;
   state?: string | null;
   texts?: api_text_arr_rel_insert_input | null;
+  type?: api_componenttype_obj_rel_insert_input | null;
   updated?: any | null;
 }
 
@@ -458,16 +459,26 @@ export interface api_component_on_conflict {
 }
 
 /**
+ * input type for inserting array relation for remote table "api_componenttype"
+ */
+export interface api_componenttype_arr_rel_insert_input {
+  data: api_componenttype_insert_input[];
+  on_conflict?: api_componenttype_on_conflict | null;
+}
+
+/**
  * input type for inserting data into table "api_componenttype"
  */
 export interface api_componenttype_insert_input {
   base?: boolean | null;
+  children?: api_componenttype_arr_rel_insert_input | null;
   created?: any | null;
   fk_parent_type_id?: any | null;
   icon?: string | null;
   id?: any | null;
   label?: string | null;
   name?: string | null;
+  parent?: api_componenttype_obj_rel_insert_input | null;
   schema?: string | null;
   updated?: any | null;
 }

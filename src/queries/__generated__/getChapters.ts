@@ -23,6 +23,13 @@ export interface getChapters_chapters_subChapters {
   description: string;
 }
 
+export interface getChapters_chapters_components_type {
+  __typename: "api_componenttype";
+  id: any;
+  name: string;
+  icon: string;
+}
+
 export interface getChapters_chapters_components_texts_translations {
   __typename: "api_translation";
   id: any;
@@ -43,6 +50,10 @@ export interface getChapters_chapters_components {
   id: any;
   data: string;
   state: string;
+  /**
+   * An object relationship
+   */
+  type: getChapters_chapters_components_type;
   /**
    * An array relationship
    */

@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 
 export const COMPONENT_TYPE_FRAGMENT = gql`
-  fragment ComponentTypeParts on ComponentTypeType {
+  fragment ComponentTypeParts on api_componenttype {
     id
     name
     label
@@ -15,12 +15,8 @@ export const COMPONENT_TYPE_FRAGMENT = gql`
 
 export const GET_ALL_COMPONENTTYPES = gql`
   query getAllComponentTypes {
-    componentTypes {
-      edges {
-        node {
-          ...ComponentTypeParts
-        }
-      }
+    types: api_componenttype {
+      ...ComponentTypeParts
     }
   }
   ${COMPONENT_TYPE_FRAGMENT}
