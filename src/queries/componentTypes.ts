@@ -15,7 +15,7 @@ export const COMPONENT_TYPE_FRAGMENT = gql`
 
 export const GET_ALL_COMPONENTTYPES = gql`
   query getAllComponentTypes {
-    types: api_componenttype {
+    types: api_componenttype(where: { fk_parent_type_id: { _is_null: true } }) {
       ...ComponentTypeParts
     }
   }

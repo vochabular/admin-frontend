@@ -68,7 +68,7 @@ export const GET_CHAPTER_BY_ID = gql`
       subChapters {
         ...ChapterHeaderParts
       }
-      components {
+      components(where: { fk_component_id: { _is_null: true } }) {
         ...ComponentParts
         children {
           ...ComponentParts

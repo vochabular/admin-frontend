@@ -1,5 +1,8 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
+import { Draggable } from "react-beautiful-dnd";
+import { useQuery } from "react-apollo-hooks";
+import classNames from "classnames";
 
 import {
   withStyles,
@@ -9,8 +12,6 @@ import {
 } from "@material-ui/core/styles";
 import { Grid, Card, Typography, CardContent, Icon } from "@material-ui/core";
 
-import { Draggable } from "react-beautiful-dnd";
-import { useQuery } from "react-apollo-hooks";
 import {
   GET_ALL_COMPONENTTYPES,
   GET_COMPONENTTYPE_BY_ID
@@ -44,6 +45,9 @@ const styles = (theme: Theme) =>
     },
     item: {
       backgroundColor: theme.palette.grey[600]
+    },
+    dragging: {
+      backgroundColor: theme.palette.grey[400]
     }
   });
 
@@ -54,7 +58,6 @@ const ComponentSelector = ({ classes }: Props) => {
     state => state.contentEditor
   );
 
-  // TODO(df): Need to query the component types, either by top level or by
   const { data, loading, error } = useQuery<
     getAllComponentTypes | getComponentTypeById
   >(
@@ -95,7 +98,13 @@ const ComponentSelector = ({ classes }: Props) => {
                 {...provided.draggableProps}
                 {...provided.dragHandleProps}
               >
-                <Card square className={classes.item}>
+                <Card
+                  square
+                  className={classNames(
+                    classes.item,
+                    snapshot.isDragging ? classes.dragging : null
+                  )}
+                >
                   <CardContent>
                     <Typography color="textSecondary" gutterBottom>
                       {component.name}
