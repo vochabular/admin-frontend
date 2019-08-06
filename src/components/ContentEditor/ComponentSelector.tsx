@@ -40,8 +40,9 @@ function isByIdResult(
 const styles = (theme: Theme) =>
   createStyles({
     container: {
-      backgroundColor: theme.palette.grey[800],
-      padding: theme.spacing(2)
+      height: "100px",
+      backgroundColor: theme.palette.grey[800]
+      //padding: theme.spacing(2)
     },
     item: {
       backgroundColor: theme.palette.grey[600]

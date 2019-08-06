@@ -1,9 +1,9 @@
 import * as React from "react";
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
+import classNames from "classnames";
 
-import { withStyles, WithStyles } from "@material-ui/core/styles";
+import { makeStyles, Theme, Grid } from "@material-ui/core";
 
-import { styles } from "styles";
 import ComponentList from "./ComponentList";
 import ComponentSelector from "./ComponentSelector";
 import { subscribeChapterById_chapter } from "queries/__generated__/subscribeChapterById";
@@ -12,6 +12,13 @@ import { TAppState } from "reducers";
 import { IContentEditorState } from "reducers/contentEditorSlice";
 
 export const TOP_LEVEL_COMPONENT_TYPE = "top-level-component";
+
+const useStyles = makeStyles((theme: Theme) => ({
+  container: {
+    backgroundColor: "grey",
+    padding: theme.spacing(2)
+  }
+}));
 
 /**
  * Is called when the drag ends. Main function that handles all the logic related to DragAndDrop
@@ -28,20 +35,14 @@ function onDragEnd(result: DropResult) {
   }
 }
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   data: subscribeChapterById_chapter;
 }
 
-const ContentEditor = ({ classes, data }: Props) => {
+const ContentEditor = ({ data }: Props) => {
+  const classes = useStyles();
   const { selectedComponent } = useSelector<TAppState, IContentEditorState>(
     state => state.contentEditor
-  );
-
-  console.log("SELECTED");
-  console.log(
-    !selectedComponent
-      ? TOP_LEVEL_COMPONENT_TYPE
-      : `${selectedComponent.type.name}-${selectedComponent.id}`
   );
 
   return (
@@ -69,14 +70,18 @@ const ContentEditor = ({ classes, data }: Props) => {
         type={TOP_LEVEL_COMPONENT_TYPE}
       >
         {(provided, snapshot) => (
-          <div ref={provided.innerRef} {...provided.droppableProps}>
+          <Grid
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            className={classNames(classes.container)}
+          >
             <ComponentList components={data.components || []} level={0} />
             {provided.placeholder}
-          </div>
+          </Grid>
         )}
       </Droppable>
     </DragDropContext>
   );
 };
 
-export default withStyles(styles, { withTheme: true })(ContentEditor);
+export default ContentEditor;

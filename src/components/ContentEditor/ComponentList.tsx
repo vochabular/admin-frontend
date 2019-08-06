@@ -21,7 +21,7 @@ interface Props {
  */
 const ComponentList = React.memo<Props>(({ level, components }) => {
   return (
-    <List>
+    <List style={{ flex: 1 }}>
       {/* TODO(df): Extract logic into this componentHeader */}
       {/*<ComponentHeader /> */}
       {components.map(

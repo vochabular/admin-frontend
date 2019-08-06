@@ -55,7 +55,7 @@ const SubChapterDetail = ({ classes, data }: Props) => {
   );
   return (
     <React.Fragment>
-      <Section titleComponent={title} greyScale={600}>
+      <Section titleComponent={title} greyScale={700}>
         <Grid container>
           <Grid item xs={12} sm={9}>
             <ContentEditor data={data} />
