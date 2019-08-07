@@ -6,7 +6,6 @@ import { Theme } from "@material-ui/core/styles";
 import { DragHandle, Clear } from "@material-ui/icons";
 import { IconButton, Icon, Typography, Grid } from "@material-ui/core";
 
-import { styles } from "styles";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { useDispatch, useSelector } from "react-redux";
 import { actions, IContentEditorState } from "reducers/contentEditorSlice";
@@ -22,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginBottom: theme.spacing(2)
   },
   selected: {
-    borderColor: "red"
+    borderColor: theme.palette.primary.light
   }
 }));
 
@@ -68,7 +67,11 @@ const BaseComponent = ({ level, index, data }: Props) => {
   };
 
   return (
-    <Draggable draggableId={data.id} index={index}>
+    <Draggable
+      draggableId={data.id}
+      index={index}
+      disableInteractiveElementBlocking
+    >
       {(provided, snapshot) => (
         <Grid
           container
@@ -112,6 +115,7 @@ const BaseComponent = ({ level, index, data }: Props) => {
                   style={{ padding: 20 }}
                 >
                   <ComponentList components={data.children} level={level + 1} />
+                  {provided.placeholder}
                 </Grid>
               )}
             </Droppable>

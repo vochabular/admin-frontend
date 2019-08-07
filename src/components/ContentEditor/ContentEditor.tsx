@@ -16,7 +16,7 @@ export const TOP_LEVEL_COMPONENT_TYPE = "top-level-component";
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
     backgroundColor: "grey",
-    padding: theme.spacing(2)
+    padding: theme.spacing(5)
   }
 }));
 
