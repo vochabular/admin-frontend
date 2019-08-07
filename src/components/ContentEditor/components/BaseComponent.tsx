@@ -64,7 +64,6 @@ const BaseComponent = ({ level, index, data }: Props) => {
   const handleOnComponentUnselectClick = (event: any) => {
     event.stopPropagation();
     event.preventDefault();
-    console.log(event);
     unselectComponent();
   };
 

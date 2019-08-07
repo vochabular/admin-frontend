@@ -1,15 +1,15 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { Draggable } from "react-beautiful-dnd";
+import {
+  Draggable,
+  DraggableProvided,
+  DraggableStateSnapshot
+} from "react-beautiful-dnd";
 import { useQuery } from "react-apollo-hooks";
 import classNames from "classnames";
+import styled from "styled-components";
 
-import {
-  withStyles,
-  WithStyles,
-  Theme,
-  createStyles
-} from "@material-ui/core/styles";
+import { Theme, makeStyles } from "@material-ui/core/styles";
 import { Grid, Card, Typography, CardContent, Icon } from "@material-ui/core";
 
 import {
@@ -28,6 +28,78 @@ import {
   getComponentTypeById_type_children
 } from "queries/__generated__/getComponentTypeById";
 
+const useStyles = makeStyles((theme: Theme) => ({
+  container: {
+    height: "100px",
+    backgroundColor: theme.palette.grey[800]
+    //padding: theme.spacing(2)
+  },
+  item: {
+    backgroundColor: theme.palette.grey[600]
+  },
+  dragging: {
+    backgroundColor: theme.palette.grey[400]
+  }
+}));
+
+const Clone = styled.div`
+  ~ div {
+    transform: none !important;
+  }
+`;
+
+type ComponentTypeItemProps = {
+  item: getComponentTypeById_type_children;
+  provided?: DraggableProvided;
+  snapshot?: DraggableStateSnapshot;
+};
+
+const ComponentTypeItem = ({
+  item,
+  provided,
+  snapshot
+}: ComponentTypeItemProps) => {
+  const classes = useStyles();
+
+  const content = (
+    <Card
+      square
+      className={classNames(
+        classes.item,
+        snapshot && snapshot.isDragging ? classes.dragging : null
+      )}
+    >
+      <CardContent>
+        <Typography color="textSecondary" gutterBottom>
+          {item.name}
+        </Typography>
+        <Icon>{item.icon}</Icon>
+      </CardContent>
+    </Card>
+  );
+
+  if (provided) {
+    return (
+      <Grid
+        item
+        key={item.id}
+        ref={provided.innerRef}
+        {...provided.draggableProps}
+        {...provided.dragHandleProps}
+      >
+        {content}
+      </Grid>
+    );
+  }
+  return (
+    <Clone>
+      <Grid item key={`${item.id}-2`}>
+        {content}
+      </Grid>
+    </Clone>
+  );
+};
+
 /**
  * A user-defined type-guard: See here: https://www.typescriptlang.org/docs/handbook/advanced-types.html
  */
@@ -37,24 +109,10 @@ function isByIdResult(
   return (result as getComponentTypeById).type !== undefined;
 }
 
-const styles = (theme: Theme) =>
-  createStyles({
-    container: {
-      height: "100px",
-      backgroundColor: theme.palette.grey[800]
-      //padding: theme.spacing(2)
-    },
-    item: {
-      backgroundColor: theme.palette.grey[600]
-    },
-    dragging: {
-      backgroundColor: theme.palette.grey[400]
-    }
-  });
+interface Props {}
 
-interface Props extends WithStyles<typeof styles> {}
-
-const ComponentSelector = ({ classes }: Props) => {
+const ComponentSelector = ({  }: Props) => {
+  const classes = useStyles();
   const { selectedComponent } = useSelector<TAppState, IContentEditorState>(
     state => state.contentEditor
   );
@@ -92,28 +150,18 @@ const ComponentSelector = ({ classes }: Props) => {
             index={index}
           >
             {(provided, snapshot) => (
-              <Grid
-                item
-                key={component.id}
-                ref={provided.innerRef}
-                {...provided.draggableProps}
-                {...provided.dragHandleProps}
-              >
-                <Card
-                  square
-                  className={classNames(
-                    classes.item,
-                    snapshot.isDragging ? classes.dragging : null
-                  )}
-                >
-                  <CardContent>
-                    <Typography color="textSecondary" gutterBottom>
-                      {component.name}
-                    </Typography>
-                    <Icon>{component.icon}</Icon>
-                  </CardContent>
-                </Card>
-              </Grid>
+              <>
+                <ComponentTypeItem
+                  item={component}
+                  provided={provided}
+                  snapshot={snapshot}
+                />
+                {/* react-beautiful-dnd unfortunately does not support Copy & Clone. 
+                See here for the workaround with this "Clone": 
+                https://github.com/atlassian/react-beautiful-dnd/issues/216#issuecomment-423708497  
+                */}
+                {snapshot.isDragging && <ComponentTypeItem item={component} />}
+              </>
             )}
           </Draggable>
         );
@@ -122,4 +170,4 @@ const ComponentSelector = ({ classes }: Props) => {
   );
 };
 
-export default withStyles(styles, { withTheme: true })(ComponentSelector);
+export default ComponentSelector;
