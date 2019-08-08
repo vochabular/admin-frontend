@@ -65,6 +65,10 @@ export const GET_CHAPTERS = gql`
 export const GET_CHAPTER_BY_ID = gql`
   subscription subscribeChapterById($id: uuid!) {
     chapter: api_chapter_by_pk(id: $id) {
+      ...ChapterHeaderParts
+      subChapters {
+        ...ChapterHeaderParts
+      }
       components(
         where: { fk_component_id: { _is_null: true } }
         order_by: { order_in_chapter: asc }
