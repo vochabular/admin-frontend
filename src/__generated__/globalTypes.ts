@@ -83,6 +83,7 @@ export enum api_comment_update_column {
  */
 export enum api_component_constraint {
   api_component_pkey = "api_component_pkey",
+  ordered_list_null = "ordered_list_null",
 }
 
 /**
@@ -97,6 +98,7 @@ export enum api_component_update_column {
   fk_locked_by_id = "fk_locked_by_id",
   id = "id",
   locked_ts = "locked_ts",
+  order_in_chapter = "order_in_chapter",
   state = "state",
   updated = "updated",
 }
@@ -435,6 +437,7 @@ export interface api_component_insert_input {
   id?: any | null;
   lockedByUser?: api_profile_obj_rel_insert_input | null;
   locked_ts?: any | null;
+  order_in_chapter?: number | null;
   parent?: api_component_obj_rel_insert_input | null;
   state?: string | null;
   texts?: api_text_arr_rel_insert_input | null;

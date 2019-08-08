@@ -50,6 +50,7 @@ export interface getChapters_chapters_components {
   id: any;
   data: string;
   state: string;
+  position: number | null;
   /**
    * An object relationship
    */

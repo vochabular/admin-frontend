@@ -33,6 +33,7 @@ export interface ComponentParts {
   id: any;
   data: string;
   state: string;
+  position: number | null;
   /**
    * An object relationship
    */
