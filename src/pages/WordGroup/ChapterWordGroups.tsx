@@ -2,7 +2,7 @@ import * as React from "react";
 import {useTranslation} from "react-i18next";
 
 import {withStyles, WithStyles} from "@material-ui/core/styles";
-import {useQuery} from "react-apollo-hooks";
+import {useQuery} from "@apollo/react-hooks";
 import {RouteComponentProps} from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import AddIcon from "@material-ui/icons/Add";

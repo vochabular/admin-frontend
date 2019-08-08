@@ -1,9 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { ApolloProvider } from "react-apollo";
-import { ApolloProvider as ApolloHooksProvider } from "react-apollo-hooks";
 import * as Sentry from "@sentry/browser";
 import { Provider } from "react-redux";
+import { ApolloProvider } from "@apollo/react-hooks";
 
 import { ThemeProvider } from "@material-ui/styles";
 
@@ -40,13 +39,11 @@ ReactDOM.render(
       onRedirectCallback={onRedirectCallback}
     >
       <ApolloProvider client={apolloClient}>
-        <ApolloHooksProvider client={apolloClient}>
-          <ThemeProvider theme={theme}>
-            <Router history={myHistory}>
-              <App />
-            </Router>
-          </ThemeProvider>
-        </ApolloHooksProvider>
+        <ThemeProvider theme={theme}>
+          <Router history={myHistory}>
+            <App />
+          </Router>
+        </ThemeProvider>
       </ApolloProvider>
     </AuthProvider>
   </Provider>,

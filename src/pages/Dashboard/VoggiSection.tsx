@@ -1,5 +1,5 @@
 import React from "react";
-import { useSubscription } from "react-apollo-hooks";
+import { useSubscription } from "@apollo/react-hooks";
 
 import { withStyles, WithStyles } from "@material-ui/styles";
 import Grid from "@material-ui/core/Grid";

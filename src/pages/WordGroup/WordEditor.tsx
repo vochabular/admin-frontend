@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import * as Yup from "yup";
 import { Formik, Form, Field, FormikActions } from "formik";
 import { TextField } from "formik-material-ui";
-import { useMutation } from "react-apollo-hooks";
+import { useMutation } from "@apollo/react-hooks";
 
 import { withStyles, WithStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";

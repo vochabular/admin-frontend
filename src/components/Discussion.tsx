@@ -16,7 +16,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Comment from "./Comment";
 import { Divider, TextField, Button, Grid } from "@material-ui/core";
 import { subscribeAllComments_comments } from "queries/__generated__/subscribeAllComments";
-import { useMutation } from "react-apollo-hooks";
+import { useMutation } from "@apollo/react-hooks";
 import {
   CREATE_COMMENT,
   RESOLVE_COMMENT,
