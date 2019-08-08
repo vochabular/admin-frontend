@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { withStyles, WithStyles } from "@material-ui/core/styles";
-import { useQuery } from "react-apollo-hooks";
+import { useQuery } from "@apollo/react-hooks";
 import { RouteComponentProps } from "react-router-dom";
 import AddIcon from "@material-ui/icons/Add";
 

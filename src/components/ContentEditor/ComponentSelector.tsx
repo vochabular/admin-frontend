@@ -9,7 +9,7 @@ import {
 import { Grid, Card, Typography, CardContent, Icon } from "@material-ui/core";
 
 import { Draggable } from "react-beautiful-dnd";
-import { useQuery } from "react-apollo-hooks";
+import { useQuery } from "@apollo/react-hooks";
 import { GET_ALL_COMPONENTTYPES } from "queries/componentTypes";
 import BusyOrErrorCard from "components/BusyOrErrorCard";
 import { getAllComponentTypes } from "queries/__generated__/getAllComponentTypes";
