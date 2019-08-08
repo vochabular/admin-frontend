@@ -5,7 +5,7 @@ import {
   DraggableProvided,
   DraggableStateSnapshot
 } from "react-beautiful-dnd";
-import { useQuery } from "react-apollo-hooks";
+import { useQuery } from "@apollo/react-hooks";
 import classNames from "classnames";
 import styled from "styled-components";
 
