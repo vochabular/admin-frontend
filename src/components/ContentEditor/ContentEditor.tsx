@@ -20,21 +20,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-/**
- * Is called when the drag ends. Main function that handles all the logic related to DragAndDrop
- */
-function onDragEnd(result: DropResult) {
-  // If dropped outside of the list
-  if (!result.destination) {
-    return;
-  }
-
-  // Do nothing if dropped at the same spot
-  if (result.destination.index === result.source.index) {
-    return;
-  }
-}
-
 interface Props {
   data: subscribeChapterById_chapter;
 }
@@ -44,6 +29,21 @@ const ContentEditor = ({ data }: Props) => {
   const { selectedComponent } = useSelector<TAppState, IContentEditorState>(
     state => state.contentEditor
   );
+
+  /**
+   * Is called when the drag ends. Main function that handles all the logic related to DragAndDrop
+   */
+  function onDragEnd(result: DropResult) {
+    // If dropped outside of the list
+    if (!result.destination) {
+      return;
+    }
+
+    // Do nothing if dropped at the same spot
+    if (result.destination.index === result.source.index) {
+      return;
+    }
+  }
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
