@@ -1,6 +1,7 @@
 import * as React from "react";
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import classNames from "classnames";
+import { useMutation } from "@apollo/react-hooks";
 
 import { makeStyles, Theme, Grid } from "@material-ui/core";
 
@@ -10,6 +11,7 @@ import { subscribeChapterById_chapter } from "queries/__generated__/subscribeCha
 import { useSelector } from "react-redux";
 import { TAppState } from "reducers";
 import { IContentEditorState } from "reducers/contentEditorSlice";
+import { CREATE_COMPONENT, UPDATE_COMPONENT } from "queries/component";
 
 export const TOP_LEVEL_COMPONENT_TYPE = "top-level-component";
 
@@ -30,6 +32,16 @@ const ContentEditor = ({ data }: Props) => {
     state => state.contentEditor
   );
 
+  const [
+    createComponent,
+    { loading: createLoading, error: createError }
+  ] = useMutation(CREATE_COMPONENT);
+
+  const [
+    updateComponent,
+    { loading: updateLoading, error: updateError }
+  ] = useMutation(UPDATE_COMPONENT);
+
   /**
    * Is called when the drag ends. Main function that handles all the logic related to DragAndDrop
    */
@@ -42,6 +54,36 @@ const ContentEditor = ({ data }: Props) => {
     // Do nothing if dropped at the same spot
     if (result.destination.index === result.source.index) {
       return;
+    }
+
+    // INSERT: When the source is the component-selector-<id>, then its actually a creation of a new component
+    if (result.source.droppableId.startsWith("component-selector-")) {
+      createComponent({
+        variables: {
+          input: {
+            fk_chapter_id: data.id,
+            fk_component_id:
+              (selectedComponent && selectedComponent.id) || null,
+            fk_component_type_id: result.draggableId,
+            data: "ABCD",
+            order_in_chapter: result.destination.index + 1,
+            state: "C",
+            locked_ts: new Date()
+          }
+        }
+      });
+    }
+
+    // UPDATE: When the source is within the component list (any level), then it must be an update of a component
+    else if (result.source.droppableId.startsWith("component-list-")) {
+      updateComponent({
+        variables: {
+          id: result.draggableId,
+          data: {
+            order_in_chapter: result.destination.index + 1
+          }
+        }
+      });
     }
   }
 

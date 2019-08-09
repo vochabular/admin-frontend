@@ -11,7 +11,7 @@
  */
 export enum ProfileLanguage {
   DE = "DE",
-  EN = "EN"
+  EN = "EN",
 }
 
 /**
@@ -21,7 +21,7 @@ export enum api_chapter_constraint {
   api_chapter_pkey = "api_chapter_pkey",
   api_chapter_titleCH_key = "api_chapter_titleCH_key",
   api_chapter_titleDE_key = "api_chapter_titleDE_key",
-  api_chapter_titleDE_number_ffcac7a1_uniq = "api_chapter_titleDE_number_ffcac7a1_uniq"
+  api_chapter_titleDE_number_ffcac7a1_uniq = "api_chapter_titleDE_number_ffcac7a1_uniq",
 }
 
 /**
@@ -29,7 +29,7 @@ export enum api_chapter_constraint {
  */
 export enum api_chapter_languages_constraint {
   api_chapter_languages_chapter_id_language_id_27c00225_uniq = "api_chapter_languages_chapter_id_language_id_27c00225_uniq",
-  api_chapter_languages_pkey = "api_chapter_languages_pkey"
+  api_chapter_languages_pkey = "api_chapter_languages_pkey",
 }
 
 /**
@@ -38,7 +38,7 @@ export enum api_chapter_languages_constraint {
 export enum api_chapter_languages_update_column {
   chapter_id = "chapter_id",
   id = "id",
-  language_id = "language_id"
+  language_id = "language_id",
 }
 
 /**
@@ -52,14 +52,14 @@ export enum api_chapter_update_column {
   number = "number",
   titleCH = "titleCH",
   titleDE = "titleDE",
-  updated = "updated"
+  updated = "updated",
 }
 
 /**
  * unique or primary key constraints on table "api_comment"
  */
 export enum api_comment_constraint {
-  api_comment_pkey = "api_comment_pkey"
+  api_comment_pkey = "api_comment_pkey",
 }
 
 /**
@@ -75,7 +75,7 @@ export enum api_comment_update_column {
   id = "id",
   text = "text",
   updated = "updated",
-  written = "written"
+  written = "written",
 }
 
 /**
@@ -83,7 +83,6 @@ export enum api_comment_update_column {
  */
 export enum api_component_constraint {
   api_component_pkey = "api_component_pkey",
-  ordered_list_null = "ordered_list_null"
 }
 
 /**
@@ -100,14 +99,14 @@ export enum api_component_update_column {
   locked_ts = "locked_ts",
   order_in_chapter = "order_in_chapter",
   state = "state",
-  updated = "updated"
+  updated = "updated",
 }
 
 /**
  * unique or primary key constraints on table "api_componenttype"
  */
 export enum api_componenttype_constraint {
-  api_componenttype_pkey = "api_componenttype_pkey"
+  api_componenttype_pkey = "api_componenttype_pkey",
 }
 
 /**
@@ -122,14 +121,14 @@ export enum api_componenttype_update_column {
   label = "label",
   name = "name",
   schema = "schema",
-  updated = "updated"
+  updated = "updated",
 }
 
 /**
  * unique or primary key constraints on table "api_language"
  */
 export enum api_language_constraint {
-  api_language_pkey = "api_language_pkey"
+  api_language_pkey = "api_language_pkey",
 }
 
 /**
@@ -140,7 +139,7 @@ export enum api_language_update_column {
   created = "created",
   id = "id",
   name = "name",
-  updated = "updated"
+  updated = "updated",
 }
 
 /**
@@ -148,7 +147,7 @@ export enum api_language_update_column {
  */
 export enum api_profile_constraint {
   api_profile_pkey = "api_profile_pkey",
-  api_profile_user_id_key = "api_profile_user_id_key"
+  api_profile_user_id_key = "api_profile_user_id_key",
 }
 
 /**
@@ -166,7 +165,7 @@ export enum api_profile_update_column {
   setup_completed = "setup_completed",
   translator_languages = "translator_languages",
   updated = "updated",
-  user_id = "user_id"
+  user_id = "user_id",
 }
 
 /**
@@ -174,7 +173,7 @@ export enum api_profile_update_column {
  */
 export enum api_text_constraint {
   api_text_master_translation_id_key = "api_text_master_translation_id_key",
-  api_text_pkey = "api_text_pkey"
+  api_text_pkey = "api_text_pkey",
 }
 
 /**
@@ -186,7 +185,7 @@ export enum api_text_update_column {
   id = "id",
   master_translation_id = "master_translation_id",
   translatable = "translatable",
-  updated = "updated"
+  updated = "updated",
 }
 
 /**
@@ -194,7 +193,7 @@ export enum api_text_update_column {
  */
 export enum api_translation_constraint {
   api_translation_fk_language_id_fk_text_id_807318e5_uniq = "api_translation_fk_language_id_fk_text_id_807318e5_uniq",
-  api_translation_pkey = "api_translation_pkey"
+  api_translation_pkey = "api_translation_pkey",
 }
 
 /**
@@ -207,14 +206,14 @@ export enum api_translation_update_column {
   id = "id",
   text_field = "text_field",
   updated = "updated",
-  valid = "valid"
+  valid = "valid",
 }
 
 /**
  * unique or primary key constraints on table "api_word"
  */
 export enum api_word_constraint {
-  api_word_pkey = "api_word_pkey"
+  api_word_pkey = "api_word_pkey",
 }
 
 /**
@@ -223,14 +222,14 @@ export enum api_word_constraint {
 export enum api_word_update_column {
   created = "created",
   id = "id",
-  updated = "updated"
+  updated = "updated",
 }
 
 /**
  * unique or primary key constraints on table "api_wordgroup"
  */
 export enum api_wordgroup_constraint {
-  api_wordgroup_pkey = "api_wordgroup_pkey"
+  api_wordgroup_pkey = "api_wordgroup_pkey",
 }
 
 /**
@@ -242,7 +241,7 @@ export enum api_wordgroup_update_column {
   id = "id",
   title_ch = "title_ch",
   title_de = "title_de",
-  updated = "updated"
+  updated = "updated",
 }
 
 /**
@@ -250,7 +249,7 @@ export enum api_wordgroup_update_column {
  */
 export enum api_wordgroup_words_constraint {
   api_wordgroup_words_pkey = "api_wordgroup_words_pkey",
-  api_wordgroup_words_wordgroup_id_word_id_aebfaecb_uniq = "api_wordgroup_words_wordgroup_id_word_id_aebfaecb_uniq"
+  api_wordgroup_words_wordgroup_id_word_id_aebfaecb_uniq = "api_wordgroup_words_wordgroup_id_word_id_aebfaecb_uniq",
 }
 
 /**
@@ -259,14 +258,14 @@ export enum api_wordgroup_words_constraint {
 export enum api_wordgroup_words_update_column {
   id = "id",
   word_id = "word_id",
-  wordgroup_id = "wordgroup_id"
+  wordgroup_id = "wordgroup_id",
 }
 
 /**
  * unique or primary key constraints on table "api_wordtranslation"
  */
 export enum api_wordtranslation_constraint {
-  api_wordtranslation_pkey = "api_wordtranslation_pkey"
+  api_wordtranslation_pkey = "api_wordtranslation_pkey",
 }
 
 /**
@@ -280,7 +279,7 @@ export enum api_wordtranslation_update_column {
   id = "id",
   text = "text",
   updated = "updated",
-  word_id = "word_id"
+  word_id = "word_id",
 }
 
 export interface ProfileInput {
@@ -459,6 +458,23 @@ export interface api_component_obj_rel_insert_input {
 export interface api_component_on_conflict {
   constraint: api_component_constraint;
   update_columns: api_component_update_column[];
+}
+
+/**
+ * input type for updating data in table "api_component"
+ */
+export interface api_component_set_input {
+  created?: any | null;
+  data?: string | null;
+  fk_chapter_id?: any | null;
+  fk_component_id?: any | null;
+  fk_component_type_id?: any | null;
+  fk_locked_by_id?: any | null;
+  id?: any | null;
+  locked_ts?: any | null;
+  order_in_chapter?: number | null;
+  state?: string | null;
+  updated?: any | null;
 }
 
 /**

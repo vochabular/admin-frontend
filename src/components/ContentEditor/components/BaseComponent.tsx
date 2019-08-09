@@ -12,6 +12,7 @@ import { actions, IContentEditorState } from "reducers/contentEditorSlice";
 import { subscribeChapterById_chapter_components } from "queries/__generated__/subscribeChapterById";
 import ComponentList from "../ComponentList";
 import { TAppState } from "reducers";
+import ComponentHeader from "./ComponentHeader";
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -86,18 +87,7 @@ const BaseComponent = ({ level, index, data }: Props) => {
           )}
           onClick={handleOnComponentClick}
         >
-          <Grid item container spacing={1} xs={12} justify="space-between">
-            <IconButton {...provided.dragHandleProps}>
-              <DragHandle />
-            </IconButton>
-            <Icon>{data.type.icon}</Icon>
-            <Typography>{data.data}</Typography>
-            {isSelected ? (
-              <IconButton onClick={handleOnComponentUnselectClick}>
-                <Clear />
-              </IconButton>
-            ) : null}
-          </Grid>
+          <ComponentHeader data={data} provided={provided} />
 
           {data.children.length ? (
             // <Grid item container style={{ padding: 16 }} alignItems="stretch">
