@@ -1,6 +1,6 @@
 import * as React from "react";
 import { RouteComponentProps, Redirect } from "react-router-dom";
-import { useSubscription } from "react-apollo-hooks";
+import { useSubscription } from "@apollo/react-hooks";
 import { useTranslation } from "react-i18next";
 
 import { withStyles, WithStyles } from "@material-ui/core/styles";

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useMutation, useSubscription } from "react-apollo-hooks";
+import { useMutation, useSubscription } from "@apollo/react-hooks";
 import { getOperationName, DocumentNode } from "apollo-link";
 import { useSelector } from "react-redux";
 

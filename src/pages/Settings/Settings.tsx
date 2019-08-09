@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import * as Yup from "yup";
-import { useQuery, useMutation } from "react-apollo-hooks";
+import { useQuery, useMutation } from "@apollo/react-hooks";
 import { Form, Formik, FormikActions } from "formik";
 
 import { withStyles, WithStyles } from "@material-ui/styles";
