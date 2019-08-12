@@ -45,11 +45,6 @@ const BaseComponent = ({ level, index, data }: Props) => {
     [data, dispatch]
   );
 
-  const unselectComponent = React.useCallback(
-    () => dispatch(actions.setSelectedComponent()),
-    [dispatch]
-  );
-
   const isSelected =
     (selectedComponent && selectedComponent.id === data.id) || false;
 
@@ -61,12 +56,6 @@ const BaseComponent = ({ level, index, data }: Props) => {
     selectComponent();
   };
 
-  const handleClickAway = (event: React.MouseEvent<Document, MouseEvent>) => {
-    event.stopPropagation();
-    event.preventDefault();
-    unselectComponent();
-  };
-
   return (
     <Draggable
       draggableId={data.id}
@@ -74,49 +63,44 @@ const BaseComponent = ({ level, index, data }: Props) => {
       disableInteractiveElementBlocking
     >
       {(provided, snapshot) => (
-        <ClickAwayListener onClickAway={handleClickAway}>
-          <Grid
-            container
-            direction="row"
-            alignItems="stretch"
-            ref={provided.innerRef}
-            spacing={1}
-            {...provided.draggableProps}
-            className={classNames(
-              classes.container,
-              isSelected && classes.selected
-            )}
-            onClick={handleOnComponentClick}
-          >
-            <ComponentHeader data={data} provided={provided} />
+        <Grid
+          container
+          direction="row"
+          alignItems="stretch"
+          ref={provided.innerRef}
+          spacing={1}
+          {...provided.draggableProps}
+          className={classNames(
+            classes.container,
+            isSelected && classes.selected
+          )}
+          onClick={handleOnComponentClick}
+        >
+          <ComponentHeader data={data} provided={provided} />
 
-            {data.children.length ? (
-              // <Grid item container style={{ padding: 16 }} alignItems="stretch">
-              <Droppable
-                droppableId={`component-list-${data.id}`}
-                type={`${data.type.name}-${data.id}`}
-              >
-                {(provided, snapshot) => (
-                  <Grid
-                    item
-                    container
-                    alignItems="stretch"
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                    style={{ padding: 20 }}
-                  >
-                    <ComponentList
-                      components={data.children}
-                      level={level + 1}
-                    />
-                    {provided.placeholder}
-                  </Grid>
-                )}
-              </Droppable>
-            ) : //</Grid>
-            null}
-          </Grid>
-        </ClickAwayListener>
+          {data.children.length ? (
+            // <Grid item container style={{ padding: 16 }} alignItems="stretch">
+            <Droppable
+              droppableId={`component-list-${data.id}`}
+              type={`${data.type.name}-${data.id}`}
+            >
+              {(provided, snapshot) => (
+                <Grid
+                  item
+                  container
+                  alignItems="stretch"
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  style={{ padding: 20 }}
+                >
+                  <ComponentList components={data.children} level={level + 1} />
+                  {provided.placeholder}
+                </Grid>
+              )}
+            </Droppable>
+          ) : //</Grid>
+          null}
+        </Grid>
       )}
     </Draggable>
   );
