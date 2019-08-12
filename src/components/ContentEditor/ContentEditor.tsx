@@ -65,7 +65,7 @@ const ContentEditor = ({ data }: Props) => {
             fk_component_id:
               (selectedComponent && selectedComponent.id) || null,
             fk_component_type_id: result.draggableId,
-            data: "ABCD",
+            data: "",
             order_in_chapter: result.destination.index + 1,
             state: "C",
             locked_ts: new Date()
