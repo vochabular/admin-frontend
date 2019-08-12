@@ -61,7 +61,7 @@ const BaseComponent = ({ level, index, data }: Props) => {
     selectComponent();
   };
 
-  const handleClickAway = (event: any) => {
+  const handleClickAway = (event: React.MouseEvent<Document, MouseEvent>) => {
     event.stopPropagation();
     event.preventDefault();
     unselectComponent();

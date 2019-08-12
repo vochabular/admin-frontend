@@ -55,13 +55,13 @@ const ComponentHeader = ({ provided, data }: Props) => {
     setAnchorEl(event.currentTarget);
   }
 
-  function handleClose(event: any) {
+  function handleClose(event: React.MouseEvent<HTMLElement>) {
     event.stopPropagation();
     event.preventDefault();
     setAnchorEl(null);
   }
 
-  function handleDelete(event: any) {
+  function handleDelete(event: React.MouseEvent<HTMLElement>) {
     event.stopPropagation();
     event.preventDefault();
     deleteComponent({ variables: { id: data.id } });
