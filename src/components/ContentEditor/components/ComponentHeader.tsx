@@ -1,6 +1,7 @@
 import * as React from "react";
 import classNames from "classnames";
 import { useMutation } from "@apollo/react-hooks";
+import { useDispatch } from "react-redux";
 
 import { makeStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
@@ -12,10 +13,11 @@ import {
   Menu,
   MenuItem
 } from "@material-ui/core";
+import { DragHandle, MoreVert } from "@material-ui/icons";
 
 import { subscribeChapterById_chapter_components } from "queries/__generated__/subscribeChapterById";
-import { DragHandle, MoreVert } from "@material-ui/icons";
 import { DELETE_COMPONENT } from "queries/component";
+import { actions, IContentEditorState } from "reducers/contentEditorSlice";
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -35,6 +37,12 @@ const ComponentHeader = ({ provided, data }: Props) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const dispatch = useDispatch();
+
+  const unselectComponent = React.useCallback(
+    () => dispatch(actions.setSelectedComponent()),
+    [dispatch]
+  );
 
   const [
     deleteComponent,
@@ -42,15 +50,22 @@ const ComponentHeader = ({ provided, data }: Props) => {
   ] = useMutation(DELETE_COMPONENT);
 
   function handleClick(event: React.MouseEvent<HTMLElement>) {
+    event.stopPropagation();
+    event.preventDefault();
     setAnchorEl(event.currentTarget);
   }
 
-  function handleClose() {
+  function handleClose(event: any) {
+    event.stopPropagation();
+    event.preventDefault();
     setAnchorEl(null);
   }
 
-  function handleDelete() {
+  function handleDelete(event: any) {
+    event.stopPropagation();
+    event.preventDefault();
     deleteComponent({ variables: { id: data.id } });
+    unselectComponent();
   }
 
   return (
