@@ -17,7 +17,7 @@ import { DragHandle, MoreVert } from "@material-ui/icons";
 
 import { subscribeChapterById_chapter_components } from "queries/__generated__/subscribeChapterById";
 import { DELETE_COMPONENT } from "queries/component";
-import { actions, IContentEditorState } from "reducers/contentEditorSlice";
+import { actions } from "reducers/contentEditorSlice";
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {

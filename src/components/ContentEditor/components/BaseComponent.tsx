@@ -59,7 +59,6 @@ const BaseComponent = ({ level, index, data }: Props) => {
     event.stopPropagation();
     event.preventDefault();
     selectComponent();
-    // handle
   };
 
   const handleClickAway = (event: any) => {
