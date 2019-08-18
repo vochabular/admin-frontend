@@ -1,23 +1,13 @@
 import * as React from "react";
-import classNames from "classnames";
-import { useMutation } from "@apollo/react-hooks";
-import { useDispatch } from "react-redux";
+import { useMutation, useApolloClient } from "@apollo/react-hooks";
 
 import { makeStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
-import {
-  Icon,
-  Typography,
-  Grid,
-  IconButton,
-  Menu,
-  MenuItem
-} from "@material-ui/core";
+import { Icon, Grid, IconButton, Menu, MenuItem } from "@material-ui/core";
 import { DragHandle, MoreVert } from "@material-ui/icons";
 
 import { subscribeChapterById_chapter_components } from "queries/__generated__/subscribeChapterById";
 import { DELETE_COMPONENT } from "queries/component";
-import { actions } from "reducers/contentEditorSlice";
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -35,19 +25,13 @@ interface Props {
 
 const ComponentHeader = ({ provided, data }: Props) => {
   const classes = useStyles();
+  const client = useApolloClient();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const dispatch = useDispatch();
 
-  const unselectComponent = React.useCallback(
-    () => dispatch(actions.setSelectedComponent()),
-    [dispatch]
+  const [deleteComponent, { loading: deleteLoading }] = useMutation(
+    DELETE_COMPONENT
   );
-
-  const [
-    deleteComponent,
-    { loading: deleteLoading, error: deleteError }
-  ] = useMutation(DELETE_COMPONENT);
 
   function handleClick(event: React.MouseEvent<HTMLElement>) {
     event.stopPropagation();
@@ -65,7 +49,7 @@ const ComponentHeader = ({ provided, data }: Props) => {
     event.stopPropagation();
     event.preventDefault();
     deleteComponent({ variables: { id: data.id } });
-    unselectComponent();
+    client.writeData({ data: { selectedComponentId: null } });
   }
 
   return (
@@ -74,7 +58,6 @@ const ComponentHeader = ({ provided, data }: Props) => {
         <DragHandle />
       </IconButton>
       <Icon>{data.type.icon}</Icon>
-      <Typography>{data.data}</Typography>
       <IconButton
         aria-label="more"
         aria-controls="long-menu"
@@ -90,7 +73,9 @@ const ComponentHeader = ({ provided, data }: Props) => {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleDelete}>Delete</MenuItem>
+        <MenuItem onClick={handleDelete} disabled={deleteLoading}>
+          Delete
+        </MenuItem>
         ))}
       </Menu>
     </Grid>

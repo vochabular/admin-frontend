@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useSelector } from "react-redux";
 import {
   Draggable,
   DraggableProvided,
@@ -21,12 +20,14 @@ import {
   getAllComponentTypes,
   getAllComponentTypes_types
 } from "queries/__generated__/getAllComponentTypes";
-import { TAppState } from "reducers";
-import { IContentEditorState } from "reducers/contentEditorSlice";
 import {
   getComponentTypeById,
   getComponentTypeById_type_children
 } from "queries/__generated__/getComponentTypeById";
+import {
+  GET_LOCAL_SELECTED_COMPONENT_ID,
+  GET_SELECTED_COMPONENT
+} from "queries/component";
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -109,14 +110,20 @@ function isByIdResult(
   return (result as getComponentTypeById).type !== undefined;
 }
 
-interface Props {}
-
-const ComponentSelector = ({  }: Props) => {
+const ComponentSelector = () => {
   const classes = useStyles();
-  const { selectedComponent } = useSelector<TAppState, IContentEditorState>(
-    state => state.contentEditor
-  );
 
+  const { data: selectedComponentIdData } = useQuery(
+    GET_LOCAL_SELECTED_COMPONENT_ID
+  );
+  const { selectedComponentId = undefined } = selectedComponentIdData || {};
+  const { data: selectedComponentData } = useQuery(GET_SELECTED_COMPONENT, {
+    skip: !selectedComponentId
+  });
+  const { component: selectedComponent = undefined } =
+    selectedComponentData || {};
+
+  // Get either the top level components or
   const { data, loading, error } = useQuery<
     getAllComponentTypes | getComponentTypeById
   >(

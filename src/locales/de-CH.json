@@ -40,6 +40,9 @@
     "newChapterLanguageHelper": "Das Kapitel ist in diesen Sprachen verfügbar.",
     "nWordGroups": "# Wortgruppen: "
   },
+  "chapterEditor": {
+    "settingsTitle": "Konfiguration für "
+  },
   "voggi": {
     "voggiList": "Voggi-Liste"
   },

@@ -1,17 +1,19 @@
 import * as React from "react";
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import classNames from "classnames";
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation, useApolloClient, useQuery } from "@apollo/react-hooks";
 
-import { makeStyles, Theme, Grid } from "@material-ui/core";
+import { makeStyles, Theme, Grid, CircularProgress } from "@material-ui/core";
 
 import ComponentList from "./ComponentList";
 import ComponentSelector from "./ComponentSelector";
 import { subscribeChapterById_chapter } from "queries/__generated__/subscribeChapterById";
-import { useSelector, useDispatch } from "react-redux";
-import { TAppState } from "reducers";
-import { IContentEditorState, actions } from "reducers/contentEditorSlice";
-import { CREATE_COMPONENT, UPDATE_COMPONENT } from "queries/component";
+import {
+  CREATE_COMPONENT,
+  UPDATE_COMPONENT,
+  GET_SELECTED_COMPONENT,
+  GET_LOCAL_SELECTED_COMPONENT_ID
+} from "queries/component";
 import Settings from "./Settings";
 
 export const TOP_LEVEL_COMPONENT_TYPE = "top-level-component";
@@ -29,25 +31,27 @@ interface Props {
 
 const ContentEditor = ({ data }: Props) => {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const { selectedComponent } = useSelector<TAppState, IContentEditorState>(
-    state => state.contentEditor
+  const client = useApolloClient();
+
+  const { data: selectedComponentIdData } = useQuery(
+    GET_LOCAL_SELECTED_COMPONENT_ID
   );
 
-  const unselectComponent = React.useCallback(
-    () => dispatch(actions.setSelectedComponent()),
-    [dispatch]
+  const { selectedComponentId } = selectedComponentIdData;
+
+  const { data: selectedComponentData } = useQuery(GET_SELECTED_COMPONENT, {
+    skip: !selectedComponentId
+  });
+
+  const { selectedComponent = undefined } = selectedComponentData || {};
+
+  const [createComponent, { loading: createLoading }] = useMutation(
+    CREATE_COMPONENT
   );
 
-  const [
-    createComponent,
-    { loading: createLoading, error: createError }
-  ] = useMutation(CREATE_COMPONENT);
-
-  const [
-    updateComponent,
-    { loading: updateLoading, error: updateError }
-  ] = useMutation(UPDATE_COMPONENT);
+  const [updateComponent, { loading: updateLoading }] = useMutation(
+    UPDATE_COMPONENT
+  );
 
   /**
    * Is called when the drag ends. Main function that handles all the logic related to DragAndDrop
@@ -99,7 +103,7 @@ const ContentEditor = ({ data }: Props) => {
   ) => {
     event.stopPropagation();
     event.preventDefault();
-    unselectComponent();
+    client.writeData({ data: { selectedComponentId: null } });
   };
 
   return (
@@ -134,13 +138,14 @@ const ContentEditor = ({ data }: Props) => {
               className={classNames(classes.container)}
               onClick={handleClickAway}
             >
+              {createLoading || updateLoading ? <CircularProgress /> : null}
               <ComponentList components={data.components || []} level={0} />
               {provided.placeholder}
+              <Settings />
             </Grid>
           )}
         </Droppable>
       </DragDropContext>
-      <Settings />
     </>
   );
 };

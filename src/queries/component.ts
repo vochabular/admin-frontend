@@ -1,4 +1,26 @@
 import gql from "graphql-tag";
+import { COMPONENT_PART } from "./chapters";
+
+export const GET_LOCAL_SELECTED_COMPONENT_ID = gql`
+  query getSelectedComponentId {
+    selectedComponentId @client
+  }
+`;
+
+/**
+ * Local query (would replace redux...):
+ * https://www.apollographql.com/docs/react/essentials/local-state/
+ * Especially, "Using @client fields as variables"!
+ */
+export const GET_SELECTED_COMPONENT = gql`
+  query getSelectedComponent($id: uuid!) {
+    selectedComponentId @client @export(as: "id")
+    component: api_component_by_pk(id: $id) {
+      ...ComponentParts @client
+    }
+  }
+  ${COMPONENT_PART}
+`;
 
 export const CREATE_COMPONENT = gql`
   mutation createComponent($input: api_component_insert_input!) {

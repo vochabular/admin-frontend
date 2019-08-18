@@ -1,9 +1,7 @@
 import * as React from "react";
 
-import { withStyles, WithStyles } from "@material-ui/core/styles";
 import { Grid, Typography } from "@material-ui/core";
 
-import { styles } from "styles";
 import ContentEditor from "components/ContentEditor/ContentEditor";
 import Section from "components/Section";
 import { useTranslation } from "react-i18next";
@@ -11,14 +9,14 @@ import TimestampAgo from "components/TimestampAgo";
 import CommentsWidget from "pages/Chapter/CommentsWidget";
 import { subscribeChapterById_chapter } from "queries/__generated__/subscribeChapterById";
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   data: subscribeChapterById_chapter;
 }
 
 /**
  * The subchapter Editor. Depending on the role, should display different "functionality"
  */
-const SubChapterDetail = ({ classes, data }: Props) => {
+const SubChapterDetail = ({ data }: Props) => {
   const { t } = useTranslation();
 
   const { titleCH, titleDE, updated } = data;
@@ -54,7 +52,7 @@ const SubChapterDetail = ({ classes, data }: Props) => {
     </Grid>
   );
   return (
-    <React.Fragment>
+    <>
       <Section titleComponent={title} greyScale={700}>
         <Grid container>
           <Grid item xs={12} sm={9}>
@@ -65,8 +63,8 @@ const SubChapterDetail = ({ classes, data }: Props) => {
           </Grid>
         </Grid>
       </Section>
-    </React.Fragment>
+    </>
   );
 };
 
-export default withStyles(styles, { withTheme: true })(SubChapterDetail);
+export default SubChapterDetail;
