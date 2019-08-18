@@ -8,6 +8,7 @@ import { DragHandle, MoreVert } from "@material-ui/icons";
 
 import { subscribeChapterById_chapter_components } from "queries/__generated__/subscribeChapterById";
 import { DELETE_COMPONENT } from "queries/component";
+import Text from "components/Text";
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -74,7 +75,7 @@ const ComponentHeader = ({ provided, data }: Props) => {
         onClose={handleClose}
       >
         <MenuItem onClick={handleDelete} disabled={deleteLoading}>
-          Delete
+          <Text>delete</Text>
         </MenuItem>
         ))}
       </Menu>
