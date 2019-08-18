@@ -1,6 +1,10 @@
-// import gql from "graphql-tag";
+import gql from "graphql-tag";
 
-export const typeDefs = ``;
+export const typeDefs = gql`
+  extend type query_root {
+    selectedComponentId: uuid!
+  }
+`;
 export const resolvers = {};
 
 /*
