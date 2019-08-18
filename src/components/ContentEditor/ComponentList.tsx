@@ -7,12 +7,13 @@ import { subscribeChapterById_chapter_components } from "queries/__generated__/s
 import TitleComponent from "./components/TitleComponent";
 import { useQuery } from "@apollo/react-hooks";
 import { GET_LOCAL_SELECTED_COMPONENT_ID } from "queries/component";
+import TextComponent from "./components/TextComponent";
 
 // This defines a mapping of component type names to the React Component, used then to render the content and the settings
 export const componentTypes: { [key: string]: any } = {
   default: BaseComponent,
   Title: TitleComponent,
-  Text: BaseComponent,
+  Text: TextComponent,
   Dialogue: BaseComponent
 };
 

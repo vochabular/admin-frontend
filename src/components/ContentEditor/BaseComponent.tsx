@@ -1,6 +1,7 @@
 import * as React from "react";
 import classNames from "classnames";
 import { Draggable, Droppable } from "react-beautiful-dnd";
+import { FormikActions } from "formik";
 
 import { makeStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
@@ -12,10 +13,31 @@ import ComponentHeader from "./ComponentHeader";
 import Text from "components/Text";
 import { useApolloClient } from "@apollo/react-hooks";
 
+export interface BaseSettingsProps {
+  /**
+   * A callable that should be called by Formik on submit
+   */
+  onSubmit: (values: any, actions: FormikActions<any>) => void;
+  /**
+   * Contains the value of the component's configuration values
+   */
+  data: string;
+}
+
 /**
  * Default that should get rendered in the settings widget
  */
-export const BaseSettings = () => <Text>Not yet implemented!</Text>;
+export const BaseSettings = React.forwardRef<any, BaseSettingsProps>(
+  (props, ref) => {
+    console.warn("This component's setting widget is not yet implemented!");
+    return (
+      <>
+        <Text>Not yet implemented!</Text>
+        <Text translate={false}>Data: {props.data}</Text>
+      </>
+    );
+  }
+);
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -40,6 +62,9 @@ export interface BaseComponentProps {
   selectedComponentId: string;
 }
 
+/**
+ * Base component which is a draggable which also renders the "preview" of the component (defined in the component type's implementation)
+ */
 const BaseComponent = ({
   level,
   index,
