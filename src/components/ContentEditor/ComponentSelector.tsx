@@ -28,6 +28,8 @@ import {
   GET_LOCAL_SELECTED_COMPONENT_ID,
   GET_SELECTED_COMPONENT
 } from "queries/component";
+import { getSelectedComponent } from "queries/__generated__/getSelectedComponent";
+import { getSelectedComponentId } from "queries/__generated__/getSelectedComponentId";
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -113,13 +115,16 @@ function isByIdResult(
 const ComponentSelector = () => {
   const classes = useStyles();
 
-  const { data: selectedComponentIdData } = useQuery(
+  const { data: selectedComponentIdData } = useQuery<getSelectedComponentId>(
     GET_LOCAL_SELECTED_COMPONENT_ID
   );
   const { selectedComponentId = undefined } = selectedComponentIdData || {};
-  const { data: selectedComponentData } = useQuery(GET_SELECTED_COMPONENT, {
-    skip: !selectedComponentId
-  });
+  const { data: selectedComponentData } = useQuery<getSelectedComponent>(
+    GET_SELECTED_COMPONENT,
+    {
+      skip: !selectedComponentId
+    }
+  );
   const { component: selectedComponent = undefined } =
     selectedComponentData || {};
 

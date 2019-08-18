@@ -15,6 +15,8 @@ import {
   GET_LOCAL_SELECTED_COMPONENT_ID
 } from "queries/component";
 import Settings from "./Settings";
+import { getSelectedComponent } from "queries/__generated__/getSelectedComponent";
+import { getSelectedComponentId } from "queries/__generated__/getSelectedComponentId";
 
 export const TOP_LEVEL_COMPONENT_TYPE = "top-level-component";
 
@@ -33,17 +35,21 @@ const ContentEditor = ({ data }: Props) => {
   const classes = useStyles();
   const client = useApolloClient();
 
-  const { data: selectedComponentIdData } = useQuery(
+  const { data: selectedComponentIdData } = useQuery<getSelectedComponentId>(
     GET_LOCAL_SELECTED_COMPONENT_ID
   );
 
-  const { selectedComponentId } = selectedComponentIdData;
+  const { selectedComponentId = undefined } = selectedComponentIdData || {};
 
-  const { data: selectedComponentData } = useQuery(GET_SELECTED_COMPONENT, {
-    skip: !selectedComponentId
-  });
+  const { data: selectedComponentData } = useQuery<getSelectedComponent>(
+    GET_SELECTED_COMPONENT,
+    {
+      skip: !selectedComponentId
+    }
+  );
 
-  const { selectedComponent = undefined } = selectedComponentData || {};
+  const { component: selectedComponent = undefined } =
+    selectedComponentData || {};
 
   const [createComponent, { loading: createLoading }] = useMutation(
     CREATE_COMPONENT

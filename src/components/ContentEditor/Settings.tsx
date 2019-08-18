@@ -13,6 +13,8 @@ import {
   GET_SELECTED_COMPONENT,
   GET_LOCAL_SELECTED_COMPONENT_ID
 } from "queries/component";
+import { getSelectedComponentId } from "queries/__generated__/getSelectedComponentId";
+import { getSelectedComponent } from "queries/__generated__/getSelectedComponent";
 
 // This defines a mapping of component setting type names to the React Component, used then to render the content and the settings
 export const settingTypes: { [key: string]: any } = {
@@ -50,11 +52,11 @@ const Settings = () => {
   );
   */
 
-  const { data: selectedComponentIdData } = useQuery(
+  const { data: selectedComponentIdData } = useQuery<getSelectedComponentId>(
     GET_LOCAL_SELECTED_COMPONENT_ID
   );
-  const { selectedComponentId } = selectedComponentIdData;
-  const { data } = useQuery(GET_SELECTED_COMPONENT, {
+  const { selectedComponentId = undefined } = selectedComponentIdData || {};
+  const { data } = useQuery<getSelectedComponent>(GET_SELECTED_COMPONENT, {
     skip: !selectedComponentId
   });
   const { component: selectedComponent = undefined } = data || {};
