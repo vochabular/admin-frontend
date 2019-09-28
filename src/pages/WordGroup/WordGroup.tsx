@@ -35,7 +35,7 @@ const WordGroup = ({ classes, match }: Props) => {
       variables: {
         id: match.params.id
       },
-      skip: match.params.id === "new"
+      // skip: match.params.id === "new"
     }
   );
 
