@@ -15,16 +15,17 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 import Comment from "./Comment";
 import { Divider, TextField, Button, Grid } from "@material-ui/core";
-import { getAllComments_comments_edges_node } from "queries/__generated__/getAllComments";
-import { useMutation } from "react-apollo-hooks";
+import { subscribeAllComments_comments } from "queries/__generated__/subscribeAllComments";
+import { useMutation } from "@apollo/react-hooks";
 import {
   CREATE_COMMENT,
-  GET_ALL_COMMENTS,
-  GET_ACTIVE_COMMENTS
+  RESOLVE_COMMENT,
+  DELETE_COMMENT
 } from "queries/comments";
-import { convertGlobalToDbId } from "helpers";
-import { getOperationName } from "apollo-link";
 import { useAuth } from "contexts/AuthContext";
+import { createComment as TcreateComment } from "queries/__generated__/createComment";
+import { resolveComment as TresolveComment } from "queries/__generated__/resolveComment";
+import { deleteComment as TdeleteComment } from "queries/__generated__/deleteComment";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -40,7 +41,7 @@ interface Props extends WithStyles<typeof styles> {
   /**
    * TODO: A single discussion
    */
-  data: getAllComments_comments_edges_node;
+  data: subscribeAllComments_comments;
 }
 
 const Discussion = ({ classes, data }: Props) => {
@@ -49,7 +50,17 @@ const Discussion = ({ classes, data }: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { user } = useAuth();
 
-  const [createComment, { loading }] = useMutation(CREATE_COMMENT);
+  const [createComment, { loading }] = useMutation<TcreateComment>(
+    CREATE_COMMENT
+  );
+
+  const [resolveComment, { loading: resolveLoading }] = useMutation<
+    TresolveComment
+  >(RESOLVE_COMMENT);
+
+  const [deleteComment, { loading: deleteLoading }] = useMutation<
+    TdeleteComment
+  >(DELETE_COMMENT);
 
   function handleOpenMenu(event: React.MouseEvent<HTMLButtonElement>) {
     setAnchorEl(event.currentTarget);
@@ -69,34 +80,36 @@ const Discussion = ({ classes, data }: Props) => {
         comment: {
           text: reply,
           active: true,
-          fkAuthorId: user && user.userId,
-          fkParentCommentId: convertGlobalToDbId(data.id),
-          fkComponentId: 1 // TODO(df): Need to set this from a shared state, e.g. selected component?
+          fk_author_id: user!.userId,
+          fk_parent_comment_id: data.id,
+          fk_component_id: data.componentId
         }
-      },
-      // TODO(df): This should actually not be necessary, since the return from the mutation should update the store???
-      refetchQueries: [
-        getOperationName(GET_ALL_COMMENTS) || "",
-        getOperationName(GET_ACTIVE_COMMENTS) || ""
-      ]
+      }
     });
+    setReply("");
   }
 
+  function handleResolveDiscussion() {
+    resolveComment({ variables: { id: data && data.id } });
+    handleCloseMenu();
+  }
+
+  function handleDeleteDiscussion() {
+    const ids = data && data.answers.map(a => a.id);
+    ids.push(data && data.id);
+    deleteComment({ variables: { ids } });
+    handleCloseMenu();
+  }
   return (
     <div className={classes.container}>
       <Comment data={data} />
       {data &&
-        data.commentSet &&
-        data.commentSet.edges.map(
-          c =>
-            c &&
-            c.node && (
-              <React.Fragment key={c.node.id}>
-                <Comment data={c.node} />
-                <Divider />
-              </React.Fragment>
-            )
-        )}
+        data.answers.map(c => (
+          <React.Fragment key={c.id}>
+            <Comment data={c} />
+            <Divider />
+          </React.Fragment>
+        ))}
       <Divider />
       <TextField
         id="reply"
@@ -120,11 +133,7 @@ const Discussion = ({ classes, data }: Props) => {
           {t("submit")}
         </Button>
       ) : (
-        <Grid container justify="space-between">
-          <Button variant="contained" color="primary">
-            <CheckIcon />
-            {t("resolve")}
-          </Button>
+        <Grid container justify="space-between" direction="row-reverse">
           <IconButton
             aria-label="menu"
             aria-owns={anchorEl ? "discussion-action-menu" : undefined}
@@ -139,9 +148,25 @@ const Discussion = ({ classes, data }: Props) => {
             open={Boolean(anchorEl)}
             onClose={handleCloseMenu}
           >
-            <MenuItem onClick={handleCloseMenu}>{t("resolve")}</MenuItem>
-            <MenuItem onClick={handleCloseMenu}>{t("delete")}</MenuItem>
+            <MenuItem
+              onClick={handleResolveDiscussion}
+              disabled={data && !data.active}
+            >
+              {t("resolve")}
+            </MenuItem>
+            <MenuItem onClick={handleDeleteDiscussion}>{t("delete")}</MenuItem>
           </Menu>
+          {data && data.active ? (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleResolveDiscussion}
+              disabled={resolveLoading}
+            >
+              <CheckIcon />
+              {t("resolve")}
+            </Button>
+          ) : null}
         </Grid>
       )}
     </div>

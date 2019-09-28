@@ -2,19 +2,17 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { ProfileLanguage } from "./../../__generated__/globalTypes";
-
 // ====================================================
 // GraphQL fragment: UserParts
 // ====================================================
 
 export interface UserParts {
-  __typename: "ProfileType";
+  __typename: "api_profile";
   id: any;
   firstname: string;
   lastname: string;
   roles: string;
-  language: ProfileLanguage;
+  language: string;
   translatorLanguages: string;
   eventNotifications: boolean;
   setupCompleted: boolean;

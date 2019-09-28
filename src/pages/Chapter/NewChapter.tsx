@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import * as Yup from "yup";
 import { Formik, Form, Field, FormikActions } from "formik";
 import { TextField, Select } from "formik-material-ui";
-import { useMutation, useQuery } from "react-apollo-hooks";
+import { useMutation, useQuery } from "@apollo/react-hooks";
 
 import { withStyles, WithStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -22,10 +22,9 @@ import { UPSERT_CHAPTER } from "queries/chapters";
 import i18next from "i18n";
 import history from "myHistory";
 import ErrorMessage from "components/ErrorMessage";
-import { convertGlobalToDbId } from "helpers";
 import { GET_LANGUAGES } from "../../queries/languages";
 import { getLanguages } from "queries/__generated__/getLanguages";
-import { getChapterById_chapter_parentChapter } from "queries/__generated__/getChapterById";
+import { subscribeChapterById_chapter_parentChapter } from "queries/__generated__/subscribeChapterById";
 
 export const ChapterSchema = Yup.object().shape({
   number: Yup.number()
@@ -35,36 +34,35 @@ export const ChapterSchema = Yup.object().shape({
   description: Yup.string().max(200, i18next.t("tooLong")),
   titleDE: Yup.string().max(50, i18next.t("tooLong")),
   titleCH: Yup.string().max(50, i18next.t("tooLong")),
-  languages: Yup.string()
-    .min(1, i18next.t("tooLow"))
-    .max(50, i18next.t("tooHigh"))
+  languages: Yup.array()
+    .required()
+    .min(1, i18next.t("min"))
     .required(i18next.t("required"))
 });
 
 interface Props extends WithStyles<typeof styles> {
-  parentChapter?: getChapterById_chapter_parentChapter;
+  parentChapter?: subscribeChapterById_chapter_parentChapter;
 }
 
 const NewChapter = ({ classes, parentChapter }: Props) => {
   const { t } = useTranslation();
-
   const { data } = useQuery<getLanguages>(GET_LANGUAGES);
-
-  const isSubChapter = !!parentChapter;
-
-  // TODO: Unfortunately, react-apollo-hooks doesn't support yet the error, loading object in mutations (unlike with query...)
   const [upsertChapter, { loading }] = useMutation(UPSERT_CHAPTER);
+  const isSubChapter = !!parentChapter;
 
   async function handleSave(values: any, actions: FormikActions<any>) {
     // TODO: This verbose stuff won't be necessary anymore as soon useMutation also returns a error/loading object.
     try {
-      values.fkBelongsToId = isSubChapter
-        ? convertGlobalToDbId(parentChapter!.id)
-        : null;
-      values.languages = values.languages.join(",");
+      const input = { ...values };
+      input.fk_belongs_to_id = isSubChapter ? parentChapter!.id : null;
+      input.languages = {
+        data: values.languages.map((l: string) => {
+          return { language_id: l };
+        })
+      };
       await upsertChapter({
         variables: {
-          input: { chapterData: { ...values } }
+          input
         }
       });
       isSubChapter
@@ -168,20 +166,17 @@ const NewChapter = ({ classes, parentChapter }: Props) => {
                     name="languages"
                     component={Select}
                     multiple={true}
-                    helperText={t("chapter:newChapterLanguageHelper")}
                     inputProps={{ name: "languages", id: "languages" }}
                   >
-                    {data && data.languages ? (
-                      data.languages.map(l =>
-                        l && l.code && l.name ? (
-                          <MenuItem value={l.code}>{l.name}</MenuItem>
-                        ) : (
-                          <MenuItem />
+                    {data && data.languages
+                      ? data.languages.map(l =>
+                          l && l.code && l.name ? (
+                            <MenuItem key={l.id} value={l.id}>
+                              {l.name}
+                            </MenuItem>
+                          ) : null
                         )
-                      )
-                    ) : (
-                      <MenuItem />
-                    )}
+                      : null}
                   </Field>
                   <FormHelperText>
                     {t("chapter:newChapterLanguageHelper")}

@@ -42,9 +42,10 @@ function getUserFromIdToken(idToken: IOwnIdToken): IUser {
   // Strip the namespace, since we want to have a flat user object
   const { [namespace]: customProperties, ...authProperties } = idToken;
   const allowedRoles = customProperties["x-hasura-allowed-roles"];
-  const userId = customProperties["x-hasura-user-id"];
+  // TODO(df): We should set the userId based on the id stored in the JWT. So, Auth0 needs to query the userId on login!
+  // const userId = customProperties["x-hasura-user-id"];
   return {
-    userId,
+    userId: "",
     allowedRoles,
     currentRole: allowedRoles[0],
     ...authProperties
@@ -68,6 +69,7 @@ export interface IAuthContext {
   getTokenWithPopup: CallableFunction;
   logout: CallableFunction;
   changeCurrentRole: CallableFunction;
+  setUserId: CallableFunction;
 }
 
 const initialAuthContext: IAuthContext = {
@@ -83,7 +85,8 @@ const initialAuthContext: IAuthContext = {
   getTokenSilently: () => console.info("Initializing..."),
   getTokenWithPopup: () => console.info("Initializing..."),
   logout: () => console.info("Initializing..."),
-  changeCurrentRole: () => console.info("Initializing...")
+  changeCurrentRole: () => console.info("Initializing..."),
+  setUserId: () => console.info("Initializing...")
 };
 
 /**
@@ -190,6 +193,12 @@ export const AuthProvider = ({
     setUser(updatedUser);
   };
 
+  const setUserId = (userId: string) => {
+    const updatedUser: IUser = Object.assign(user!);
+    updatedUser.userId = userId;
+    setUser(updatedUser);
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -211,7 +220,8 @@ export const AuthProvider = ({
         logout: (p: LogoutOptions) =>
           auth0Client &&
           auth0Client.logout(p || { returnTo: window.location.origin }),
-        changeCurrentRole
+        changeCurrentRole,
+        setUserId
       }}
     >
       {children}

@@ -33,12 +33,12 @@ const WordCard = ({ classes, word, id }: Props) => {
             color="textSecondary"
             gutterBottom
           >
-            {word.translations.length ? word.translations.map(t => (
+            {word.translations.map(t => (
               <>
                 {t.text}
                 <br />
               </>
-            )): t("words:emptyWord") }
+            )): t("words:emptyWord" }
           </Typography>
         </CardContent>
       </CardActionArea>

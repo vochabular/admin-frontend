@@ -11,15 +11,15 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import { styles } from "styles";
 import { getChapters_chapters } from "queries/__generated__/getChapters";
 import {
-  getChapterById_chapter,
-  getChapterById_chapter_subChapters
-} from "queries/__generated__/getChapterById";
+  subscribeChapterById_chapter,
+  subscribeChapterById_chapter_subChapters
+} from "queries/__generated__/subscribeChapterById";
 
 interface Props extends WithStyles<typeof styles> {
   chapter:
     | getChapters_chapters
-    | getChapterById_chapter_subChapters
-    | getChapterById_chapter;
+    | subscribeChapterById_chapter_subChapters
+    | subscribeChapterById_chapter;
 }
 
 const ChapterCard = ({ classes, chapter }: Props) => {

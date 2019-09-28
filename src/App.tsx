@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
 
@@ -21,31 +21,29 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <CssBaseline />
-      <BrowserRouter>
-        {loading ? (
-          <LoadingPage />
-        ) : (
-          <Switch>
-            {isAuthenticated && (
-              <Route path="/login" exact render={() => <Redirect to="/" />} />
-            )}
-            {!isAuthenticated && (
-              <Route path="/login" exact component={LoginPage} />
-            )}
-            {!isAuthenticated && (
-              <Route path="/help" exact render={() => <div>Help</div>} />
-            )}
-            {!isAuthenticated && (
-              <Route path="/404" exact component={NotFound404} />
-            )}
-            {!isAuthenticated && (
-              <Route path="/" exact render={() => <Redirect to="/login" />} />
-            )}
-            <PrivateRoute path="/" component={PrivateApp} />
-            <Redirect to="/404" />
-          </Switch>
-        )}
-      </BrowserRouter>
+      {loading ? (
+        <LoadingPage />
+      ) : (
+        <Switch>
+          {isAuthenticated && (
+            <Route path="/login" exact render={() => <Redirect to="/" />} />
+          )}
+          {!isAuthenticated && (
+            <Route path="/login" exact component={LoginPage} />
+          )}
+          {!isAuthenticated && (
+            <Route path="/help" exact render={() => <div>Help</div>} />
+          )}
+          {!isAuthenticated && (
+            <Route path="/404" exact component={NotFound404} />
+          )}
+          {!isAuthenticated && (
+            <Route path="/" exact render={() => <Redirect to="/login" />} />
+          )}
+          <PrivateRoute path="/" component={PrivateApp} />
+          <Redirect to="/404" />
+        </Switch>
+      )}
     </div>
   );
 };

@@ -54,7 +54,7 @@ export const GET_CHAPTERS = gql`
 `;
 
 export const GET_CHAPTER_BY_ID = gql`
-  query getChapterById($id: uuid!) {
+  subscription subscribeChapterById($id: uuid!) {
     chapter: api_chapter_by_pk(id: $id) {
       ...ChapterHeaderParts
       subChapters {
@@ -119,10 +119,10 @@ export const GET_CHAPTER_WORDGROUPS_BY_CHAPTER_ID = gql`
 `;
 
 export const UPSERT_CHAPTER = gql`
-  mutation createChapter($input: IntroduceChapterInput!) {
-    createChapter(input: $input) {
-      chapter {
-        number
+  mutation createChapter($input: api_chapter_insert_input!) {
+    insert_api_chapter(objects: [$input]) {
+      returning {
+        id
       }
     }
   }

@@ -1,6 +1,6 @@
 import React from "react";
 import { Switch, Route } from "react-router";
-import { useQuery } from "react-apollo-hooks";
+import { useQuery } from "@apollo/react-hooks";
 
 import { withStyles, WithStyles } from "@material-ui/styles";
 
@@ -29,7 +29,7 @@ function isEmpty(obj: object) {
 interface Props extends WithStyles<typeof styles> {}
 
 const PrivateApp: React.FunctionComponent<Props> = ({ classes }) => {
-  const { user, changeCurrentRole } = useAuth();
+  const { user, changeCurrentRole, setUserId } = useAuth();
   const { toggler: isDrawerOpen, handleToggler: toggleDrawer } = useToggle(
     false
   );
@@ -59,6 +59,7 @@ const PrivateApp: React.FunctionComponent<Props> = ({ classes }) => {
   if (data && data.profile) {
     i18n.changeLanguage(data.profile.language.toLowerCase());
     changeCurrentRole(data.profile.currentRole);
+    setUserId(data.profile.id);
   }
 
   const accessibleRoutes = getAllAccessibleRoutes(

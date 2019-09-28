@@ -9,9 +9,9 @@ import {
 import { Avatar, Typography, Grid } from "@material-ui/core";
 import TimestampAgo from "./TimestampAgo";
 import {
-  getAllComments_comments_edges_node,
-  getAllComments_comments_edges_node_commentSet_edges_node
-} from "queries/__generated__/getAllComments";
+  subscribeAllComments_comments,
+  subscribeAllComments_comments_answers
+} from "queries/__generated__/subscribeAllComments";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -45,14 +45,12 @@ interface Props extends WithStyles<typeof styles> {
   /**
    * TODO: A single discussion
    */
-  data:
-    | getAllComments_comments_edges_node
-    | getAllComments_comments_edges_node_commentSet_edges_node;
+  data: subscribeAllComments_comments | subscribeAllComments_comments_answers;
 }
 
 const Comment = ({ classes, data }: Props) => {
-  const { text = "", written = 0 } = data;
-  const { firstname = "", lastname = "" } = data.fkAuthor || {};
+  const { text = "", created = 0 } = data;
+  const { firstname = "", lastname = "" } = data.author || {};
   const initialLetters = `${(firstname || "-").charAt(0).toUpperCase()}${(
     lastname || "-"
   )
@@ -72,7 +70,7 @@ const Comment = ({ classes, data }: Props) => {
         >
           {initialLetters}
         </Avatar>
-        <TimestampAgo date={new Date(written)} variant="caption" />
+        <TimestampAgo date={new Date(created)} variant="caption" />
       </Grid>
       <Grid item>
         <Typography>{text}</Typography>

@@ -1,5 +1,5 @@
 import React from "react";
-import { useQuery } from "react-apollo-hooks";
+import { useQuery } from "@apollo/react-hooks";
 
 import { withStyles, WithStyles } from "@material-ui/styles";
 import Grid from "@material-ui/core/Grid";

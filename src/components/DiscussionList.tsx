@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useQuery, useMutation } from "react-apollo-hooks";
+import { useMutation, useSubscription } from "@apollo/react-hooks";
 import { getOperationName, DocumentNode } from "apollo-link";
+import { useSelector } from "react-redux";
 
 import {
   withStyles,
@@ -18,10 +19,12 @@ import {
 import Box from "@material-ui/core/Box";
 
 import { CREATE_COMMENT } from "queries/comments";
-import { getAllComments } from "queries/__generated__/getAllComments";
+import { subscribeAllComments } from "queries/__generated__/subscribeAllComments";
 import ErrorMessage from "./ErrorMessage";
 import Discussion from "./Discussion";
 import { useAuth } from "contexts/AuthContext";
+import { TAppState } from "reducers";
+import { IContentEditorState } from "reducers/contentEditorSlice";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -48,12 +51,20 @@ const DiscussionList = ({ classes, query }: Props) => {
   const [newComment, setNewComment] = useState("");
   const { user } = useAuth();
 
+  const { selectedComponent, currentChapterId } = useSelector<
+    TAppState,
+    IContentEditorState
+  >(state => state.contentEditor);
+
   const [createComment, { loading: mutationLoading }] = useMutation(
     CREATE_COMMENT
   );
 
   // TODO(df): Pass variables (chapter, context) down.
-  const { data, loading, error } = useQuery<getAllComments>(query);
+  const { data, loading, error } = useSubscription<subscribeAllComments>(
+    query,
+    { variables: { chapterId: currentChapterId } }
+  );
   const discussions = data && data.comments;
 
   function handleNewCommentInputChange(
@@ -68,13 +79,14 @@ const DiscussionList = ({ classes, query }: Props) => {
         comment: {
           text: newComment,
           active: true,
-          fkAuthorId: user && user.userId,
-          // fkParentCommentId: null,
-          fkComponentId: 1
+          fk_author_id: user!.userId,
+          fk_parent_comment_id: null,
+          fk_component_id: selectedComponent!.id
         }
       },
       refetchQueries: [getOperationName(query) || ""]
     });
+    setNewComment("");
   }
 
   return (
@@ -82,33 +94,35 @@ const DiscussionList = ({ classes, query }: Props) => {
       {loading && <CircularProgress />}
       <ErrorMessage error={error && error.message} />
       {discussions ? (
-        discussions.edges.map(
-          d => d && d.node && <Discussion key={d.node.id} data={d.node} />
-        )
+        discussions.map(d => <Discussion key={d.id} data={d} />)
       ) : (
         <Typography>{t("noCommentsYet")}</Typography>
       )}
-      <TextField
-        id="new-comment"
-        label={t("newComment")}
-        fullWidth
-        multiline
-        //rowsMax="4"
-        value={newComment}
-        onChange={handleNewCommentInputChange}
-        //className={classes.textField}
-        margin="normal"
-      />
-      {!!newComment.length && (
-        <Button
-          disabled={mutationLoading}
-          id="submit-new-comment"
-          variant="contained"
-          color="primary"
-          onClick={handleSubmitNewComment}
-        >
-          {t("submit")}
-        </Button>
+      {selectedComponent && (
+        <>
+          <TextField
+            id="new-comment"
+            label={t("newComment")}
+            fullWidth
+            multiline
+            //rowsMax="4"
+            value={newComment}
+            onChange={handleNewCommentInputChange}
+            //className={classes.textField}
+            margin="normal"
+          />
+          {!!newComment.length && (
+            <Button
+              disabled={mutationLoading}
+              id="submit-new-comment"
+              variant="contained"
+              color="primary"
+              onClick={handleSubmitNewComment}
+            >
+              {t("submit")}
+            </Button>
+          )}
+        </>
       )}
     </Box>
   );
