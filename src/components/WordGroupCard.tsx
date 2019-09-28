@@ -9,13 +9,13 @@ import { useTranslation } from "react-i18next";
 
 import CardActionArea from "@material-ui/core/CardActionArea";
 import { styles } from "styles";
-import { chaptersWordGroupsByChapterId_chapter_wordGroups_edges_node } from "../queries/__generated__/chaptersWordGroupsByChapterId";
 import { subscribeWordGroups_wordGroups } from "queries/__generated__/subscribeWordGroups";
+import {subscribeChaptersWordGroupsByChapterId_chapters_wordgroups} from "../queries/__generated__/subscribeChaptersWordGroupsByChapterId";
 
 interface Props extends WithStyles<typeof styles> {
   wordGroup:
     | subscribeWordGroups_wordGroups
-    | chaptersWordGroupsByChapterId_chapter_wordGroups_edges_node;
+    | subscribeChaptersWordGroupsByChapterId_chapters_wordgroups;
 }
 
 const WordGroupCard = ({ classes, wordGroup }: Props) => {

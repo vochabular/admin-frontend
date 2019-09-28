@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useQuery } from "@apollo/react-hooks";
+import { useSubscription } from "@apollo/react-hooks";
 
 import { withStyles, WithStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -11,7 +11,7 @@ import Section from "../../components/Section";
 import { GET_CHAPTER_WORDGROUPS } from "../../queries/chapters";
 import {
   chapters_wordGroups,
-  chapters_wordGroups_chapters_edges
+  chapters_wordGroups_chapters
 } from "../../queries/__generated__/chapters_wordGroups";
 import VoggiChapterCard from "../../components/VoggiChapterCard";
 
@@ -20,7 +20,7 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 const WordGroups = ({ classes }: Props) => {
-  const { data, error, loading } = useQuery<chapters_wordGroups>(
+  const { data, error, loading } = useSubscription<chapters_wordGroups>(
     GET_CHAPTER_WORDGROUPS
   );
 
@@ -37,18 +37,16 @@ const WordGroups = ({ classes }: Props) => {
             !loading &&
             data &&
             !!data.chapters &&
-            data.chapters.edges &&
-            !data.chapters.edges.length
+            !data.chapters.length
           }
         />
         {data &&
           data.chapters &&
-          data.chapters.edges &&
-          data.chapters.edges.map(
-            (c: chapters_wordGroups_chapters_edges | null) =>
-              c && c.node && c.node.parentChapter ? (
-                <Grid item key={c.node.id}>
-                  <VoggiChapterCard chapter={c.node} />
+          data.chapters.map(
+            (c: chapters_wordGroups_chapters | null) =>
+              c && c.parentChapter ? (
+                <Grid item key={c.id}>
+                  <VoggiChapterCard chapter={c} />
                 </Grid>
               ) : null
           )}

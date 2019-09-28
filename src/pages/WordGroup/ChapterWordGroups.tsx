@@ -2,7 +2,7 @@ import * as React from "react";
 import {useTranslation} from "react-i18next";
 
 import {withStyles, WithStyles} from "@material-ui/core/styles";
-import {useQuery} from "@apollo/react-hooks";
+import {useSubscription} from "@apollo/react-hooks";
 import {RouteComponentProps} from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import AddIcon from "@material-ui/icons/Add";
@@ -12,11 +12,10 @@ import BusyOrErrorCard from "components/BusyOrErrorCard";
 import SectionCardContainer from "../../components/SectionCardContainer";
 import Section from "../../components/Section";
 import {GET_CHAPTER_WORDGROUPS_BY_CHAPTER_ID} from "../../queries/chapters";
-import {convertGlobalToDbId} from "../../helpers";
 import {
-  chaptersWordGroupsByChapterId,
-  chaptersWordGroupsByChapterId_chapter_wordGroups_edges
-} from "../../queries/__generated__/chaptersWordGroupsByChapterId";
+  subscribeChaptersWordGroupsByChapterId,
+  subscribeChaptersWordGroupsByChapterId_chapters_wordgroups
+} from "../../queries/__generated__/subscribeChaptersWordGroupsByChapterId";
 import WordGroupCard from "../../components/WordGroupCard";
 import LinkCard from "../../components/LinkCard";
 
@@ -30,31 +29,31 @@ interface Props extends RouteComponentProps<WordGroupRouterProps>, WithStyles<ty
 const ChapterWordGroups = ({classes, match}: Props) => {
   const {t} = useTranslation();
 
-  const {data, error, loading} = useQuery<chaptersWordGroupsByChapterId>(GET_CHAPTER_WORDGROUPS_BY_CHAPTER_ID, {
+  const {data, error, loading} = useSubscription<subscribeChaptersWordGroupsByChapterId>(GET_CHAPTER_WORDGROUPS_BY_CHAPTER_ID, {
     variables: {
-      id: convertGlobalToDbId(match.params.id)
+      id: match.params.id
     },
-    skip: match.params.id === "new"
+    // skip: match.params.id === "new"
   });
 
   // Note: MUI links together with react-router-dom and Typescript are a bit tricky due to their dynamic nature
   // See the discussion and provided solutions here... https://github.com/mui-org/material-ui/issues/7877
   // <Button component={Link} {...{ to: "/about" } as any} />
-  let chapter_name = data && data.chapter ? `${data.chapter.titleDE} / ${data.chapter.titleCH}` : '';
+  let chapter_name = data && data.chapters ? `${data.chapters.titleDE} / ${data.chapters.titleCH}` : '';
   return <Section title={t("wordGroups:wordGroupsChapter") + ` ${chapter_name}`}>
     <SectionCardContainer>
       <BusyOrErrorCard
         loading={loading}
         error={error}
-        noResults={!loading && data && !!data.chapter && !!data.chapter.wordGroups && !data.chapter.wordGroups.edges.length}
+        noResults={!loading && data && !!data.chapters && !!data.chapters.wordgroups && !data.chapters.wordgroups.length}
       />
       {data &&
-      data.chapter &&
-      data.chapter.wordGroups &&
-      data.chapter.wordGroups.edges.map((w: chaptersWordGroupsByChapterId_chapter_wordGroups_edges | null) => (
-        w && w.node ?
-          <Grid item key={w.node.id}>
-            <WordGroupCard wordGroup={w.node}/>
+      data.chapters &&
+      data.chapters.wordgroups &&
+      data.chapters.wordgroups.map((w: subscribeChaptersWordGroupsByChapterId_chapters_wordgroups | null) => (
+        w ?
+          <Grid item key={w.id}>
+            <WordGroupCard wordGroup={w}/>
           </Grid> : null
       ))}
       <Grid item>

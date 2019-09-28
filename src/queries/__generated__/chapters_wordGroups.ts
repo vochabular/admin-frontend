@@ -3,63 +3,100 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: chapters_wordGroups
+// GraphQL subscription operation: chapters_wordGroups
 // ====================================================
 
-export interface chapters_wordGroups_chapters_edges_node_parentChapter {
-  __typename: "ChapterType";
-  /**
-   * The ID of the object.
-   */
-  id: string;
-}
-
-export interface chapters_wordGroups_chapters_edges_node_wordGroups_edges_node {
-  __typename: "WordGroupType";
-  /**
-   * The ID of the object.
-   */
-  id: string;
-}
-
-export interface chapters_wordGroups_chapters_edges_node_wordGroups_edges {
-  __typename: "WordGroupTypeEdge";
-  /**
-   * The item at the end of the edge
-   */
-  node: chapters_wordGroups_chapters_edges_node_wordGroups_edges_node | null;
-}
-
-export interface chapters_wordGroups_chapters_edges_node_wordGroups {
-  __typename: "WordGroupTypeConnection";
-  edges: (chapters_wordGroups_chapters_edges_node_wordGroups_edges | null)[];
-}
-
-export interface chapters_wordGroups_chapters_edges_node {
-  __typename: "ChapterType";
-  /**
-   * The ID of the object.
-   */
-  id: string;
-  titleDE: string;
+export interface chapters_wordGroups_chapters_parentChapter {
+  __typename: "api_chapter";
+  id: any;
+  number: number;
   titleCH: string;
-  parentChapter: chapters_wordGroups_chapters_edges_node_parentChapter | null;
-  wordGroups: chapters_wordGroups_chapters_edges_node_wordGroups | null;
+  titleDE: string;
+  description: string;
 }
 
-export interface chapters_wordGroups_chapters_edges {
-  __typename: "ChapterTypeEdge";
+export interface chapters_wordGroups_chapters_subChapters {
+  __typename: "api_chapter";
+  id: any;
+  titleCH: string;
+  titleDE: string;
+  description: string;
+}
+
+export interface chapters_wordGroups_chapters_wordgroups_words_word_translations_language {
+  __typename: "api_language";
+  code: string;
+  name: string;
+}
+
+export interface chapters_wordGroups_chapters_wordgroups_words_word_translations {
+  __typename: "api_wordtranslation";
+  id: any;
+  text: string;
+  audio: string | null;
+  exampleSentence: string | null;
   /**
-   * The item at the end of the edge
+   * An object relationship
    */
-  node: chapters_wordGroups_chapters_edges_node | null;
+  language: chapters_wordGroups_chapters_wordgroups_words_word_translations_language;
+}
+
+export interface chapters_wordGroups_chapters_wordgroups_words_word {
+  __typename: "api_word";
+  id: any;
+  /**
+   * An array relationship
+   */
+  translations: chapters_wordGroups_chapters_wordgroups_words_word_translations[];
+}
+
+export interface chapters_wordGroups_chapters_wordgroups_words {
+  __typename: "api_wordgroup_words";
+  id: number;
+  /**
+   * An object relationship
+   */
+  word: chapters_wordGroups_chapters_wordgroups_words_word;
+}
+
+export interface chapters_wordGroups_chapters_wordgroups {
+  __typename: "api_wordgroup";
+  parentChapterId: any;
+  id: any;
+  titleCh: string;
+  titleDe: string;
+  /**
+   * An array relationship
+   */
+  words: chapters_wordGroups_chapters_wordgroups_words[];
 }
 
 export interface chapters_wordGroups_chapters {
-  __typename: "ChapterTypeConnection";
-  edges: (chapters_wordGroups_chapters_edges | null)[];
+  __typename: "api_chapter";
+  id: any;
+  number: number;
+  titleCH: string;
+  titleDE: string;
+  description: string;
+  created: any;
+  updated: any;
+  /**
+   * An object relationship
+   */
+  parentChapter: chapters_wordGroups_chapters_parentChapter | null;
+  /**
+   * An array relationship
+   */
+  subChapters: chapters_wordGroups_chapters_subChapters[];
+  /**
+   * An array relationship
+   */
+  wordgroups: chapters_wordGroups_chapters_wordgroups[];
 }
 
 export interface chapters_wordGroups {
-  chapters: chapters_wordGroups_chapters | null;
+  /**
+   * fetch data from the table: "api_chapter"
+   */
+  chapters: chapters_wordGroups_chapters[];
 }

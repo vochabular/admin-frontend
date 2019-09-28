@@ -9,10 +9,10 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActionArea from "@material-ui/core/CardActionArea";
 
 import { styles } from "styles";
-import { chapters_wordGroups_chapters_edges_node } from "../queries/__generated__/chapters_wordGroups";
+import { chapters_wordGroups_chapters } from "../queries/__generated__/chapters_wordGroups";
 
 interface Props extends WithStyles<typeof styles> {
-  chapter: chapters_wordGroups_chapters_edges_node;
+  chapter: chapters_wordGroups_chapters;
 }
 
 const VoggiChapterCard = ({ classes, chapter }: Props) => {
@@ -35,7 +35,7 @@ const VoggiChapterCard = ({ classes, chapter }: Props) => {
           </Typography>
           <Typography variant="h5" component="h2">
             {t("chapter:nWordGroups")}{" "}
-            {chapter.wordGroups ? chapter.wordGroups.edges.length : 0}
+            {chapter.wordgroups ? chapter.wordgroups.length : 0}
           </Typography>
         </CardContent>
       </CardActionArea>

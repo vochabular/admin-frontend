@@ -40,6 +40,38 @@ export const COMPONENT_PART = gql`
   }
 `;
 
+export const WORD_FRAGMENT = gql`
+  fragment WordParts on api_word {
+    id
+    translations {
+      id
+      text
+      audio
+      exampleSentence: example_sentence
+      language {
+        code
+        name
+      }
+    }
+  }
+`;
+
+export const WORDGROUP_FRAGMENT = gql`
+  fragment WordgroupParts on api_wordgroup {
+    parentChapterId: fk_chapter_id
+    id
+    titleCh: title_ch
+    titleDe: title_de
+    words {
+      id
+      word {
+        ...WordParts
+      }
+    }
+  }
+  ${WORD_FRAGMENT}
+`;
+
 export const GET_CHAPTERS = gql`
   query getChapters {
     chapters: api_chapter(where: { fk_belongs_to_id: { _is_null: true } }) {
@@ -70,52 +102,33 @@ export const GET_CHAPTER_BY_ID = gql`
 `;
 
 export const GET_CHAPTER_WORDGROUPS = gql`
-  query chapters_wordGroups {
-    chapters {
-      edges {
-        node {
-          id
-          titleDE
-          titleCH
-          parentChapter: fkBelongsTo {
-            id
-          }
-          wordGroups: wordgroupSet {
-            edges {
-              node {
-                id
-              }
-            }
-          }
-        }
+  subscription chapters_wordGroups {
+    chapters: api_chapter(where: { fk_belongs_to_id: { _is_null: false } }) {
+      ...ChapterHeaderParts
+      wordgroups {
+        ...WordgroupParts
       }
     }
   }
+  ${CHAPTER_HEADER_PART}
+  ${WORDGROUP_FRAGMENT}
 `;
 
+
 export const GET_CHAPTER_WORDGROUPS_BY_CHAPTER_ID = gql`
-  query chaptersWordGroupsByChapterId($id: Int) {
-    chapter(id: $id) {
+  subscription subscribeChaptersWordGroupsByChapterId($id: uuid!) {
+    chapters: api_chapter_by_pk(id: $id) {
       id
       titleDE
       titleCH
-      parentChapter: fkBelongsTo {
+      wordgroups {
+        ...WordgroupParts
+      }
+      parentChapter: fk_belongs_to_id
         id
       }
-      wordGroups: wordgroupSet {
-        edges {
-          node {
-            id
-            titleCh
-            titleDe
-            words {
-              id
-            }
-          }
-        }
-      }
     }
-  }
+    ${WORDGROUP_FRAGMENT}
 `;
 
 export const UPSERT_CHAPTER = gql`
