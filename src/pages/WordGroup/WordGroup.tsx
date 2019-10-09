@@ -73,7 +73,7 @@ const WordGroup = ({ classes, match }: Props) => {
           )}
         <Grid item>
           <LinkCard
-            path={`/wordgroups/${match.params.id}/edit`}
+            path={`/wordgroups/${match.params.id}/add`}
             icon={<AddIcon />}
             helperText="wordGroups:addWordToWordGroup"
           />

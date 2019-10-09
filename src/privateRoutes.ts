@@ -91,6 +91,13 @@ export const mainRoutes: IPrivateRouteConfig[] = [
     component: WordEditor,
     exact: true,
     path: "/wordgroups/:id/add"
+  },
+  {
+    showInDrawer: false,
+    allowedRoles: allUsers,
+    component: WordEditor,
+    exact: true,
+    path: "/word/:id"
   }
 ];
 
