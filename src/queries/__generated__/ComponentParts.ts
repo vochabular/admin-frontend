@@ -13,10 +13,20 @@ export interface ComponentParts_type {
   icon: string;
 }
 
+export interface ComponentParts_texts_translations_language {
+  __typename: "api_language";
+  id: any;
+  code: string;
+}
+
 export interface ComponentParts_texts_translations {
   __typename: "api_translation";
   id: any;
   textField: string;
+  /**
+   * An object relationship
+   */
+  language: ComponentParts_texts_translations_language;
 }
 
 export interface ComponentParts_texts {

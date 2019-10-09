@@ -30,10 +30,20 @@ export interface getChapters_chapters_components_type {
   icon: string;
 }
 
+export interface getChapters_chapters_components_texts_translations_language {
+  __typename: "api_language";
+  id: any;
+  code: string;
+}
+
 export interface getChapters_chapters_components_texts_translations {
   __typename: "api_translation";
   id: any;
   textField: string;
+  /**
+   * An object relationship
+   */
+  language: getChapters_chapters_components_texts_translations_language;
 }
 
 export interface getChapters_chapters_components_texts {

@@ -624,6 +624,7 @@ export interface api_translation_insert_input {
   fk_language_id?: any | null;
   fk_text_id?: any | null;
   id?: any | null;
+  language?: api_language_obj_rel_insert_input | null;
   text_field?: string | null;
   updated?: any | null;
   valid?: boolean | null;
