@@ -96,10 +96,16 @@ const Settings = () => {
    * TODO(df): Need to discuss, what should be the "interface":
    *  -  Do we pass the mutation from each component?
    *  -  Do we pass a defined list of entities, such as the settings data, texts?
+   * Conclusion: Add media, but all "texts" and "media" are always also only updates, not inserts. Inserting texts on drop of component from selector. Change media fk to 1:1
    * @param settingsData
    * @param texts
+   * @param media
    */
-  const handleOnSubmit = (settingsData: string, texts?: any[]) => {
+  const handleOnSubmit = (
+    settingsData: string,
+    texts?: any[],
+    media?: any[]
+  ) => {
     console.log(settingsData, texts);
     // TODO(df): How do we handle translatable texts? Should also be inserted/updated here!
     updateComponent({
