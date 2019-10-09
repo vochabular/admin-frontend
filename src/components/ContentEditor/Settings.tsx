@@ -86,18 +86,28 @@ const Settings = () => {
         "This component's setting widget is missing a Formik form implementation which handles the validation and submission!"
       );
     } else {
+      console.log(form);
       form.current.handleSubmit(undefined);
     }
   };
 
-  const handleOnSubmit = (values: any, actions: FormikActions<any>) => {
+  /**
+   * Will be called from the component implementation
+   * TODO(df): Need to discuss, what should be the "interface":
+   *  -  Do we pass the mutation from each component?
+   *  -  Do we pass a defined list of entities, such as the settings data, texts?
+   * @param settingsData
+   * @param texts
+   */
+  const handleOnSubmit = (settingsData: string, texts?: any[]) => {
+    console.log(settingsData, texts);
     // TODO(df): How do we handle translatable texts? Should also be inserted/updated here!
     updateComponent({
       variables: {
         id: selectedComponentId,
         data: {
           // TODO(df): Need to change to JSON type once backend has switched
-          data: JSON.stringify(values)
+          data: JSON.stringify(settingsData)
         }
       }
     });
@@ -135,7 +145,7 @@ const Settings = () => {
             <SettingsContent
               ref={form}
               type={selectedComponent.type.name}
-              data={selectedComponent.data}
+              data={selectedComponent}
               onSubmit={handleOnSubmit}
             />
           ) : null}

@@ -12,16 +12,17 @@ import ComponentList from "./ComponentList";
 import ComponentHeader from "./ComponentHeader";
 import Text from "components/Text";
 import { useApolloClient } from "@apollo/react-hooks";
+import { getSelectedComponent_component } from "queries/__generated__/getSelectedComponent";
 
 export interface BaseSettingsProps {
   /**
    * A callable that should be called by Formik on submit
    */
-  onSubmit: (values: any, actions: FormikActions<any>) => void;
+  onSubmit: (settingData: string, texts?: any[]) => void;
   /**
-   * Contains the value of the component's configuration values
+   * The selected component
    */
-  data: string;
+  data: getSelectedComponent_component;
 }
 
 /**
@@ -33,7 +34,7 @@ export const BaseSettings = React.forwardRef<any, BaseSettingsProps>(
     return (
       <>
         <Text>Not yet implemented!</Text>
-        <Text translate={false}>Data: {props.data}</Text>
+        <Text translate={false}>Data: {props.data.data}</Text>
       </>
     );
   }
