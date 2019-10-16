@@ -17,43 +17,8 @@ import {
 import Settings from "./Settings";
 import { getSelectedComponent } from "queries/__generated__/getSelectedComponent";
 import { getSelectedComponentId } from "queries/__generated__/getSelectedComponentId";
-import { BaseInitialRelations } from "./BaseComponent";
-import { TitleInitialRelations } from "./components/TitleComponent";
-import { TextInitialRelations } from "./components/TextComponent";
-import { DialogInitialRelations } from "./components/Dialog/DialogComponent";
-import { COMPONENT_TYPE_FRAGMENT } from "queries/componentTypes";
-import { getAllComponentTypes_types } from "queries/__generated__/getAllComponentTypes";
 
 export const TOP_LEVEL_COMPONENT_TYPE = "top-level-component";
-
-/**
- * The type used by components for their definitions of the relationships of the component entity and others, such as text, media or childcomponent.
- */
-export interface InitialRelationDefinitionType {
-  /**
-   * A child component that should be created together with this component.
-   * TODO(df): Find better example - For example: A dialog automatically creates a title...
-   */
-  childComponent?: string;
-  /**
-   * The total number of initial texts that should get created. Usually either 0 or 1.
-   */
-  numberOfTexts?: number;
-  /**
-   * The total number of initial media entries that should get created.
-   */
-  numberOfMedia?: number;
-}
-
-// This defines a mapping of component setting type names to the React Component, used then to render the content and the settings
-export const componentTypeInitialRelations: {
-  [key: string]: InitialRelationDefinitionType;
-} = {
-  default: BaseInitialRelations,
-  Title: TitleInitialRelations,
-  Text: TextInitialRelations,
-  Dialog: DialogInitialRelations
-};
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -113,30 +78,6 @@ const ContentEditor = ({ data }: Props) => {
 
     // INSERT: When the source is the component-selector-<id>, then its actually a creation of a new component
     if (result.source.droppableId.startsWith("component-selector-")) {
-      // Weed to get the component type's initial relationship configuration, so we can build up the nested object which we want to insert in Hasura.
-      // First, read from client cache the component type with "result.draggableId". Will be null if nothing found in cache.
-      // See here: https://www.apollographql.com/docs/react/caching/cache-interaction/
-      const type = client.readFragment<getAllComponentTypes_types>({
-        id: `api_componenttype:${result.draggableId}`,
-        fragment: COMPONENT_TYPE_FRAGMENT
-      });
-      // Now get the mapped config
-      const initialRelations = type
-        ? componentTypeInitialRelations[type.name]
-        : componentTypeInitialRelations.default;
-
-      // Construct the texts array
-      const texts = Array(
-        (initialRelations && initialRelations.numberOfTexts) || 0
-      ).fill({
-        translatable: true,
-        master_translation_id: null // TODO(df): When is the master translation defined?
-      });
-      // Construct the media array. TODO(df): Do we really need this?
-      const media = Array(
-        (initialRelations && initialRelations.numberOfMedia) || 0
-      ).fill({});
-
       // Now actually fire the mutation
       createComponent({
         variables: {
@@ -148,14 +89,7 @@ const ContentEditor = ({ data }: Props) => {
             data: "",
             order_in_chapter: result.destination.index + 1,
             state: "C",
-            locked_ts: new Date(),
-            texts: {
-              data: texts
-            },
-            media: {
-              data: media
-            }
-            // TODO(df): Need to add child component...
+            locked_ts: new Date()
           }
         }
       });

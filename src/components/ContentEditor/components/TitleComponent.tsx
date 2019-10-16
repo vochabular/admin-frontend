@@ -14,14 +14,6 @@ import BaseComponent, {
 import Text from "components/Text";
 import i18next from "i18next";
 import { Grid, MenuItem } from "@material-ui/core";
-import { InitialRelationDefinitionType } from "../ContentEditor";
-
-/**
- *  A configuration object defining how the component's initial relations to text,  for the component --> text | media | ...
- */
-export const TitleInitialRelations: InitialRelationDefinitionType = {
-  numberOfTexts: 1
-};
 
 /**
  * Validation Schema definition of the input fields of this component

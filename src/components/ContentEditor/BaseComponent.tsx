@@ -12,12 +12,6 @@ import ComponentHeader from "./ComponentHeader";
 import Text from "components/Text";
 import { useApolloClient } from "@apollo/react-hooks";
 import { getSelectedComponent_component } from "queries/__generated__/getSelectedComponent";
-import { InitialRelationDefinitionType } from "./ContentEditor";
-
-/**
- *  A configuration object defining how the component's initial relations to text,  for the component --> text | media | ...
- */
-export const BaseInitialRelations: InitialRelationDefinitionType = {};
 
 export interface BaseSettingsProps {
   /**
