@@ -13,9 +13,18 @@ import BaseComponent, {
 } from "../BaseComponent";
 import Text from "components/Text";
 import i18next from "i18next";
+import { InitialRelationDefinitionType } from "../ContentEditor";
+
+/**
+ *  A configuration object defining how the component's initial relations to text,  for the component --> text | media | ...
+ */
+export const TextInitialRelations: InitialRelationDefinitionType = {
+  numberOfTexts: 1
+};
 
 /**
  * Validation Schema definition of the input fields of this component
+ * TODO(df): How do we do "dynamic" fields validation?
  */
 const TextSchema = Yup.object().shape({
   text: Yup.string().required(i18next.t("required"))
