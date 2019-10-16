@@ -9,6 +9,7 @@ import { Settings as SettingsIcon, Save as SaveIcon } from "@material-ui/icons";
 import { BaseSettings, BaseSettingsProps } from "./BaseComponent";
 import { TitleSettings } from "./components/TitleComponent";
 import { TextSettings } from "./components/TextComponent";
+import { DialogSettings } from "./components/DialogComponent";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import {
   GET_SELECTED_COMPONENT,
@@ -22,7 +23,8 @@ import { getSelectedComponent } from "queries/__generated__/getSelectedComponent
 export const settingTypes: { [key: string]: any } = {
   default: BaseSettings,
   Title: TitleSettings,
-  Text: TextSettings
+  Text: TextSettings,
+  Dialog: DialogSettings
 };
 
 interface SettingsContentProps extends BaseSettingsProps {
@@ -92,22 +94,17 @@ const Settings = () => {
   };
 
   /**
-   * Will be called from the component implementation
-   * TODO(df): Need to discuss, what should be the "interface":
-   *  -  Do we pass the mutation from each component?
-   *  -  Do we pass a defined list of entities, such as the settings data, texts?
-   * Conclusion: Add media, but all "texts" and "media" are always also only updates, not inserts. Inserting texts on drop of component from selector. Change media fk to 1:1
-   * @param settingsData
-   * @param texts
-   * @param media
+   * Updates the component and related "texts" and "media". Will be called from the component implementation (Title, Text, ...)
+   * Note: The component, texts and media's must already exist, supports only an "update" mutation! Creation of those entities actually happen on drop of component from selector in dropzone!
+   * @param settingsData The data that will be stored in the JSON blob of the component entity
+   * @param texts An array of texts that shall be updated
+   * @param media An array of media that shall be updated
    */
   const handleOnSubmit = (
     settingsData: string,
     texts?: any[],
     media?: any[]
   ) => {
-    console.log(settingsData, texts);
-    // TODO(df): How do we handle translatable texts? Should also be inserted/updated here!
     updateComponent({
       variables: {
         id: selectedComponentId,
