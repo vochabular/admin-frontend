@@ -20,11 +20,8 @@ import { getSelectedComponentId } from "queries/__generated__/getSelectedCompone
 import { BaseInitialRelations } from "./BaseComponent";
 import { TitleInitialRelations } from "./components/TitleComponent";
 import { TextInitialRelations } from "./components/TextComponent";
-import { DialogInitialRelations } from "./components/DialogComponent";
-import {
-  GET_COMPONENTTYPE_BY_ID,
-  COMPONENT_TYPE_FRAGMENT
-} from "queries/componentTypes";
+import { DialogInitialRelations } from "./components/Dialog/DialogComponent";
+import { COMPONENT_TYPE_FRAGMENT } from "queries/componentTypes";
 import { getAllComponentTypes_types } from "queries/__generated__/getAllComponentTypes";
 
 export const TOP_LEVEL_COMPONENT_TYPE = "top-level-component";

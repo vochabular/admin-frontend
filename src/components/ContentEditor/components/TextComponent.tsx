@@ -37,7 +37,7 @@ export interface TextSettingsProps extends BaseSettingsProps {}
  */
 export const TextSettings = React.forwardRef<any, TextSettingsProps>(
   (props, ref) => {
-    const { data, onSubmit } = props;
+    const { onSubmit } = props;
     const { t } = useTranslation();
 
     return (
@@ -64,7 +64,11 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
   }
 );
 
-const useStyles = makeStyles((theme: Theme) => ({}));
+const useStyles = makeStyles((theme: Theme) => ({
+  container: {
+    border: "dashed"
+  }
+}));
 
 export interface TextComponentProps extends BaseComponentProps {}
 
@@ -73,7 +77,11 @@ export interface TextComponentProps extends BaseComponentProps {}
  */
 const TextComponent = ({ data, ...otherProps }: TextComponentProps) => {
   const classes = useStyles();
-  const preview = <Text translate={false}>{data.data}</Text>;
+  const preview = (
+    <Text translate={false} className={classes.container}>
+      {data.data}
+    </Text>
+  );
 
   return <BaseComponent preview={preview} data={data} {...otherProps} />;
 };

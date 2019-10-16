@@ -12,9 +12,6 @@ import Text from "components/Text";
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
-    border: "solid",
-    borderWidth: 2,
-    borderColor: theme.palette.grey[200],
     marginBottom: theme.spacing(2)
   }
 }));
@@ -54,7 +51,14 @@ const ComponentHeader = ({ provided, data }: Props) => {
   }
 
   return (
-    <Grid item container spacing={1} xs={12} justify="space-between">
+    <Grid
+      item
+      container
+      spacing={1}
+      xs={12}
+      justify="space-between"
+      className={classes.container}
+    >
       <IconButton {...provided.dragHandleProps}>
         <DragHandle />
       </IconButton>
