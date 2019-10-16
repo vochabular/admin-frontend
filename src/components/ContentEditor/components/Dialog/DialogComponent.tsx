@@ -10,11 +10,11 @@ import { Theme } from "@material-ui/core/styles";
 import BaseComponent, {
   BaseComponentProps,
   BaseSettingsProps
-} from "../BaseComponent";
+} from "../../BaseComponent";
 import Text from "components/Text";
 import i18next from "i18next";
 import { Grid, MenuItem } from "@material-ui/core";
-import { InitialRelationDefinitionType } from "../ContentEditor";
+import { InitialRelationDefinitionType } from "../../ContentEditor";
 
 /**
  *  A configuration object defining how the component's initial relations to text,  for the component --> text | media | ...

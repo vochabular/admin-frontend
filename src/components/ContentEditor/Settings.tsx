@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormikActions, Formik } from "formik";
+import { Formik } from "formik";
 
 import { Theme, makeStyles } from "@material-ui/core/styles";
 import { Grid, Drawer, Button } from "@material-ui/core";
@@ -9,7 +9,7 @@ import { Settings as SettingsIcon, Save as SaveIcon } from "@material-ui/icons";
 import { BaseSettings, BaseSettingsProps } from "./BaseComponent";
 import { TitleSettings } from "./components/TitleComponent";
 import { TextSettings } from "./components/TextComponent";
-import { DialogSettings } from "./components/DialogComponent";
+import { DialogSettings } from "./components/Dialog/DialogComponent";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import {
   GET_SELECTED_COMPONENT,
@@ -24,7 +24,9 @@ export const settingTypes: { [key: string]: any } = {
   default: BaseSettings,
   Title: TitleSettings,
   Text: TextSettings,
-  Dialog: DialogSettings
+  Dialog: DialogSettings,
+  TitleOfDialog: TitleSettings,
+  TextOfDialog: TextSettings
 };
 
 interface SettingsContentProps extends BaseSettingsProps {
@@ -88,7 +90,7 @@ const Settings = () => {
         "This component's setting widget is missing a Formik form implementation which handles the validation and submission!"
       );
     } else {
-      console.log(form);
+      form.current.validateForm(form.current.state.values);
       form.current.handleSubmit(undefined);
     }
   };
