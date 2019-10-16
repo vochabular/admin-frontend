@@ -18,21 +18,6 @@ const VoggiSection: React.FunctionComponent<Props> = ({ classes }) => {
     GET_WORDGROUPS
   );
 
-  if (loading || error || (data && data.wordGroups.length))
-    return (
-      <BusyOrErrorCard
-        loading={loading}
-        error={error}
-        noResults={
-          !loading &&
-          data &&
-          data.wordGroups &&
-          data.wordGroups &&
-          !data.wordGroups.length
-        }
-      />
-    );
-
   return (
     <SectionCardContainer>
       {data &&
