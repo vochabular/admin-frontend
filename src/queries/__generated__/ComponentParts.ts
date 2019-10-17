@@ -32,6 +32,7 @@ export interface ComponentParts_texts_translations {
 export interface ComponentParts_texts {
   __typename: "api_text";
   id: any;
+  translatable: boolean;
   /**
    * An array relationship
    */

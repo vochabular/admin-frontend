@@ -16,10 +16,21 @@ import i18next from "i18next";
 
 /**
  * Validation Schema definition of the input fields of this component
- * TODO(df): How do we do "dynamic" fields validation?
  */
 const TextSchema = Yup.object().shape({
-  text: Yup.string().required(i18next.t("required"))
+  isSwissGerman: Yup.boolean(),
+  isGerman: Yup.boolean(),
+  isNative: Yup.boolean(),
+  swissGerman: Yup.object().when("isSwissGerman", {
+    is: true,
+    then: Yup.string().required(i18next.t("required")),
+    otherwise: Yup.string()
+  }),
+  german: Yup.object().when("isSwissGerman", {
+    is: true,
+    then: Yup.string().required(i18next.t("required")),
+    otherwise: Yup.string()
+  })
 });
 
 export interface TextSettingsProps extends BaseSettingsProps {}

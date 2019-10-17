@@ -38,6 +38,7 @@ export const COMPONENT_PART = gql`
     }
     texts {
       id
+      translatable
       translations {
         id
         textField: text_field

@@ -2,7 +2,7 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { api_component_set_input } from "./../../__generated__/globalTypes";
+import { api_component_set_input } from "./../../../__generated__/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: updateComponent

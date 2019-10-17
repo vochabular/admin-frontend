@@ -49,6 +49,7 @@ export interface getChapters_chapters_components_texts_translations {
 export interface getChapters_chapters_components_texts {
   __typename: "api_text";
   id: any;
+  translatable: boolean;
   /**
    * An array relationship
    */

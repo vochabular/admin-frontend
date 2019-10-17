@@ -77,6 +77,7 @@ export interface subscribeChapterById_chapter_components_texts_translations {
 export interface subscribeChapterById_chapter_components_texts {
   __typename: "api_text";
   id: any;
+  translatable: boolean;
   /**
    * An array relationship
    */
@@ -109,6 +110,7 @@ export interface subscribeChapterById_chapter_components_children_texts_translat
 export interface subscribeChapterById_chapter_components_children_texts {
   __typename: "api_text";
   id: any;
+  translatable: boolean;
   /**
    * An array relationship
    */
@@ -141,6 +143,7 @@ export interface subscribeChapterById_chapter_components_children_children_texts
 export interface subscribeChapterById_chapter_components_children_children_texts {
   __typename: "api_text";
   id: any;
+  translatable: boolean;
   /**
    * An array relationship
    */
@@ -173,6 +176,7 @@ export interface subscribeChapterById_chapter_components_children_children_child
 export interface subscribeChapterById_chapter_components_children_children_children_texts {
   __typename: "api_text";
   id: any;
+  translatable: boolean;
   /**
    * An array relationship
    */
@@ -205,6 +209,7 @@ export interface subscribeChapterById_chapter_components_children_children_child
 export interface subscribeChapterById_chapter_components_children_children_children_children_texts {
   __typename: "api_text";
   id: any;
+  translatable: boolean;
   /**
    * An array relationship
    */
