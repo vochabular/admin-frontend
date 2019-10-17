@@ -58,10 +58,10 @@ export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
         ref={ref}
         initialValues={{
           isSwissGerman: !!swissGerman,
-          isGerman: !!german, // translations.some(t => t.language.code === "de"),
+          isGerman: !!german,
           isNative: (data.texts[0] && data.texts[0].translatable) || false,
           swissGerman: (swissGerman && swissGerman.textField) || "",
-          german: (german && german.textField) || "" // translations[translations.findIndex(t => t.language.code === "de")].textField
+          german: (german && german.textField) || ""
         }}
         validationSchema={TitleSchema}
         onSubmit={(values, actions) => onSubmit(JSON.stringify(values))}
