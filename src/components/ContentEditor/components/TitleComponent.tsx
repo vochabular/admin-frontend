@@ -14,6 +14,7 @@ import BaseComponent, {
 import Text from "components/Text";
 import i18next from "i18next";
 import { Grid } from "@material-ui/core";
+import { LanguageContext } from "theme";
 
 /**
  * Validation Schema definition of the input fields of this component
@@ -42,11 +43,11 @@ export interface TitleSettingsProps extends BaseSettingsProps {}
 export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
   (props, ref) => {
     const { data, onSubmit } = props;
+    const { t } = useTranslation();
     // Hack: Since this is a 1:n relation, but we should only have one text for each title
     const [translations, setTranslations] = React.useState(
       (data.texts[0] && data.texts[0].translations) || []
     );
-    const { t } = useTranslation();
 
     const swissGerman =
       translations[translations.findIndex(t => t.language.code === "ch") || 0];
@@ -119,7 +120,11 @@ export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
   }
 );
 
-const useStyles = makeStyles((theme: Theme) => ({}));
+const useStyles = makeStyles((theme: Theme) => ({
+  text: {
+    color: "red"
+  }
+}));
 
 export interface TitleComponentProps extends BaseComponentProps {}
 
@@ -129,7 +134,22 @@ export interface TitleComponentProps extends BaseComponentProps {}
 const TitleComponent = ({ data, ...otherProps }: TitleComponentProps) => {
   const classes = useStyles();
 
-  const preview = <Text translate={false}>{data.data}</Text>;
+  console.log(data);
+
+  const preview = (
+    <>
+      <Text translate={false} languageContext={LanguageContext.swissgerman}>
+        Swiss German
+      </Text>
+      <Text translate={false} languageContext={LanguageContext.german}>
+        Deutsch
+      </Text>
+      <Text translate={false} languageContext={LanguageContext.native}>
+        Native
+      </Text>
+      <Text translate={false}>Normal</Text>
+    </>
+  );
 
   return <BaseComponent preview={preview} data={data} {...otherProps} />;
 };
