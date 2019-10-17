@@ -4,8 +4,8 @@ import { createMuiTheme } from "@material-ui/core/styles";
  * Language contexts are used for example to color the text accordingly, whether its CH, de or native language
  */
 export enum LanguageContext {
-  swissgerman = "swissGerman",
-  german = "german",
+  ch = "ch",
+  de = "de",
   native = "native"
 }
 
@@ -38,8 +38,8 @@ const theme = createMuiTheme({
     }
   },
   languageContextColors: {
-    swissGerman: "#2E76AD",
-    german: "#1C9D5A",
+    ch: "#2E76AD",
+    de: "#1C9D5A",
     native: "#1D1D1B"
   }
 });

@@ -19,7 +19,7 @@ interface IText extends TypographyProps {
   /**
    * If set, will color the text accordingly
    */
-  languageContext?: LanguageContext;
+  languageContext?: LanguageContext | undefined;
 }
 
 interface StyleProps {
