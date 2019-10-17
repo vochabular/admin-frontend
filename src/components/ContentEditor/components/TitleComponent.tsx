@@ -6,6 +6,7 @@ import { TextField, CheckboxWithLabel } from "formik-material-ui";
 
 import { makeStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
+import Box from "@material-ui/core/Box";
 
 import BaseComponent, {
   BaseComponentProps,
@@ -14,7 +15,7 @@ import BaseComponent, {
 import Text from "components/Text";
 import i18next from "i18next";
 import { Grid } from "@material-ui/core";
-import { LanguageContext } from "theme";
+import ContextText from "components/ContextText";
 
 /**
  * Validation Schema definition of the input fields of this component
@@ -121,8 +122,9 @@ export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
 );
 
 const useStyles = makeStyles((theme: Theme) => ({
-  text: {
-    color: "red"
+  container: {
+    flexGrow: 1
+    // backgroundColor: "white"
   }
 }));
 
@@ -134,21 +136,17 @@ export interface TitleComponentProps extends BaseComponentProps {}
 const TitleComponent = ({ data, ...otherProps }: TitleComponentProps) => {
   const classes = useStyles();
 
-  console.log(data);
-
+  const translations = (data.texts[0] && data.texts[0].translations) || [];
   const preview = (
-    <>
-      <Text translate={false} languageContext={LanguageContext.swissgerman}>
-        Swiss German
-      </Text>
-      <Text translate={false} languageContext={LanguageContext.german}>
-        Deutsch
-      </Text>
-      <Text translate={false} languageContext={LanguageContext.native}>
-        Native
-      </Text>
-      <Text translate={false}>Normal</Text>
-    </>
+    <Box className={classes.container} bgcolor="text.primary" p={2} m={1}>
+      <Grid xs={12} item container direction="row">
+        <ContextText translations={translations} wantedLanguage="ch" />
+        <Text translate={false}> / </Text>
+        <ContextText translations={translations} wantedLanguage="de" />
+        <Text translate={false}> / </Text>
+        <ContextText translations={translations} />
+      </Grid>
+    </Box>
   );
 
   return <BaseComponent preview={preview} data={data} {...otherProps} />;
