@@ -130,7 +130,14 @@ const Settings = () => {
         <Grid item container xs={12} direction="row" justify="space-between">
           <Grid item container xs={9} direction="row" alignItems="center">
             <SettingsIcon />
-            <Text variant="h5">chapterEditor:settingsTitle</Text>
+            <Text
+              variant="h5"
+              translationOptions={{
+                type: selectedComponent && selectedComponent.type.label
+              }}
+            >
+              chapterEditor:settingsTitle
+            </Text>
           </Grid>
           <Grid item xs={3} container alignItems="center" justify="flex-end">
             <Button

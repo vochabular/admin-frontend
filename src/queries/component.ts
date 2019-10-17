@@ -1,5 +1,31 @@
 import gql from "graphql-tag";
-import { COMPONENT_PART } from "./chapters";
+
+import { COMPONENT_TYPE_FRAGMENT } from "./componentTypes";
+
+export const COMPONENT_PART = gql`
+  fragment ComponentParts on api_component {
+    id
+    data
+    state
+    position: order_in_chapter
+    type {
+      ...ComponentTypeParts
+    }
+    texts {
+      id
+      translatable
+      translations {
+        id
+        textField: text_field
+        language {
+          id
+          code
+        }
+      }
+    }
+  }
+  ${COMPONENT_TYPE_FRAGMENT}
+`;
 
 export const GET_LOCAL_SELECTED_COMPONENT_ID = gql`
   query getSelectedComponentId {

@@ -55,7 +55,12 @@ export interface subscribeChapterById_chapter_components_type {
   __typename: "api_componenttype";
   id: any;
   name: string;
+  label: string;
   icon: string;
+  base: boolean;
+  schema: string;
+  created: any;
+  updated: any;
 }
 
 export interface subscribeChapterById_chapter_components_texts_translations_language {
@@ -88,7 +93,12 @@ export interface subscribeChapterById_chapter_components_children_type {
   __typename: "api_componenttype";
   id: any;
   name: string;
+  label: string;
   icon: string;
+  base: boolean;
+  schema: string;
+  created: any;
+  updated: any;
 }
 
 export interface subscribeChapterById_chapter_components_children_texts_translations_language {
@@ -121,7 +131,12 @@ export interface subscribeChapterById_chapter_components_children_children_type 
   __typename: "api_componenttype";
   id: any;
   name: string;
+  label: string;
   icon: string;
+  base: boolean;
+  schema: string;
+  created: any;
+  updated: any;
 }
 
 export interface subscribeChapterById_chapter_components_children_children_texts_translations_language {
@@ -154,7 +169,12 @@ export interface subscribeChapterById_chapter_components_children_children_child
   __typename: "api_componenttype";
   id: any;
   name: string;
+  label: string;
   icon: string;
+  base: boolean;
+  schema: string;
+  created: any;
+  updated: any;
 }
 
 export interface subscribeChapterById_chapter_components_children_children_children_texts_translations_language {
@@ -187,7 +207,12 @@ export interface subscribeChapterById_chapter_components_children_children_child
   __typename: "api_componenttype";
   id: any;
   name: string;
+  label: string;
   icon: string;
+  base: boolean;
+  schema: string;
+  created: any;
+  updated: any;
 }
 
 export interface subscribeChapterById_chapter_components_children_children_children_children_texts_translations_language {

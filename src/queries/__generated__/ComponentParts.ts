@@ -10,7 +10,12 @@ export interface ComponentParts_type {
   __typename: "api_componenttype";
   id: any;
   name: string;
+  label: string;
   icon: string;
+  base: boolean;
+  schema: string;
+  created: any;
+  updated: any;
 }
 
 export interface ComponentParts_texts_translations_language {

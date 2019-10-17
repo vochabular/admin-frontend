@@ -10,7 +10,12 @@ export interface getSelectedComponent_component_type {
   __typename: "api_componenttype";
   id: any;
   name: string;
+  label: string;
   icon: string;
+  base: boolean;
+  schema: string;
+  created: any;
+  updated: any;
 }
 
 export interface getSelectedComponent_component_texts_translations_language {

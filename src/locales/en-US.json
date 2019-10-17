@@ -46,7 +46,7 @@
     "nWordGroups": "# of word groups: "
   },
   "chapterEditor": {
-    "settingsTitle": "Settings for "
+    "settingsTitle": "Settings for {{type}}"
   },
   "voggi": {
     "voggiList": "Voggi-List"
