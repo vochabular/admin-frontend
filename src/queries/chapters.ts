@@ -1,4 +1,5 @@
 import gql from "graphql-tag";
+import { COMPONENT_PART } from "./component";
 
 export const CHAPTER_HEADER_PART = gql`
   fragment ChapterHeaderParts on api_chapter {
@@ -21,32 +22,6 @@ export const CHAPTER_HEADER_PART = gql`
       titleCH
       titleDE
       description
-    }
-  }
-`;
-
-export const COMPONENT_PART = gql`
-  fragment ComponentParts on api_component {
-    id
-    data
-    state
-    position: order_in_chapter
-    type {
-      id
-      name
-      icon
-    }
-    texts {
-      id
-      translatable
-      translations {
-        id
-        textField: text_field
-        language {
-          id
-          code
-        }
-      }
     }
   }
 `;
