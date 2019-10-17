@@ -9,14 +9,21 @@ import TimestampAgo from "components/TimestampAgo";
 import CommentsWidget from "pages/Chapter/CommentsWidget";
 import { subscribeChapterById_chapter } from "queries/__generated__/subscribeChapterById";
 
+export enum Action {
+  edit,
+  translate,
+  approve
+}
+
 interface Props {
+  context: Action;
   data: subscribeChapterById_chapter;
 }
 
 /**
  * The subchapter Editor. Depending on the role, should display different "functionality"
  */
-const SubChapterDetail = ({ data }: Props) => {
+const SubChapterDetail = ({ context, data }: Props) => {
   const { t } = useTranslation();
 
   const { titleCH, titleDE, updated } = data;

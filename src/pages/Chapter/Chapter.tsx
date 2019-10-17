@@ -9,7 +9,7 @@ import AddIcon from "@material-ui/icons/Add";
 
 import { styles } from "styles";
 import NewChapter from "./NewChapter";
-import SubChapterDetail from "./SubChapterDetail";
+import SubChapterDetail, { Action } from "./SubChapterDetail";
 import { GET_CHAPTER_BY_ID } from "queries/chapters";
 import BusyOrErrorCard from "components/BusyOrErrorCard";
 import ChapterCard from "components/ChapterCard";
@@ -45,6 +45,7 @@ const ChapterContent = ({
     {
       variables: {
         id: subChapterId && subChapterId !== "new" ? subChapterId : chapterId
+        // TODO(df): Should we only get translations for the current user's native language?
       }
     }
   );
@@ -76,9 +77,13 @@ const ChapterContent = ({
       // TODO(df): Need to dynamically set "edit" to either "review", "translate" based on current role
       return <Redirect to={`${subChapterId}/edit`} />;
     }
+    // TODO(df): Get default "action" and render this in case the conversion below is undefined
+
+    const convertedAction: Action = Action[action as keyof typeof Action];
+
     return (
       <Section title="chapters:chapter" titleTranslatable>
-        <SubChapterDetail data={data.chapter} />
+        <SubChapterDetail context={convertedAction} data={data.chapter} />
       </Section>
     );
   }
