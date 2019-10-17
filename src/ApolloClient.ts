@@ -40,7 +40,7 @@ async function getAsyncConnectionParams() {
   return {
     headers: {
       Authorization: `Bearer ${idToken}`,
-      "X-Hasura-Role": currentRole
+      "X-Hasura-Role": currentRole // TODO(df): need to be able to "overwrite" this via context: https://www.apollographql.com/docs/link/overview/
     }
   };
 }
@@ -93,6 +93,10 @@ function handleNetworkError(networkError: ApolloError["networkError"]) {
 }
 
 // On each request, set the current idToken in the header
+// TODO(df): need to improve this with caching etc:
+// https://www.apollographql.com/docs/link/overview/
+// https://www.apollographql.com/docs/link/links/context/
+// https://spectrum.chat/apollo/general/how-to-pass-additional-header-when-calling-query~67b83ba9-a1b8-4cfd-baca-5d792b2a9836
 const request = async (operation: any) => {
   const params = await getAsyncConnectionParams();
   operation.setContext(params);

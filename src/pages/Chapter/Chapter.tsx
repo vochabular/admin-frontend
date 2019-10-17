@@ -25,12 +25,17 @@ import { actions } from "reducers/contentEditorSlice";
 interface ChapterContentProps {
   chapterId: string;
   subChapterId: string | undefined;
+  action?: string;
 }
 
 /**
  * Actually loads the content of the chapter depending whether it is a main chapter or a subchapter...
  */
-const ChapterContent = ({ chapterId, subChapterId }: ChapterContentProps) => {
+const ChapterContent = ({
+  chapterId,
+  subChapterId,
+  action
+}: ChapterContentProps) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -67,6 +72,10 @@ const ChapterContent = ({ chapterId, subChapterId }: ChapterContentProps) => {
   // Render the subchapter screen
   if (subChapterId) {
     dispatch(actions.setCurrentChapter(subChapterId));
+    if (!action) {
+      // TODO(df): Need to dynamically set "edit" to either "review", "translate" based on current role
+      return <Redirect to={`${subChapterId}/edit`} />;
+    }
     return (
       <Section title="chapters:chapter" titleTranslatable>
         <SubChapterDetail data={data.chapter} />
@@ -116,6 +125,7 @@ interface ChapterRouterProps {
   chapterId: string;
   subChapterId: string;
   componentId: string;
+  action: string;
 }
 
 interface Props
@@ -126,7 +136,7 @@ interface Props
  * Chapter wrapper Component, necessary to return early in case of a new chapter. Gets the chapter id via the route allowing to create links etc.
  */
 const Chapter = ({ classes, match }: Props) => {
-  const { chapterId, subChapterId } = match.params;
+  const { chapterId, subChapterId, action } = match.params;
 
   // If its a new main chapter, don't need to query anything
   if (chapterId === "new") {
@@ -138,7 +148,13 @@ const Chapter = ({ classes, match }: Props) => {
       />
     );
   }
-  return <ChapterContent chapterId={chapterId} subChapterId={subChapterId} />;
+  return (
+    <ChapterContent
+      chapterId={chapterId}
+      subChapterId={subChapterId}
+      action={action}
+    />
+  );
 };
 
 export default withStyles(styles, { withTheme: true })(Chapter);
