@@ -13,7 +13,7 @@ export interface getAllComponentTypes_types {
   label: string;
   icon: string;
   base: boolean;
-  schema: string;
+  schema: any;
   created: any;
   updated: any;
 }

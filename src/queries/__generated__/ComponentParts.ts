@@ -13,7 +13,7 @@ export interface ComponentParts_type {
   label: string;
   icon: string;
   base: boolean;
-  schema: string;
+  schema: any;
   created: any;
   updated: any;
 }
@@ -52,7 +52,7 @@ export interface ComponentParts_media {
 export interface ComponentParts {
   __typename: "api_component";
   id: any;
-  data: string;
+  data: any;
   state: string;
   position: number | null;
   /**

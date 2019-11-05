@@ -48,6 +48,7 @@ export enum api_chapter_update_column {
   created = "created",
   description = "description",
   fk_belongs_to_id = "fk_belongs_to_id",
+  fk_book_id = "fk_book_id",
   id = "id",
   number = "number",
   titleCH = "titleCH",
@@ -115,6 +116,7 @@ export enum api_componenttype_constraint {
 export enum api_componenttype_update_column {
   base = "base",
   created = "created",
+  fk_frontend_widget_id = "fk_frontend_widget_id",
   fk_parent_type_id = "fk_parent_type_id",
   icon = "icon",
   id = "id",
@@ -128,6 +130,7 @@ export enum api_componenttype_update_column {
  * unique or primary key constraints on table "api_language"
  */
 export enum api_language_constraint {
+  api_language_code_abb0b283_uniq = "api_language_code_abb0b283_uniq",
   api_language_pkey = "api_language_pkey",
 }
 
@@ -301,6 +304,36 @@ export enum api_wordtranslation_update_column {
   word_id = "word_id",
 }
 
+/**
+ * expression to compare columns of type Boolean. All fields are combined with logical 'AND'.
+ */
+export interface Boolean_comparison_exp {
+  _eq?: boolean | null;
+  _gt?: boolean | null;
+  _gte?: boolean | null;
+  _in?: boolean[] | null;
+  _is_null?: boolean | null;
+  _lt?: boolean | null;
+  _lte?: boolean | null;
+  _neq?: boolean | null;
+  _nin?: boolean[] | null;
+}
+
+/**
+ * expression to compare columns of type Int. All fields are combined with logical 'AND'.
+ */
+export interface Int_comparison_exp {
+  _eq?: number | null;
+  _gt?: number | null;
+  _gte?: number | null;
+  _in?: number[] | null;
+  _is_null?: boolean | null;
+  _lt?: number | null;
+  _lte?: number | null;
+  _neq?: number | null;
+  _nin?: number[] | null;
+}
+
 export interface ProfileInput {
   currentRole?: string | null;
   eventNotifications?: boolean | null;
@@ -310,6 +343,27 @@ export interface ProfileInput {
   roles?: string | null;
   setupCompleted?: boolean | null;
   translatorLanguages?: string | null;
+}
+
+/**
+ * expression to compare columns of type String. All fields are combined with logical 'AND'.
+ */
+export interface String_comparison_exp {
+  _eq?: string | null;
+  _gt?: string | null;
+  _gte?: string | null;
+  _ilike?: string | null;
+  _in?: string[] | null;
+  _is_null?: boolean | null;
+  _like?: string | null;
+  _lt?: string | null;
+  _lte?: string | null;
+  _neq?: string | null;
+  _nilike?: string | null;
+  _nin?: string[] | null;
+  _nlike?: string | null;
+  _nsimilar?: string | null;
+  _similar?: string | null;
 }
 
 export interface UpdateProfileInput {
@@ -327,6 +381,29 @@ export interface api_chapter_arr_rel_insert_input {
 }
 
 /**
+ * Boolean expression to filter rows from the table "api_chapter". All fields are combined with a logical 'AND'.
+ */
+export interface api_chapter_bool_exp {
+  _and?: (api_chapter_bool_exp | null)[] | null;
+  _not?: api_chapter_bool_exp | null;
+  _or?: (api_chapter_bool_exp | null)[] | null;
+  components?: api_component_bool_exp | null;
+  created?: timestamptz_comparison_exp | null;
+  description?: String_comparison_exp | null;
+  fk_belongs_to_id?: uuid_comparison_exp | null;
+  fk_book_id?: uuid_comparison_exp | null;
+  id?: uuid_comparison_exp | null;
+  languages?: api_chapter_languages_bool_exp | null;
+  number?: Int_comparison_exp | null;
+  parentChapter?: api_chapter_bool_exp | null;
+  subChapters?: api_chapter_bool_exp | null;
+  titleCH?: String_comparison_exp | null;
+  titleDE?: String_comparison_exp | null;
+  updated?: timestamptz_comparison_exp | null;
+  wordgroups?: api_wordgroup_bool_exp | null;
+}
+
+/**
  * input type for inserting data into table "api_chapter"
  */
 export interface api_chapter_insert_input {
@@ -334,6 +411,7 @@ export interface api_chapter_insert_input {
   created?: any | null;
   description?: string | null;
   fk_belongs_to_id?: any | null;
+  fk_book_id?: any | null;
   id?: any | null;
   languages?: api_chapter_languages_arr_rel_insert_input | null;
   number?: number | null;
@@ -354,6 +432,19 @@ export interface api_chapter_languages_arr_rel_insert_input {
 }
 
 /**
+ * Boolean expression to filter rows from the table "api_chapter_languages". All fields are combined with a logical 'AND'.
+ */
+export interface api_chapter_languages_bool_exp {
+  _and?: (api_chapter_languages_bool_exp | null)[] | null;
+  _not?: api_chapter_languages_bool_exp | null;
+  _or?: (api_chapter_languages_bool_exp | null)[] | null;
+  chapter_id?: uuid_comparison_exp | null;
+  id?: Int_comparison_exp | null;
+  language?: api_language_bool_exp | null;
+  language_id?: uuid_comparison_exp | null;
+}
+
+/**
  * input type for inserting data into table "api_chapter_languages"
  */
 export interface api_chapter_languages_insert_input {
@@ -369,6 +460,7 @@ export interface api_chapter_languages_insert_input {
 export interface api_chapter_languages_on_conflict {
   constraint: api_chapter_languages_constraint;
   update_columns: api_chapter_languages_update_column[];
+  where?: api_chapter_languages_bool_exp | null;
 }
 
 /**
@@ -385,6 +477,7 @@ export interface api_chapter_obj_rel_insert_input {
 export interface api_chapter_on_conflict {
   constraint: api_chapter_constraint;
   update_columns: api_chapter_update_column[];
+  where?: api_chapter_bool_exp | null;
 }
 
 /**
@@ -393,6 +486,29 @@ export interface api_chapter_on_conflict {
 export interface api_comment_arr_rel_insert_input {
   data: api_comment_insert_input[];
   on_conflict?: api_comment_on_conflict | null;
+}
+
+/**
+ * Boolean expression to filter rows from the table "api_comment". All fields are combined with a logical 'AND'.
+ */
+export interface api_comment_bool_exp {
+  _and?: (api_comment_bool_exp | null)[] | null;
+  _not?: api_comment_bool_exp | null;
+  _or?: (api_comment_bool_exp | null)[] | null;
+  active?: Boolean_comparison_exp | null;
+  answers?: api_comment_bool_exp | null;
+  author?: api_profile_bool_exp | null;
+  component?: api_component_bool_exp | null;
+  context?: String_comparison_exp | null;
+  created?: timestamptz_comparison_exp | null;
+  fk_author_id?: uuid_comparison_exp | null;
+  fk_component_id?: uuid_comparison_exp | null;
+  fk_parent_comment_id?: uuid_comparison_exp | null;
+  id?: uuid_comparison_exp | null;
+  parentComment?: api_comment_bool_exp | null;
+  text?: String_comparison_exp | null;
+  updated?: timestamptz_comparison_exp | null;
+  written?: timestamptz_comparison_exp | null;
 }
 
 /**
@@ -429,6 +545,7 @@ export interface api_comment_obj_rel_insert_input {
 export interface api_comment_on_conflict {
   constraint: api_comment_constraint;
   update_columns: api_comment_update_column[];
+  where?: api_comment_bool_exp | null;
 }
 
 /**
@@ -440,6 +557,34 @@ export interface api_component_arr_rel_insert_input {
 }
 
 /**
+ * Boolean expression to filter rows from the table "api_component". All fields are combined with a logical 'AND'.
+ */
+export interface api_component_bool_exp {
+  _and?: (api_component_bool_exp | null)[] | null;
+  _not?: api_component_bool_exp | null;
+  _or?: (api_component_bool_exp | null)[] | null;
+  chapter?: api_chapter_bool_exp | null;
+  children?: api_component_bool_exp | null;
+  comments?: api_comment_bool_exp | null;
+  created?: timestamptz_comparison_exp | null;
+  data?: jsonb_comparison_exp | null;
+  fk_chapter_id?: uuid_comparison_exp | null;
+  fk_component_id?: uuid_comparison_exp | null;
+  fk_component_type_id?: uuid_comparison_exp | null;
+  fk_locked_by_id?: uuid_comparison_exp | null;
+  id?: uuid_comparison_exp | null;
+  lockedByUser?: api_profile_bool_exp | null;
+  locked_ts?: timestamptz_comparison_exp | null;
+  media?: api_media_bool_exp | null;
+  order_in_chapter?: Int_comparison_exp | null;
+  parent?: api_component_bool_exp | null;
+  state?: String_comparison_exp | null;
+  texts?: api_text_bool_exp | null;
+  type?: api_componenttype_bool_exp | null;
+  updated?: timestamptz_comparison_exp | null;
+}
+
+/**
  * input type for inserting data into table "api_component"
  */
 export interface api_component_insert_input {
@@ -447,7 +592,7 @@ export interface api_component_insert_input {
   children?: api_component_arr_rel_insert_input | null;
   comments?: api_comment_arr_rel_insert_input | null;
   created?: any | null;
-  data?: string | null;
+  data?: any | null;
   fk_chapter_id?: any | null;
   fk_component_id?: any | null;
   fk_component_type_id?: any | null;
@@ -478,6 +623,7 @@ export interface api_component_obj_rel_insert_input {
 export interface api_component_on_conflict {
   constraint: api_component_constraint;
   update_columns: api_component_update_column[];
+  where?: api_component_bool_exp | null;
 }
 
 /**
@@ -485,7 +631,7 @@ export interface api_component_on_conflict {
  */
 export interface api_component_set_input {
   created?: any | null;
-  data?: string | null;
+  data?: any | null;
   fk_chapter_id?: any | null;
   fk_component_id?: any | null;
   fk_component_type_id?: any | null;
@@ -506,19 +652,43 @@ export interface api_componenttype_arr_rel_insert_input {
 }
 
 /**
+ * Boolean expression to filter rows from the table "api_componenttype". All fields are combined with a logical 'AND'.
+ */
+export interface api_componenttype_bool_exp {
+  _and?: (api_componenttype_bool_exp | null)[] | null;
+  _not?: api_componenttype_bool_exp | null;
+  _or?: (api_componenttype_bool_exp | null)[] | null;
+  base?: Boolean_comparison_exp | null;
+  children?: api_componenttype_bool_exp | null;
+  created?: timestamptz_comparison_exp | null;
+  fk_frontend_widget_id?: uuid_comparison_exp | null;
+  fk_parent_type_id?: uuid_comparison_exp | null;
+  frontendWidget?: api_componenttype_bool_exp | null;
+  icon?: String_comparison_exp | null;
+  id?: uuid_comparison_exp | null;
+  label?: String_comparison_exp | null;
+  name?: String_comparison_exp | null;
+  parent?: api_componenttype_bool_exp | null;
+  schema?: jsonb_comparison_exp | null;
+  updated?: timestamptz_comparison_exp | null;
+}
+
+/**
  * input type for inserting data into table "api_componenttype"
  */
 export interface api_componenttype_insert_input {
   base?: boolean | null;
   children?: api_componenttype_arr_rel_insert_input | null;
   created?: any | null;
+  fk_frontend_widget_id?: any | null;
   fk_parent_type_id?: any | null;
+  frontendWidget?: api_componenttype_obj_rel_insert_input | null;
   icon?: string | null;
   id?: any | null;
   label?: string | null;
   name?: string | null;
   parent?: api_componenttype_obj_rel_insert_input | null;
-  schema?: string | null;
+  schema?: any | null;
   updated?: any | null;
 }
 
@@ -536,6 +706,21 @@ export interface api_componenttype_obj_rel_insert_input {
 export interface api_componenttype_on_conflict {
   constraint: api_componenttype_constraint;
   update_columns: api_componenttype_update_column[];
+  where?: api_componenttype_bool_exp | null;
+}
+
+/**
+ * Boolean expression to filter rows from the table "api_language". All fields are combined with a logical 'AND'.
+ */
+export interface api_language_bool_exp {
+  _and?: (api_language_bool_exp | null)[] | null;
+  _not?: api_language_bool_exp | null;
+  _or?: (api_language_bool_exp | null)[] | null;
+  code?: String_comparison_exp | null;
+  created?: timestamptz_comparison_exp | null;
+  id?: uuid_comparison_exp | null;
+  name?: String_comparison_exp | null;
+  updated?: timestamptz_comparison_exp | null;
 }
 
 /**
@@ -563,6 +748,7 @@ export interface api_language_obj_rel_insert_input {
 export interface api_language_on_conflict {
   constraint: api_language_constraint;
   update_columns: api_language_update_column[];
+  where?: api_language_bool_exp | null;
 }
 
 /**
@@ -571,6 +757,21 @@ export interface api_language_on_conflict {
 export interface api_media_arr_rel_insert_input {
   data: api_media_insert_input[];
   on_conflict?: api_media_on_conflict | null;
+}
+
+/**
+ * Boolean expression to filter rows from the table "api_media". All fields are combined with a logical 'AND'.
+ */
+export interface api_media_bool_exp {
+  _and?: (api_media_bool_exp | null)[] | null;
+  _not?: api_media_bool_exp | null;
+  _or?: (api_media_bool_exp | null)[] | null;
+  created?: timestamptz_comparison_exp | null;
+  fk_component_id?: uuid_comparison_exp | null;
+  id?: uuid_comparison_exp | null;
+  type?: String_comparison_exp | null;
+  updated?: timestamptz_comparison_exp | null;
+  url?: String_comparison_exp | null;
 }
 
 /**
@@ -591,6 +792,28 @@ export interface api_media_insert_input {
 export interface api_media_on_conflict {
   constraint: api_media_constraint;
   update_columns: api_media_update_column[];
+  where?: api_media_bool_exp | null;
+}
+
+/**
+ * Boolean expression to filter rows from the table "api_profile". All fields are combined with a logical 'AND'.
+ */
+export interface api_profile_bool_exp {
+  _and?: (api_profile_bool_exp | null)[] | null;
+  _not?: api_profile_bool_exp | null;
+  _or?: (api_profile_bool_exp | null)[] | null;
+  created?: timestamptz_comparison_exp | null;
+  current_role?: String_comparison_exp | null;
+  event_notifications?: Boolean_comparison_exp | null;
+  firstname?: String_comparison_exp | null;
+  id?: uuid_comparison_exp | null;
+  language?: String_comparison_exp | null;
+  lastname?: String_comparison_exp | null;
+  roles?: String_comparison_exp | null;
+  setup_completed?: Boolean_comparison_exp | null;
+  translator_languages?: String_comparison_exp | null;
+  updated?: timestamptz_comparison_exp | null;
+  user_id?: Int_comparison_exp | null;
 }
 
 /**
@@ -625,6 +848,7 @@ export interface api_profile_obj_rel_insert_input {
 export interface api_profile_on_conflict {
   constraint: api_profile_constraint;
   update_columns: api_profile_update_column[];
+  where?: api_profile_bool_exp | null;
 }
 
 /**
@@ -636,16 +860,42 @@ export interface api_text_arr_rel_insert_input {
 }
 
 /**
+ * Boolean expression to filter rows from the table "api_text". All fields are combined with a logical 'AND'.
+ */
+export interface api_text_bool_exp {
+  _and?: (api_text_bool_exp | null)[] | null;
+  _not?: api_text_bool_exp | null;
+  _or?: (api_text_bool_exp | null)[] | null;
+  created?: timestamptz_comparison_exp | null;
+  fk_component_id?: uuid_comparison_exp | null;
+  id?: uuid_comparison_exp | null;
+  master_translation?: api_translation_bool_exp | null;
+  master_translation_id?: uuid_comparison_exp | null;
+  translatable?: Boolean_comparison_exp | null;
+  translations?: api_translation_bool_exp | null;
+  updated?: timestamptz_comparison_exp | null;
+}
+
+/**
  * input type for inserting data into table "api_text"
  */
 export interface api_text_insert_input {
   created?: any | null;
   fk_component_id?: any | null;
   id?: any | null;
+  master_translation?: api_translation_obj_rel_insert_input | null;
   master_translation_id?: any | null;
   translatable?: boolean | null;
   translations?: api_translation_arr_rel_insert_input | null;
   updated?: any | null;
+}
+
+/**
+ * input type for inserting object relation for remote table "api_text"
+ */
+export interface api_text_obj_rel_insert_input {
+  data: api_text_insert_input;
+  on_conflict?: api_text_on_conflict | null;
 }
 
 /**
@@ -654,6 +904,7 @@ export interface api_text_insert_input {
 export interface api_text_on_conflict {
   constraint: api_text_constraint;
   update_columns: api_text_update_column[];
+  where?: api_text_bool_exp | null;
 }
 
 /**
@@ -665,6 +916,24 @@ export interface api_translation_arr_rel_insert_input {
 }
 
 /**
+ * Boolean expression to filter rows from the table "api_translation". All fields are combined with a logical 'AND'.
+ */
+export interface api_translation_bool_exp {
+  _and?: (api_translation_bool_exp | null)[] | null;
+  _not?: api_translation_bool_exp | null;
+  _or?: (api_translation_bool_exp | null)[] | null;
+  created?: timestamptz_comparison_exp | null;
+  fk_language_id?: uuid_comparison_exp | null;
+  fk_text_id?: uuid_comparison_exp | null;
+  id?: uuid_comparison_exp | null;
+  language?: api_language_bool_exp | null;
+  text?: api_text_bool_exp | null;
+  text_field?: String_comparison_exp | null;
+  updated?: timestamptz_comparison_exp | null;
+  valid?: Boolean_comparison_exp | null;
+}
+
+/**
  * input type for inserting data into table "api_translation"
  */
 export interface api_translation_insert_input {
@@ -673,9 +942,18 @@ export interface api_translation_insert_input {
   fk_text_id?: any | null;
   id?: any | null;
   language?: api_language_obj_rel_insert_input | null;
+  text?: api_text_obj_rel_insert_input | null;
   text_field?: string | null;
   updated?: any | null;
   valid?: boolean | null;
+}
+
+/**
+ * input type for inserting object relation for remote table "api_translation"
+ */
+export interface api_translation_obj_rel_insert_input {
+  data: api_translation_insert_input;
+  on_conflict?: api_translation_on_conflict | null;
 }
 
 /**
@@ -684,6 +962,21 @@ export interface api_translation_insert_input {
 export interface api_translation_on_conflict {
   constraint: api_translation_constraint;
   update_columns: api_translation_update_column[];
+  where?: api_translation_bool_exp | null;
+}
+
+/**
+ * Boolean expression to filter rows from the table "api_word". All fields are combined with a logical 'AND'.
+ */
+export interface api_word_bool_exp {
+  _and?: (api_word_bool_exp | null)[] | null;
+  _not?: api_word_bool_exp | null;
+  _or?: (api_word_bool_exp | null)[] | null;
+  created?: timestamptz_comparison_exp | null;
+  id?: uuid_comparison_exp | null;
+  translations?: api_wordtranslation_bool_exp | null;
+  updated?: timestamptz_comparison_exp | null;
+  wordgroup?: api_wordgroup_words_bool_exp | null;
 }
 
 /**
@@ -711,6 +1004,7 @@ export interface api_word_obj_rel_insert_input {
 export interface api_word_on_conflict {
   constraint: api_word_constraint;
   update_columns: api_word_update_column[];
+  where?: api_word_bool_exp | null;
 }
 
 /**
@@ -719,6 +1013,22 @@ export interface api_word_on_conflict {
 export interface api_wordgroup_arr_rel_insert_input {
   data: api_wordgroup_insert_input[];
   on_conflict?: api_wordgroup_on_conflict | null;
+}
+
+/**
+ * Boolean expression to filter rows from the table "api_wordgroup". All fields are combined with a logical 'AND'.
+ */
+export interface api_wordgroup_bool_exp {
+  _and?: (api_wordgroup_bool_exp | null)[] | null;
+  _not?: api_wordgroup_bool_exp | null;
+  _or?: (api_wordgroup_bool_exp | null)[] | null;
+  created?: timestamptz_comparison_exp | null;
+  fk_chapter_id?: uuid_comparison_exp | null;
+  id?: uuid_comparison_exp | null;
+  title_ch?: String_comparison_exp | null;
+  title_de?: String_comparison_exp | null;
+  updated?: timestamptz_comparison_exp | null;
+  words?: api_wordgroup_words_bool_exp | null;
 }
 
 /**
@@ -748,6 +1058,7 @@ export interface api_wordgroup_obj_rel_insert_input {
 export interface api_wordgroup_on_conflict {
   constraint: api_wordgroup_constraint;
   update_columns: api_wordgroup_update_column[];
+  where?: api_wordgroup_bool_exp | null;
 }
 
 /**
@@ -756,6 +1067,20 @@ export interface api_wordgroup_on_conflict {
 export interface api_wordgroup_words_arr_rel_insert_input {
   data: api_wordgroup_words_insert_input[];
   on_conflict?: api_wordgroup_words_on_conflict | null;
+}
+
+/**
+ * Boolean expression to filter rows from the table "api_wordgroup_words". All fields are combined with a logical 'AND'.
+ */
+export interface api_wordgroup_words_bool_exp {
+  _and?: (api_wordgroup_words_bool_exp | null)[] | null;
+  _not?: api_wordgroup_words_bool_exp | null;
+  _or?: (api_wordgroup_words_bool_exp | null)[] | null;
+  id?: Int_comparison_exp | null;
+  word?: api_word_bool_exp | null;
+  word_id?: uuid_comparison_exp | null;
+  wordgroup?: api_wordgroup_bool_exp | null;
+  wordgroup_id?: uuid_comparison_exp | null;
 }
 
 /**
@@ -775,6 +1100,7 @@ export interface api_wordgroup_words_insert_input {
 export interface api_wordgroup_words_on_conflict {
   constraint: api_wordgroup_words_constraint;
   update_columns: api_wordgroup_words_update_column[];
+  where?: api_wordgroup_words_bool_exp | null;
 }
 
 /**
@@ -783,6 +1109,25 @@ export interface api_wordgroup_words_on_conflict {
 export interface api_wordtranslation_arr_rel_insert_input {
   data: api_wordtranslation_insert_input[];
   on_conflict?: api_wordtranslation_on_conflict | null;
+}
+
+/**
+ * Boolean expression to filter rows from the table "api_wordtranslation". All fields are combined with a logical 'AND'.
+ */
+export interface api_wordtranslation_bool_exp {
+  _and?: (api_wordtranslation_bool_exp | null)[] | null;
+  _not?: api_wordtranslation_bool_exp | null;
+  _or?: (api_wordtranslation_bool_exp | null)[] | null;
+  audio?: String_comparison_exp | null;
+  created?: timestamptz_comparison_exp | null;
+  example_sentence?: String_comparison_exp | null;
+  fk_language_id?: uuid_comparison_exp | null;
+  id?: uuid_comparison_exp | null;
+  language?: api_language_bool_exp | null;
+  text?: String_comparison_exp | null;
+  updated?: timestamptz_comparison_exp | null;
+  word?: api_word_bool_exp | null;
+  word_id?: uuid_comparison_exp | null;
 }
 
 /**
@@ -807,6 +1152,57 @@ export interface api_wordtranslation_insert_input {
 export interface api_wordtranslation_on_conflict {
   constraint: api_wordtranslation_constraint;
   update_columns: api_wordtranslation_update_column[];
+  where?: api_wordtranslation_bool_exp | null;
+}
+
+/**
+ * expression to compare columns of type jsonb. All fields are combined with logical 'AND'.
+ */
+export interface jsonb_comparison_exp {
+  _contained_in?: any | null;
+  _contains?: any | null;
+  _eq?: any | null;
+  _gt?: any | null;
+  _gte?: any | null;
+  _has_key?: string | null;
+  _has_keys_all?: string[] | null;
+  _has_keys_any?: string[] | null;
+  _in?: any[] | null;
+  _is_null?: boolean | null;
+  _lt?: any | null;
+  _lte?: any | null;
+  _neq?: any | null;
+  _nin?: any[] | null;
+}
+
+/**
+ * expression to compare columns of type timestamptz. All fields are combined with logical 'AND'.
+ */
+export interface timestamptz_comparison_exp {
+  _eq?: any | null;
+  _gt?: any | null;
+  _gte?: any | null;
+  _in?: any[] | null;
+  _is_null?: boolean | null;
+  _lt?: any | null;
+  _lte?: any | null;
+  _neq?: any | null;
+  _nin?: any[] | null;
+}
+
+/**
+ * expression to compare columns of type uuid. All fields are combined with logical 'AND'.
+ */
+export interface uuid_comparison_exp {
+  _eq?: any | null;
+  _gt?: any | null;
+  _gte?: any | null;
+  _in?: any[] | null;
+  _is_null?: boolean | null;
+  _lt?: any | null;
+  _lte?: any | null;
+  _neq?: any | null;
+  _nin?: any[] | null;
 }
 
 //==============================================================

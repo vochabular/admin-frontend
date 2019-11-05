@@ -13,7 +13,7 @@ export interface getComponentTypeById_type_children {
   label: string;
   icon: string;
   base: boolean;
-  schema: string;
+  schema: any;
   created: any;
   updated: any;
 }
@@ -25,7 +25,7 @@ export interface getComponentTypeById_type {
   label: string;
   icon: string;
   base: boolean;
-  schema: string;
+  schema: any;
   created: any;
   updated: any;
   /**

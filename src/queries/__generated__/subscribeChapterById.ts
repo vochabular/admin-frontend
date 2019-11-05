@@ -58,7 +58,7 @@ export interface subscribeChapterById_chapter_components_type {
   label: string;
   icon: string;
   base: boolean;
-  schema: string;
+  schema: any;
   created: any;
   updated: any;
 }
@@ -101,7 +101,7 @@ export interface subscribeChapterById_chapter_components_children_type {
   label: string;
   icon: string;
   base: boolean;
-  schema: string;
+  schema: any;
   created: any;
   updated: any;
 }
@@ -144,7 +144,7 @@ export interface subscribeChapterById_chapter_components_children_children_type 
   label: string;
   icon: string;
   base: boolean;
-  schema: string;
+  schema: any;
   created: any;
   updated: any;
 }
@@ -187,7 +187,7 @@ export interface subscribeChapterById_chapter_components_children_children_child
   label: string;
   icon: string;
   base: boolean;
-  schema: string;
+  schema: any;
   created: any;
   updated: any;
 }
@@ -230,7 +230,7 @@ export interface subscribeChapterById_chapter_components_children_children_child
   label: string;
   icon: string;
   base: boolean;
-  schema: string;
+  schema: any;
   created: any;
   updated: any;
 }
@@ -269,7 +269,7 @@ export interface subscribeChapterById_chapter_components_children_children_child
 export interface subscribeChapterById_chapter_components_children_children_children_children {
   __typename: "api_component";
   id: any;
-  data: string;
+  data: any;
   state: string;
   position: number | null;
   /**
@@ -289,7 +289,7 @@ export interface subscribeChapterById_chapter_components_children_children_child
 export interface subscribeChapterById_chapter_components_children_children_children {
   __typename: "api_component";
   id: any;
-  data: string;
+  data: any;
   state: string;
   position: number | null;
   /**
@@ -313,7 +313,7 @@ export interface subscribeChapterById_chapter_components_children_children_child
 export interface subscribeChapterById_chapter_components_children_children {
   __typename: "api_component";
   id: any;
-  data: string;
+  data: any;
   state: string;
   position: number | null;
   /**
@@ -337,7 +337,7 @@ export interface subscribeChapterById_chapter_components_children_children {
 export interface subscribeChapterById_chapter_components_children {
   __typename: "api_component";
   id: any;
-  data: string;
+  data: any;
   state: string;
   position: number | null;
   /**
@@ -361,7 +361,7 @@ export interface subscribeChapterById_chapter_components_children {
 export interface subscribeChapterById_chapter_components {
   __typename: "api_component";
   id: any;
-  data: string;
+  data: any;
   state: string;
   position: number | null;
   /**

@@ -13,7 +13,7 @@ export interface getSelectedComponent_component_type {
   label: string;
   icon: string;
   base: boolean;
-  schema: string;
+  schema: any;
   created: any;
   updated: any;
 }
@@ -52,7 +52,7 @@ export interface getSelectedComponent_component_media {
 export interface getSelectedComponent_component {
   __typename: "api_component";
   id: any;
-  data: string;
+  data: any;
   state: string;
   position: number | null;
   /**
