@@ -89,6 +89,11 @@ export interface subscribeChapterById_chapter_components_texts {
   translations: subscribeChapterById_chapter_components_texts_translations[];
 }
 
+export interface subscribeChapterById_chapter_components_media {
+  __typename: "api_media";
+  id: any;
+}
+
 export interface subscribeChapterById_chapter_components_children_type {
   __typename: "api_componenttype";
   id: any;
@@ -125,6 +130,11 @@ export interface subscribeChapterById_chapter_components_children_texts {
    * An array relationship
    */
   translations: subscribeChapterById_chapter_components_children_texts_translations[];
+}
+
+export interface subscribeChapterById_chapter_components_children_media {
+  __typename: "api_media";
+  id: any;
 }
 
 export interface subscribeChapterById_chapter_components_children_children_type {
@@ -165,6 +175,11 @@ export interface subscribeChapterById_chapter_components_children_children_texts
   translations: subscribeChapterById_chapter_components_children_children_texts_translations[];
 }
 
+export interface subscribeChapterById_chapter_components_children_children_media {
+  __typename: "api_media";
+  id: any;
+}
+
 export interface subscribeChapterById_chapter_components_children_children_children_type {
   __typename: "api_componenttype";
   id: any;
@@ -201,6 +216,11 @@ export interface subscribeChapterById_chapter_components_children_children_child
    * An array relationship
    */
   translations: subscribeChapterById_chapter_components_children_children_children_texts_translations[];
+}
+
+export interface subscribeChapterById_chapter_components_children_children_children_media {
+  __typename: "api_media";
+  id: any;
 }
 
 export interface subscribeChapterById_chapter_components_children_children_children_children_type {
@@ -241,6 +261,11 @@ export interface subscribeChapterById_chapter_components_children_children_child
   translations: subscribeChapterById_chapter_components_children_children_children_children_texts_translations[];
 }
 
+export interface subscribeChapterById_chapter_components_children_children_children_children_media {
+  __typename: "api_media";
+  id: any;
+}
+
 export interface subscribeChapterById_chapter_components_children_children_children_children {
   __typename: "api_component";
   id: any;
@@ -255,6 +280,10 @@ export interface subscribeChapterById_chapter_components_children_children_child
    * An array relationship
    */
   texts: subscribeChapterById_chapter_components_children_children_children_children_texts[];
+  /**
+   * An array relationship
+   */
+  media: subscribeChapterById_chapter_components_children_children_children_children_media[];
 }
 
 export interface subscribeChapterById_chapter_components_children_children_children {
@@ -271,6 +300,10 @@ export interface subscribeChapterById_chapter_components_children_children_child
    * An array relationship
    */
   texts: subscribeChapterById_chapter_components_children_children_children_texts[];
+  /**
+   * An array relationship
+   */
+  media: subscribeChapterById_chapter_components_children_children_children_media[];
   /**
    * An array relationship
    */
@@ -294,6 +327,10 @@ export interface subscribeChapterById_chapter_components_children_children {
   /**
    * An array relationship
    */
+  media: subscribeChapterById_chapter_components_children_children_media[];
+  /**
+   * An array relationship
+   */
   children: subscribeChapterById_chapter_components_children_children_children[];
 }
 
@@ -314,6 +351,10 @@ export interface subscribeChapterById_chapter_components_children {
   /**
    * An array relationship
    */
+  media: subscribeChapterById_chapter_components_children_media[];
+  /**
+   * An array relationship
+   */
   children: subscribeChapterById_chapter_components_children_children[];
 }
 
@@ -331,6 +372,10 @@ export interface subscribeChapterById_chapter_components {
    * An array relationship
    */
   texts: subscribeChapterById_chapter_components_texts[];
+  /**
+   * An array relationship
+   */
+  media: subscribeChapterById_chapter_components_media[];
   /**
    * An array relationship
    */

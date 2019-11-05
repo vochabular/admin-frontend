@@ -2,7 +2,7 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { api_component_set_input } from "./../../../__generated__/globalTypes";
+import { api_component_set_input } from "./../../__generated__/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: updateComponent
@@ -12,6 +12,7 @@ export interface updateComponent_update_api_component_returning {
   __typename: "api_component";
   id: any;
   order_in_chapter: number | null;
+  data: string;
 }
 
 export interface updateComponent_update_api_component {

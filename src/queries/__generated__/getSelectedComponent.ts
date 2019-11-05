@@ -44,6 +44,11 @@ export interface getSelectedComponent_component_texts {
   translations: getSelectedComponent_component_texts_translations[];
 }
 
+export interface getSelectedComponent_component_media {
+  __typename: "api_media";
+  id: any;
+}
+
 export interface getSelectedComponent_component {
   __typename: "api_component";
   id: any;
@@ -58,6 +63,10 @@ export interface getSelectedComponent_component {
    * An array relationship
    */
   texts: getSelectedComponent_component_texts[];
+  /**
+   * An array relationship
+   */
+  media: getSelectedComponent_component_media[];
 }
 
 export interface getSelectedComponent {

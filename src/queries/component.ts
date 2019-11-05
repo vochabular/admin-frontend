@@ -23,6 +23,9 @@ export const COMPONENT_PART = gql`
         }
       }
     }
+    media {
+      id
+    }
   }
   ${COMPONENT_TYPE_FRAGMENT}
 `;
@@ -59,12 +62,38 @@ export const CREATE_COMPONENT = gql`
 `;
 
 export const UPDATE_COMPONENT = gql`
-  mutation updateComponent($id: uuid!, $data: api_component_set_input!) {
-    update_api_component(_set: $data, where: { id: { _eq: $id } }) {
+  mutation updateComponent(
+    $componentId: uuid!
+    $componentData: api_component_set_input!
+    $textData: api_text_insert_input!
+    $textUpdateColumns: [api_text_update_column!]!
+    $deleteTextIds: [uuid!]!
+    $deleteTranslationIds: [uuid!]!
+  ) {
+    update_api_component(
+      _set: $componentData
+      where: { id: { _eq: $componentId } }
+    ) {
       returning {
         id
         order_in_chapter
+        data
       }
+    }
+    insert_api_text(
+      objects: [$textData]
+      on_conflict: {
+        constraint: api_text_pkey
+        update_columns: $textUpdateColumns
+      }
+    ) {
+      affected_rows
+    }
+    delete_api_text(where: { id: { _in: $deleteTextIds } }) {
+      affected_rows
+    }
+    delete_api_translation(where: { id: { _in: $deleteTranslationIds } }) {
+      affected_rows
     }
   }
 `;

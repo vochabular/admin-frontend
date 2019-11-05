@@ -143,6 +143,25 @@ export enum api_language_update_column {
 }
 
 /**
+ * unique or primary key constraints on table "api_media"
+ */
+export enum api_media_constraint {
+  api_media_pkey = "api_media_pkey",
+}
+
+/**
+ * update columns of table "api_media"
+ */
+export enum api_media_update_column {
+  created = "created",
+  fk_component_id = "fk_component_id",
+  id = "id",
+  type = "type",
+  updated = "updated",
+  url = "url",
+}
+
+/**
  * unique or primary key constraints on table "api_profile"
  */
 export enum api_profile_constraint {
@@ -436,6 +455,7 @@ export interface api_component_insert_input {
   id?: any | null;
   lockedByUser?: api_profile_obj_rel_insert_input | null;
   locked_ts?: any | null;
+  media?: api_media_arr_rel_insert_input | null;
   order_in_chapter?: number | null;
   parent?: api_component_obj_rel_insert_input | null;
   state?: string | null;
@@ -543,6 +563,34 @@ export interface api_language_obj_rel_insert_input {
 export interface api_language_on_conflict {
   constraint: api_language_constraint;
   update_columns: api_language_update_column[];
+}
+
+/**
+ * input type for inserting array relation for remote table "api_media"
+ */
+export interface api_media_arr_rel_insert_input {
+  data: api_media_insert_input[];
+  on_conflict?: api_media_on_conflict | null;
+}
+
+/**
+ * input type for inserting data into table "api_media"
+ */
+export interface api_media_insert_input {
+  created?: any | null;
+  fk_component_id?: any | null;
+  id?: any | null;
+  type?: string | null;
+  updated?: any | null;
+  url?: string | null;
+}
+
+/**
+ * on conflict condition type for table "api_media"
+ */
+export interface api_media_on_conflict {
+  constraint: api_media_constraint;
+  update_columns: api_media_update_column[];
 }
 
 /**

@@ -61,6 +61,11 @@ export interface getChapters_chapters_components_texts {
   translations: getChapters_chapters_components_texts_translations[];
 }
 
+export interface getChapters_chapters_components_media {
+  __typename: "api_media";
+  id: any;
+}
+
 export interface getChapters_chapters_components {
   __typename: "api_component";
   id: any;
@@ -75,6 +80,10 @@ export interface getChapters_chapters_components {
    * An array relationship
    */
   texts: getChapters_chapters_components_texts[];
+  /**
+   * An array relationship
+   */
+  media: getChapters_chapters_components_media[];
 }
 
 export interface getChapters_chapters {

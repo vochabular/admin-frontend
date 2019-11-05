@@ -44,6 +44,11 @@ export interface ComponentParts_texts {
   translations: ComponentParts_texts_translations[];
 }
 
+export interface ComponentParts_media {
+  __typename: "api_media";
+  id: any;
+}
+
 export interface ComponentParts {
   __typename: "api_component";
   id: any;
@@ -58,4 +63,8 @@ export interface ComponentParts {
    * An array relationship
    */
   texts: ComponentParts_texts[];
+  /**
+   * An array relationship
+   */
+  media: ComponentParts_media[];
 }
