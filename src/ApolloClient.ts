@@ -4,8 +4,9 @@ import { HttpLink } from "apollo-link-http";
 import { onError } from "apollo-link-error";
 import { ApolloLink, Observable, split } from "apollo-link";
 import { WebSocketLink } from "apollo-link-ws";
-import { GraphQLError } from "graphql";
+import { GraphQLError, OperationDefinitionNode } from "graphql";
 import { getMainDefinition } from "apollo-utilities";
+import { parse, stringify } from "flatted";
 
 import { typeDefs, resolvers } from "./queries/resolvers";
 import { SubscriptionClient } from "subscriptions-transport-ws";
@@ -102,6 +103,20 @@ const request = async (operation: any) => {
   operation.setContext(params);
 };
 
+/**
+ * react-apollo uses "__typename" for a normalized flat cache. We have to strip this however on mutations before sending to Hasura, as otherwise it complains of an unknown property
+ */
+const cleanTypenameLink = new ApolloLink((operation, forward) => {
+  const omitTypename = (key: any, value: any) =>
+    key === "__typename" ? undefined : value;
+
+  const def = getMainDefinition(operation.query);
+  if (def && (<OperationDefinitionNode>def).operation === "mutation") {
+    operation.variables = parse(stringify(operation.variables), omitTypename);
+  }
+  return forward ? forward(operation) : null;
+});
+
 // Here we can chain
 const requestLink = new ApolloLink(
   (operation, forward) =>
@@ -162,6 +177,10 @@ const client = new ApolloClient({
   defaultOptions,
   cache,
   link: ApolloLink.from([
+    /**
+     * Clean the __typename from all mutations
+     */
+    cleanTypenameLink,
     /**
      * TODO(df): Central error handling. For example, on mutation error, we should show a "error" notification. When no network, we should alert the user...
      *
