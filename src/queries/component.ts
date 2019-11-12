@@ -16,7 +16,8 @@ export const COMPONENT_PART = gql`
       translatable
       translations {
         id
-        textField: text_field
+        text_field
+        valid
         language {
           id
           code
@@ -47,6 +48,11 @@ export const GET_SELECTED_COMPONENT = gql`
     component: api_component_by_pk(id: $id) {
       ...ComponentParts @client
     }
+    languages: api_language {
+      id
+      code
+      name
+    }
   }
   ${COMPONENT_PART}
 `;
@@ -65,8 +71,10 @@ export const UPDATE_COMPONENT = gql`
   mutation updateComponent(
     $componentId: uuid!
     $componentData: api_component_set_input!
-    $textData: api_text_insert_input!
+    $textData: [api_text_insert_input!]!
     $textUpdateColumns: [api_text_update_column!]!
+    $translationData: [api_translation_insert_input!]!
+    $translationUpdateColumns: [api_translation_update_column!]!
     $deleteTextIds: [uuid!]!
     $deleteTranslationIds: [uuid!]!
   ) {
@@ -81,10 +89,19 @@ export const UPDATE_COMPONENT = gql`
       }
     }
     insert_api_text(
-      objects: [$textData]
+      objects: $textData
       on_conflict: {
         constraint: api_text_pkey
         update_columns: $textUpdateColumns
+      }
+    ) {
+      affected_rows
+    }
+    insert_api_translation(
+      objects: $translationData
+      on_conflict: {
+        constraint: api_translation_pkey
+        update_columns: $translationUpdateColumns
       }
     ) {
       affected_rows

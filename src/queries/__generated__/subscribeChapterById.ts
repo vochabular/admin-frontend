@@ -6,6 +6,21 @@
 // GraphQL subscription operation: subscribeChapterById
 // ====================================================
 
+export interface subscribeChapterById_chapter_languages_language {
+  __typename: "api_language";
+  id: any;
+  code: string;
+}
+
+export interface subscribeChapterById_chapter_languages {
+  __typename: "api_chapter_languages";
+  id: number;
+  /**
+   * An object relationship
+   */
+  language: subscribeChapterById_chapter_languages_language;
+}
+
 export interface subscribeChapterById_chapter_parentChapter {
   __typename: "api_chapter";
   id: any;
@@ -13,6 +28,21 @@ export interface subscribeChapterById_chapter_parentChapter {
   titleCH: string;
   titleDE: string;
   description: string;
+}
+
+export interface subscribeChapterById_chapter_subChapters_languages_language {
+  __typename: "api_language";
+  id: any;
+  code: string;
+}
+
+export interface subscribeChapterById_chapter_subChapters_languages {
+  __typename: "api_chapter_languages";
+  id: number;
+  /**
+   * An object relationship
+   */
+  language: subscribeChapterById_chapter_subChapters_languages_language;
 }
 
 export interface subscribeChapterById_chapter_subChapters_parentChapter {
@@ -41,6 +71,10 @@ export interface subscribeChapterById_chapter_subChapters {
   number: number;
   created: any;
   updated: any;
+  /**
+   * An array relationship
+   */
+  languages: subscribeChapterById_chapter_subChapters_languages[];
   /**
    * An object relationship
    */
@@ -72,7 +106,8 @@ export interface subscribeChapterById_chapter_components_texts_translations_lang
 export interface subscribeChapterById_chapter_components_texts_translations {
   __typename: "api_translation";
   id: any;
-  textField: string;
+  text_field: string;
+  valid: boolean;
   /**
    * An object relationship
    */
@@ -115,7 +150,8 @@ export interface subscribeChapterById_chapter_components_children_texts_translat
 export interface subscribeChapterById_chapter_components_children_texts_translations {
   __typename: "api_translation";
   id: any;
-  textField: string;
+  text_field: string;
+  valid: boolean;
   /**
    * An object relationship
    */
@@ -158,7 +194,8 @@ export interface subscribeChapterById_chapter_components_children_children_texts
 export interface subscribeChapterById_chapter_components_children_children_texts_translations {
   __typename: "api_translation";
   id: any;
-  textField: string;
+  text_field: string;
+  valid: boolean;
   /**
    * An object relationship
    */
@@ -201,7 +238,8 @@ export interface subscribeChapterById_chapter_components_children_children_child
 export interface subscribeChapterById_chapter_components_children_children_children_texts_translations {
   __typename: "api_translation";
   id: any;
-  textField: string;
+  text_field: string;
+  valid: boolean;
   /**
    * An object relationship
    */
@@ -244,7 +282,8 @@ export interface subscribeChapterById_chapter_components_children_children_child
 export interface subscribeChapterById_chapter_components_children_children_children_children_texts_translations {
   __typename: "api_translation";
   id: any;
-  textField: string;
+  text_field: string;
+  valid: boolean;
   /**
    * An object relationship
    */
@@ -391,6 +430,10 @@ export interface subscribeChapterById_chapter {
   description: string;
   created: any;
   updated: any;
+  /**
+   * An array relationship
+   */
+  languages: subscribeChapterById_chapter_languages[];
   /**
    * An object relationship
    */

@@ -10,6 +10,13 @@ export const CHAPTER_HEADER_PART = gql`
     description
     created
     updated
+    languages {
+      id
+      language {
+        id
+        code
+      }
+    }
     parentChapter {
       id
       number

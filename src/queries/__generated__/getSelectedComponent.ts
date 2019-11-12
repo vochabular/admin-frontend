@@ -27,7 +27,8 @@ export interface getSelectedComponent_component_texts_translations_language {
 export interface getSelectedComponent_component_texts_translations {
   __typename: "api_translation";
   id: any;
-  textField: string;
+  text_field: string;
+  valid: boolean;
   /**
    * An object relationship
    */
@@ -69,12 +70,23 @@ export interface getSelectedComponent_component {
   media: getSelectedComponent_component_media[];
 }
 
+export interface getSelectedComponent_languages {
+  __typename: "api_language";
+  id: any;
+  code: string;
+  name: string;
+}
+
 export interface getSelectedComponent {
   selectedComponentId: any;
   /**
    * fetch data from the table: "api_component" using primary key columns
    */
   component: getSelectedComponent_component | null;
+  /**
+   * fetch data from the table: "api_language"
+   */
+  languages: getSelectedComponent_languages[];
 }
 
 export interface getSelectedComponentVariables {

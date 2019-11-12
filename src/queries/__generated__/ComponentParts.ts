@@ -27,7 +27,8 @@ export interface ComponentParts_texts_translations_language {
 export interface ComponentParts_texts_translations {
   __typename: "api_translation";
   id: any;
-  textField: string;
+  text_field: string;
+  valid: boolean;
   /**
    * An object relationship
    */

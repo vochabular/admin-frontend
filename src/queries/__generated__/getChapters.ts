@@ -6,6 +6,21 @@
 // GraphQL query operation: getChapters
 // ====================================================
 
+export interface getChapters_chapters_languages_language {
+  __typename: "api_language";
+  id: any;
+  code: string;
+}
+
+export interface getChapters_chapters_languages {
+  __typename: "api_chapter_languages";
+  id: number;
+  /**
+   * An object relationship
+   */
+  language: getChapters_chapters_languages_language;
+}
+
 export interface getChapters_chapters_parentChapter {
   __typename: "api_chapter";
   id: any;
@@ -44,7 +59,8 @@ export interface getChapters_chapters_components_texts_translations_language {
 export interface getChapters_chapters_components_texts_translations {
   __typename: "api_translation";
   id: any;
-  textField: string;
+  text_field: string;
+  valid: boolean;
   /**
    * An object relationship
    */
@@ -95,6 +111,10 @@ export interface getChapters_chapters {
   description: string;
   created: any;
   updated: any;
+  /**
+   * An array relationship
+   */
+  languages: getChapters_chapters_languages[];
   /**
    * An object relationship
    */
