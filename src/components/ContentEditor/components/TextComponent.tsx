@@ -48,7 +48,7 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
         ref={ref}
         initialValues={"{ text: data.data }"}
         validationSchema={TextSchema}
-        onSubmit={values => onSubmit(values)}
+        onSubmit={values => onSubmit({})}
         render={({ submitForm, values, isSubmitting, status }) => (
           <Form>
             <Field
@@ -82,7 +82,7 @@ const TextComponent = ({ data, ...otherProps }: TextComponentProps) => {
   const classes = useStyles();
   const preview = (
     <Text translate={false} className={classes.container}>
-      {data.data}
+      {JSON.stringify(data.data)}
     </Text>
   );
 

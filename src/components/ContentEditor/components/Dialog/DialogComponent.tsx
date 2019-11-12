@@ -42,7 +42,7 @@ export const DialogSettings = React.forwardRef<any, DialogSettingsProps>(
         ref={ref}
         initialValues={{ translations }}
         validationSchema={DialogSchema}
-        onSubmit={(values, actions) => onSubmit(JSON.stringify(values))}
+        onSubmit={(values, actions) => onSubmit({})}
         render={({ submitForm, values, isSubmitting, status }) => (
           <Form>
             <FieldArray
@@ -73,7 +73,7 @@ export const DialogSettings = React.forwardRef<any, DialogSettingsProps>(
                       </Grid>
                       <Grid item>
                         <Field
-                          name={`translations[${idx}].textField`}
+                          name={`translations[${idx}].text_field`}
                           label={t("editor:Dialog")}
                           helperText={t("editor:DialogHelper")}
                           component={TextField}

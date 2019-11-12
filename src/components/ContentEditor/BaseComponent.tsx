@@ -12,12 +12,13 @@ import ComponentHeader from "./ComponentHeader";
 import Text from "components/Text";
 import { useApolloClient } from "@apollo/react-hooks";
 import { getSelectedComponent_component } from "queries/__generated__/getSelectedComponent";
+import { SubmitConfig } from "./Settings";
 
 export interface BaseSettingsProps {
   /**
    * A callable that should be called by Formik on submit
    */
-  onSubmit: (settingData: string, texts?: any[]) => void;
+  onSubmit: (config: SubmitConfig) => void;
   /**
    * The selected component
    */

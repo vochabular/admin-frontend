@@ -38,7 +38,7 @@ export const BubbleItemSettings = React.forwardRef<
       ref={ref}
       initialValues={"{ BubbleItem: data.data }"}
       validationSchema={BubbleItemSchema}
-      onSubmit={values => onSubmit(values)}
+      onSubmit={values => onSubmit({})}
       render={({ submitForm, values, isSubmitting, status }) => (
         <Form>
           <Field

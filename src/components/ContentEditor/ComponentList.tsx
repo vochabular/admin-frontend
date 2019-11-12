@@ -52,7 +52,7 @@ const ComponentList = React.memo<ComponentListProps>(
       GET_LOCAL_SELECTED_COMPONENT_ID
     );
 
-    const { selectedComponentId } = selectedComponentData;
+    const { selectedComponentId = undefined } = selectedComponentData || {};
 
     return (
       <List style={{ flex: 1 }}>

@@ -3,22 +3,41 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
 import { TextField, CheckboxWithLabel } from "formik-material-ui";
+import { cloneDeep } from "lodash-es";
+import i18next from "i18next";
 
 import { makeStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
+import { Grid } from "@material-ui/core";
 
 import BaseComponent, {
   BaseComponentProps,
   BaseSettingsProps
 } from "../BaseComponent";
 import Text from "components/Text";
-import i18next from "i18next";
-import { Grid } from "@material-ui/core";
 import ContextText from "components/ContextText";
+import { LanguageContext } from "theme";
+import Diff from "helper/Diff";
+import {
+  ICrudTextOperations,
+  ICrudTranslationOperations,
+  IText,
+  ITranslation
+} from "../Settings";
+
+interface ITitleSettingsFormFields {
+  isSwissGerman: boolean;
+  isGerman: boolean;
+  isNative: boolean;
+  swissGerman: ITranslation;
+  german: ITranslation;
+  [key: string]: any;
+}
 
 /**
  * Validation Schema definition of the input fields of this component
+ * Note the conditional rules
  */
 const TitleSchema = Yup.object().shape({
   isSwissGerman: Yup.boolean(),
@@ -39,74 +58,149 @@ const TitleSchema = Yup.object().shape({
 export interface TitleSettingsProps extends BaseSettingsProps {}
 
 /**
- * Setting widget's dynamic component view
+ * View for Settings widget
  */
 export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
   (props, ref) => {
     const { data, onSubmit } = props;
     const { t } = useTranslation();
-    // Hack: Since this is a 1:n relation, but we should only have one text for each title
-    const [translations, setTranslations] = React.useState(
-      (data.texts[0] && data.texts[0].translations) || []
-    );
 
-    const swissGerman =
-      translations[translations.findIndex(t => t.language.code === "ch") || 0];
-    const german =
-      translations[translations.findIndex(t => t.language.code === "de") || 0];
+    // Hack: Since this is a 1:n relation, but we should only have one text for each title
+    const translations = (data.texts[0] && data.texts[0].translations) || [];
+    const swissGerman = translations.find(
+      t => t.language.code === LanguageContext.ch
+    );
+    const german = translations.find(
+      t => t.language.code === LanguageContext.de
+    );
+    const initialValues: ITitleSettingsFormFields = {
+      isSwissGerman: !!swissGerman,
+      isGerman: !!german,
+      isNative: (data.texts[0] && data.texts[0].translatable) || false,
+      swissGerman: swissGerman || {
+        text_field: "",
+        valid: false,
+        languageCode: "ch"
+      },
+      german: german || { text_field: "", valid: false, languageCode: "de" }
+    };
+
+    function handleTitleSave(values: ITitleSettingsFormFields, actions: any) {
+      // Initialize interface object
+      const texts: ICrudTextOperations = { upsert: [], delete: [] };
+      const trans: ICrudTranslationOperations = { upsert: [], delete: [] };
+
+      // get diff of initial and current form values
+      const result = new Diff(initialValues, values);
+
+      // skip if nothing has changed
+      if (!result.isEqual) {
+        let text: IText = cloneDeep(data.texts[0]) || {};
+        // Initialize the nested translations empty, since we only need to specify those that need to get upserted.
+        text.translations = [];
+
+        // IF flag is active AND value or flag has changed, then we need to upsert the swissGerman translation
+        if (
+          values.isSwissGerman &&
+          result.updated.find(
+            r => r.path[0] === "swissGerman" || r.path[0] === "isSwissGerman"
+          )
+        ) {
+          text.translations.push(values.swissGerman);
+        }
+        // Same for german...
+        if (
+          values.isGerman &&
+          result.updated.find(
+            r => r.path[0] === "german" || r.path[0] === "isGerman"
+          )
+        ) {
+          text.translations.push(values.german);
+        }
+
+        // Additionally, also the case of disabled flags need to be covered
+        result.updated.forEach(i => {
+          switch (i.path[0]) {
+            // If the flag value has changed to false, then add this translation to the delete object
+            case "isSwissGerman":
+            case "isGerman":
+              if (!i.val) {
+                const originalTranslation = data.texts[0].translations.find(
+                  t =>
+                    t.language.code ===
+                    (i.path[0] === "isSwissGerman"
+                      ? LanguageContext.ch
+                      : LanguageContext.de)
+                );
+                originalTranslation && trans.delete.push(originalTranslation);
+              }
+              break;
+            case "isNative":
+              const { isNative } = values;
+              text.translatable = isNative;
+
+              // Remove all native translations if appropriate
+              if (!isNative) {
+                texts.deleteNativeLanguages = true;
+              } else if (isNative) {
+                texts.createNativeLanguages = true;
+              }
+              break;
+          }
+        });
+
+        texts.upsert.push(text);
+        onSubmit({ texts, translations: trans });
+      } else {
+        console.info("Nothing changed, skipping!");
+      }
+    }
 
     return (
       <Formik
         ref={ref}
-        initialValues={{
-          isSwissGerman: !!swissGerman,
-          isGerman: !!german,
-          isNative: (data.texts[0] && data.texts[0].translatable) || false,
-          swissGerman: (swissGerman && swissGerman.textField) || "",
-          german: (german && german.textField) || ""
-        }}
+        initialValues={initialValues}
         validationSchema={TitleSchema}
-        onSubmit={(values, actions) => onSubmit(JSON.stringify(values))}
+        onSubmit={(values, actions) => handleTitleSave(values, actions)}
         render={({ submitForm, values, isSubmitting, status }) => (
           <Form>
             <Grid
               item
               container
-              spacing={2}
+              spacing={0}
+              direction="column"
               alignItems="stretch"
-              //justify="center"
+              style={{ marginTop: "10px" }}
             >
-              <Grid item>
+              <Grid container item alignItems="flex-start">
                 <Field
                   name={`isSwissGerman`}
-                  label={t("editor:swissGerman")}
+                  Label={{ label: t("editor:swissGerman") }}
                   component={CheckboxWithLabel}
                 />
                 <Field
                   name={`isGerman`}
-                  label={t("editor:german")}
+                  Label={{ label: t("editor:german") }}
                   component={CheckboxWithLabel}
                 />
                 <Field
                   name={`isNative`}
-                  label={t("editor:native")}
+                  Label={{ label: t("editor:translatable") }}
                   component={CheckboxWithLabel}
                 />
               </Grid>
               <Grid item>
                 <Field
-                  name={`swissGerman`}
+                  name={`swissGerman.text_field`}
                   label={t("editor:swissGerman")}
-                  helperText={t("editor:swissGerman")}
                   component={TextField}
                   margin="normal"
                   fullWidth
                   disabled={!values.isSwissGerman}
                 />
                 <Field
-                  name={`german`}
+                  name={`german.text_field`}
                   label={t("editor:german")}
-                  helperText={t("editor:german")}
                   component={TextField}
                   margin="normal"
                   fullWidth
@@ -140,9 +234,9 @@ const TitleComponent = ({ data, ...otherProps }: TitleComponentProps) => {
   const preview = (
     <Box className={classes.container} bgcolor="text.primary" p={2} m={1}>
       <Grid xs={12} item container direction="row">
-        <ContextText translations={translations} wantedLanguage="ch" />
-        <Text translate={false}> / </Text>
         <ContextText translations={translations} wantedLanguage="de" />
+        <Text translate={false}> / </Text>
+        <ContextText translations={translations} wantedLanguage="ch" />
         <Text translate={false}> / </Text>
         <ContextText translations={translations} />
       </Grid>
