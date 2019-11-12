@@ -173,7 +173,9 @@ const Settings = () => {
       updateComponent: TupdateComponent;
     },
     updateComponentVariables
-  >(UPDATE_COMPONENT);
+  >(UPDATE_COMPONENT, {
+    onCompleted: () => client.writeData({ data: { selectedComponentId: null } })
+  });
 
   const handleBackgroundClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -228,7 +230,11 @@ const Settings = () => {
 
       // TODO(df): Hack for now (since index doesn't have to be the same, but usually is), need to change to lookup based texts id... From client cache?
       const existingTranslations =
-        (data && data.component && data.component.texts[i].translations) || [];
+        (data &&
+          data.component &&
+          data.component.texts[i] &&
+          data.component.texts[i].translations) ||
+        [];
 
       // Remove all native translations if applicable
       if (texts && texts.deleteNativeLanguages) {
