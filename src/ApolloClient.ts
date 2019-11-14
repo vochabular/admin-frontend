@@ -111,7 +111,7 @@ const cleanTypenameLink = new ApolloLink((operation, forward) => {
     key === "__typename" ? undefined : value;
 
   const def = getMainDefinition(operation.query);
-  if (def && (<OperationDefinitionNode>def).operation === "mutation") {
+  if (def && (def as OperationDefinitionNode).operation === "mutation") {
     operation.variables = parse(stringify(operation.variables), omitTypename);
   }
   return forward ? forward(operation) : null;

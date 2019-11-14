@@ -32,6 +32,7 @@ interface ITitleSettingsFormFields {
   isNative: boolean;
   swissGerman: ITranslation;
   german: ITranslation;
+  shouldInvalidateTranslations?: boolean;
   [key: string]: any;
 }
 
@@ -73,6 +74,11 @@ export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
     const german = translations.find(
       t => t.language.code === LanguageContext.de
     );
+    const nativeLanguages = translations.filter(t =>
+      ([LanguageContext.ch, LanguageContext.de] as string[]).includes(
+        t.language.code
+      )
+    );
     const initialValues: ITitleSettingsFormFields = {
       isSwissGerman: !!swissGerman,
       isGerman: !!german,
@@ -82,7 +88,8 @@ export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
         valid: false,
         languageCode: "ch"
       },
-      german: german || { text_field: "", valid: false, languageCode: "de" }
+      german: german || { text_field: "", valid: false, languageCode: "de" },
+      shouldInvalidateTranslations: data.texts[0] && data.texts[0].translatable
     };
 
     function handleTitleSave(values: ITitleSettingsFormFields, actions: any) {
@@ -188,6 +195,13 @@ export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
                   Label={{ label: t("editor:translatable") }}
                   component={CheckboxWithLabel}
                 />
+                {nativeLanguages && nativeLanguages.length ? (
+                  <Field
+                    name={`shouldInvalidateTranslations`}
+                    Label={{ label: t("editor:shouldInvalidateTranslations") }}
+                    component={CheckboxWithLabel}
+                  />
+                ) : null}
               </Grid>
               <Grid item>
                 <Field

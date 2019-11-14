@@ -203,7 +203,7 @@ const Settings = () => {
    * @param config
    */
   const handleOnSubmit = (config: SubmitConfig) => {
-    const { settingsData, texts, translations, media } = config;
+    const { settingsData, texts, translations } = config;
 
     // Initialization
     let deleteTranslationIds: string[] =

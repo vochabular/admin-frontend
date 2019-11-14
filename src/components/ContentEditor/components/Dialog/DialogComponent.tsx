@@ -6,14 +6,13 @@ import { TextField, Select } from "formik-material-ui";
 
 import { makeStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
+import { Grid, MenuItem } from "@material-ui/core";
 
 import BaseComponent, {
   BaseComponentProps,
   BaseSettingsProps
 } from "../../BaseComponent";
 import Text from "components/Text";
-import i18next from "i18next";
-import { Grid, MenuItem } from "@material-ui/core";
 
 /**
  * Validation Schema definition of the input fields of this component
@@ -32,9 +31,8 @@ export const DialogSettings = React.forwardRef<any, DialogSettingsProps>(
   (props, ref) => {
     const { data, onSubmit } = props;
 
-    const [translations, setTranslations] = React.useState(
-      (data.texts[0] && data.texts[0].translations) || []
-    );
+    const translations = (data.texts[0] && data.texts[0].translations) || [];
+
     const { t } = useTranslation();
 
     return (
@@ -101,7 +99,7 @@ export interface DialogComponentProps extends BaseComponentProps {}
  * How the component should get rendered in the editor
  */
 const DialogComponent = ({ data, ...otherProps }: DialogComponentProps) => {
-  const classes = useStyles();
+  // const classes = useStyles();
 
   const preview = <Text translate={false}>{data.data}</Text>;
 
