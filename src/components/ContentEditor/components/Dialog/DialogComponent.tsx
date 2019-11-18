@@ -91,7 +91,9 @@ export const DialogSettings = React.forwardRef<any, DialogSettingsProps>(
   }
 );
 
-const useStyles = makeStyles((theme: Theme) => ({}));
+const useStyles = makeStyles((theme: Theme) => ({
+  container: { margin: 10 }
+}));
 
 export interface DialogComponentProps extends BaseComponentProps {}
 
@@ -99,9 +101,13 @@ export interface DialogComponentProps extends BaseComponentProps {}
  * How the component should get rendered in the editor
  */
 const DialogComponent = ({ data, ...otherProps }: DialogComponentProps) => {
-  // const classes = useStyles();
+  const classes = useStyles();
 
-  const preview = <Text translate={false}>{data.data}</Text>;
+  const preview = (
+    <Text translate={false} className={classes.container}>
+      {data.data}
+    </Text>
+  );
 
   return <BaseComponent preview={preview} data={data} {...otherProps} />;
 };
