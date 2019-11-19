@@ -89,7 +89,8 @@ export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
         languageCode: "ch"
       },
       german: german || { text_field: "", valid: false, languageCode: "de" },
-      shouldInvalidateTranslations: data.texts[0] && data.texts[0].translatable
+      shouldInvalidateTranslations:
+        (data.texts[0] && data.texts[0].translatable) || true
     };
 
     function handleTitleSave(values: ITitleSettingsFormFields, actions: any) {
@@ -168,6 +169,7 @@ export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
         initialValues={initialValues}
         validationSchema={TitleSchema}
         onSubmit={(values, actions) => handleTitleSave(values, actions)}
+        enableReinitialize={true}
       >
         {({ values }) => (
           <Form>

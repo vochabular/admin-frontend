@@ -12,18 +12,14 @@ import { BaseSettings, BaseSettingsProps } from "./BaseComponent";
 import { TitleSettings } from "./components/TitleComponent";
 import { TextSettings } from "./components/TextComponent";
 import { DialogSettings } from "./components/Dialog/DialogComponent";
+import { UPDATE_COMPONENT } from "queries/component";
 import {
-  GET_LOCAL_SELECTED_COMPONENT,
-  GET_LOCAL_SELECTED_COMPONENT_ID,
-  UPDATE_COMPONENT
-} from "queries/component";
-import { getSelectedComponentId } from "queries/__generated__/getSelectedComponentId";
-import {
-  getSelectedComponent,
   getSelectedComponent_component_texts,
   getSelectedComponent_component_media,
   getSelectedComponent_component_texts_translations,
-  getSelectedComponent_component_texts_translations_language
+  getSelectedComponent_component_texts_translations_language,
+  getSelectedComponent_component,
+  getSelectedComponent_languages
 } from "queries/__generated__/getSelectedComponent";
 import { LanguageContext } from "theme";
 import {
@@ -147,34 +143,26 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
+interface ISettingsProps {
+  component?: getSelectedComponent_component;
+  languages?: getSelectedComponent_languages[];
+}
+
 /**
  * The main Settings Component.
  * Consists of a header with generic, component type agnostic functionality and a "dynamic" settings content implementation depending on the component type
  */
-const Settings = () => {
+const Settings = ({ component, languages }: ISettingsProps) => {
   const classes = useStyles();
   const client = useApolloClient();
   // @ts-ignore
   let { subChapterId } = useParams();
 
-  const { data: selectedComponentIdData } = useQuery<getSelectedComponentId>(
-    GET_LOCAL_SELECTED_COMPONENT_ID
-  );
-  const { selectedComponentId = undefined } = selectedComponentIdData || {};
-
-  const { data } = useQuery<getSelectedComponent>(
-    GET_LOCAL_SELECTED_COMPONENT,
-    {
-      skip: !selectedComponentId,
-      variables: { id: selectedComponentId }
-    }
-  );
-  const { component: selectedComponent = undefined } = data || {};
+  const selectedComponentId = component && component.id;
+  const selectedComponent = component;
 
   const [updateComponent, { loading: updateLoading }] = useMutation<
-    {
-      updateComponent: TupdateComponent;
-    },
+    TupdateComponent,
     updateComponentVariables
   >(UPDATE_COMPONENT, {
     onCompleted: () => client.writeData({ data: { selectedComponentId: null } })
@@ -233,10 +221,7 @@ const Settings = () => {
 
       // TODO(df): Hack for now (since index doesn't have to be the same, but usually is), need to change to lookup based texts id... From client cache?
       const existingTranslations =
-        (data &&
-          data.component &&
-          data.component.texts[i] &&
-          data.component.texts[i].translations) ||
+        (component && component.texts[i] && component.texts[i].translations) ||
         [];
 
       // Remove all native translations if applicable
@@ -295,7 +280,7 @@ const Settings = () => {
         // Either the language is already prefilled or we need to get from the backend
         const language =
           t.language ||
-          (data && data.languages.find(l => l.code === t.languageCode));
+          (languages && languages.find(l => l.code === t.languageCode));
         if (language) {
           upsertableTranslations.push({
             text_field: t.text_field,
@@ -391,8 +376,4 @@ const Settings = () => {
   );
 };
 
-Settings.whyDidYouRender = {
-  //logOnDifferentValues: true
-};
-
-export default Settings;
+export default React.memo(Settings);

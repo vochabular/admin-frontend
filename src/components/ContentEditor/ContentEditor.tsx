@@ -76,7 +76,6 @@ const ContentEditor = ({ data }: Props) => {
       variables: { id: selectedComponentId }
     }
   );
-
   const { component: selectedComponent = undefined } =
     selectedComponentData || {};
 
@@ -179,17 +178,16 @@ const ContentEditor = ({ data }: Props) => {
               {createLoading || updateLoading ? <CircularProgress /> : null}
               <ComponentList components={data.components || []} level={0} />
               {provided.placeholder}
-              <Settings />
             </Grid>
           )}
         </Droppable>
       </DragDropContext>
+      <Settings
+        component={selectedComponent || undefined}
+        languages={selectedComponentData && selectedComponentData.languages}
+      />
     </>
   );
 };
 
-ContentEditor.whyDidYouRender = {
-  // logOnDifferentValues: true
-};
-
-export default ContentEditor;
+export default React.memo(ContentEditor);
