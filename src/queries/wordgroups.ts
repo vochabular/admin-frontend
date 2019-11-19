@@ -50,6 +50,15 @@ export const GET_WORDGROUP_BY_ID = gql`
   ${WORDGROUP_FRAGMENT}
 `;
 
+export const GET_WORD_BY_ID = gql`
+  subscription subscribeWordById($id: uuid!) {
+    word: api_word_by_pk(id: $id) {
+      ...WordParts
+    }
+  }
+  ${WORD_FRAGMENT}
+`;
+
 export const UPSERT_WORDGROUP = gql`
   mutation upsertWordGroup($input: [api_wordgroup_insert_input!]!) {
     insert_api_wordgroup(objects: $input) {
@@ -60,6 +69,7 @@ export const UPSERT_WORDGROUP = gql`
   }
   ${WORDGROUP_FRAGMENT}
 `;
+
 
 /**
  * See here why we are "updating" (--> actually not, just using it since otherwise the nested upsert would fail..) the ID column:

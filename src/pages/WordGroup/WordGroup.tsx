@@ -67,13 +67,13 @@ const WordGroup = ({ classes, match }: Props) => {
           data.wordGroup.words.map(w =>
             w ? (
               <Grid item key={w.id}>
-                <WordCard word={w.word} id={match.params.id} />
+                <WordCard word={w.word} wordGroupId={match.params.id} />
               </Grid>
             ) : null
           )}
         <Grid item>
           <LinkCard
-            path={`/wordgroups/${match.params.id}/add`}
+            path={`/wordgroups/${match.params.id}/word/new`}
             icon={<AddIcon />}
             helperText="wordGroups:addWordToWordGroup"
           />

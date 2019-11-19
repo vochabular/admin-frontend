@@ -13,10 +13,10 @@ import {useTranslation} from "react-i18next";
 
 interface Props extends WithStyles<typeof styles> {
   word: subscribeWordGroupById_wordGroup_words_word;
-  id: string;
+  wordGroupId: string;
 }
 
-const WordCard = ({ classes, word, id }: Props) => {
+const WordCard = ({ classes, word, wordGroupId }: Props) => {
   const { t } = useTranslation();
   // Note: MUI links together with react-router-dom and Typescript are a bit tricky due to their dynamic nature
   // See the discussion and provided solutions here... https://github.com/mui-org/material-ui/issues/7877
@@ -25,7 +25,7 @@ const WordCard = ({ classes, word, id }: Props) => {
     <Card>
       <CardActionArea
         component={RouterLink}
-        {...{ to: `/word/${id}` } as any}
+        {...{ to: `${wordGroupId}/word/${word.id}` } as any}
       >
         <CardContent>
           <Typography

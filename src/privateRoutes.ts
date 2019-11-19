@@ -90,14 +90,14 @@ export const mainRoutes: IPrivateRouteConfig[] = [
     allowedRoles: allUsers,
     component: WordEditor,
     exact: true,
-    path: "/wordgroups/:id/add"
+    path: "/wordgroups/:wordgroupId/word/new"
   },
   {
     showInDrawer: false,
     allowedRoles: allUsers,
     component: WordEditor,
     exact: true,
-    path: "/word/:id"
+    path: "/wordgroups/:wordgroupId/word/:wordId"
   }
 ];
 
