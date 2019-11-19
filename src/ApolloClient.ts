@@ -206,11 +206,4 @@ const client = new ApolloClient({
   resolvers: resolvers
 });
 
-// Initialize state
-cache.writeData({
-  data: {
-    selectedComponentId: undefined
-  }
-});
-
 export default client;
