@@ -37,7 +37,6 @@ export const DialogSettings = React.forwardRef<any, DialogSettingsProps>(
 
     return (
       <Formik
-        ref={ref}
         initialValues={{ translations }}
         validationSchema={DialogSchema}
         onSubmit={(values, actions) => onSubmit({})}

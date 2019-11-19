@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import * as Yup from "yup";
-import { Formik, Form, Field, FormikActions } from "formik";
+import { Formik, Form, Field, FormikHelpers } from "formik";
 import { TextField } from "formik-material-ui";
 import { useMutation } from "@apollo/react-hooks";
 
@@ -47,7 +47,7 @@ const WordEditor = ({ classes, match, values = defaultValues }: Props) => {
   // TODO: Unfortunately, react-apollo-hooks doesn't support yet the error, loading object in mutations (unlike with query...)
   const [upsertWord] = useMutation(UPSERT_WORD);
 
-  async function handleSave(values: any, actions: FormikActions<any>) {
+  async function handleSave(values: any, actions: FormikHelpers<any>) {
     // TODO: This verbose stuff won't be necessary anymore as soon useMutation also returns a error/loading object.
     try {
       await upsertWord({ variables: { input: values } });

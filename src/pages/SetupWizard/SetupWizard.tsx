@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Formik, FormikActions, Form } from "formik";
+import { Formik, Form, FormikHelpers } from "formik";
 import { useMutation } from "@apollo/react-hooks";
 
 import Stepper from "@material-ui/core/Stepper";
@@ -56,7 +56,7 @@ function SetupWizard({ classes, profile }: Props) {
 
   async function handleSubmit(
     values: profile_profile,
-    actions: FormikActions<any>
+    actions: FormikHelpers<profile_profile>
   ) {
     if (activeStep === steps.length - 1) {
       const updatedProfile = {

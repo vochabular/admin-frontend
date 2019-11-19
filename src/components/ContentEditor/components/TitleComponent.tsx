@@ -165,7 +165,6 @@ export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
 
     return (
       <Formik
-        ref={ref}
         initialValues={initialValues}
         validationSchema={TitleSchema}
         onSubmit={(values, actions) => handleTitleSave(values, actions)}

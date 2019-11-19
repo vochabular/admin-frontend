@@ -8,7 +8,7 @@ import Typography, { TypographyProps } from "@material-ui/core/Typography";
 import { LanguageContext } from "theme";
 
 // Note: This type is not exported by default. With this, we can actually import and use it!
-type TOptions = import("i18next").default.TOptions;
+type TOptions = import("i18next").TOptions;
 
 interface IText extends TypographyProps {
   /**

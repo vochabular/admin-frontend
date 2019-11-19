@@ -45,8 +45,7 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
 
     return (
       <Formik
-        ref={ref}
-        initialValues={"{ text: data.data }"}
+        initialValues={{}}
         validationSchema={TextSchema}
         onSubmit={values => onSubmit({})}
         render={({ submitForm, values, isSubmitting, status }) => (

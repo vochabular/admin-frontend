@@ -26,6 +26,7 @@ interface Props {
 const SubChapterDetail = ({ context, data }: Props) => {
   const { t } = useTranslation();
   const { titleCH, titleDE, updated } = data;
+
   const title = (
     <Grid container justify="space-around">
       <Grid item>
