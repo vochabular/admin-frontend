@@ -38,7 +38,8 @@ export const BubbleItemSettings = React.forwardRef<
       initialValues={{}}
       validationSchema={BubbleItemSchema}
       onSubmit={values => onSubmit({})}
-      render={({ submitForm, values, isSubmitting, status }) => (
+    >
+      {props => (
         <Form>
           <Field
             type="string"
@@ -51,7 +52,7 @@ export const BubbleItemSettings = React.forwardRef<
           />
         </Form>
       )}
-    />
+    </Formik>
   );
 });
 

@@ -90,7 +90,8 @@ const Settings: React.FunctionComponent<Props> = ({ classes }) => {
               initialValues={initialProfile}
               validationSchema={UserSetupSchema}
               onSubmit={(values, actions) => handleSave(values, actions)}
-              render={({ submitForm, values }) => (
+            >
+              {({ values, submitForm }) => (
                 <Form>
                   <React.Fragment>
                     <GeneralSection values={values} />
@@ -108,7 +109,7 @@ const Settings: React.FunctionComponent<Props> = ({ classes }) => {
                   </Button>
                 </Form>
               )}
-            />
+            </Formik>
           </CardContent>
         </Card>
       )}

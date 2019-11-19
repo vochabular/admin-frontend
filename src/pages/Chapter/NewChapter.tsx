@@ -96,7 +96,8 @@ const NewChapter = ({ classes, parentChapter }: Props) => {
             }}
             validationSchema={ChapterSchema}
             onSubmit={(values, actions) => handleSave(values, actions)}
-            render={({ submitForm, values, isSubmitting, status }) => (
+          >
+            {({ submitForm, values, isSubmitting, status }) => (
               <Form>
                 <Field
                   type="number"
@@ -196,7 +197,7 @@ const NewChapter = ({ classes, parentChapter }: Props) => {
                 </Button>
               </Form>
             )}
-          />
+          </Formik>
         </CardContent>
       </Card>
     </React.Fragment>

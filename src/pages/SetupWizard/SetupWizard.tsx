@@ -134,7 +134,8 @@ function SetupWizard({ classes, profile }: Props) {
           initialValues={initialProfile}
           validationSchema={UserSetupSchema}
           onSubmit={(values, actions) => handleSubmit(values, actions)}
-          render={({ submitForm, values, setFieldValue, validateForm }) => (
+        >
+          {({ submitForm, values, setFieldValue, validateForm }) => (
             <Form>
               <Grid item xs={12}>
                 <Stepper activeStep={activeStep}>
@@ -171,7 +172,7 @@ function SetupWizard({ classes, profile }: Props) {
               </Grid>
             </Form>
           )}
-        />
+        </Formik>
       </Grid>
     </Paper>
   );

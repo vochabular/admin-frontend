@@ -40,7 +40,8 @@ export const DialogSettings = React.forwardRef<any, DialogSettingsProps>(
         initialValues={{ translations }}
         validationSchema={DialogSchema}
         onSubmit={(values, actions) => onSubmit({})}
-        render={({ submitForm, values, isSubmitting, status }) => (
+      >
+        {props => (
           <Form>
             <FieldArray
               name="translations"
@@ -85,7 +86,7 @@ export const DialogSettings = React.forwardRef<any, DialogSettingsProps>(
             />
           </Form>
         )}
-      />
+      </Formik>
     );
   }
 );

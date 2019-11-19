@@ -168,7 +168,8 @@ export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
         initialValues={initialValues}
         validationSchema={TitleSchema}
         onSubmit={(values, actions) => handleTitleSave(values, actions)}
-        render={({ submitForm, values, isSubmitting, status }) => (
+      >
+        {({ values }) => (
           <Form>
             <Grid
               item
@@ -223,7 +224,7 @@ export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
             </Grid>
           </Form>
         )}
-      />
+      </Formik>
     );
   }
 );

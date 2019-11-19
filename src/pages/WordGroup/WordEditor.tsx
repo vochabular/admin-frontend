@@ -74,7 +74,8 @@ const WordEditor = ({ classes, match, values = defaultValues }: Props) => {
             }}
             validationSchema={WordGroupSchema}
             onSubmit={(values, actions) => handleSave(values, actions)}
-            render={({ submitForm, values, isSubmitting, status }) => (
+          >
+            {({ submitForm, values, isSubmitting, status }) => (
               <Form>
                 <Field
                   type="text"
@@ -143,7 +144,7 @@ const WordEditor = ({ classes, match, values = defaultValues }: Props) => {
                 </Button>
               </Form>
             )}
-          />
+          </Formik>
         </CardContent>
       </Card>
     </React.Fragment>

@@ -55,7 +55,7 @@ const ComponentList = React.memo<ComponentListProps>(
     const { selectedComponentId = undefined } = selectedComponentData || {};
 
     return (
-      <List style={{ flex: 1 }}>
+      <List>
         {components.map(
           (
             component: subscribeChapterById_chapter_components,

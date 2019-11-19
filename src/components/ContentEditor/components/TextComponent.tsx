@@ -48,7 +48,8 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
         initialValues={{}}
         validationSchema={TextSchema}
         onSubmit={values => onSubmit({})}
-        render={({ submitForm, values, isSubmitting, status }) => (
+      >
+        {props => (
           <Form>
             <Field
               type="string"
@@ -61,7 +62,7 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
             />
           </Form>
         )}
-      />
+      </Formik>
     );
   }
 );
