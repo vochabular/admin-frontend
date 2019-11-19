@@ -13,7 +13,7 @@ import { TitleSettings } from "./components/TitleComponent";
 import { TextSettings } from "./components/TextComponent";
 import { DialogSettings } from "./components/Dialog/DialogComponent";
 import {
-  GET_SELECTED_COMPONENT,
+  GET_LOCAL_SELECTED_COMPONENT,
   GET_LOCAL_SELECTED_COMPONENT_ID,
   UPDATE_COMPONENT
 } from "queries/component";
@@ -163,9 +163,13 @@ const Settings = () => {
   );
   const { selectedComponentId = undefined } = selectedComponentIdData || {};
 
-  const { data } = useQuery<getSelectedComponent>(GET_SELECTED_COMPONENT, {
-    skip: !selectedComponentId
-  });
+  const { data } = useQuery<getSelectedComponent>(
+    GET_LOCAL_SELECTED_COMPONENT,
+    {
+      skip: !selectedComponentId,
+      variables: { id: selectedComponentId }
+    }
+  );
   const { component: selectedComponent = undefined } = data || {};
 
   const [updateComponent, { loading: updateLoading }] = useMutation<

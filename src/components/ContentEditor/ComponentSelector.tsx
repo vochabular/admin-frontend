@@ -7,6 +7,7 @@ import {
 import { useQuery } from "@apollo/react-hooks";
 import classNames from "classnames";
 import styled from "styled-components";
+import { ApolloError } from "apollo-client";
 
 import { Theme, makeStyles } from "@material-ui/core/styles";
 import { Grid, Card, Typography, CardContent, Icon } from "@material-ui/core";
@@ -24,11 +25,7 @@ import {
   getComponentTypeById,
   getComponentTypeById_type_children
 } from "queries/__generated__/getComponentTypeById";
-import {
-  GET_LOCAL_SELECTED_COMPONENT_ID,
-  GET_SELECTED_COMPONENT
-} from "queries/component";
-import { getSelectedComponent } from "queries/__generated__/getSelectedComponent";
+import { GET_LOCAL_SELECTED_COMPONENT_ID } from "queries/component";
 import { getSelectedComponentId } from "queries/__generated__/getSelectedComponentId";
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -103,49 +100,21 @@ const ComponentTypeItem = ({
   );
 };
 
-/**
- * A user-defined type-guard: See here: https://www.typescriptlang.org/docs/handbook/advanced-types.html
- */
-function isByIdResult(
-  result: getAllComponentTypes | getComponentTypeById
-): result is getComponentTypeById {
-  return (result as getComponentTypeById).type !== undefined;
+interface IComponentSelectorWithDataProps {
+  loading: boolean;
+  error?: ApolloError;
+  types?: getAllComponentTypes_types[] | getComponentTypeById_type_children[];
 }
 
-const ComponentSelector = () => {
+/**
+ * Main container component, receiving the result from the higher up queries
+ */
+const ComponentSelectorWithData = ({
+  loading,
+  error,
+  types = []
+}: IComponentSelectorWithDataProps) => {
   const classes = useStyles();
-
-  const { data: selectedComponentIdData } = useQuery<getSelectedComponentId>(
-    GET_LOCAL_SELECTED_COMPONENT_ID
-  );
-  const { selectedComponentId = undefined } = selectedComponentIdData || {};
-  const { data: selectedComponentData } = useQuery<getSelectedComponent>(
-    GET_SELECTED_COMPONENT,
-    {
-      skip: !selectedComponentId
-    }
-  );
-  const { component: selectedComponent = undefined } =
-    selectedComponentData || {};
-
-  // Get either the top level components or
-  const { data, loading, error } = useQuery<
-    getAllComponentTypes | getComponentTypeById
-  >(
-    !selectedComponent ? GET_ALL_COMPONENTTYPES : GET_COMPONENTTYPE_BY_ID,
-    !selectedComponent
-      ? undefined
-      : { variables: { id: selectedComponent.type.id } }
-  );
-
-  let types:
-    | getAllComponentTypes_types
-    | getComponentTypeById_type_children[] = [];
-  if (data && !isByIdResult(data)) {
-    types = data.types || [];
-  } else if (data) {
-    types = (data.type && data.type.children) || [];
-  }
 
   return (
     <Grid container justify="center" className={classes.container}>
@@ -180,6 +149,61 @@ const ComponentSelector = () => {
       })}
     </Grid>
   );
+};
+
+/**
+ * Gets all top-level component types
+ */
+const AllTopComponentSelector = () => {
+  const { data, loading, error } = useQuery<getAllComponentTypes>(
+    GET_ALL_COMPONENTTYPES
+  );
+  return (
+    <ComponentSelectorWithData
+      loading={loading}
+      error={error}
+      types={(data && data.types) || []}
+    />
+  );
+};
+
+interface ISelectedComponentSelectorProps {
+  selectedComponentId: string;
+}
+
+/**
+ * Gets the children types of the the current selected component type
+ */
+const SelectedComponentSelector = ({
+  selectedComponentId
+}: ISelectedComponentSelectorProps) => {
+  const { data, loading, error } = useQuery<getComponentTypeById>(
+    GET_COMPONENTTYPE_BY_ID,
+    { variables: { id: selectedComponentId } }
+  );
+  return (
+    <ComponentSelectorWithData
+      loading={loading}
+      error={error}
+      types={(data && data.type && data.type.children) || []}
+    />
+  );
+};
+
+/**
+ * Main Component acting as a gate to query the right component type data depending whether there is a currently selected component
+ */
+const ComponentSelector = () => {
+  const { data: selectedComponentIdData } = useQuery<getSelectedComponentId>(
+    GET_LOCAL_SELECTED_COMPONENT_ID
+  );
+  const { selectedComponentId = undefined } = selectedComponentIdData || {};
+
+  if (selectedComponentId)
+    return (
+      <SelectedComponentSelector selectedComponentId={selectedComponentId} />
+    );
+  return <AllTopComponentSelector />;
 };
 
 export default ComponentSelector;

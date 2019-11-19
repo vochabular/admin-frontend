@@ -41,14 +41,14 @@ export const GET_LOCAL_SELECTED_COMPONENT_ID = gql`
  * Local query (would replace redux...):
  * https://www.apollographql.com/docs/react/essentials/local-state/
  * Especially, "Using @client fields as variables"!
+ * selectedComponentId @client @export(as: "id")
  */
-export const GET_SELECTED_COMPONENT = gql`
+export const GET_LOCAL_SELECTED_COMPONENT = gql`
   query getSelectedComponent($id: uuid!) {
-    selectedComponentId @client @export(as: "id")
-    component: api_component_by_pk(id: $id) {
-      ...ComponentParts @client
+    component: api_component_by_pk(id: $id) @client {
+      ...ComponentParts
     }
-    languages: api_language {
+    languages: api_language @client {
       id
       code
       name
