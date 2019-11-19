@@ -2,6 +2,7 @@ import * as React from "react";
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import classNames from "classnames";
 import { useMutation, useApolloClient, useQuery } from "@apollo/react-hooks";
+import gql from "graphql-tag";
 
 import { makeStyles, Theme, Grid, CircularProgress } from "@material-ui/core";
 
@@ -10,15 +11,40 @@ import ComponentSelector from "./ComponentSelector";
 import { subscribeChapterById_chapter } from "queries/__generated__/subscribeChapterById";
 import {
   CREATE_COMPONENT,
-  UPDATE_COMPONENT,
   GET_SELECTED_COMPONENT,
-  GET_LOCAL_SELECTED_COMPONENT_ID
+  GET_LOCAL_SELECTED_COMPONENT_ID,
+  COMPONENT_PART
 } from "queries/component";
 import Settings from "./Settings";
 import { getSelectedComponent } from "queries/__generated__/getSelectedComponent";
 import { getSelectedComponentId } from "queries/__generated__/getSelectedComponentId";
+import {
+  createComponent as TcreateComponent,
+  createComponentVariables as TcreateComponentVariables
+} from "queries/__generated__/createComponent";
+import {
+  updateComponent as TupdateComponent,
+  updateComponentVariables as TupdateComponentVariables
+} from "./__generated__/updateComponent";
 
 export const TOP_LEVEL_COMPONENT_TYPE = "top-level-component";
+
+const UPDATE_COMPONENT = gql`
+  mutation updateComponent(
+    $componentId: uuid!
+    $componentData: api_component_set_input!
+  ) {
+    update_api_component(
+      _set: $componentData
+      where: { id: { _eq: $componentId } }
+    ) {
+      returning {
+        ...ComponentParts
+      }
+    }
+  }
+  ${COMPONENT_PART}
+`;
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -54,13 +80,15 @@ const ContentEditor = ({ data }: Props) => {
   const { component: selectedComponent = undefined } =
     selectedComponentData || {};
 
-  const [createComponent, { loading: createLoading }] = useMutation(
-    CREATE_COMPONENT
-  );
+  const [createComponent, { loading: createLoading }] = useMutation<
+    TcreateComponent,
+    TcreateComponentVariables
+  >(CREATE_COMPONENT);
 
-  const [updateComponent, { loading: updateLoading }] = useMutation(
-    UPDATE_COMPONENT
-  );
+  const [updateComponent, { loading: updateLoading }] = useMutation<
+    TupdateComponent,
+    TupdateComponentVariables
+  >(UPDATE_COMPONENT);
 
   /**
    * Is called when the drag ends. Main function that handles all the logic related to DragAndDrop
@@ -99,8 +127,8 @@ const ContentEditor = ({ data }: Props) => {
     else if (result.source.droppableId.startsWith("component-list-")) {
       updateComponent({
         variables: {
-          id: result.draggableId,
-          data: {
+          componentId: result.draggableId,
+          componentData: {
             order_in_chapter: result.destination.index + 1
           }
         }

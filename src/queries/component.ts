@@ -61,10 +61,11 @@ export const CREATE_COMPONENT = gql`
   mutation createComponent($input: api_component_insert_input!) {
     insert_api_component(objects: [$input]) {
       returning {
-        id
+        ...ComponentParts
       }
     }
   }
+  ${COMPONENT_PART}
 `;
 
 export const UPDATE_COMPONENT = gql`
@@ -83,9 +84,7 @@ export const UPDATE_COMPONENT = gql`
       where: { id: { _eq: $componentId } }
     ) {
       returning {
-        id
-        order_in_chapter
-        data
+        ...ComponentParts
       }
     }
     insert_api_text(
@@ -113,6 +112,7 @@ export const UPDATE_COMPONENT = gql`
       affected_rows
     }
   }
+  ${COMPONENT_PART}
 `;
 
 export const DELETE_COMPONENT = gql`
