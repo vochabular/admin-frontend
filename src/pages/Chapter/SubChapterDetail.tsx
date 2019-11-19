@@ -74,4 +74,8 @@ const SubChapterDetail = ({ context, data }: Props) => {
   );
 };
 
+SubChapterDetail.whyDidYouRender = {
+  logOnDifferentValues: true
+};
+
 export default SubChapterDetail;

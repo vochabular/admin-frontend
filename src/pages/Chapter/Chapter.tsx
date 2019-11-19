@@ -125,6 +125,8 @@ const ChapterContent = ({
   );
 };
 
+ChapterContent.whyDidYouRender = true;
+
 // These can come from the router... See the route definitions
 interface ChapterRouterProps {
   chapterId: string;
