@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Formik } from "formik";
+import { FormikValues } from "formik";
 import { useQuery, useMutation, useApolloClient } from "@apollo/react-hooks";
 import { cloneDeep } from "lodash-es";
 
@@ -153,7 +153,6 @@ const useStyles = makeStyles((theme: Theme) => ({
  */
 const Settings = () => {
   const classes = useStyles();
-
   const client = useApolloClient();
   // @ts-ignore
   let { subChapterId } = useParams();
@@ -188,7 +187,7 @@ const Settings = () => {
     event.preventDefault();
   };
 
-  const form = React.useRef<Formik>(null);
+  const form = React.useRef<FormikValues>(null);
 
   const handleOnSaveClick = () => {
     if (!form || !form.current || form.current.handleSubmit(undefined)) {
@@ -390,6 +389,10 @@ const Settings = () => {
       </Grid>
     </Drawer>
   );
+};
+
+Settings.whyDidYouRender = {
+  logOnDifferentValues: true
 };
 
 export default Settings;

@@ -69,7 +69,6 @@ const ContentEditor = ({ data }: Props) => {
   );
 
   const { selectedComponentId = undefined } = selectedComponentIdData || {};
-
   const { data: selectedComponentData } = useQuery<getSelectedComponent>(
     GET_LOCAL_SELECTED_COMPONENT,
     {
@@ -187,6 +186,10 @@ const ContentEditor = ({ data }: Props) => {
       </DragDropContext>
     </>
   );
+};
+
+ContentEditor.whyDidYouRender = {
+  logOnDifferentValues: true
 };
 
 export default ContentEditor;
