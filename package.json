@@ -43,7 +43,6 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.2.0",
     "react-select": "^3.0.8",
-    "react-swipeable-views": "^0.13.3",
     "redux-starter-kit": "^0.6.3",
     "styled-components": "^4.4.1",
     "subscriptions-transport-ws": "^0.9.16",

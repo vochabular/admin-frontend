@@ -1,5 +1,4 @@
 import * as React from "react";
-import SwipeableViews from "react-swipeable-views";
 import { useTranslation } from "react-i18next";
 
 import {
@@ -46,20 +45,14 @@ const CommentsWidget = ({ classes, theme }: Props) => {
         <Tab label={t("active")} />
         <Tab label={t("all")} />
       </Tabs>
-      <SwipeableViews
-        axis={theme.direction === "rtl" ? "x-reverse" : "x"}
-        index={activeCommentTab}
-        onChangeIndex={handleTabIndexChange}
-      >
-        <DiscussionList
-          query={GET_ACTIVE_COMMENTS}
-          variables={"TODO: FILTER BY Active AND Context"}
-        />
-        <DiscussionList
-          query={GET_ALL_COMMENTS}
-          variables={"TODO: ALL (WITH CONTEXT...)"}
-        />
-      </SwipeableViews>
+      <DiscussionList
+        query={GET_ACTIVE_COMMENTS}
+        variables={"TODO: FILTER BY Active AND Context"}
+      />
+      <DiscussionList
+        query={GET_ALL_COMMENTS}
+        variables={"TODO: ALL (WITH CONTEXT...)"}
+      />
     </Paper>
   );
 };
