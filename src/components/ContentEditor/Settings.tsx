@@ -1,6 +1,6 @@
 import * as React from "react";
 import { FormikValues } from "formik";
-import { useQuery, useMutation, useApolloClient } from "@apollo/react-hooks";
+import { useMutation, useApolloClient } from "@apollo/react-hooks";
 import { cloneDeep } from "lodash-es";
 
 import { Theme, makeStyles } from "@material-ui/core/styles";
@@ -158,9 +158,6 @@ const Settings = ({ component, languages }: ISettingsProps) => {
   // @ts-ignore
   let { subChapterId } = useParams();
 
-  const selectedComponentId = component && component.id;
-  const selectedComponent = component;
-
   const [updateComponent, { loading: updateLoading }] = useMutation<
     TupdateComponent,
     updateComponentVariables
@@ -214,7 +211,7 @@ const Settings = ({ component, languages }: ISettingsProps) => {
       const _text = cloneDeep(_texts[i]);
       upsertableTextData.push({
         id: _text.id,
-        fk_component_id: selectedComponentId,
+        fk_component_id: component && component.id,
         translatable: _text.translatable || false
       });
       const upsertableTranslations: api_translation_insert_input[] = []; // _text.translations;
@@ -310,7 +307,7 @@ const Settings = ({ component, languages }: ISettingsProps) => {
     updateComponent({
       variables: {
         // If no changes in component, then we don't want to update and thus just send null
-        componentId: componentData ? selectedComponentId : null,
+        componentId: component ? component.id : null,
         // The components table fields that should be updated
         componentData,
         // Texts are "upserted" (Check definition in static GQL document UPDATE_COMPONENT)
@@ -332,7 +329,7 @@ const Settings = ({ component, languages }: ISettingsProps) => {
       className={classes.drawer}
       variant="persistent"
       anchor="bottom"
-      open={!!selectedComponent}
+      open={!!component}
       onClick={handleBackgroundClick}
     >
       <Grid container className={classes.container} direction="row">
@@ -342,7 +339,7 @@ const Settings = ({ component, languages }: ISettingsProps) => {
             <Text
               variant="h5"
               translationOptions={{
-                type: selectedComponent && selectedComponent.type.label
+                type: component && component.type.label
               }}
             >
               chapterEditor:settingsTitle
@@ -362,11 +359,11 @@ const Settings = ({ component, languages }: ISettingsProps) => {
           </Grid>
         </Grid>
         <Grid xs={12} item container direction="column">
-          {selectedComponent ? (
+          {component ? (
             <SettingsContent
               ref={form}
-              type={selectedComponent.type.name}
-              data={selectedComponent}
+              type={component.type.name}
+              data={component}
               onSubmit={handleOnSubmit}
             />
           ) : null}

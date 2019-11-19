@@ -81,7 +81,6 @@ const ComponentHeader = ({ provided, data }: Props) => {
         <MenuItem onClick={handleDelete} disabled={deleteLoading}>
           <Text>delete</Text>
         </MenuItem>
-        ))}
       </Menu>
     </Grid>
   );
