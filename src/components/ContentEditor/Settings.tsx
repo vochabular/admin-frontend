@@ -392,7 +392,7 @@ const Settings = () => {
 };
 
 Settings.whyDidYouRender = {
-  logOnDifferentValues: true
+  //logOnDifferentValues: true
 };
 
 export default Settings;

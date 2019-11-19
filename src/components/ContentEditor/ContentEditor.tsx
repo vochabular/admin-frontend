@@ -189,7 +189,7 @@ const ContentEditor = ({ data }: Props) => {
 };
 
 ContentEditor.whyDidYouRender = {
-  logOnDifferentValues: true
+  // logOnDifferentValues: true
 };
 
 export default ContentEditor;

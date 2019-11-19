@@ -31,10 +31,6 @@ const CommentsWidget = ({ classes, theme }: Props) => {
     setActiveCommentTab(newValue);
   }
 
-  function handleTabIndexChange(index: number) {
-    setActiveCommentTab(index);
-  }
-
   return (
     <Paper square className={classes.header}>
       <Tabs
