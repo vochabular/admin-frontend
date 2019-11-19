@@ -154,7 +154,9 @@ const Discussion = ({ classes, data }: Props) => {
             >
               {t("resolve")}
             </MenuItem>
-            <MenuItem onClick={handleDeleteDiscussion}>{t("delete")}</MenuItem>
+            <MenuItem onClick={handleDeleteDiscussion} disabled={deleteLoading}>
+              {t("delete")}
+            </MenuItem>
           </Menu>
           {data && data.active ? (
             <Button

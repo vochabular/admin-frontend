@@ -6,6 +6,21 @@
 // GraphQL fragment: ChapterHeaderParts
 // ====================================================
 
+export interface ChapterHeaderParts_languages_language {
+  __typename: "api_language";
+  id: any;
+  code: string;
+}
+
+export interface ChapterHeaderParts_languages {
+  __typename: "api_chapter_languages";
+  id: number;
+  /**
+   * An object relationship
+   */
+  language: ChapterHeaderParts_languages_language;
+}
+
 export interface ChapterHeaderParts_parentChapter {
   __typename: "api_chapter";
   id: any;
@@ -32,6 +47,10 @@ export interface ChapterHeaderParts {
   description: string;
   created: any;
   updated: any;
+  /**
+   * An array relationship
+   */
+  languages: ChapterHeaderParts_languages[];
   /**
    * An object relationship
    */

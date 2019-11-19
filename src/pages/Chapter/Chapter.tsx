@@ -9,7 +9,7 @@ import AddIcon from "@material-ui/icons/Add";
 
 import { styles } from "styles";
 import NewChapter from "./NewChapter";
-import SubChapterDetail from "./SubChapterDetail";
+import SubChapterDetail, { Action } from "./SubChapterDetail";
 import { GET_CHAPTER_BY_ID } from "queries/chapters";
 import BusyOrErrorCard from "components/BusyOrErrorCard";
 import ChapterCard from "components/ChapterCard";
@@ -21,17 +21,21 @@ import Can from "components/Can/Can";
 import { subscribeChapterById } from "queries/__generated__/subscribeChapterById";
 import { useDispatch } from "react-redux";
 import { actions } from "reducers/contentEditorSlice";
-import { getChapterById } from "queries/__generated__/getChapterById";
 
 interface ChapterContentProps {
   chapterId: string;
   subChapterId: string | undefined;
+  action?: string;
 }
 
 /**
  * Actually loads the content of the chapter depending whether it is a main chapter or a subchapter...
  */
-const ChapterContent = ({ chapterId, subChapterId }: ChapterContentProps) => {
+const ChapterContent = ({
+  chapterId,
+  subChapterId,
+  action
+}: ChapterContentProps) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -41,6 +45,7 @@ const ChapterContent = ({ chapterId, subChapterId }: ChapterContentProps) => {
     {
       variables: {
         id: subChapterId && subChapterId !== "new" ? subChapterId : chapterId
+        // TODO(df): Should we only get translations for the current user's native language?
       }
     }
   );
@@ -68,9 +73,17 @@ const ChapterContent = ({ chapterId, subChapterId }: ChapterContentProps) => {
   // Render the subchapter screen
   if (subChapterId) {
     dispatch(actions.setCurrentChapter(subChapterId));
+    if (!action) {
+      // TODO(df): Need to dynamically set "edit" to either "review", "translate" based on current role
+      return <Redirect to={`${subChapterId}/edit`} />;
+    }
+    // TODO(df): Get default "action" and render this in case the conversion below is undefined
+
+    const convertedAction: Action = Action[action as keyof typeof Action];
+
     return (
       <Section title="chapters:chapter" titleTranslatable>
-        <SubChapterDetail data={data.chapter} />
+        <SubChapterDetail context={convertedAction} data={data.chapter} />
       </Section>
     );
   }
@@ -117,6 +130,7 @@ interface ChapterRouterProps {
   chapterId: string;
   subChapterId: string;
   componentId: string;
+  action: string;
 }
 
 interface Props
@@ -127,7 +141,7 @@ interface Props
  * Chapter wrapper Component, necessary to return early in case of a new chapter. Gets the chapter id via the route allowing to create links etc.
  */
 const Chapter = ({ classes, match }: Props) => {
-  const { chapterId, subChapterId } = match.params;
+  const { chapterId, subChapterId, action } = match.params;
 
   // If its a new main chapter, don't need to query anything
   if (chapterId === "new") {
@@ -139,7 +153,13 @@ const Chapter = ({ classes, match }: Props) => {
       />
     );
   }
-  return <ChapterContent chapterId={chapterId} subChapterId={subChapterId} />;
+  return (
+    <ChapterContent
+      chapterId={chapterId}
+      subChapterId={subChapterId}
+      action={action}
+    />
+  );
 };
 
 export default withStyles(styles, { withTheme: true })(Chapter);

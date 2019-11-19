@@ -44,7 +44,7 @@ export interface WordgroupParts_words {
 
 export interface WordgroupParts {
   __typename: "api_wordgroup";
-  parentChapterId: any;
+  parentChapterId: any | null;
   id: any;
   titleCh: string;
   titleDe: string;

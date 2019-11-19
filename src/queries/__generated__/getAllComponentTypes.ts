@@ -6,34 +6,21 @@
 // GraphQL query operation: getAllComponentTypes
 // ====================================================
 
-export interface getAllComponentTypes_componentTypes_edges_node {
-  __typename: "ComponentTypeType";
-  /**
-   * The ID of the object.
-   */
-  id: string;
+export interface getAllComponentTypes_types {
+  __typename: "api_componenttype";
+  id: any;
   name: string;
   label: string;
   icon: string;
   base: boolean;
-  schema: string;
+  schema: any;
   created: any;
   updated: any;
 }
 
-export interface getAllComponentTypes_componentTypes_edges {
-  __typename: "ComponentTypeTypeEdge";
-  /**
-   * The item at the end of the edge
-   */
-  node: getAllComponentTypes_componentTypes_edges_node | null;
-}
-
-export interface getAllComponentTypes_componentTypes {
-  __typename: "ComponentTypeTypeConnection";
-  edges: (getAllComponentTypes_componentTypes_edges | null)[];
-}
-
 export interface getAllComponentTypes {
-  componentTypes: getAllComponentTypes_componentTypes | null;
+  /**
+   * fetch data from the table: "api_componenttype"
+   */
+  types: getAllComponentTypes_types[];
 }

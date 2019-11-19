@@ -45,6 +45,9 @@
     "newChapterLanguageHelper": "The chapter is available in those languages.",
     "nWordGroups": "# of word groups: "
   },
+  "chapterEditor": {
+    "settingsTitle": "Settings for {{type}}"
+  },
   "voggi": {
     "voggiList": "Voggi-List"
   },

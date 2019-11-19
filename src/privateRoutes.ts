@@ -43,15 +43,9 @@ export const mainRoutes: IPrivateRouteConfig[] = [
     showInDrawer: false,
     allowedRoles: allUsers,
     component: Chapter,
-    exact: true, // TODO: Unfortunately, this doesn't match even if set to false, so we have to include it twice
-    path: "/chapters/:chapterId"
-  },
-  {
-    showInDrawer: false,
-    allowedRoles: allUsers,
-    component: Chapter,
     exact: false, // TODO: Unfortunately, this doesn't match even if set to false, so we have to include it twice
-    path: "/chapters/:chapterId/:subChapterId"
+    path:
+      "/chapters/:chapterId/(subChapterId)?/:subChapterId?/(action)?/:action?"
   },
   {
     showInDrawer: true,

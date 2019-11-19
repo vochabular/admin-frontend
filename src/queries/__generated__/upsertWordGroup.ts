@@ -46,7 +46,7 @@ export interface upsertWordGroup_insert_api_wordgroup_returning_words {
 
 export interface upsertWordGroup_insert_api_wordgroup_returning {
   __typename: "api_wordgroup";
-  parentChapterId: any;
+  parentChapterId: any | null;
   id: any;
   titleCh: string;
   titleDe: string;

@@ -44,7 +44,7 @@ export interface subscribeWordGroupById_wordGroup_words {
 
 export interface subscribeWordGroupById_wordGroup {
   __typename: "api_wordgroup";
-  parentChapterId: any;
+  parentChapterId: any | null;
   id: any;
   titleCh: string;
   titleDe: string;

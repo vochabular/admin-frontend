@@ -7,16 +7,13 @@
 // ====================================================
 
 export interface ComponentTypeParts {
-  __typename: "ComponentTypeType";
-  /**
-   * The ID of the object.
-   */
-  id: string;
+  __typename: "api_componenttype";
+  id: any;
   name: string;
   label: string;
   icon: string;
   base: boolean;
-  schema: string;
+  schema: any;
   created: any;
   updated: any;
 }

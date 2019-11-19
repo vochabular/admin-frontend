@@ -4,8 +4,9 @@ import { HttpLink } from "apollo-link-http";
 import { onError } from "apollo-link-error";
 import { ApolloLink, Observable, split } from "apollo-link";
 import { WebSocketLink } from "apollo-link-ws";
-import { GraphQLError } from "graphql";
+import { GraphQLError, OperationDefinitionNode } from "graphql";
 import { getMainDefinition } from "apollo-utilities";
+import { parse, stringify } from "flatted";
 
 import { typeDefs, resolvers } from "./queries/resolvers";
 import { SubscriptionClient } from "subscriptions-transport-ws";
@@ -40,7 +41,7 @@ async function getAsyncConnectionParams() {
   return {
     headers: {
       Authorization: `Bearer ${idToken}`,
-      "X-Hasura-Role": currentRole
+      "X-Hasura-Role": currentRole // TODO(df): need to be able to "overwrite" this via context: https://www.apollographql.com/docs/link/overview/
     }
   };
 }
@@ -93,10 +94,28 @@ function handleNetworkError(networkError: ApolloError["networkError"]) {
 }
 
 // On each request, set the current idToken in the header
+// TODO(df): need to improve this with caching etc:
+// https://www.apollographql.com/docs/link/overview/
+// https://www.apollographql.com/docs/link/links/context/
+// https://spectrum.chat/apollo/general/how-to-pass-additional-header-when-calling-query~67b83ba9-a1b8-4cfd-baca-5d792b2a9836
 const request = async (operation: any) => {
   const params = await getAsyncConnectionParams();
   operation.setContext(params);
 };
+
+/**
+ * react-apollo uses "__typename" for a normalized flat cache. We have to strip this however on mutations before sending to Hasura, as otherwise it complains of an unknown property
+ */
+const cleanTypenameLink = new ApolloLink((operation, forward) => {
+  const omitTypename = (key: any, value: any) =>
+    key === "__typename" ? undefined : value;
+
+  const def = getMainDefinition(operation.query);
+  if (def && (def as OperationDefinitionNode).operation === "mutation") {
+    operation.variables = parse(stringify(operation.variables), omitTypename);
+  }
+  return forward ? forward(operation) : null;
+});
 
 // Here we can chain
 const requestLink = new ApolloLink(
@@ -159,6 +178,10 @@ const client = new ApolloClient({
   cache,
   link: ApolloLink.from([
     /**
+     * Clean the __typename from all mutations
+     */
+    cleanTypenameLink,
+    /**
      * TODO(df): Central error handling. For example, on mutation error, we should show a "error" notification. When no network, we should alert the user...
      *
      */
@@ -181,6 +204,13 @@ const client = new ApolloClient({
   ]),
   typeDefs: typeDefs,
   resolvers: resolvers
+});
+
+// Initialize state
+cache.writeData({
+  data: {
+    selectedComponentId: undefined
+  }
 });
 
 export default client;

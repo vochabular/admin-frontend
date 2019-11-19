@@ -6,6 +6,21 @@
 // GraphQL subscription operation: chapters_wordGroups
 // ====================================================
 
+export interface chapters_wordGroups_chapters_languages_language {
+  __typename: "api_language";
+  id: any;
+  code: string;
+}
+
+export interface chapters_wordGroups_chapters_languages {
+  __typename: "api_chapter_languages";
+  id: number;
+  /**
+   * An object relationship
+   */
+  language: chapters_wordGroups_chapters_languages_language;
+}
+
 export interface chapters_wordGroups_chapters_parentChapter {
   __typename: "api_chapter";
   id: any;
@@ -61,7 +76,7 @@ export interface chapters_wordGroups_chapters_wordgroups_words {
 
 export interface chapters_wordGroups_chapters_wordgroups {
   __typename: "api_wordgroup";
-  parentChapterId: any;
+  parentChapterId: any | null;
   id: any;
   titleCh: string;
   titleDe: string;
@@ -80,6 +95,10 @@ export interface chapters_wordGroups_chapters {
   description: string;
   created: any;
   updated: any;
+  /**
+   * An array relationship
+   */
+  languages: chapters_wordGroups_chapters_languages[];
   /**
    * An object relationship
    */

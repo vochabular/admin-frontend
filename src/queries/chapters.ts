@@ -1,4 +1,5 @@
 import gql from "graphql-tag";
+import { COMPONENT_PART } from "./component";
 
 export const CHAPTER_HEADER_PART = gql`
   fragment ChapterHeaderParts on api_chapter {
@@ -9,6 +10,13 @@ export const CHAPTER_HEADER_PART = gql`
     description
     created
     updated
+    languages {
+      id
+      language {
+        id
+        code
+      }
+    }
     parentChapter {
       id
       number
@@ -21,21 +29,6 @@ export const CHAPTER_HEADER_PART = gql`
       titleCH
       titleDE
       description
-    }
-  }
-`;
-
-export const COMPONENT_PART = gql`
-  fragment ComponentParts on api_component {
-    id
-    data
-    state
-    texts {
-      id
-      translations {
-        id
-        textField: text_field
-      }
     }
   }
 `;
@@ -85,6 +78,9 @@ export const GET_CHAPTERS = gql`
   ${COMPONENT_PART}
 `;
 
+/**
+ * Since recursion is explicitly not allowed in the GraphQL-Spec (is an attack vector, see: https://github.com/graphql/graphql-spec/issues/91#issuecomment-254895093) we have to explicitly model the levels
+ */
 export const GET_CHAPTER_BY_ID = gql`
   subscription subscribeChapterById($id: uuid!) {
     chapter: api_chapter_by_pk(id: $id) {
@@ -92,8 +88,23 @@ export const GET_CHAPTER_BY_ID = gql`
       subChapters {
         ...ChapterHeaderParts
       }
-      components {
+      components(
+        where: { fk_component_id: { _is_null: true } }
+        order_by: { order_in_chapter: asc }
+      ) {
         ...ComponentParts
+        children(order_by: { order_in_chapter: asc }) {
+          ...ComponentParts
+          children(order_by: { order_in_chapter: asc }) {
+            ...ComponentParts
+            children(order_by: { order_in_chapter: asc }) {
+              ...ComponentParts
+              children(order_by: { order_in_chapter: asc }) {
+                ...ComponentParts
+              }
+            }
+          }
+        }
       }
     }
   }
