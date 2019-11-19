@@ -31,24 +31,24 @@ export const COMPONENT_PART = gql`
   ${COMPONENT_TYPE_FRAGMENT}
 `;
 
-export const GET_LOCAL_SELECTED_COMPONENT_ID = gql`
-  query getSelectedComponentId {
-    selectedComponentId @client
-  }
-`;
-
 /**
  * Local query (would replace redux...):
  * https://www.apollographql.com/docs/react/essentials/local-state/
  * Especially, "Using @client fields as variables"!
  * selectedComponentId @client @export(as: "id")
  */
+export const GET_LOCAL_SELECTED_COMPONENT_ID = gql`
+  query getSelectedComponentId {
+    selectedComponentId @client
+  }
+`;
+
 export const GET_LOCAL_SELECTED_COMPONENT = gql`
   query getSelectedComponent($id: uuid!) {
-    component: api_component_by_pk(id: $id) @client {
+    component: api_component_by_pk(id: $id) {
       ...ComponentParts
     }
-    languages: api_language @client {
+    languages: api_language {
       id
       code
       name
