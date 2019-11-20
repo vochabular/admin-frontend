@@ -74,10 +74,11 @@ export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
     const german = translations.find(
       t => t.language.code === LanguageContext.de
     );
-    const nativeLanguages = translations.filter(t =>
-      ([LanguageContext.ch, LanguageContext.de] as string[]).includes(
-        t.language.code
-      )
+    const nativeLanguages = translations.filter(
+      t =>
+        !([LanguageContext.ch, LanguageContext.de] as string[]).includes(
+          t.language.code
+        )
     );
     const initialValues: ITitleSettingsFormFields = {
       isSwissGerman: !!swissGerman,
@@ -163,7 +164,6 @@ export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
         console.info("Nothing changed, skipping!");
       }
     }
-
     return (
       <Formik
         ref={ref}
@@ -198,6 +198,7 @@ export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
                   Label={{ label: t("editor:translatable") }}
                   component={CheckboxWithLabel}
                 />
+
                 {nativeLanguages && nativeLanguages.length ? (
                   <Field
                     name={`shouldInvalidateTranslations`}
