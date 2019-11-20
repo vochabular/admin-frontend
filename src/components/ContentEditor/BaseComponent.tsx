@@ -85,6 +85,9 @@ const BaseComponent = ({
   };
 
   const isSelected = selectedComponentId === data.id || false;
+  const color = `#${Math.floor(
+    Math.abs(Math.sin(level + 1) * 16777215) % 16777215
+  ).toString(16)}`;
 
   return (
     <>
@@ -109,30 +112,27 @@ const BaseComponent = ({
           >
             <ComponentHeader data={data} provided={provided} />
             {preview}
-
-            {data.children.length ? (
-              <Droppable
-                droppableId={`component-list-${data.id}`}
-                type={`${data.type.name}-${data.id}`}
-              >
-                {(provided, snapshot) => (
-                  <Grid
-                    item
-                    container
-                    alignItems="stretch"
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                    style={{ padding: 20 }}
-                  >
-                    <ComponentList
-                      components={data.children}
-                      level={level + 1}
-                    />
-                    {provided.placeholder}
-                  </Grid>
-                )}
-              </Droppable>
-            ) : null}
+            <Droppable
+              droppableId={`component-list-${data.id}`}
+              type={`${data.type.name}-${data.id}`}
+            >
+              {(provided, snapshot) => (
+                <Grid
+                  item
+                  container
+                  alignItems="stretch"
+                  ref={provided.innerRef}
+                  style={{
+                    padding: 20,
+                    backgroundColor: color
+                  }}
+                  {...provided.droppableProps}
+                >
+                  <ComponentList components={data.children} level={level + 1} />
+                  {provided.placeholder}
+                </Grid>
+              )}
+            </Droppable>
           </Grid>
         )}
       </Draggable>
