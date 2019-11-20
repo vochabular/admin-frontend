@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { ApolloError } from "apollo-client";
 
@@ -14,24 +14,33 @@ interface Props extends WithStyles<typeof styles> {
   error?: ApolloError;
   loading: boolean;
   noResults?: boolean;
+  placeholderOnNoResults?: ReactNode;
+  showOnNoResults?: boolean;
 }
 
 const BusyOrErrorCard: React.FunctionComponent<Props> = ({
   classes,
   error,
   loading,
-  noResults
+  noResults,
+  placeholderOnNoResults,
+  showOnNoResults = true
 }) => {
   const { t } = useTranslation();
 
   if (!error && !loading && !noResults) return null;
+  if (noResults && !showOnNoResults) return null;
+
+  const noResultsElement = placeholderOnNoResults || (
+    <Typography>{t("noResultsYetAvailable")}</Typography>
+  );
 
   return (
     <Card>
       <CardContent>
         {error && <Typography>{error.message}</Typography>}
         {loading && <CircularProgress />}
-        {noResults && <Typography>{t("noResultsYetAvailable")}</Typography>}
+        {!loading && noResults && noResultsElement}
       </CardContent>
     </Card>
   );

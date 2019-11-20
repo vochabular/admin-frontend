@@ -122,6 +122,7 @@ const ComponentSelectorWithData = ({
         error={error}
         loading={loading}
         noResults={!types.length}
+        showOnNoResults={false}
       />
       {types.map((component, index) => {
         return (
