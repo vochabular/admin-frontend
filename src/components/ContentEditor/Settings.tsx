@@ -4,7 +4,7 @@ import { useMutation, useApolloClient } from "@apollo/react-hooks";
 import { cloneDeep } from "lodash-es";
 
 import { Theme, makeStyles } from "@material-ui/core/styles";
-import { Grid, Drawer, Button } from "@material-ui/core";
+import { Grid, Drawer, Button, CircularProgress } from "@material-ui/core";
 import { Settings as SettingsIcon, Save as SaveIcon } from "@material-ui/icons";
 
 import Text from "components/Text";
@@ -146,13 +146,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface ISettingsProps {
   component?: getSelectedComponent_component;
   languages?: getSelectedComponent_languages[];
+  loading: boolean;
 }
 
 /**
  * The main Settings Component.
  * Consists of a header with generic, component type agnostic functionality and a "dynamic" settings content implementation depending on the component type
  */
-const Settings = ({ component, languages }: ISettingsProps) => {
+const Settings = ({ component, languages, loading }: ISettingsProps) => {
   const classes = useStyles();
   const client = useApolloClient();
   // @ts-ignore
@@ -351,7 +352,7 @@ const Settings = ({ component, languages }: ISettingsProps) => {
               size="small"
               color="primary"
               onClick={handleOnSaveClick}
-              disabled={updateLoading}
+              disabled={loading || updateLoading}
             >
               <SaveIcon />
               <Text>save</Text>
@@ -359,7 +360,8 @@ const Settings = ({ component, languages }: ISettingsProps) => {
           </Grid>
         </Grid>
         <Grid xs={12} item container direction="column">
-          {component ? (
+          {loading && <CircularProgress />}
+          {!loading && component ? (
             <SettingsContent
               ref={form}
               type={

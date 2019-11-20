@@ -69,13 +69,13 @@ const ContentEditor = ({ data }: Props) => {
   );
 
   const { selectedComponentId = undefined } = selectedComponentIdData || {};
-  const { data: selectedComponentData } = useQuery<getSelectedComponent>(
-    GET_SELECTED_COMPONENT,
-    {
-      skip: !selectedComponentId,
-      variables: { id: selectedComponentId }
-    }
-  );
+  const {
+    data: selectedComponentData,
+    loading: selectedComponentLoading
+  } = useQuery<getSelectedComponent>(GET_SELECTED_COMPONENT, {
+    skip: !selectedComponentId,
+    variables: { id: selectedComponentId }
+  });
   const { component: selectedComponent = undefined } =
     selectedComponentData || {};
 
@@ -183,6 +183,7 @@ const ContentEditor = ({ data }: Props) => {
         </Droppable>
       </DragDropContext>
       <Settings
+        loading={selectedComponentLoading}
         component={selectedComponent || undefined}
         languages={selectedComponentData && selectedComponentData.languages}
       />
