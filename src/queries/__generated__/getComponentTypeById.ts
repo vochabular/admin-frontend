@@ -6,6 +6,22 @@
 // GraphQL query operation: getComponentTypeById
 // ====================================================
 
+export interface getComponentTypeById_type_frontendWidget {
+  __typename: "api_componenttype";
+  id: any;
+  name: string;
+  label: string;
+  icon: string;
+}
+
+export interface getComponentTypeById_type_children_frontendWidget {
+  __typename: "api_componenttype";
+  id: any;
+  name: string;
+  label: string;
+  icon: string;
+}
+
 export interface getComponentTypeById_type_children {
   __typename: "api_componenttype";
   id: any;
@@ -16,6 +32,10 @@ export interface getComponentTypeById_type_children {
   schema: any;
   created: any;
   updated: any;
+  /**
+   * An object relationship
+   */
+  frontendWidget: getComponentTypeById_type_children_frontendWidget | null;
 }
 
 export interface getComponentTypeById_type {
@@ -28,6 +48,10 @@ export interface getComponentTypeById_type {
   schema: any;
   created: any;
   updated: any;
+  /**
+   * An object relationship
+   */
+  frontendWidget: getComponentTypeById_type_frontendWidget | null;
   /**
    * An array relationship
    */

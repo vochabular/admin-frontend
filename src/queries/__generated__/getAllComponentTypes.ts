@@ -6,6 +6,14 @@
 // GraphQL query operation: getAllComponentTypes
 // ====================================================
 
+export interface getAllComponentTypes_types_frontendWidget {
+  __typename: "api_componenttype";
+  id: any;
+  name: string;
+  label: string;
+  icon: string;
+}
+
 export interface getAllComponentTypes_types {
   __typename: "api_componenttype";
   id: any;
@@ -16,6 +24,10 @@ export interface getAllComponentTypes_types {
   schema: any;
   created: any;
   updated: any;
+  /**
+   * An object relationship
+   */
+  frontendWidget: getAllComponentTypes_types_frontendWidget | null;
 }
 
 export interface getAllComponentTypes {

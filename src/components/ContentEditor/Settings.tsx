@@ -128,6 +128,7 @@ interface SettingsContentProps extends BaseSettingsProps {
 const SettingsContent = React.forwardRef<any, SettingsContentProps>(
   (props, ref) => {
     const { data, type, ...otherProps } = props;
+    console.log(type);
     const Component = settingTypes[type] || settingTypes.default;
     return <Component ref={ref} data={data} {...otherProps} />;
   }
@@ -362,7 +363,11 @@ const Settings = ({ component, languages }: ISettingsProps) => {
           {component ? (
             <SettingsContent
               ref={form}
-              type={component.type.name}
+              type={
+                (component.type.frontendWidget &&
+                  component.type.frontendWidget.name) ||
+                component.type.name
+              }
               data={component}
               onSubmit={handleOnSubmit}
             />

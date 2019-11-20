@@ -85,6 +85,14 @@ export interface subscribeChapterById_chapter_subChapters {
   subChapters: subscribeChapterById_chapter_subChapters_subChapters[];
 }
 
+export interface subscribeChapterById_chapter_components_type_frontendWidget {
+  __typename: "api_componenttype";
+  id: any;
+  name: string;
+  label: string;
+  icon: string;
+}
+
 export interface subscribeChapterById_chapter_components_type {
   __typename: "api_componenttype";
   id: any;
@@ -95,6 +103,10 @@ export interface subscribeChapterById_chapter_components_type {
   schema: any;
   created: any;
   updated: any;
+  /**
+   * An object relationship
+   */
+  frontendWidget: subscribeChapterById_chapter_components_type_frontendWidget | null;
 }
 
 export interface subscribeChapterById_chapter_components_texts_translations_language {
@@ -129,6 +141,14 @@ export interface subscribeChapterById_chapter_components_media {
   id: any;
 }
 
+export interface subscribeChapterById_chapter_components_children_type_frontendWidget {
+  __typename: "api_componenttype";
+  id: any;
+  name: string;
+  label: string;
+  icon: string;
+}
+
 export interface subscribeChapterById_chapter_components_children_type {
   __typename: "api_componenttype";
   id: any;
@@ -139,6 +159,10 @@ export interface subscribeChapterById_chapter_components_children_type {
   schema: any;
   created: any;
   updated: any;
+  /**
+   * An object relationship
+   */
+  frontendWidget: subscribeChapterById_chapter_components_children_type_frontendWidget | null;
 }
 
 export interface subscribeChapterById_chapter_components_children_texts_translations_language {
@@ -173,6 +197,14 @@ export interface subscribeChapterById_chapter_components_children_media {
   id: any;
 }
 
+export interface subscribeChapterById_chapter_components_children_children_type_frontendWidget {
+  __typename: "api_componenttype";
+  id: any;
+  name: string;
+  label: string;
+  icon: string;
+}
+
 export interface subscribeChapterById_chapter_components_children_children_type {
   __typename: "api_componenttype";
   id: any;
@@ -183,6 +215,10 @@ export interface subscribeChapterById_chapter_components_children_children_type 
   schema: any;
   created: any;
   updated: any;
+  /**
+   * An object relationship
+   */
+  frontendWidget: subscribeChapterById_chapter_components_children_children_type_frontendWidget | null;
 }
 
 export interface subscribeChapterById_chapter_components_children_children_texts_translations_language {
@@ -217,6 +253,14 @@ export interface subscribeChapterById_chapter_components_children_children_media
   id: any;
 }
 
+export interface subscribeChapterById_chapter_components_children_children_children_type_frontendWidget {
+  __typename: "api_componenttype";
+  id: any;
+  name: string;
+  label: string;
+  icon: string;
+}
+
 export interface subscribeChapterById_chapter_components_children_children_children_type {
   __typename: "api_componenttype";
   id: any;
@@ -227,6 +271,10 @@ export interface subscribeChapterById_chapter_components_children_children_child
   schema: any;
   created: any;
   updated: any;
+  /**
+   * An object relationship
+   */
+  frontendWidget: subscribeChapterById_chapter_components_children_children_children_type_frontendWidget | null;
 }
 
 export interface subscribeChapterById_chapter_components_children_children_children_texts_translations_language {
@@ -261,6 +309,14 @@ export interface subscribeChapterById_chapter_components_children_children_child
   id: any;
 }
 
+export interface subscribeChapterById_chapter_components_children_children_children_children_type_frontendWidget {
+  __typename: "api_componenttype";
+  id: any;
+  name: string;
+  label: string;
+  icon: string;
+}
+
 export interface subscribeChapterById_chapter_components_children_children_children_children_type {
   __typename: "api_componenttype";
   id: any;
@@ -271,6 +327,10 @@ export interface subscribeChapterById_chapter_components_children_children_child
   schema: any;
   created: any;
   updated: any;
+  /**
+   * An object relationship
+   */
+  frontendWidget: subscribeChapterById_chapter_components_children_children_children_children_type_frontendWidget | null;
 }
 
 export interface subscribeChapterById_chapter_components_children_children_children_children_texts_translations_language {

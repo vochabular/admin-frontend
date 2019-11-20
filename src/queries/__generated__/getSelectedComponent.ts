@@ -6,6 +6,14 @@
 // GraphQL query operation: getSelectedComponent
 // ====================================================
 
+export interface getSelectedComponent_component_type_frontendWidget {
+  __typename: "api_componenttype";
+  id: any;
+  name: string;
+  label: string;
+  icon: string;
+}
+
 export interface getSelectedComponent_component_type {
   __typename: "api_componenttype";
   id: any;
@@ -16,6 +24,10 @@ export interface getSelectedComponent_component_type {
   schema: any;
   created: any;
   updated: any;
+  /**
+   * An object relationship
+   */
+  frontendWidget: getSelectedComponent_component_type_frontendWidget | null;
 }
 
 export interface getSelectedComponent_component_texts_translations_language {
@@ -78,7 +90,6 @@ export interface getSelectedComponent_languages {
 }
 
 export interface getSelectedComponent {
-  selectedComponentId: any;
   /**
    * fetch data from the table: "api_component" using primary key columns
    */

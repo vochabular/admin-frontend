@@ -8,6 +8,14 @@ import { api_component_insert_input } from "./../../__generated__/globalTypes";
 // GraphQL mutation operation: createComponent
 // ====================================================
 
+export interface createComponent_insert_api_component_returning_type_frontendWidget {
+  __typename: "api_componenttype";
+  id: any;
+  name: string;
+  label: string;
+  icon: string;
+}
+
 export interface createComponent_insert_api_component_returning_type {
   __typename: "api_componenttype";
   id: any;
@@ -18,6 +26,10 @@ export interface createComponent_insert_api_component_returning_type {
   schema: any;
   created: any;
   updated: any;
+  /**
+   * An object relationship
+   */
+  frontendWidget: createComponent_insert_api_component_returning_type_frontendWidget | null;
 }
 
 export interface createComponent_insert_api_component_returning_texts_translations_language {

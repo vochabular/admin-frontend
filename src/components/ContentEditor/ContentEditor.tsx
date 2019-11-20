@@ -23,14 +23,14 @@ import {
   createComponentVariables as TcreateComponentVariables
 } from "queries/__generated__/createComponent";
 import {
-  updateComponent as TupdateComponent,
-  updateComponentVariables as TupdateComponentVariables
-} from "./__generated__/updateComponent";
+  updateSelectedComponent as TupdateSelectedComponent,
+  updateSelectedComponentVariables as TupdateSelectedComponentVariables
+} from "./__generated__/updateSelectedComponent";
 
 export const TOP_LEVEL_COMPONENT_TYPE = "top-level-component";
 
 const UPDATE_COMPONENT = gql`
-  mutation updateComponent(
+  mutation updateSelectedComponent(
     $componentId: uuid!
     $componentData: api_component_set_input!
   ) {
@@ -85,8 +85,8 @@ const ContentEditor = ({ data }: Props) => {
   >(CREATE_COMPONENT);
 
   const [updateComponent, { loading: updateLoading }] = useMutation<
-    TupdateComponent,
-    TupdateComponentVariables
+    TupdateSelectedComponent,
+    TupdateSelectedComponentVariables
   >(UPDATE_COMPONENT);
 
   /**

@@ -8,6 +8,14 @@ import { api_component_set_input, api_text_insert_input, api_text_update_column,
 // GraphQL mutation operation: updateComponent
 // ====================================================
 
+export interface updateComponent_update_api_component_returning_type_frontendWidget {
+  __typename: "api_componenttype";
+  id: any;
+  name: string;
+  label: string;
+  icon: string;
+}
+
 export interface updateComponent_update_api_component_returning_type {
   __typename: "api_componenttype";
   id: any;
@@ -18,6 +26,10 @@ export interface updateComponent_update_api_component_returning_type {
   schema: any;
   created: any;
   updated: any;
+  /**
+   * An object relationship
+   */
+  frontendWidget: updateComponent_update_api_component_returning_type_frontendWidget | null;
 }
 
 export interface updateComponent_update_api_component_returning_texts_translations_language {

@@ -132,30 +132,33 @@ const ComponentSelectorWithData = ({
         noResults={!types.length}
         showOnNoResults={false}
       />
-      {types.map((component, index) => {
-        return (
-          <Draggable
-            key={component.id}
-            draggableId={component.id}
-            index={index}
-          >
-            {(provided, snapshot) => (
-              <>
-                <ComponentTypeItem
-                  item={component}
-                  provided={provided}
-                  snapshot={snapshot}
-                />
-                {/* react-beautiful-dnd unfortunately does not support Copy & Clone. 
+      {!loading &&
+        types.map((component, index) => {
+          return (
+            <Draggable
+              key={component.id}
+              draggableId={component.id}
+              index={index}
+            >
+              {(provided, snapshot) => (
+                <>
+                  <ComponentTypeItem
+                    item={component}
+                    provided={provided}
+                    snapshot={snapshot}
+                  />
+                  {/* react-beautiful-dnd unfortunately does not support Copy & Clone. 
                 See here for the workaround with this "Clone": 
                 https://github.com/atlassian/react-beautiful-dnd/issues/216#issuecomment-423708497  
                 */}
-                {snapshot.isDragging && <ComponentTypeItem item={component} />}
-              </>
-            )}
-          </Draggable>
-        );
-      })}
+                  {snapshot.isDragging && (
+                    <ComponentTypeItem item={component} />
+                  )}
+                </>
+              )}
+            </Draggable>
+          );
+        })}
     </Grid>
   );
 };
