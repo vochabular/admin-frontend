@@ -29,7 +29,7 @@ const BusyOrErrorCard: React.FunctionComponent<Props> = ({
   const { t } = useTranslation();
 
   if (!error && !loading && !noResults) return null;
-  if (noResults && !showOnNoResults) return null;
+  if (!loading && !error && noResults && !showOnNoResults) return null;
 
   const noResultsElement = placeholderOnNoResults || (
     <Typography>{t("noResultsYetAvailable")}</Typography>

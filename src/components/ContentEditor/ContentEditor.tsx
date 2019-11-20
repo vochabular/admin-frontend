@@ -11,7 +11,7 @@ import ComponentSelector from "./ComponentSelector";
 import { subscribeChapterById_chapter } from "queries/__generated__/subscribeChapterById";
 import {
   CREATE_COMPONENT,
-  GET_LOCAL_SELECTED_COMPONENT,
+  GET_SELECTED_COMPONENT,
   GET_LOCAL_SELECTED_COMPONENT_ID,
   COMPONENT_PART
 } from "queries/component";
@@ -70,7 +70,7 @@ const ContentEditor = ({ data }: Props) => {
 
   const { selectedComponentId = undefined } = selectedComponentIdData || {};
   const { data: selectedComponentData } = useQuery<getSelectedComponent>(
-    GET_LOCAL_SELECTED_COMPONENT,
+    GET_SELECTED_COMPONENT,
     {
       skip: !selectedComponentId,
       variables: { id: selectedComponentId }

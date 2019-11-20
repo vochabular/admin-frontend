@@ -43,7 +43,7 @@ export const GET_LOCAL_SELECTED_COMPONENT_ID = gql`
   }
 `;
 
-export const GET_LOCAL_SELECTED_COMPONENT = gql`
+export const GET_SELECTED_COMPONENT = gql`
   query getSelectedComponent($id: uuid!) {
     component: api_component_by_pk(id: $id) {
       ...ComponentParts

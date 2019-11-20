@@ -23,10 +23,18 @@ import {
 } from "queries/__generated__/getAllComponentTypes";
 import {
   getComponentTypeById,
-  getComponentTypeById_type_children
+  getComponentTypeById_type_children,
+  getComponentTypeByIdVariables
 } from "queries/__generated__/getComponentTypeById";
-import { GET_LOCAL_SELECTED_COMPONENT_ID } from "queries/component";
+import {
+  GET_LOCAL_SELECTED_COMPONENT_ID,
+  GET_SELECTED_COMPONENT
+} from "queries/component";
 import { getSelectedComponentId } from "queries/__generated__/getSelectedComponentId";
+import {
+  getSelectedComponent,
+  getSelectedComponentVariables
+} from "queries/__generated__/getSelectedComponent";
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -178,14 +186,30 @@ interface ISelectedComponentSelectorProps {
 const SelectedComponentSelector = ({
   selectedComponentId
 }: ISelectedComponentSelectorProps) => {
-  const { data, loading, error } = useQuery<getComponentTypeById>(
-    GET_COMPONENTTYPE_BY_ID,
-    { variables: { id: selectedComponentId } }
+  const {
+    data: selectedComponentData,
+    loading: selectedComponentLoading,
+    error: selectedComponentError
+  } = useQuery<getSelectedComponent, getSelectedComponentVariables>(
+    GET_SELECTED_COMPONENT,
+    {
+      variables: { id: selectedComponentId }
+    }
   );
+
+  const typeId =
+    selectedComponentData &&
+    selectedComponentData.component &&
+    selectedComponentData.component.type.id;
+
+  const { data, loading, error } = useQuery<
+    getComponentTypeById,
+    getComponentTypeByIdVariables
+  >(GET_COMPONENTTYPE_BY_ID, { variables: { id: typeId }, skip: !typeId });
   return (
     <ComponentSelectorWithData
-      loading={loading}
-      error={error}
+      loading={selectedComponentLoading || loading}
+      error={selectedComponentError || error}
       types={(data && data.type && data.type.children) || []}
     />
   );
