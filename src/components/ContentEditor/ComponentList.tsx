@@ -66,7 +66,11 @@ const ComponentList = React.memo<ComponentListProps>(
               index={index}
               data={component}
               level={level}
-              type={component.type.name}
+              type={
+                (component.type.frontendWidget &&
+                  component.type.frontendWidget.name) ||
+                component.type.name
+              }
               selectedComponentId={selectedComponentId}
             />
           )
