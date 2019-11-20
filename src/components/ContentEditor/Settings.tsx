@@ -128,7 +128,6 @@ interface SettingsContentProps extends BaseSettingsProps {
 const SettingsContent = React.forwardRef<any, SettingsContentProps>(
   (props, ref) => {
     const { data, type, ...otherProps } = props;
-    console.log(type);
     const Component = settingTypes[type] || settingTypes.default;
     return <Component ref={ref} data={data} {...otherProps} />;
   }

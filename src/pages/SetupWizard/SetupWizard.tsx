@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Formik, Form, FormikHelpers } from "formik";
+import { Formik, Form, FormikActions as FormikHelpers } from "formik";
 import { useMutation } from "@apollo/react-hooks";
 
 import Stepper from "@material-ui/core/Stepper";

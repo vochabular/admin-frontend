@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import * as Yup from "yup";
-import { Formik, Form, Field, FormikHelpers } from "formik";
+import { Formik, Form, Field, FormikActions as FormikHelpers } from "formik";
 import { TextField } from "formik-material-ui";
 import { useMutation } from "@apollo/react-hooks";
 
