@@ -10,7 +10,15 @@ import styled from "styled-components";
 import { ApolloError } from "apollo-client";
 
 import { Theme, makeStyles } from "@material-ui/core/styles";
-import { Grid, Card, Typography, CardContent, Icon } from "@material-ui/core";
+import {
+  Grid,
+  Card,
+  Typography,
+  CardContent,
+  Icon,
+  AppBar,
+  Toolbar
+} from "@material-ui/core";
 
 import {
   GET_ALL_COMPONENTTYPES,
@@ -47,6 +55,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   dragging: {
     backgroundColor: theme.palette.grey[400]
+  },
+  copying: {
+    backgroundColor: "lightblue"
   }
 }));
 
@@ -60,12 +71,14 @@ type ComponentTypeItemProps = {
   item: getComponentTypeById_type_children;
   provided?: DraggableProvided;
   snapshot?: DraggableStateSnapshot;
+  isCopying?: boolean;
 };
 
 const ComponentTypeItem = ({
   item,
   provided,
-  snapshot
+  snapshot,
+  isCopying = false
 }: ComponentTypeItemProps) => {
   const classes = useStyles();
 
@@ -74,7 +87,8 @@ const ComponentTypeItem = ({
       square
       className={classNames(
         classes.item,
-        snapshot && snapshot.isDragging ? classes.dragging : null
+        snapshot && snapshot.isDragging ? classes.dragging : null,
+        isCopying && classes.copying
       )}
     >
       <CardContent>
@@ -125,41 +139,50 @@ const ComponentSelectorWithData = ({
   const classes = useStyles();
 
   return (
-    <Grid container justify="center" className={classes.container}>
-      <BusyOrErrorCard
-        error={error}
-        loading={loading}
-        noResults={!types.length}
-        showOnNoResults={false}
-      />
-      {!loading &&
-        types.map((component, index) => {
-          return (
-            <Draggable
-              key={component.id}
-              draggableId={component.id}
-              index={index}
-            >
-              {(provided, snapshot) => (
-                <>
-                  <ComponentTypeItem
-                    item={component}
-                    provided={provided}
-                    snapshot={snapshot}
-                  />
-                  {/* react-beautiful-dnd unfortunately does not support Copy & Clone. 
+    <>
+      <AppBar position="static" color="inherit">
+        <Toolbar>
+          <Grid container justify="center" className={classes.container}>
+            <BusyOrErrorCard
+              error={error}
+              loading={loading}
+              noResults={!types.length}
+              showOnNoResults={false}
+            />
+            {!loading &&
+              types.map((component, index) => {
+                return (
+                  <Draggable
+                    key={component.id}
+                    draggableId={component.id}
+                    index={index}
+                  >
+                    {(provided, snapshot) => (
+                      <>
+                        <ComponentTypeItem
+                          item={component}
+                          provided={provided}
+                          snapshot={snapshot}
+                        />
+                        {/* react-beautiful-dnd unfortunately does not support Copy & Clone. 
                 See here for the workaround with this "Clone": 
                 https://github.com/atlassian/react-beautiful-dnd/issues/216#issuecomment-423708497  
                 */}
-                  {snapshot.isDragging && (
-                    <ComponentTypeItem item={component} />
-                  )}
-                </>
-              )}
-            </Draggable>
-          );
-        })}
-    </Grid>
+                        {snapshot.isDragging && (
+                          <ComponentTypeItem
+                            item={component}
+                            isCopying={true}
+                          />
+                        )}
+                      </>
+                    )}
+                  </Draggable>
+                );
+              })}
+          </Grid>
+        </Toolbar>
+      </AppBar>
+    </>
   );
 };
 
