@@ -94,19 +94,29 @@ const ContentEditor = ({ data }: Props) => {
    * Is called when the drag ends. Main function that handles all the logic related to DragAndDrop
    */
   function onDragEnd(result: DropResult) {
+    const isFromSelector = result.source.droppableId.startsWith(
+      "component-selector-"
+    );
+    const isFromComponentList = result.source.droppableId.startsWith(
+      "component-list-"
+    );
     setPlaceholderProps({});
-    // If dropped outside of the list
+
+    // If dropped outside of the targeted list
     if (!result.destination) {
       return;
     }
 
-    // Do nothing if dropped at the same spot
-    if (result.destination.index === result.source.index) {
+    // Do nothing if dropped at the same spot, but only for drags originating from the component list
+    if (
+      isFromComponentList &&
+      result.destination.index === result.source.index
+    ) {
       return;
     }
 
     // INSERT: When the source is the component-selector-<id>, then its actually a creation of a new component
-    if (result.source.droppableId.startsWith("component-selector-")) {
+    if (isFromSelector) {
       // Now actually fire the mutation
       createComponent({
         variables: {
@@ -125,7 +135,7 @@ const ContentEditor = ({ data }: Props) => {
     }
 
     // UPDATE: When the source is within the component list (any level), then it must be an update of a component
-    else if (result.source.droppableId.startsWith("component-list-")) {
+    else if (isFromComponentList) {
       updateComponent({
         variables: {
           componentId: result.draggableId,
