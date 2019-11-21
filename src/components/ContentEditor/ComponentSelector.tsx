@@ -2,7 +2,8 @@ import * as React from "react";
 import {
   Draggable,
   DraggableProvided,
-  DraggableStateSnapshot
+  DraggableStateSnapshot,
+  Droppable
 } from "react-beautiful-dnd";
 import { useQuery } from "@apollo/react-hooks";
 import classNames from "classnames";
@@ -34,15 +35,8 @@ import {
   getComponentTypeById_type_children,
   getComponentTypeByIdVariables
 } from "queries/__generated__/getComponentTypeById";
-import {
-  GET_LOCAL_SELECTED_COMPONENT_ID,
-  GET_SELECTED_COMPONENT
-} from "queries/component";
-import { getSelectedComponentId } from "queries/__generated__/getSelectedComponentId";
-import {
-  getSelectedComponent,
-  getSelectedComponentVariables
-} from "queries/__generated__/getSelectedComponent";
+import { getSelectedComponent_component } from "queries/__generated__/getSelectedComponent";
+import { TOP_LEVEL_COMPONENT_TYPE } from "./ContentEditor";
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -57,7 +51,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: theme.palette.grey[400]
   },
   copying: {
-    backgroundColor: "lightblue"
+    backgroundColor: theme.palette.grey[400]
+  },
+  hideElement: {
+    display: "none"
   }
 }));
 
@@ -122,9 +119,7 @@ const ComponentTypeItem = ({
   );
 };
 
-interface IComponentSelectorWithDataProps {
-  loading: boolean;
-  error?: ApolloError;
+interface IComponentSelectorWithDataProps extends ComponentSelectorProps {
   types?: getAllComponentTypes_types[] | getComponentTypeById_type_children[];
 }
 
@@ -134,62 +129,79 @@ interface IComponentSelectorWithDataProps {
 const ComponentSelectorWithData = ({
   loading,
   error,
-  types = []
+  types = [],
+  selectedComponent
 }: IComponentSelectorWithDataProps) => {
   const classes = useStyles();
 
   return (
-    <>
-      <AppBar position="static" color="inherit">
-        <Toolbar>
-          <Grid container justify="center" className={classes.container}>
-            <BusyOrErrorCard
-              error={error}
-              loading={loading}
-              noResults={!types.length}
-              showOnNoResults={false}
-            />
-            {!loading &&
-              types.map((component, index) => {
-                return (
-                  <Draggable
-                    key={component.id}
-                    draggableId={component.id}
-                    index={index}
-                  >
-                    {(provided, snapshot) => (
-                      <>
-                        <ComponentTypeItem
-                          item={component}
-                          provided={provided}
-                          snapshot={snapshot}
-                        />
-                        {/* react-beautiful-dnd unfortunately does not support Copy & Clone. 
-                See here for the workaround with this "Clone": 
-                https://github.com/atlassian/react-beautiful-dnd/issues/216#issuecomment-423708497  
-                */}
-                        {snapshot.isDragging && (
-                          <ComponentTypeItem
-                            item={component}
-                            isCopying={true}
-                          />
-                        )}
-                      </>
-                    )}
-                  </Draggable>
-                );
-              })}
-          </Grid>
-        </Toolbar>
-      </AppBar>
-    </>
+    <Droppable
+      droppableId={`component-selector-${TOP_LEVEL_COMPONENT_TYPE}`}
+      type={
+        !selectedComponent
+          ? TOP_LEVEL_COMPONENT_TYPE
+          : `${selectedComponent.type.name}-${selectedComponent.id}`
+      }
+      isDropDisabled={true}
+      direction="horizontal"
+    >
+      {provided => (
+        <>
+          <div ref={provided.innerRef} {...provided.droppableProps}>
+            <AppBar position="static" color="inherit">
+              <Toolbar>
+                <Grid container justify="center" className={classes.container}>
+                  <BusyOrErrorCard
+                    error={error}
+                    loading={loading}
+                    noResults={!types.length}
+                    showOnNoResults={false}
+                  />
+                  {!loading &&
+                    types.map((component, index) => {
+                      return (
+                        <Draggable
+                          key={component.id}
+                          draggableId={component.id}
+                          index={index}
+                        >
+                          {(provided, snapshot) => (
+                            <>
+                              <ComponentTypeItem
+                                item={component}
+                                provided={provided}
+                                snapshot={snapshot}
+                              />
+                              {/* react-beautiful-dnd unfortunately does not support Copy & Clone. 
+                          See here for the workaround with this "Clone": 
+                          https://github.com/atlassian/react-beautiful-dnd/issues/216#issuecomment-423708497  
+                          */}
+                              {snapshot.isDragging && (
+                                <ComponentTypeItem
+                                  item={component}
+                                  isCopying={true}
+                                />
+                              )}
+                            </>
+                          )}
+                        </Draggable>
+                      );
+                    })}
+                </Grid>
+              </Toolbar>
+            </AppBar>
+          </div>
+          <div className={classes.hideElement}>{provided.placeholder}</div>
+        </>
+      )}
+    </Droppable>
   );
 };
 
 /**
  * Gets all top-level component types
  */
-const AllTopComponentSelector = () => {
+const AllTopComponentSelector = (props: ComponentSelectorProps) => {
   const { data, loading, error } = useQuery<getAllComponentTypes>(
     GET_ALL_COMPONENTTYPES
   );
@@ -198,35 +210,16 @@ const AllTopComponentSelector = () => {
       loading={loading}
       error={error}
       types={(data && data.types) || []}
+      {...props}
     />
   );
 };
 
-interface ISelectedComponentSelectorProps {
-  selectedComponentId: string;
-}
-
 /**
  * Gets the children types of the the current selected component type
  */
-const SelectedComponentSelector = ({
-  selectedComponentId
-}: ISelectedComponentSelectorProps) => {
-  const {
-    data: selectedComponentData,
-    loading: selectedComponentLoading,
-    error: selectedComponentError
-  } = useQuery<getSelectedComponent, getSelectedComponentVariables>(
-    GET_SELECTED_COMPONENT,
-    {
-      variables: { id: selectedComponentId }
-    }
-  );
-
-  const typeId =
-    selectedComponentData &&
-    selectedComponentData.component &&
-    selectedComponentData.component.type.id;
+const SelectedComponentSelector = (props: ComponentSelectorProps) => {
+  const typeId = props.selectedComponent && props.selectedComponent.type.id;
 
   const { data, loading, error } = useQuery<
     getComponentTypeById,
@@ -234,27 +227,28 @@ const SelectedComponentSelector = ({
   >(GET_COMPONENTTYPE_BY_ID, { variables: { id: typeId }, skip: !typeId });
   return (
     <ComponentSelectorWithData
-      loading={selectedComponentLoading || loading}
-      error={selectedComponentError || error}
+      loading={props.loading || loading}
+      error={props.error || error}
       types={(data && data.type && data.type.children) || []}
+      {...props}
     />
   );
 };
 
+interface ComponentSelectorProps {
+  selectedComponent?: getSelectedComponent_component;
+  loading: boolean;
+  error?: ApolloError;
+}
+
 /**
  * Main Component acting as a gate to query the right component type data depending whether there is a currently selected component
  */
-const ComponentSelector = () => {
-  const { data: selectedComponentIdData } = useQuery<getSelectedComponentId>(
-    GET_LOCAL_SELECTED_COMPONENT_ID
-  );
-  const { selectedComponentId = undefined } = selectedComponentIdData || {};
-
-  if (selectedComponentId)
-    return (
-      <SelectedComponentSelector selectedComponentId={selectedComponentId} />
-    );
-  return <AllTopComponentSelector />;
+const ComponentSelector = (props: ComponentSelectorProps) => {
+  const selectedComponentId =
+    props.selectedComponent && props.selectedComponent.id;
+  if (selectedComponentId) return <SelectedComponentSelector {...props} />;
+  return <AllTopComponentSelector {...props} />;
 };
 
 export default ComponentSelector;

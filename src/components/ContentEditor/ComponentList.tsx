@@ -1,20 +1,22 @@
 import * as React from "react";
+import { useQuery } from "@apollo/react-hooks";
 
 import { List } from "@material-ui/core";
 
-import BaseComponent, { BaseComponentProps } from "./BaseComponent";
+import { BaseComponentProps } from "./BaseComponent";
 import { subscribeChapterById_chapter_components } from "queries/__generated__/subscribeChapterById";
 import TitleComponent from "./components/TitleComponent";
-import { useQuery } from "@apollo/react-hooks";
 import { GET_LOCAL_SELECTED_COMPONENT_ID } from "queries/component";
 import TextComponent from "./components/TextComponent";
+import DefaultComponent from "./components/DefaultComponent";
 
 // This defines a mapping of component type names to the React Component, used then to render the content and the settings
+// Originally, directly used BaseComponent here as well (for default), but this gives wierd run time errors due to circular imports
 export const componentTypes: { [key: string]: any } = {
-  default: BaseComponent,
+  default: DefaultComponent,
   Title: TitleComponent,
   Text: TextComponent,
-  Dialogue: BaseComponent
+  Dialog: DefaultComponent
 };
 
 interface ComponentWrapperProps {

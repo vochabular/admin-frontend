@@ -1,6 +1,7 @@
 import * as React from "react";
 import classNames from "classnames";
 import { Draggable, Droppable } from "react-beautiful-dnd";
+import { useApolloClient } from "@apollo/react-hooks";
 
 import { makeStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
@@ -10,9 +11,9 @@ import { subscribeChapterById_chapter_components } from "queries/__generated__/s
 import ComponentList from "./ComponentList";
 import ComponentHeader from "./ComponentHeader";
 import Text from "components/Text";
-import { useApolloClient } from "@apollo/react-hooks";
 import { getSelectedComponent_component } from "queries/__generated__/getSelectedComponent";
 import { SubmitConfig } from "./Settings";
+import Dropzone from "./Dropzone";
 
 export interface BaseSettingsProps {
   /**
@@ -42,6 +43,7 @@ export const BaseSettings = React.forwardRef<any, BaseSettingsProps>(
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
+    flex: 1,
     border: "solid",
     borderWidth: 2,
     borderColor: theme.palette.grey[200],
@@ -86,8 +88,12 @@ const BaseComponent = ({
 
   const isSelected = selectedComponentId === data.id || false;
   const color = `#${Math.floor(
-    Math.abs(Math.sin(level + 1) * 16777215) % 16777215
+    Math.abs(Math.sin(level + 12) * 16777215) % 16777215
   ).toString(16)}`;
+
+  const childrenList = (
+    <ComponentList components={data.children} level={level + 1} />
+  );
 
   return (
     <>
@@ -98,17 +104,17 @@ const BaseComponent = ({
       >
         {(provided, snapshot) => (
           <Grid
+            item
             container
-            direction="row"
             alignItems="stretch"
             ref={provided.innerRef}
             spacing={1}
-            {...provided.draggableProps}
             className={classNames(
               classes.container,
               isSelected && classes.selected
             )}
             onClick={handleOnComponentClick}
+            {...provided.draggableProps}
           >
             <ComponentHeader data={data} provided={provided} />
             {preview}
@@ -121,15 +127,22 @@ const BaseComponent = ({
                   item
                   container
                   alignItems="stretch"
+                  direction="column"
                   ref={provided.innerRef}
                   style={{
-                    padding: 20,
-                    backgroundColor: color
+                    // padding: 20,
+                    flexGrow: 1
                   }}
                   {...provided.droppableProps}
                 >
-                  <ComponentList components={data.children} level={level + 1} />
-                  {provided.placeholder}
+                  {childrenList}
+                  {/* TODO(df): Only display placeholder if component is selected*/}
+                  {isSelected && provided.placeholder && (
+                    <Grid item>
+                      <Dropzone color={color} />
+                    </Grid>
+                  )}
+                  <div style={{ display: "none" }}>{provided.placeholder}</div>
                 </Grid>
               )}
             </Droppable>

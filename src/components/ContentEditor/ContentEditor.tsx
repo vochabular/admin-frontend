@@ -1,12 +1,8 @@
 import * as React from "react";
-import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
-import classNames from "classnames";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useMutation, useApolloClient, useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 
-import { makeStyles, Theme, Grid, CircularProgress } from "@material-ui/core";
-
-import ComponentList from "./ComponentList";
 import ComponentSelector from "./ComponentSelector";
 import { subscribeChapterById_chapter } from "queries/__generated__/subscribeChapterById";
 import {
@@ -26,8 +22,10 @@ import {
   updateSelectedComponent as TupdateSelectedComponent,
   updateSelectedComponentVariables as TupdateSelectedComponentVariables
 } from "./__generated__/updateSelectedComponent";
+import ComponentListContainer from "./ComponentListContainer";
 
 export const TOP_LEVEL_COMPONENT_TYPE = "top-level-component";
+const queryAttr = "data-rbd-drag-handle-draggable-id";
 
 const UPDATE_COMPONENT = gql`
   mutation updateSelectedComponent(
@@ -46,23 +44,25 @@ const UPDATE_COMPONENT = gql`
   ${COMPONENT_PART}
 `;
 
-const useStyles = makeStyles((theme: Theme) => ({
-  container: {
-    backgroundColor: "grey",
-    padding: theme.spacing(5)
-  }
-}));
-
 interface Props {
   data: subscribeChapterById_chapter;
+}
+
+interface PlaceholderProps {
+  clientY?: any;
+  clientX?: any;
+  clientHeight?: any;
+  clientWidth?: any;
 }
 
 /**
  * Component holding the main editor state, setting up the drag and drop contexts
  */
 const ContentEditor = ({ data }: Props) => {
-  const classes = useStyles();
   const client = useApolloClient();
+  const [placeholderProps, setPlaceholderProps] = React.useState<
+    PlaceholderProps
+  >({});
 
   const { data: selectedComponentIdData } = useQuery<getSelectedComponentId>(
     GET_LOCAL_SELECTED_COMPONENT_ID
@@ -71,7 +71,8 @@ const ContentEditor = ({ data }: Props) => {
   const { selectedComponentId = undefined } = selectedComponentIdData || {};
   const {
     data: selectedComponentData,
-    loading: selectedComponentLoading
+    loading: selectedComponentLoading,
+    error: selectedComponentError
   } = useQuery<getSelectedComponent>(GET_SELECTED_COMPONENT, {
     skip: !selectedComponentId,
     variables: { id: selectedComponentId }
@@ -93,6 +94,7 @@ const ContentEditor = ({ data }: Props) => {
    * Is called when the drag ends. Main function that handles all the logic related to DragAndDrop
    */
   function onDragEnd(result: DropResult) {
+    setPlaceholderProps({});
     // If dropped outside of the list
     if (!result.destination) {
       return;
@@ -135,6 +137,44 @@ const ContentEditor = ({ data }: Props) => {
     }
   }
 
+  const onDragUpdate = (update: any) => {
+    if (!update.destination) {
+      return;
+    }
+    const draggableId = update.draggableId;
+    const destinationIndex = update.destination.index;
+
+    const domQuery = `[${queryAttr}='${draggableId}']`;
+    const draggedDOM = document.querySelector(domQuery);
+
+    if (!draggedDOM) {
+      return;
+    }
+    const { clientHeight, clientWidth } = draggedDOM;
+
+    const clientY =
+      // @ts-ignore
+      parseFloat(window.getComputedStyle(draggedDOM.parentNode).paddingTop) +
+      // @ts-ignore
+      [...draggedDOM.parentNode.children]
+        .slice(0, destinationIndex)
+        .reduce((total, curr) => {
+          const style = curr.currentStyle || window.getComputedStyle(curr);
+          const marginBottom = parseFloat(style.marginBottom);
+          return total + curr.clientHeight + marginBottom;
+        }, 0);
+
+    setPlaceholderProps({
+      clientHeight,
+      clientWidth,
+      clientY,
+      clientX: parseFloat(
+        // @ts-ignore
+        window.getComputedStyle(draggedDOM.parentNode).paddingLeft
+      )
+    });
+  };
+
   const handleClickAway = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
@@ -145,42 +185,19 @@ const ContentEditor = ({ data }: Props) => {
 
   return (
     <>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable
-          droppableId={`component-selector-${TOP_LEVEL_COMPONENT_TYPE}`}
-          type={
-            !selectedComponent
-              ? TOP_LEVEL_COMPONENT_TYPE
-              : `${selectedComponent.type.name}-${selectedComponent.id}`
-          }
-          isDropDisabled={true}
-          direction="horizontal"
-        >
-          {provided => (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
-              <ComponentSelector />
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
+      <DragDropContext onDragEnd={onDragEnd} onDragUpdate={onDragUpdate}>
+        <ComponentSelector
+          selectedComponent={selectedComponent || undefined}
+          loading={selectedComponentLoading}
+          error={selectedComponentError}
+        />
         {/* This is the "top-level" droppable area. Note that draggables can only be dropped within a droppable with the same type! */}
-        <Droppable
-          droppableId={`component-list-${TOP_LEVEL_COMPONENT_TYPE}`}
-          type={TOP_LEVEL_COMPONENT_TYPE}
-        >
-          {(provided, snapshot) => (
-            <Grid
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-              className={classNames(classes.container)}
-              onClick={handleClickAway}
-            >
-              {createLoading || updateLoading ? <CircularProgress /> : null}
-              <ComponentList components={data.components || []} level={0} />
-              {provided.placeholder}
-            </Grid>
-          )}
-        </Droppable>
+        <ComponentListContainer
+          onClickAway={handleClickAway}
+          placeholderProps={placeholderProps}
+          loading={createLoading || updateLoading}
+          components={(data && data.components) || []}
+        />
       </DragDropContext>
       <Settings
         loading={selectedComponentLoading}
