@@ -1,9 +1,8 @@
 import * as React from "react";
 
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography, Toolbar, AppBar } from "@material-ui/core";
 
 import ContentEditor from "components/ContentEditor/ContentEditor";
-import Section from "components/Section";
 import { useTranslation } from "react-i18next";
 import TimestampAgo from "components/TimestampAgo";
 import CommentsWidget from "pages/Chapter/CommentsWidget";
@@ -60,16 +59,17 @@ const SubChapterDetail = ({ context, data }: Props) => {
   );
   return (
     <>
-      <Section titleComponent={title} greyScale={700}>
-        <Grid container>
-          <Grid item xs={12} sm={9}>
-            <ContentEditor data={data} />
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <CommentsWidget />
-          </Grid>
+      <AppBar position="static" color="inherit">
+        <Toolbar>{title}</Toolbar>
+      </AppBar>
+      <Grid container style={{ height: "100%" }}>
+        <Grid item xs={12} sm={9} style={{ height: "100%" }}>
+          <ContentEditor data={data} />
         </Grid>
-      </Section>
+        <Grid item xs={12} sm={3}>
+          <CommentsWidget />
+        </Grid>
+      </Grid>
     </>
   );
 };

@@ -103,7 +103,6 @@ export const styles = (theme: Theme) =>
       flexGrow: 1,
       //padding: theme.spacing.unit * 3,
       height: "100vh",
-      overflowX: "auto",
       width: "100%"
     },
     chartContainer: {
