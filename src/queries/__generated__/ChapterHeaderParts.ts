@@ -8,13 +8,12 @@
 
 export interface ChapterHeaderParts_languages_language {
   __typename: "api_language";
-  id: any;
-  code: string;
+  id: string;
 }
 
 export interface ChapterHeaderParts_languages {
-  __typename: "api_chapter_languages";
-  id: number;
+  __typename: "api_chaptertitle";
+  id: any;
   /**
    * An object relationship
    */
@@ -25,16 +24,12 @@ export interface ChapterHeaderParts_parentChapter {
   __typename: "api_chapter";
   id: any;
   number: number;
-  titleCH: string;
-  titleDE: string;
   description: string;
 }
 
 export interface ChapterHeaderParts_subChapters {
   __typename: "api_chapter";
   id: any;
-  titleCH: string;
-  titleDE: string;
   description: string;
 }
 
@@ -42,8 +37,6 @@ export interface ChapterHeaderParts {
   __typename: "api_chapter";
   id: any;
   number: number;
-  titleCH: string;
-  titleDE: string;
   description: string;
   created: any;
   updated: any;

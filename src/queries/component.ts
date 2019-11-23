@@ -20,7 +20,6 @@ export const COMPONENT_PART = gql`
         valid
         language {
           id
-          code
         }
       }
     }
@@ -62,7 +61,6 @@ export const GET_SELECTED_COMPONENT = gql`
     }
     languages: api_language {
       id
-      code
       name
     }
   }

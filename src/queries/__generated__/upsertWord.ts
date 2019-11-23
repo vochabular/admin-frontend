@@ -10,7 +10,7 @@ import { api_wordtranslation_insert_input } from "./../../__generated__/globalTy
 
 export interface upsertWord_insert_api_word_returning_translations_language {
   __typename: "api_language";
-  code: string;
+  id: string;
   name: string;
 }
 

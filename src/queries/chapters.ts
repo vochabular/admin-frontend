@@ -5,8 +5,6 @@ export const CHAPTER_HEADER_PART = gql`
   fragment ChapterHeaderParts on api_chapter {
     id
     number
-    titleCH
-    titleDE
     description
     created
     updated
@@ -14,20 +12,15 @@ export const CHAPTER_HEADER_PART = gql`
       id
       language {
         id
-        code
       }
     }
     parentChapter {
       id
       number
-      titleCH
-      titleDE
       description
     }
     subChapters {
       id
-      titleCH
-      titleDE
       description
     }
   }
@@ -86,8 +79,6 @@ export const GET_CHAPTER_WORDGROUPS = gql`
       edges {
         node {
           id
-          titleDE
-          titleCH
           parentChapter: fkBelongsTo {
             id
           }
@@ -96,31 +87,6 @@ export const GET_CHAPTER_WORDGROUPS = gql`
               node {
                 id
               }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
-export const GET_CHAPTER_WORDGROUPS_BY_CHAPTER_ID = gql`
-  query chaptersWordGroupsByChapterId($id: Int) {
-    chapter(id: $id) {
-      id
-      titleDE
-      titleCH
-      parentChapter: fkBelongsTo {
-        id
-      }
-      wordGroups: wordgroupSet {
-        edges {
-          node {
-            id
-            titleCh
-            titleDe
-            words {
-              id
             }
           }
         }

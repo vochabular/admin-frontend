@@ -6,8 +6,12 @@ export const USER_FRAGMENT = gql`
     firstname
     lastname
     roles
-    language
-    translatorLanguages: translator_languages
+    language {
+      id
+    }
+    translatorLanguages {
+      id
+    }
     eventNotifications: event_notifications
     setupCompleted: setup_completed
   }

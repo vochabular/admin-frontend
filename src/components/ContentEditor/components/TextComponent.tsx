@@ -161,6 +161,14 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
         ) {
           text.translations.push(values.german);
         }
+        if (
+          values.isNative &&
+          result.updated.find(
+            r => r.path[0] === editorLanguage || r.path[0] === "isNative"
+          )
+        ) {
+          text.translations.push(values.native);
+        }
 
         // Additionally, also the case of disabled flags need to be covered
         result.updated.forEach(i => {

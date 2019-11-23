@@ -32,8 +32,7 @@ export interface getSelectedComponent_component_type {
 
 export interface getSelectedComponent_component_texts_translations_language {
   __typename: "api_language";
-  id: any;
-  code: string;
+  id: string;
 }
 
 export interface getSelectedComponent_component_texts_translations {
@@ -67,7 +66,7 @@ export interface getSelectedComponent_component {
   id: any;
   data: any;
   state: string;
-  position: number | null;
+  position: number;
   /**
    * An object relationship
    */
@@ -84,8 +83,7 @@ export interface getSelectedComponent_component {
 
 export interface getSelectedComponent_languages {
   __typename: "api_language";
-  id: any;
-  code: string;
+  id: string;
   name: string;
 }
 
