@@ -25,7 +25,7 @@ interface Props {
  */
 const SubChapterDetail = ({ context, data }: Props) => {
   const { t } = useTranslation();
-  const { titleCH, titleDE, updated } = data;
+  const { updated } = data;
 
   const title = (
     <Grid container justify="space-around">
@@ -35,7 +35,7 @@ const SubChapterDetail = ({ context, data }: Props) => {
             {t("titleDe")}
             {":"}
           </Typography>
-          <Typography variant="body1">{titleDE}</Typography>
+          <Typography variant="body1">{"Titel DE"}</Typography>
         </Grid>
       </Grid>
       <Grid item>
@@ -44,7 +44,7 @@ const SubChapterDetail = ({ context, data }: Props) => {
             {t("titleCh")}
             {":"}
           </Typography>
-          <Typography variant="body1">{titleCH}</Typography>
+          <Typography variant="body1">{"Titel CH"}</Typography>
         </Grid>
       </Grid>
       <Grid item>

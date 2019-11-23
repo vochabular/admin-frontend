@@ -13,10 +13,10 @@ import { withStyles, WithStyles } from "@material-ui/styles";
 import { styles } from "styles";
 import configurationJSON from "configuration.json";
 import { FieldArray } from "formik";
-import { profile_profile } from "queries/__generated__/profile";
+import { getProfile_profiles } from "queries/__generated__/getProfile";
 
 interface Props extends WithStyles<typeof styles> {
-  values: profile_profile;
+  values: getProfile_profiles;
 }
 
 function AdministrativeSection({ classes, values }: Props) {
@@ -34,6 +34,7 @@ function AdministrativeSection({ classes, values }: Props) {
                 label={t(l.label)}
                 control={
                   <Checkbox
+                  /*
                     checked={values.translatorLanguages.includes(l.code)}
                     onChange={e => {
                       if (e.target.checked) arrayHelpers.push(l.code);
@@ -42,6 +43,7 @@ function AdministrativeSection({ classes, values }: Props) {
                         arrayHelpers.remove(idx);
                       }
                     }}
+                    */
                   />
                 }
               />

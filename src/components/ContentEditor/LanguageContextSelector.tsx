@@ -11,10 +11,13 @@ import {
 } from "@material-ui/core";
 
 import { useAuth } from "contexts/AuthContext";
-import { GET_PROFILE } from "queries/profile";
-import { profile } from "queries/__generated__/profile";
 import { GET_LOCAL_EDITOR_LANGUAGE } from "queries/component";
 import { getLocalEditorLanguage } from "queries/__generated__/getLocalEditorLanguage";
+import {
+  getProfile,
+  getProfileVariables
+} from "queries/__generated__/getProfile";
+import { GET_PROFILE } from "queries/users";
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -32,14 +35,19 @@ const LanguageContextSelector = (props: LanguageContextSelectorProps) => {
   const client = useApolloClient();
   const { user } = useAuth();
 
-  const username = user && user.email;
+  const email = (user && user.email) || "";
 
-  const { data, loading, error } = useQuery<profile>(GET_PROFILE, {
-    variables: {
-      username
-    },
-    skip: !username
-  });
+  const { data, loading, error } = useQuery<getProfile, getProfileVariables>(
+    GET_PROFILE,
+    {
+      variables: {
+        email
+      },
+      skip: !email
+    }
+  );
+
+  console.log(data);
 
   const { data: editorState } = useQuery<getLocalEditorLanguage>(
     GET_LOCAL_EDITOR_LANGUAGE
@@ -49,7 +57,7 @@ const LanguageContextSelector = (props: LanguageContextSelectorProps) => {
   React.useEffect(() => {
     if (!editorState || (editorState && !editorState.contentEditorLanguage)) {
       const lang =
-        data && data.profile && data.profile.translatorLanguages.split(",")[0];
+        data && data.profiles && data.profiles[0].translatorLanguages[0];
       if (lang) {
         // TODO(df): This actually must come differently.
         client.writeData({ data: { contentEditorLanguage: lang } });
@@ -57,8 +65,7 @@ const LanguageContextSelector = (props: LanguageContextSelectorProps) => {
     }
   });
 
-  const languages =
-    (data && data.profile && data.profile.translatorLanguages.split(",")) || [];
+  const languages = (data && data.profiles[0].translatorLanguages) || [];
   const selectedLanguage =
     (editorState && editorState.contentEditorLanguage) || "en";
 
@@ -76,7 +83,7 @@ const LanguageContextSelector = (props: LanguageContextSelectorProps) => {
       {!loading && !error ? (
         <Select value={selectedLanguage} onChange={handleChange}>
           {languages.map(l => (
-            <MenuItem key={l} value={l}>
+            <MenuItem key={l.id} value={l.language.name}>
               {l}
             </MenuItem>
           ))}

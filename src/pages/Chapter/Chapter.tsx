@@ -87,10 +87,7 @@ const ChapterContent = ({
   // Else, then render the chapter overview
   return (
     <Section
-      title={
-        t("chapters:chapter") +
-        ` ${data.chapter.titleDE} / ${data.chapter.titleCH}`
-      }
+      title={t("chapters:chapter") + ` ${data.chapter} / ${data.chapter}`}
     >
       <SectionCardContainer>
         {data.chapter &&

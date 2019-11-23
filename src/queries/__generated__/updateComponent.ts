@@ -34,8 +34,7 @@ export interface updateComponent_update_api_component_returning_type {
 
 export interface updateComponent_update_api_component_returning_texts_translations_language {
   __typename: "api_language";
-  id: any;
-  code: string;
+  id: string;
 }
 
 export interface updateComponent_update_api_component_returning_texts_translations {
@@ -69,7 +68,7 @@ export interface updateComponent_update_api_component_returning {
   id: any;
   data: any;
   state: string;
-  position: number | null;
+  position: number;
   /**
    * An object relationship
    */

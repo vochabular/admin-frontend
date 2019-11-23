@@ -32,8 +32,7 @@ export interface ComponentParts_type {
 
 export interface ComponentParts_texts_translations_language {
   __typename: "api_language";
-  id: any;
-  code: string;
+  id: string;
 }
 
 export interface ComponentParts_texts_translations {
@@ -67,7 +66,7 @@ export interface ComponentParts {
   id: any;
   data: any;
   state: string;
-  position: number | null;
+  position: number;
   /**
    * An object relationship
    */

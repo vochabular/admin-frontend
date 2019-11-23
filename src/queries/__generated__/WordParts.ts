@@ -8,7 +8,7 @@
 
 export interface WordParts_translations_language {
   __typename: "api_language";
-  code: string;
+  id: string;
   name: string;
 }
 

@@ -59,9 +59,7 @@ const WordGroup = ({ classes, match }: Props) => {
     return <NewWordGroup />;
   }
 
-  let title_name = ` ${
-    data && data.wordGroup ? data.wordGroup.titleDe : ""
-  } / ${data && data.wordGroup ? data.wordGroup.titleCh : ""}`;
+  let title_name = ``;
 
   return (
     <Section title={t("words:wordGroup") + ` ${title_name}`}>

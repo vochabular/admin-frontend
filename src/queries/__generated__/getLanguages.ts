@@ -8,8 +8,7 @@
 
 export interface getLanguages_languages {
   __typename: "api_language";
-  id: any;
-  code: string;
+  id: string;
   name: string;
 }
 

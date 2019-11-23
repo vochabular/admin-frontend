@@ -3,10 +3,10 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: profile
+// GraphQL fragment: ProfileParts
 // ====================================================
 
-export interface profile_profile {
+export interface ProfileParts {
   __typename: "ProfileType";
   id: any;
   firstname: string;
@@ -15,12 +15,4 @@ export interface profile_profile {
   currentRole: string;
   eventNotifications: boolean;
   setupCompleted: boolean;
-}
-
-export interface profile {
-  profile: profile_profile | null;
-}
-
-export interface profileVariables {
-  username?: string | null;
 }

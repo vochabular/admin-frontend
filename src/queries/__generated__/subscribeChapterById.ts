@@ -8,13 +8,12 @@
 
 export interface subscribeChapterById_chapter_languages_language {
   __typename: "api_language";
-  id: any;
-  code: string;
+  id: string;
 }
 
 export interface subscribeChapterById_chapter_languages {
-  __typename: "api_chapter_languages";
-  id: number;
+  __typename: "api_chaptertitle";
+  id: any;
   /**
    * An object relationship
    */
@@ -25,20 +24,17 @@ export interface subscribeChapterById_chapter_parentChapter {
   __typename: "api_chapter";
   id: any;
   number: number;
-  titleCH: string;
-  titleDE: string;
   description: string;
 }
 
 export interface subscribeChapterById_chapter_subChapters_languages_language {
   __typename: "api_language";
-  id: any;
-  code: string;
+  id: string;
 }
 
 export interface subscribeChapterById_chapter_subChapters_languages {
-  __typename: "api_chapter_languages";
-  id: number;
+  __typename: "api_chaptertitle";
+  id: any;
   /**
    * An object relationship
    */
@@ -49,24 +45,18 @@ export interface subscribeChapterById_chapter_subChapters_parentChapter {
   __typename: "api_chapter";
   id: any;
   number: number;
-  titleCH: string;
-  titleDE: string;
   description: string;
 }
 
 export interface subscribeChapterById_chapter_subChapters_subChapters {
   __typename: "api_chapter";
   id: any;
-  titleCH: string;
-  titleDE: string;
   description: string;
 }
 
 export interface subscribeChapterById_chapter_subChapters {
   __typename: "api_chapter";
   id: any;
-  titleCH: string;
-  titleDE: string;
   description: string;
   number: number;
   created: any;
@@ -111,8 +101,7 @@ export interface subscribeChapterById_chapter_components_type {
 
 export interface subscribeChapterById_chapter_components_texts_translations_language {
   __typename: "api_language";
-  id: any;
-  code: string;
+  id: string;
 }
 
 export interface subscribeChapterById_chapter_components_texts_translations {
@@ -167,8 +156,7 @@ export interface subscribeChapterById_chapter_components_children_type {
 
 export interface subscribeChapterById_chapter_components_children_texts_translations_language {
   __typename: "api_language";
-  id: any;
-  code: string;
+  id: string;
 }
 
 export interface subscribeChapterById_chapter_components_children_texts_translations {
@@ -223,8 +211,7 @@ export interface subscribeChapterById_chapter_components_children_children_type 
 
 export interface subscribeChapterById_chapter_components_children_children_texts_translations_language {
   __typename: "api_language";
-  id: any;
-  code: string;
+  id: string;
 }
 
 export interface subscribeChapterById_chapter_components_children_children_texts_translations {
@@ -279,8 +266,7 @@ export interface subscribeChapterById_chapter_components_children_children_child
 
 export interface subscribeChapterById_chapter_components_children_children_children_texts_translations_language {
   __typename: "api_language";
-  id: any;
-  code: string;
+  id: string;
 }
 
 export interface subscribeChapterById_chapter_components_children_children_children_texts_translations {
@@ -335,8 +321,7 @@ export interface subscribeChapterById_chapter_components_children_children_child
 
 export interface subscribeChapterById_chapter_components_children_children_children_children_texts_translations_language {
   __typename: "api_language";
-  id: any;
-  code: string;
+  id: string;
 }
 
 export interface subscribeChapterById_chapter_components_children_children_children_children_texts_translations {
@@ -370,7 +355,7 @@ export interface subscribeChapterById_chapter_components_children_children_child
   id: any;
   data: any;
   state: string;
-  position: number | null;
+  position: number;
   /**
    * An object relationship
    */
@@ -390,7 +375,7 @@ export interface subscribeChapterById_chapter_components_children_children_child
   id: any;
   data: any;
   state: string;
-  position: number | null;
+  position: number;
   /**
    * An object relationship
    */
@@ -414,7 +399,7 @@ export interface subscribeChapterById_chapter_components_children_children {
   id: any;
   data: any;
   state: string;
-  position: number | null;
+  position: number;
   /**
    * An object relationship
    */
@@ -438,7 +423,7 @@ export interface subscribeChapterById_chapter_components_children {
   id: any;
   data: any;
   state: string;
-  position: number | null;
+  position: number;
   /**
    * An object relationship
    */
@@ -462,7 +447,7 @@ export interface subscribeChapterById_chapter_components {
   id: any;
   data: any;
   state: string;
-  position: number | null;
+  position: number;
   /**
    * An object relationship
    */
@@ -485,8 +470,6 @@ export interface subscribeChapterById_chapter {
   __typename: "api_chapter";
   id: any;
   number: number;
-  titleCH: string;
-  titleDE: string;
   description: string;
   created: any;
   updated: any;

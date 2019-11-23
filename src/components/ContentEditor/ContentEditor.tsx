@@ -23,7 +23,7 @@ import {
 } from "./__generated__/updateSelectedComponent";
 import ComponentListContainer from "./ComponentListContainer";
 import { deepFind } from "helper/deepFind";
-import { getSelectedComponentId } from "queries/__generated__/getSelectedComponentId";
+import { getLocalSelectedComponent } from "queries/__generated__/getLocalSelectedComponent";
 
 export const TOP_LEVEL_COMPONENT_TYPE = "top-level-component";
 const queryAttr = "data-rbd-drag-handle-draggable-id";
@@ -75,7 +75,7 @@ const ContentEditor = ({ data }: Props) => {
     PlaceholderProps
   >({});
 
-  const { data: editorStateData } = useQuery<getSelectedComponentId>(
+  const { data: editorStateData } = useQuery<getLocalSelectedComponent>(
     GET_LOCAL_SELECTED_COMPONENT_ID
   );
   const { selectedComponentId = undefined } = editorStateData || {};

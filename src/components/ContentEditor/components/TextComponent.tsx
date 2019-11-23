@@ -38,20 +38,20 @@ export function transformTranslations(
 ) {
   const swissGerman =
     translations &&
-    translations.find(t => t.language.code === LanguageContext.ch);
+    translations.find(t => t.language.id === LanguageContext.ch);
   const german =
     translations &&
-    translations.find(t => t.language.code === LanguageContext.de);
+    translations.find(t => t.language.id === LanguageContext.de);
   const currentNativeTranslation =
     currentNativeLanguage &&
     translations &&
-    translations.find(t => t.language.code === currentNativeLanguage);
+    translations.find(t => t.language.id === currentNativeLanguage);
   const nativeLanguages =
     (translations &&
       translations.filter(
         t =>
           !([LanguageContext.ch, LanguageContext.de] as string[]).includes(
-            t.language.code
+            t.language.id
           )
       )) ||
     [];
@@ -161,6 +161,14 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
         ) {
           text.translations.push(values.german);
         }
+        if (
+          values.isNative &&
+          result.updated.find(
+            r => r.path[0] === editorLanguage || r.path[0] === "isNative"
+          )
+        ) {
+          text.translations.push(values.native);
+        }
 
         // Additionally, also the case of disabled flags need to be covered
         result.updated.forEach(i => {
@@ -171,7 +179,7 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
               if (!i.val) {
                 const originalTranslation = data.texts[0].translations.find(
                   t =>
-                    t.language.code ===
+                    t.language.id ===
                     (i.path[0] === "isSwissGerman"
                       ? LanguageContext.ch
                       : LanguageContext.de)

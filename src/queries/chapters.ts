@@ -5,8 +5,6 @@ export const CHAPTER_HEADER_PART = gql`
   fragment ChapterHeaderParts on api_chapter {
     id
     number
-    titleCH
-    titleDE
     description
     created
     updated
@@ -14,20 +12,15 @@ export const CHAPTER_HEADER_PART = gql`
       id
       language {
         id
-        code
       }
     }
     parentChapter {
       id
       number
-      titleCH
-      titleDE
       description
     }
     subChapters {
       id
-      titleCH
-      titleDE
       description
     }
   }
@@ -53,8 +46,6 @@ export const WORDGROUP_FRAGMENT = gql`
   fragment WordgroupParts on api_wordgroup {
     parentChapterId: fk_chapter_id
     id
-    titleCh: title_ch
-    titleDe: title_de
     words {
       id
       word {
@@ -130,8 +121,6 @@ export const GET_CHAPTER_WORDGROUPS_BY_CHAPTER_ID = gql`
   subscription subscribeChaptersWordGroupsByChapterId($id: uuid!) {
     chapters: api_chapter_by_pk(id: $id) {
       id
-      titleDE
-      titleCH
       wordgroups {
         ...WordgroupParts
       }

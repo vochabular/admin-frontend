@@ -27,7 +27,7 @@ const WordGroupCard = ({ classes, wordGroup }: Props) => {
     <Card>
       <CardActionArea
         component={RouterLink}
-        {...{ to: `/wordgroups/${wordGroup.id}` } as any}
+        {...({ to: `/wordgroups/${wordGroup.id}` } as any)}
       >
         <CardContent>
           <Typography
@@ -35,8 +35,8 @@ const WordGroupCard = ({ classes, wordGroup }: Props) => {
             color="textSecondary"
             gutterBottom
           >
-            {wordGroup.titleDe} <br />
-            {wordGroup.titleCh} <br />
+            {wordGroup} <br />
+            {wordGroup} <br />
             {t("wordGroups:nWords") + wordGroup && wordGroup.words
               ? wordGroup.words.length
               : 0}

@@ -52,7 +52,7 @@ export const DialogSettings = React.forwardRef<any, DialogSettingsProps>(
                       item
                       container
                       spacing={2}
-                      key={trans.language.code}
+                      key={trans.language.id}
                       alignItems="stretch"
                       //justify="center"
                     >

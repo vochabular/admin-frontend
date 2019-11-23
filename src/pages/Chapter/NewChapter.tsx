@@ -25,6 +25,12 @@ import ErrorMessage from "components/ErrorMessage";
 import { GET_LANGUAGES } from "../../queries/languages";
 import { getLanguages } from "queries/__generated__/getLanguages";
 import { subscribeChapterById_chapter_parentChapter } from "queries/__generated__/subscribeChapterById";
+import { getChapters_chapters_languages } from "queries/__generated__/getChapters";
+import {
+  createChapter_insert_api_chapter,
+  createChapter,
+  createChapterVariables
+} from "queries/__generated__/createChapter";
 
 export const ChapterSchema = Yup.object().shape({
   number: Yup.number()
@@ -47,19 +53,19 @@ interface Props extends WithStyles<typeof styles> {
 const NewChapter = ({ classes, parentChapter }: Props) => {
   const { t } = useTranslation();
   const { data } = useQuery<getLanguages>(GET_LANGUAGES);
-  const [upsertChapter, { loading }] = useMutation(UPSERT_CHAPTER);
+  const [upsertChapter, { loading }] = useMutation<
+    createChapter,
+    createChapterVariables
+  >(UPSERT_CHAPTER);
   const isSubChapter = !!parentChapter;
 
   async function handleSave(values: any, actions: FormikHelpers<any>) {
     // TODO: This verbose stuff won't be necessary anymore as soon useMutation also returns a error/loading object.
     try {
       const input = { ...values };
+      console.log(values);
       input.fk_belongs_to_id = isSubChapter ? parentChapter!.id : null;
-      input.languages = {
-        data: values.languages.map((l: string) => {
-          return { language_id: l };
-        })
-      };
+      input.languages = {};
       await upsertChapter({
         variables: {
           input
@@ -80,9 +86,7 @@ const NewChapter = ({ classes, parentChapter }: Props) => {
         <Typography variant="h3">
           {isSubChapter
             ? t("chapter:newSubChapterTitle") +
-              ` ${parentChapter!.number}: ${parentChapter!.titleDE} / ${
-                parentChapter!.titleCH
-              }`
+              ` ${parentChapter!.number}: ${parentChapter!} / ${parentChapter!}`
             : t("chapter:newChapterTitle")}
         </Typography>
         <CardContent>
@@ -171,7 +175,7 @@ const NewChapter = ({ classes, parentChapter }: Props) => {
                   >
                     {data && data.languages
                       ? data.languages.map(l =>
-                          l && l.code && l.name ? (
+                          l && l.id && l.name ? (
                             <MenuItem key={l.id} value={l.id}>
                               {l.name}
                             </MenuItem>

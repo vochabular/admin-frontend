@@ -9,7 +9,7 @@ export const WORD_FRAGMENT = gql`
       audio
       exampleSentence: example_sentence
       language {
-        code
+        id
         name
       }
     }
@@ -20,8 +20,6 @@ export const WORDGROUP_FRAGMENT = gql`
   fragment WordgroupParts on api_wordgroup {
     parentChapterId: fk_chapter_id
     id
-    titleCh: title_ch
-    titleDe: title_de
     words {
       id
       word {
