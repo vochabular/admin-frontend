@@ -64,7 +64,11 @@ const ContextText = ({
       languageContext={isColorContext ? currentLanguageContext : undefined}
       {...otherProps}
     >
-      {wantedTranslation ? wantedTranslation.text_field : placeholder}
+      {wantedTranslation &&
+      wantedTranslation.text_field &&
+      wantedTranslation.text_field.length
+        ? wantedTranslation.text_field
+        : placeholder}
     </Text>
   );
 };
