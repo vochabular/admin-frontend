@@ -8,12 +8,11 @@ import { subscribeChapterById_chapter } from "queries/__generated__/subscribeCha
 import {
   CREATE_COMPONENT,
   GET_SELECTED_COMPONENT,
-  GET_LOCAL_SELECTED_COMPONENT_ID,
-  COMPONENT_PART
+  COMPONENT_PART,
+  GET_LOCAL_SELECTED_COMPONENT_ID
 } from "queries/component";
 import Settings from "./Settings";
 import { getSelectedComponent } from "queries/__generated__/getSelectedComponent";
-import { getSelectedComponentId } from "queries/__generated__/getSelectedComponentId";
 import {
   createComponent as TcreateComponent,
   createComponentVariables as TcreateComponentVariables
@@ -23,6 +22,8 @@ import {
   updateSelectedComponentVariables as TupdateSelectedComponentVariables
 } from "./__generated__/updateSelectedComponent";
 import ComponentListContainer from "./ComponentListContainer";
+import { deepFind } from "helper/deepFind";
+import { getSelectedComponentId } from "queries/__generated__/getSelectedComponentId";
 
 export const TOP_LEVEL_COMPONENT_TYPE = "top-level-component";
 const queryAttr = "data-rbd-drag-handle-draggable-id";
@@ -44,6 +45,16 @@ const UPDATE_COMPONENT = gql`
   ${COMPONENT_PART}
 `;
 
+export interface IHandleComponentCreation {
+  typeId: string;
+  order?: number;
+}
+
+interface IHandleComponentUpdate {
+  id: string;
+  order: number;
+}
+
 interface Props {
   data: subscribeChapterById_chapter;
 }
@@ -64,11 +75,11 @@ const ContentEditor = ({ data }: Props) => {
     PlaceholderProps
   >({});
 
-  const { data: selectedComponentIdData } = useQuery<getSelectedComponentId>(
+  const { data: editorStateData } = useQuery<getSelectedComponentId>(
     GET_LOCAL_SELECTED_COMPONENT_ID
   );
+  const { selectedComponentId = undefined } = editorStateData || {};
 
-  const { selectedComponentId = undefined } = selectedComponentIdData || {};
   const {
     data: selectedComponentData,
     loading: selectedComponentLoading,
@@ -90,17 +101,59 @@ const ContentEditor = ({ data }: Props) => {
     TupdateSelectedComponentVariables
   >(UPDATE_COMPONENT);
 
+  function handleComponentCreation({
+    typeId,
+    order
+  }: IHandleComponentCreation) {
+    // TODO(df): In case no order was set, how can we get the index of the last element of this component?
+    let _order = order || 0;
+    if (!order) {
+      if (selectedComponent) {
+        const c: any = deepFind(data, selectedComponent.id);
+        if (c && c.children && c.children.length) {
+          _order = c.children.length + 1;
+        }
+      } else {
+        _order = data.components.length + 1;
+      }
+    }
+    createComponent({
+      variables: {
+        input: {
+          fk_chapter_id: data.id,
+          fk_component_id: (selectedComponent && selectedComponent.id) || null,
+          fk_component_type_id: typeId,
+          data: "",
+          order_in_chapter: _order,
+          state: "C",
+          locked_ts: new Date()
+        }
+      }
+    });
+  }
+
+  function handleComponentUpdate({ id, order }: IHandleComponentUpdate) {
+    updateComponent({
+      variables: {
+        componentId: id,
+        componentData: {
+          order_in_chapter: order
+        }
+      }
+    });
+  }
+
   /**
    * Is called when the drag ends. Main function that handles all the logic related to DragAndDrop
    */
   function onDragEnd(result: DropResult) {
+    setPlaceholderProps({});
     const isFromSelector = result.source.droppableId.startsWith(
       "component-selector-"
     );
     const isFromComponentList = result.source.droppableId.startsWith(
       "component-list-"
     );
-    setPlaceholderProps({});
 
     // If dropped outside of the targeted list
     if (!result.destination) {
@@ -117,32 +170,17 @@ const ContentEditor = ({ data }: Props) => {
 
     // INSERT: When the source is the component-selector-<id>, then its actually a creation of a new component
     if (isFromSelector) {
-      // Now actually fire the mutation
-      createComponent({
-        variables: {
-          input: {
-            fk_chapter_id: data.id,
-            fk_component_id:
-              (selectedComponent && selectedComponent.id) || null,
-            fk_component_type_id: result.draggableId,
-            data: "",
-            order_in_chapter: result.destination.index + 1,
-            state: "C",
-            locked_ts: new Date()
-          }
-        }
+      handleComponentCreation({
+        typeId: result.draggableId,
+        order: result.destination.index + 1
       });
     }
 
     // UPDATE: When the source is within the component list (any level), then it must be an update of a component
     else if (isFromComponentList) {
-      updateComponent({
-        variables: {
-          componentId: result.draggableId,
-          componentData: {
-            order_in_chapter: result.destination.index + 1
-          }
-        }
+      handleComponentUpdate({
+        id: result.draggableId,
+        order: result.destination.index + 1
       });
     }
   }
@@ -200,6 +238,7 @@ const ContentEditor = ({ data }: Props) => {
           selectedComponent={selectedComponent || undefined}
           loading={selectedComponentLoading}
           error={selectedComponentError}
+          onCreate={handleComponentCreation}
         />
         {/* This is the "top-level" droppable area. Note that draggables can only be dropped within a droppable with the same type! */}
         <ComponentListContainer

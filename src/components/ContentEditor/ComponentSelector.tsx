@@ -36,7 +36,10 @@ import {
   getComponentTypeByIdVariables
 } from "queries/__generated__/getComponentTypeById";
 import { getSelectedComponent_component } from "queries/__generated__/getSelectedComponent";
-import { TOP_LEVEL_COMPONENT_TYPE } from "./ContentEditor";
+import {
+  TOP_LEVEL_COMPONENT_TYPE,
+  IHandleComponentCreation
+} from "./ContentEditor";
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -69,15 +72,25 @@ type ComponentTypeItemProps = {
   provided?: DraggableProvided;
   snapshot?: DraggableStateSnapshot;
   isCopying?: boolean;
+  onCreate?: (data: IHandleComponentCreation) => void;
 };
 
 const ComponentTypeItem = ({
   item,
   provided,
   snapshot,
-  isCopying = false
+  isCopying = false,
+  onCreate
 }: ComponentTypeItemProps) => {
   const classes = useStyles();
+
+  function handleClick() {
+    if (!onCreate)
+      console.info("Warning: No component creation callback specified!");
+    else {
+      onCreate({ typeId: item.id });
+    }
+  }
 
   const content = (
     <Card
@@ -100,6 +113,7 @@ const ComponentTypeItem = ({
   if (provided) {
     return (
       <Grid
+        onClick={handleClick}
         item
         key={item.id}
         ref={provided.innerRef}
@@ -130,7 +144,8 @@ const ComponentSelectorWithData = ({
   loading,
   error,
   types = [],
-  selectedComponent
+  selectedComponent,
+  ...otherProps
 }: IComponentSelectorWithDataProps) => {
   const classes = useStyles();
 
@@ -171,6 +186,7 @@ const ComponentSelectorWithData = ({
                                 item={component}
                                 provided={provided}
                                 snapshot={snapshot}
+                                {...otherProps}
                               />
                               {/* react-beautiful-dnd unfortunately does not support Copy & Clone. 
                           See here for the workaround with this "Clone": 
@@ -239,6 +255,7 @@ interface ComponentSelectorProps {
   selectedComponent?: getSelectedComponent_component;
   loading: boolean;
   error?: ApolloError;
+  onCreate?: (data: IHandleComponentCreation) => void;
 }
 
 /**
