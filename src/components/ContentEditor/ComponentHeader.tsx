@@ -11,21 +11,24 @@ import { DELETE_COMPONENT } from "queries/component";
 import Text from "components/Text";
 
 const useStyles = makeStyles((theme: Theme) => ({
-  container: {
-    marginBottom: theme.spacing(2)
+  container: {},
+  preview: {
+    flex: 1
   }
 }));
 
 interface Props {
   provided: any;
   data: subscribeChapterById_chapter_components;
+  preview?: React.ReactNode;
 }
 
-const ComponentHeader = ({ provided, data }: Props) => {
+const ComponentHeader = ({ provided, data, preview }: Props) => {
   const classes = useStyles();
   const client = useApolloClient();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const [isOver, setIsOver] = React.useState(false);
 
   const [deleteComponent, { loading: deleteLoading }] = useMutation(
     DELETE_COMPONENT
@@ -54,34 +57,50 @@ const ComponentHeader = ({ provided, data }: Props) => {
     <Grid
       item
       container
-      spacing={1}
-      xs={12}
       justify="space-between"
+      alignItems="stretch"
       className={classes.container}
     >
-      <IconButton {...provided.dragHandleProps}>
-        <DragHandle />
-      </IconButton>
-      <Icon>{data.type.icon}</Icon>
-      <IconButton
-        aria-label="more"
-        aria-controls="long-menu"
-        aria-haspopup="true"
-        onClick={handleClick}
+      <Grid
+        item
+        onMouseEnter={() => setIsOver(true)}
+        onMouseLeave={() => setIsOver(false)}
       >
-        <MoreVert />
-      </IconButton>
-      <Menu
-        id="long-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={open}
-        onClose={handleClose}
+        <IconButton {...provided.dragHandleProps}>
+          {isOver ? <DragHandle /> : <Icon>{data.type.icon}</Icon>}
+        </IconButton>
+      </Grid>
+      <Grid
+        item
+        container
+        className={classes.preview}
+        justify="center"
+        alignItems="center"
       >
-        <MenuItem onClick={handleDelete} disabled={deleteLoading}>
-          <Text>delete</Text>
-        </MenuItem>
-      </Menu>
+        {preview}
+      </Grid>
+      <Grid item>
+        <IconButton
+          aria-label="more"
+          aria-controls="long-menu"
+          aria-haspopup="true"
+          onClick={handleClick}
+          tabIndex={-1}
+        >
+          <MoreVert />
+        </IconButton>
+        <Menu
+          id="long-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={open}
+          onClose={handleClose}
+        >
+          <MenuItem onClick={handleDelete} disabled={deleteLoading}>
+            <Text>delete</Text>
+          </MenuItem>
+        </Menu>
+      </Grid>
     </Grid>
   );
 };
