@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import TimestampAgo from "components/TimestampAgo";
 import CommentsWidget from "pages/Chapter/CommentsWidget";
 import { subscribeChapterById_chapter } from "queries/__generated__/subscribeChapterById";
+import LanguageContextSelector from "components/ContentEditor/LanguageContextSelector";
 
 export enum Action {
   edit,
@@ -55,6 +56,7 @@ const SubChapterDetail = ({ context, data }: Props) => {
           <TimestampAgo date={new Date(updated || 0)} variant="body1" />
         </Grid>
       </Grid>
+      <LanguageContextSelector />
     </Grid>
   );
   return (
@@ -75,7 +77,7 @@ const SubChapterDetail = ({ context, data }: Props) => {
 };
 
 SubChapterDetail.whyDidYouRender = {
-  logOnDifferentValues: true
+  // logOnDifferentValues: true
 };
 
 export default SubChapterDetail;
