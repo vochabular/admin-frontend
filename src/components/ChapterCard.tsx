@@ -43,7 +43,7 @@ const ChapterCard = ({ classes, chapter }: Props) => {
             color="textSecondary"
             gutterBottom
           >
-            {t("chapter:chapter")} {chapter} / {chapter}
+            {t("chapter:chapter")} {chapter.id} / {chapter.id}
           </Typography>
           <Typography variant="h5" component="h2">
             {chapter.description}

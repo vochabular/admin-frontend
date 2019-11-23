@@ -103,7 +103,7 @@ const ComponentTypeItem = ({
     >
       <CardContent>
         <Typography color="textSecondary" gutterBottom>
-          {item.name}
+          {item.label}
         </Typography>
         <Icon>{item.icon}</Icon>
       </CardContent>

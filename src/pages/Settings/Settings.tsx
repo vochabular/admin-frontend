@@ -23,7 +23,6 @@ import {
   getProfile_profiles
 } from "queries/__generated__/getProfile";
 import { GET_PROFILE, UPDATE_PROFILE } from "queries/users";
-import { updateProfile } from "queries/__generated__/updateProfile";
 import {
   update_profile,
   update_profileVariables
@@ -81,10 +80,6 @@ const Settings: React.FunctionComponent<Props> = ({ classes }) => {
   }
 
   const initialProfile = profile && { ...profile };
-  if (initialProfile) {
-    initialProfile.language = initialProfile.language;
-    initialProfile.translatorLanguages = initialProfile.translatorLanguages;
-  }
 
   return (
     <React.Fragment>

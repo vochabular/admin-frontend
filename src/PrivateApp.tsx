@@ -12,7 +12,6 @@ import Drawer from "components/Drawer";
 import useToggle from "hooks/useToggle";
 import SetupWizard from "./pages/SetupWizard/SetupWizard";
 import BusyOrErrorCard from "./components/BusyOrErrorCard";
-import { profile } from "queries/__generated__/profile";
 import i18n from "i18n";
 import LoadingPage from "pages/LoadingPage";
 import { Role } from "rbac-rules";
@@ -20,7 +19,6 @@ import { useAuth } from "contexts/AuthContext";
 import { GET_PROFILE } from "queries/users";
 import {
   getProfileVariables,
-  getProfile_profiles,
   getProfile
 } from "queries/__generated__/getProfile";
 

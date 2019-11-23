@@ -16,7 +16,6 @@ import PersonalSection from "pages/Settings/SettingsSection/PersonalSection";
 import AdministrativeSection from "pages/Settings/SettingsSection/AdministrativeSection";
 import NotificationSection from "pages/Settings/SettingsSection/NotificationSection";
 import { UserSetupSchema } from "pages/Settings/Settings";
-import { profile_profile } from "queries/__generated__/profile";
 import { useAuth } from "contexts/AuthContext";
 import { UPDATE_PROFILE } from "queries/users";
 import { getProfile_profiles } from "queries/__generated__/getProfile";

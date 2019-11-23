@@ -25,9 +25,7 @@ import ErrorMessage from "components/ErrorMessage";
 import { GET_LANGUAGES } from "../../queries/languages";
 import { getLanguages } from "queries/__generated__/getLanguages";
 import { subscribeChapterById_chapter_parentChapter } from "queries/__generated__/subscribeChapterById";
-import { getChapters_chapters_languages } from "queries/__generated__/getChapters";
 import {
-  createChapter_insert_api_chapter,
   createChapter,
   createChapterVariables
 } from "queries/__generated__/createChapter";

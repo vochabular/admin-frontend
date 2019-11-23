@@ -36,7 +36,6 @@ const LanguageContextSelector = (props: LanguageContextSelectorProps) => {
   const { user } = useAuth();
 
   const email = (user && user.email) || "";
-
   const { data, loading, error } = useQuery<getProfile, getProfileVariables>(
     GET_PROFILE,
     {
@@ -46,9 +45,6 @@ const LanguageContextSelector = (props: LanguageContextSelectorProps) => {
       skip: !email
     }
   );
-
-  console.log(data);
-
   const { data: editorState } = useQuery<getLocalEditorLanguage>(
     GET_LOCAL_EDITOR_LANGUAGE
   );

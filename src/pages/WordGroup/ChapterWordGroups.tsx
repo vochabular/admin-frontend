@@ -13,7 +13,6 @@ import SectionCardContainer from "../../components/SectionCardContainer";
 import Section from "../../components/Section";
 import { convertGlobalToDbId } from "../../helpers";
 
-import WordGroupCard from "../../components/WordGroupCard";
 import LinkCard from "../../components/LinkCard";
 import { GET_CHAPTER_BY_ID } from "queries/chapters";
 

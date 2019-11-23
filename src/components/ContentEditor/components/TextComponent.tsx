@@ -288,9 +288,10 @@ interface TextComponentProps extends BaseComponentProps {}
  * How the component should get rendered in the editor:
  */
 const TextComponent = ({ data, ...otherProps }: TextComponentProps) => {
+  const classes = useStyles();
   const text = data && data.texts && data.texts[0];
   const preview = (
-    <Grid item container direction="row">
+    <Grid item container direction="row" className={classes.container}>
       <MultiTranslationText text={text} />
     </Grid>
   );

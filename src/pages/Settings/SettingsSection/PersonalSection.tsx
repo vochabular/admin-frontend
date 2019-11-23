@@ -13,7 +13,6 @@ import { withStyles, WithStyles } from "@material-ui/styles";
 
 import { styles } from "styles";
 import i18n from "i18n";
-import { profile_profile } from "queries/__generated__/profile";
 import { useAuth } from "contexts/AuthContext";
 import { getProfile_profiles } from "queries/__generated__/getProfile";
 
