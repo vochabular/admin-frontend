@@ -12,7 +12,7 @@ export const PROFILE_PART = gql`
   }
 `;
 
-export const GET_PROFILE = gql`
+export const GET_DJANGO_PROFILE = gql`
   query profile($username: String) {
     profile(username: $username) {
       ...ProfileParts
@@ -21,7 +21,7 @@ export const GET_PROFILE = gql`
   ${PROFILE_PART}
 `;
 
-export const UPDATE_PROFILE = gql`
+export const UPDATE_DJANGO_PROFILE = gql`
   mutation updateProfile($profile: UpdateProfileInput!) {
     updateProfile(input: $profile) {
       profile {

@@ -126,7 +126,7 @@ export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
               if (!i.val) {
                 const originalTranslation = data.texts[0].translations.find(
                   t =>
-                    t.language.code ===
+                    t.language.id ===
                     (i.path[0] === "isSwissGerman"
                       ? LanguageContext.ch
                       : LanguageContext.de)

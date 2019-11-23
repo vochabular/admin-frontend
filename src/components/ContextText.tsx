@@ -43,8 +43,7 @@ const ContextText = ({
     translations[
       translations.findIndex(
         t =>
-          t.language.code ===
-          (wantedLanguage ? wantedLanguage : currentLanguage)
+          t.language.id === (wantedLanguage ? wantedLanguage : currentLanguage)
       )
     ];
 

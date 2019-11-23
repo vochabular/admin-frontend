@@ -17,10 +17,10 @@ interface MultiTranslationTextProps {
 const MultiTranslationText = ({ text }: MultiTranslationTextProps) => {
   const { translations = [], translatable } = text || {};
 
-  const ch = translations.find(t => t.language.code === "ch") && (
+  const ch = translations.find(t => t.language.id === "ch") && (
     <ContextText translations={translations} wantedLanguage="ch" />
   );
-  const de = translations.find(t => t.language.code === "de") && (
+  const de = translations.find(t => t.language.id === "de") && (
     <ContextText translations={translations} wantedLanguage="de" />
   );
   const native = translatable && <ContextText translations={translations} />;

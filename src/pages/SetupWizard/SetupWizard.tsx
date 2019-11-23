@@ -15,10 +15,11 @@ import { styles } from "styles";
 import PersonalSection from "pages/Settings/SettingsSection/PersonalSection";
 import AdministrativeSection from "pages/Settings/SettingsSection/AdministrativeSection";
 import NotificationSection from "pages/Settings/SettingsSection/NotificationSection";
-import { UPDATE_PROFILE } from "queries/profile";
 import { UserSetupSchema } from "pages/Settings/Settings";
 import { profile_profile } from "queries/__generated__/profile";
 import { useAuth } from "contexts/AuthContext";
+import { UPDATE_PROFILE } from "queries/users";
+import { getProfile_profiles } from "queries/__generated__/getProfile";
 
 function getSteps() {
   return [
@@ -42,7 +43,7 @@ function getStepContent(step: number) {
 }
 
 interface Props extends WithStyles<typeof styles> {
-  profile: profile_profile;
+  profile: getProfile_profiles;
 }
 
 function SetupWizard({ classes, profile }: Props) {
@@ -55,8 +56,8 @@ function SetupWizard({ classes, profile }: Props) {
   const steps = getSteps();
 
   async function handleSubmit(
-    values: profile_profile,
-    actions: FormikHelpers<profile_profile>
+    values: getProfile_profiles,
+    actions: FormikHelpers<getProfile_profiles>
   ) {
     if (activeStep === steps.length - 1) {
       const updatedProfile = {
@@ -64,7 +65,7 @@ function SetupWizard({ classes, profile }: Props) {
         lastname: values.lastname,
         roles: user && user.allowedRoles.join(","),
         currentRole: user && user.allowedRoles[0], // TODO(df): need to set this in the AuthContext, based from the userprofile query on startup...
-        language: values.language,
+        language: values,
         eventNotifications: values.eventNotifications,
         translatorLanguages:
           // @ts-ignore
@@ -101,18 +102,13 @@ function SetupWizard({ classes, profile }: Props) {
   // Note here: We are getting a "dynamic" component
   const ActiveStepContent: React.ElementType = getStepContent(activeStep);
 
-  //TODO: Hack until backend has changed type...
   const initialProfile = { ...profile };
-  // @ts-ignore
+
   initialProfile.translatorLanguages =
-    (profile &&
-      profile.translatorLanguages &&
-      profile.translatorLanguages.split(",")) ||
-    "";
-  // @ts-ignore
-  initialProfile.language = (profile && profile.language.toLowerCase()) || "de";
-  initialProfile.currentRole =
-    (profile && profile.currentRole) ||
+    profile && profile.translatorLanguages && profile.translatorLanguages;
+  initialProfile.language = profile && profile.language;
+  initialProfile.current_role =
+    (profile && profile.current_role) ||
     (user && user.currentRole) || // TODO(df): Need to get the current role of the user...
     "";
   initialProfile.firstname = "";

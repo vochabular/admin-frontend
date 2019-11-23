@@ -15,10 +15,19 @@ import GeneralSection from "pages/Settings/SettingsSection/PersonalSection";
 import LanguagesSection from "pages/Settings/SettingsSection/AdministrativeSection";
 import NotificationSection from "pages/Settings/SettingsSection/NotificationSection";
 import i18next from "i18n";
-import { GET_PROFILE, UPDATE_PROFILE } from "queries/profile";
 import BusyOrErrorCard from "components/BusyOrErrorCard";
-import { profile_profile, profile } from "queries/__generated__/profile";
 import { useAuth } from "contexts/AuthContext";
+import {
+  getProfile,
+  getProfileVariables,
+  getProfile_profiles
+} from "queries/__generated__/getProfile";
+import { GET_PROFILE, UPDATE_PROFILE } from "queries/users";
+import { updateProfile } from "queries/__generated__/updateProfile";
+import {
+  update_profile,
+  update_profileVariables
+} from "queries/__generated__/update_profile";
 
 export const UserSetupSchema = Yup.object().shape({
   language: Yup.string().required(i18next.t("required")),
@@ -35,47 +44,46 @@ interface Props extends WithStyles<typeof styles> {}
 
 const Settings: React.FunctionComponent<Props> = ({ classes }) => {
   const { user } = useAuth();
-  const username = user && user.email;
+  const email = (user && user.email) || "";
 
   const { t, i18n } = useTranslation();
-  const { data, loading, error } = useQuery<profile>(GET_PROFILE, {
-    variables: {
-      username: username
+  const { data, loading, error } = useQuery<getProfile, getProfileVariables>(
+    GET_PROFILE,
+    {
+      variables: {
+        email
+      }
     }
-  });
+  );
+  const profile = data && data.profiles[0];
 
-  const [mutateProfile] = useMutation(UPDATE_PROFILE);
+  const [mutateProfile] = useMutation<update_profile, update_profileVariables>(
+    UPDATE_PROFILE
+  );
 
   // Here we would now update the backend settings...
   async function handleSave(
-    values: profile_profile,
-    actions: FormikHelpers<profile_profile>
+    values: getProfile_profiles,
+    actions: FormikHelpers<getProfile_profiles>
   ) {
     const newSettings = { ...values };
     delete newSettings.id;
 
-    i18n.changeLanguage(newSettings.language);
-    // Note: we need to strip the typename, as otherwise the backend complains and apollo client unfortunately doesn't strip it. TODO(df): need to find a central place to strip typenames generally...
-    const { __typename, ...profile } = newSettings;
-    // @ts-ignore
-    profile.translatorLanguages = profile.translatorLanguages.join(",");
+    i18n.changeLanguage(
+      (newSettings.language && newSettings.language.id) || "en"
+    );
+
     await mutateProfile({
-      variables: { profile: { username, profileData: profile } }
+      // variables: { profile: { username: email, profileData: profile } }
+      variables: { email }
     });
     actions.setSubmitting(false);
   }
 
-  //TODO: Hack until backend has changed type...
-  const initialProfile = data && data.profile && { ...data.profile };
+  const initialProfile = profile && { ...profile };
   if (initialProfile) {
-    // @ts-ignore
-    initialProfile.language =
-      (initialProfile.language && initialProfile.language.toLowerCase()) ||
-      "de";
-    // @ts-ignore
-    initialProfile.translatorLanguages = initialProfile.translatorLanguages.split(
-      ","
-    );
+    initialProfile.language = initialProfile.language;
+    initialProfile.translatorLanguages = initialProfile.translatorLanguages;
   }
 
   return (

@@ -229,8 +229,8 @@ const Settings = ({ component, languages, loading }: ISettingsProps) => {
             .filter(
               (t: getSelectedComponent_component_texts_translations) =>
                 !(
-                  t.language.code === LanguageContext.ch ||
-                  t.language.code === LanguageContext.de
+                  t.language.id === LanguageContext.ch ||
+                  t.language.id === LanguageContext.de
                 )
             )
             .map(
@@ -252,7 +252,7 @@ const Settings = ({ component, languages, loading }: ISettingsProps) => {
 
         // Construct filter array of CH/DE and all prexisting native languages
         const existingLanguageCodes = existingTranslations.map(
-          t => t.language.code
+          t => t.language.id
         );
         const filters = ([
           LanguageContext.ch,
@@ -261,7 +261,7 @@ const Settings = ({ component, languages, loading }: ISettingsProps) => {
 
         // Only keep those languages
         const creatableNativeLanguages = chapter.languages.filter(
-          l => !filters.includes(l.language.code)
+          l => !filters.includes(l.language.id)
         );
         // Push to upsertableTranslations, so will be created
         creatableNativeLanguages.forEach(l =>
@@ -278,7 +278,7 @@ const Settings = ({ component, languages, loading }: ISettingsProps) => {
         // Either the language is already prefilled or we need to get from the backend
         const language =
           t.language ||
-          (languages && languages.find(l => l.code === t.languageCode));
+          (languages && languages.find(l => l.id === t.languageCode));
         if (language) {
           upsertableTranslations.push({
             text_field: t.text_field,

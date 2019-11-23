@@ -3,30 +3,30 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL fragment: UserParts
+// GraphQL query operation: getProfile
 // ====================================================
 
-export interface UserParts_language {
+export interface getProfile_profiles_language {
   __typename: "api_language";
   id: string;
 }
 
-export interface UserParts_translatorLanguages_language {
+export interface getProfile_profiles_translatorLanguages_language {
   __typename: "api_language";
   id: string;
   name: string;
 }
 
-export interface UserParts_translatorLanguages {
+export interface getProfile_profiles_translatorLanguages {
   __typename: "api_profile_translator_languages";
   id: number;
   /**
    * An object relationship
    */
-  language: UserParts_translatorLanguages_language;
+  language: getProfile_profiles_translatorLanguages_language;
 }
 
-export interface UserParts {
+export interface getProfile_profiles {
   __typename: "api_profile";
   id: any;
   firstname: string;
@@ -36,11 +36,22 @@ export interface UserParts {
   /**
    * An object relationship
    */
-  language: UserParts_language | null;
+  language: getProfile_profiles_language | null;
   /**
    * An array relationship
    */
-  translatorLanguages: UserParts_translatorLanguages[];
+  translatorLanguages: getProfile_profiles_translatorLanguages[];
   eventNotifications: boolean;
   setupCompleted: boolean;
+}
+
+export interface getProfile {
+  /**
+   * fetch data from the table: "api_profile"
+   */
+  profiles: getProfile_profiles[];
+}
+
+export interface getProfileVariables {
+  email: string;
 }

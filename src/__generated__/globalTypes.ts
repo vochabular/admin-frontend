@@ -309,6 +309,31 @@ export enum api_wordtranslation_update_column {
 }
 
 /**
+ * unique or primary key constraints on table "auth_user"
+ */
+export enum auth_user_constraint {
+  auth_user_pkey = "auth_user_pkey",
+  auth_user_username_key = "auth_user_username_key",
+}
+
+/**
+ * update columns of table "auth_user"
+ */
+export enum auth_user_update_column {
+  date_joined = "date_joined",
+  email = "email",
+  first_name = "first_name",
+  id = "id",
+  is_active = "is_active",
+  is_staff = "is_staff",
+  is_superuser = "is_superuser",
+  last_login = "last_login",
+  last_name = "last_name",
+  password = "password",
+  username = "username",
+}
+
+/**
  * expression to compare columns of type Boolean. All fields are combined with logical 'AND'.
  */
 export interface Boolean_comparison_exp {
@@ -817,6 +842,7 @@ export interface api_profile_bool_exp {
   setup_completed?: Boolean_comparison_exp | null;
   translatorLanguages?: api_profile_translator_languages_bool_exp | null;
   updated?: timestamptz_comparison_exp | null;
+  user?: auth_user_bool_exp | null;
   user_id?: Int_comparison_exp | null;
 }
 
@@ -837,6 +863,7 @@ export interface api_profile_insert_input {
   setup_completed?: boolean | null;
   translatorLanguages?: api_profile_translator_languages_arr_rel_insert_input | null;
   updated?: any | null;
+  user?: auth_user_obj_rel_insert_input | null;
   user_id?: number | null;
 }
 
@@ -1191,6 +1218,62 @@ export interface api_wordtranslation_on_conflict {
   constraint: api_wordtranslation_constraint;
   update_columns: api_wordtranslation_update_column[];
   where?: api_wordtranslation_bool_exp | null;
+}
+
+/**
+ * Boolean expression to filter rows from the table "auth_user". All fields are combined with a logical 'AND'.
+ */
+export interface auth_user_bool_exp {
+  _and?: (auth_user_bool_exp | null)[] | null;
+  _not?: auth_user_bool_exp | null;
+  _or?: (auth_user_bool_exp | null)[] | null;
+  date_joined?: timestamptz_comparison_exp | null;
+  email?: String_comparison_exp | null;
+  first_name?: String_comparison_exp | null;
+  id?: Int_comparison_exp | null;
+  is_active?: Boolean_comparison_exp | null;
+  is_staff?: Boolean_comparison_exp | null;
+  is_superuser?: Boolean_comparison_exp | null;
+  last_login?: timestamptz_comparison_exp | null;
+  last_name?: String_comparison_exp | null;
+  password?: String_comparison_exp | null;
+  profile?: api_profile_bool_exp | null;
+  username?: String_comparison_exp | null;
+}
+
+/**
+ * input type for inserting data into table "auth_user"
+ */
+export interface auth_user_insert_input {
+  date_joined?: any | null;
+  email?: string | null;
+  first_name?: string | null;
+  id?: number | null;
+  is_active?: boolean | null;
+  is_staff?: boolean | null;
+  is_superuser?: boolean | null;
+  last_login?: any | null;
+  last_name?: string | null;
+  password?: string | null;
+  profile?: api_profile_obj_rel_insert_input | null;
+  username?: string | null;
+}
+
+/**
+ * input type for inserting object relation for remote table "auth_user"
+ */
+export interface auth_user_obj_rel_insert_input {
+  data: auth_user_insert_input;
+  on_conflict?: auth_user_on_conflict | null;
+}
+
+/**
+ * on conflict condition type for table "auth_user"
+ */
+export interface auth_user_on_conflict {
+  constraint: auth_user_constraint;
+  update_columns: auth_user_update_column[];
+  where?: auth_user_bool_exp | null;
 }
 
 /**

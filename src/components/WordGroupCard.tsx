@@ -9,13 +9,10 @@ import { useTranslation } from "react-i18next";
 
 import CardActionArea from "@material-ui/core/CardActionArea";
 import { styles } from "styles";
-import { chaptersWordGroupsByChapterId_chapter_wordGroups_edges_node } from "../queries/__generated__/chaptersWordGroupsByChapterId";
 import { subscribeWordGroups_wordGroups } from "queries/__generated__/subscribeWordGroups";
 
 interface Props extends WithStyles<typeof styles> {
-  wordGroup:
-    | subscribeWordGroups_wordGroups
-    | chaptersWordGroupsByChapterId_chapter_wordGroups_edges_node;
+  wordGroup: subscribeWordGroups_wordGroups | any;
 }
 
 const WordGroupCard = ({ classes, wordGroup }: Props) => {
@@ -27,7 +24,7 @@ const WordGroupCard = ({ classes, wordGroup }: Props) => {
     <Card>
       <CardActionArea
         component={RouterLink}
-        {...{ to: `/wordgroups/${wordGroup.id}` } as any}
+        {...({ to: `/wordgroups/${wordGroup.id}` } as any)}
       >
         <CardContent>
           <Typography
@@ -35,8 +32,8 @@ const WordGroupCard = ({ classes, wordGroup }: Props) => {
             color="textSecondary"
             gutterBottom
           >
-            {wordGroup.titleDe} <br />
-            {wordGroup.titleCh} <br />
+            {wordGroup} <br />
+            {wordGroup} <br />
             {t("wordGroups:nWords") + wordGroup && wordGroup.words
               ? wordGroup.words.length
               : 0}
