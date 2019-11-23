@@ -37,9 +37,21 @@ export const COMPONENT_PART = gql`
  * Especially, "Using @client fields as variables"!
  * selectedComponentId @client @export(as: "id")
  */
+export const GET_LOCAL_EDITOR_LANGUAGE = gql`
+  query getLocalEditorLanguage {
+    contentEditorLanguage @client
+  }
+`;
+
 export const GET_LOCAL_SELECTED_COMPONENT_ID = gql`
-  query getSelectedComponentId {
+  query getLocalSelectedComponent {
     selectedComponentId @client
+  }
+`;
+
+export const GET_LOCAL_EDITOR_ROLE = gql`
+  query getLocalEditorRole {
+    contentEditorRole @client
   }
 `;
 
