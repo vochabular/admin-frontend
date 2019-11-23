@@ -36,6 +36,8 @@
     "newSubChapterTitle": "Create new subchapter for chapter",
     "chapterNumber": "Chapter number",
     "chapterNumberHelper": "The sequential (main) chapter number. For example in 'Chapter 1', then set '1'",
+    "chapterNumberTooLow": "Chapter start at 1",
+    "chapterNumberTooHigh": "Chapter number too high",
     "subChapterNumber": "Subchapter number",
     "subChapterNumberHelper": "The sequentiel subchapter number. For example in 'Chapter 1.3', then set '3'",
     "newChapterDescription": "Description",

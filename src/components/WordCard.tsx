@@ -34,10 +34,10 @@ const WordCard = ({ classes, word, wordGroupId }: Props) => {
             gutterBottom
           >
             {word.translations.length ? word.translations.map(t => (
-              <>
+              <React.Fragment key={t.id}>
                 {t.text}
                 <br />
-              </>
+              </React.Fragment>
             )): t("words:emptyWord") }
           </Typography>
         </CardContent>

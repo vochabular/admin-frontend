@@ -18,6 +18,8 @@
     "persian": "Persisch/Farsi",
     "swissGerman": "Schweizer Deutsch",
     "required": "Wird benötigt...",
+    "tooShort": "Zu kurz!",
+    "tooLong": "Zu lang!",
     "lastSaved": "Zuletzt gespeichert"
   },
   "chapters": {
@@ -31,6 +33,8 @@
     "newChapterTitle": "Neues Kapitel anlegen",
     "chapterNumber": "Kapitelnummer",
     "chapterNumberHelper": "Die fortlaufende Haupt-Kapitelnummer, z.B. bei 'Kapitel 1' also '1' ",
+    "chapterNumberTooLow": "Kapitel fangen bei 1 an",
+    "chapterNumberTooHigh": "Kapitelnummer zu hoch",
     "subChapterNumber": "Unterkapitelnummer",
     "subChapterNumberHelper": "Fortlaufend Unterkapitelnummer, bei 'Kapitel 1.3' also '3' ",
     "newChapterDescription": "Beschreibung",

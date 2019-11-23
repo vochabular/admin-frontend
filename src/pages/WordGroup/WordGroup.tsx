@@ -16,6 +16,22 @@ import { Grid } from "@material-ui/core";
 import WordCard from "../../components/WordCard";
 import LinkCard from "../../components/LinkCard";
 import { subscribeWordGroupById } from "queries/__generated__/subscribeWordGroupById";
+import * as Yup from "yup";
+import i18next from "../../i18n";
+
+export const WordGroupSchema = Yup.object().shape({
+  titleDe: Yup.string()
+    .min(2, i18next.t("tooShort"))
+    .max(100, i18next.t("tooLong"))
+    .required(i18next.t("required")),
+  titleCh: Yup.string()
+    .min(2, i18next.t("tooShort"))
+    .max(100, i18next.t("tooLong"))
+    .required(i18next.t("required")),
+  chapter: Yup.number()
+    .min(1, i18next.t("chapterNumberTooLow"))
+    .max(100, i18next.t("chapterNumberTooHigh"))
+});
 
 // These can come from the router... See the route definitions
 interface WordGroupRouterProps {

@@ -71,6 +71,9 @@ export const UPSERT_WORDGROUP = gql`
 `;
 
 
+
+// TODO This thing is fucked up..
+
 /**
  * See here why we are "updating" (--> actually not, just using it since otherwise the nested upsert would fail..) the ID column:
  * https://docs.hasura.io/1.0/graphql/manual/mutations/upsert.html
@@ -101,4 +104,14 @@ export const UPSERT_WORD = gql`
     }
   }
   ${WORD_FRAGMENT}
+`;
+
+export const GET_MEDIA_URL = gql`
+query queryMediaURL {
+  mediaUrl(fileType: "audio/mpeg") {
+    data
+    url
+  }
+}
+
 `;
