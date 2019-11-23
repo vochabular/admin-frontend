@@ -8,11 +8,80 @@ import { api_component_set_input, api_text_insert_input, api_text_update_column,
 // GraphQL mutation operation: updateComponent
 // ====================================================
 
+export interface updateComponent_update_api_component_returning_type_frontendWidget {
+  __typename: "api_componenttype";
+  id: any;
+  name: string;
+  label: string;
+  icon: string;
+}
+
+export interface updateComponent_update_api_component_returning_type {
+  __typename: "api_componenttype";
+  id: any;
+  name: string;
+  label: string;
+  icon: string;
+  base: boolean;
+  schema: any;
+  created: any;
+  updated: any;
+  /**
+   * An object relationship
+   */
+  frontendWidget: updateComponent_update_api_component_returning_type_frontendWidget | null;
+}
+
+export interface updateComponent_update_api_component_returning_texts_translations_language {
+  __typename: "api_language";
+  id: any;
+  code: string;
+}
+
+export interface updateComponent_update_api_component_returning_texts_translations {
+  __typename: "api_translation";
+  id: any;
+  text_field: string;
+  valid: boolean;
+  /**
+   * An object relationship
+   */
+  language: updateComponent_update_api_component_returning_texts_translations_language;
+}
+
+export interface updateComponent_update_api_component_returning_texts {
+  __typename: "api_text";
+  id: any;
+  translatable: boolean;
+  /**
+   * An array relationship
+   */
+  translations: updateComponent_update_api_component_returning_texts_translations[];
+}
+
+export interface updateComponent_update_api_component_returning_media {
+  __typename: "api_media";
+  id: any;
+}
+
 export interface updateComponent_update_api_component_returning {
   __typename: "api_component";
   id: any;
-  order_in_chapter: number | null;
   data: any;
+  state: string;
+  position: number | null;
+  /**
+   * An object relationship
+   */
+  type: updateComponent_update_api_component_returning_type;
+  /**
+   * An array relationship
+   */
+  texts: updateComponent_update_api_component_returning_texts[];
+  /**
+   * An array relationship
+   */
+  media: updateComponent_update_api_component_returning_media[];
 }
 
 export interface updateComponent_update_api_component {

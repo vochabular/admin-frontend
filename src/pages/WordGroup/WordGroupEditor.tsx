@@ -1,8 +1,8 @@
 import * as React from "react";
 import {useTranslation} from "react-i18next";
 import * as Yup from "yup";
-import {Formik, Form, Field, FormikActions} from "formik";
-import {TextField} from "formik-material-ui";
+import { Formik, Form, Field, FormikActions as FormikHelpers } from "formik";
+import { TextField } from "formik-material-ui";
 import {useMutation, useQuery} from "@apollo/react-hooks";
 
 import {withStyles, WithStyles} from "@material-ui/core/styles";
@@ -49,7 +49,7 @@ const WordGroupEditor = ({classes}: Props) => {
   // TODO:
   const [upsertWordGroup] = useMutation(UPSERT_WORDGROUP);
 
-  async function handleSave(values: any, actions: FormikActions<any>) {
+  async function handleSave(values: any, actions: FormikHelpers<any>) {
     // TODO: This verbose stuff won't be necessary anymore as soon useMutation also returns a error/loading object.
     try {
       // values['words'] = [];

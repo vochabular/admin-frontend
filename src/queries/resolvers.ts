@@ -3,6 +3,8 @@ import gql from "graphql-tag";
 export const typeDefs = gql`
   extend type query_root {
     selectedComponentId: uuid!
+    contentEditorLanguage: String!
+    contentEditorRole: String!
   }
 `;
 export const resolvers = {};

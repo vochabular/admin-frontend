@@ -38,6 +38,14 @@ export interface getChapters_chapters_subChapters {
   description: string;
 }
 
+export interface getChapters_chapters_components_type_frontendWidget {
+  __typename: "api_componenttype";
+  id: any;
+  name: string;
+  label: string;
+  icon: string;
+}
+
 export interface getChapters_chapters_components_type {
   __typename: "api_componenttype";
   id: any;
@@ -48,6 +56,10 @@ export interface getChapters_chapters_components_type {
   schema: any;
   created: any;
   updated: any;
+  /**
+   * An object relationship
+   */
+  frontendWidget: getChapters_chapters_components_type_frontendWidget | null;
 }
 
 export interface getChapters_chapters_components_texts_translations_language {

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import * as Yup from "yup";
-import { Formik, Form, Field, FormikActions } from "formik";
+import { Formik, Form, Field, FormikActions as FormikHelpers } from "formik";
 import { TextField, Select } from "formik-material-ui";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 
@@ -50,7 +50,7 @@ const NewChapter = ({ classes, parentChapter }: Props) => {
   const [upsertChapter, { loading }] = useMutation(UPSERT_CHAPTER);
   const isSubChapter = !!parentChapter;
 
-  async function handleSave(values: any, actions: FormikActions<any>) {
+  async function handleSave(values: any, actions: FormikHelpers<any>) {
     // TODO: This verbose stuff won't be necessary anymore as soon useMutation also returns a error/loading object.
     try {
       const input = { ...values };
@@ -96,7 +96,8 @@ const NewChapter = ({ classes, parentChapter }: Props) => {
             }}
             validationSchema={ChapterSchema}
             onSubmit={(values, actions) => handleSave(values, actions)}
-            render={({ submitForm, values, isSubmitting, status }) => (
+          >
+            {({ submitForm, values, isSubmitting, status }) => (
               <Form>
                 <Field
                   type="number"
@@ -196,7 +197,7 @@ const NewChapter = ({ classes, parentChapter }: Props) => {
                 </Button>
               </Form>
             )}
-          />
+          </Formik>
         </CardContent>
       </Card>
     </React.Fragment>

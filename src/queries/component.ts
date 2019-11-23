@@ -31,22 +31,34 @@ export const COMPONENT_PART = gql`
   ${COMPONENT_TYPE_FRAGMENT}
 `;
 
-export const GET_LOCAL_SELECTED_COMPONENT_ID = gql`
-  query getSelectedComponentId {
-    selectedComponentId @client
-  }
-`;
-
 /**
  * Local query (would replace redux...):
  * https://www.apollographql.com/docs/react/essentials/local-state/
  * Especially, "Using @client fields as variables"!
+ * selectedComponentId @client @export(as: "id")
  */
+export const GET_LOCAL_EDITOR_LANGUAGE = gql`
+  query getLocalEditorLanguage {
+    contentEditorLanguage @client
+  }
+`;
+
+export const GET_LOCAL_SELECTED_COMPONENT_ID = gql`
+  query getLocalSelectedComponent {
+    selectedComponentId @client
+  }
+`;
+
+export const GET_LOCAL_EDITOR_ROLE = gql`
+  query getLocalEditorRole {
+    contentEditorRole @client
+  }
+`;
+
 export const GET_SELECTED_COMPONENT = gql`
   query getSelectedComponent($id: uuid!) {
-    selectedComponentId @client @export(as: "id")
     component: api_component_by_pk(id: $id) {
-      ...ComponentParts @client
+      ...ComponentParts
     }
     languages: api_language {
       id
@@ -61,10 +73,11 @@ export const CREATE_COMPONENT = gql`
   mutation createComponent($input: api_component_insert_input!) {
     insert_api_component(objects: [$input]) {
       returning {
-        id
+        ...ComponentParts
       }
     }
   }
+  ${COMPONENT_PART}
 `;
 
 export const UPDATE_COMPONENT = gql`
@@ -83,9 +96,7 @@ export const UPDATE_COMPONENT = gql`
       where: { id: { _eq: $componentId } }
     ) {
       returning {
-        id
-        order_in_chapter
-        data
+        ...ComponentParts
       }
     }
     insert_api_text(
@@ -113,6 +124,7 @@ export const UPDATE_COMPONENT = gql`
       affected_rows
     }
   }
+  ${COMPONENT_PART}
 `;
 
 export const DELETE_COMPONENT = gql`

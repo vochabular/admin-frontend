@@ -1,6 +1,7 @@
 import * as React from "react";
 import classNames from "classnames";
 import { Draggable, Droppable } from "react-beautiful-dnd";
+import { useApolloClient } from "@apollo/react-hooks";
 
 import { makeStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
@@ -10,9 +11,10 @@ import { subscribeChapterById_chapter_components } from "queries/__generated__/s
 import ComponentList from "./ComponentList";
 import ComponentHeader from "./ComponentHeader";
 import Text from "components/Text";
-import { useApolloClient } from "@apollo/react-hooks";
 import { getSelectedComponent_component } from "queries/__generated__/getSelectedComponent";
 import { SubmitConfig } from "./Settings";
+import ComponentBody from "./ComponentBody";
+import Dropzone from "./Dropzone";
 
 export interface BaseSettingsProps {
   /**
@@ -40,16 +42,21 @@ export const BaseSettings = React.forwardRef<any, BaseSettingsProps>(
   }
 );
 
+interface StyleProps {
+  level: number;
+  isSelected: boolean;
+}
+
 const useStyles = makeStyles((theme: Theme) => ({
-  container: {
+  container: (props: StyleProps) => ({
+    backgroundColor:
+      // @ts-ignore
+      theme.palette.grey[(props.level + 4) * 100] || theme.palette.grey[100],
     border: "solid",
     borderWidth: 2,
-    borderColor: theme.palette.grey[200],
-    marginBottom: theme.spacing(2)
-  },
-  selected: {
-    borderColor: theme.palette.primary.light
-  }
+    marginBottom: theme.spacing(2),
+    borderColor: props.isSelected ? theme.palette.primary.light : "inherit"
+  })
 }));
 
 export interface BaseComponentProps {
@@ -60,6 +67,7 @@ export interface BaseComponentProps {
   index: number;
   data: subscribeChapterById_chapter_components;
   preview?: React.ReactNode;
+  body?: React.ReactNode;
   selectedComponentId: string;
 }
 
@@ -71,9 +79,11 @@ const BaseComponent = ({
   index,
   data,
   preview,
+  body,
   selectedComponentId
 }: BaseComponentProps) => {
-  const classes = useStyles();
+  const isSelected = selectedComponentId === data.id || false;
+  const classes = useStyles({ level, isSelected });
   const client = useApolloClient();
 
   const handleOnComponentClick = (
@@ -83,8 +93,13 @@ const BaseComponent = ({
     event.preventDefault();
     client.writeData({ data: { selectedComponentId: data.id } });
   };
+  const color = `#${Math.floor(
+    Math.abs(Math.sin(level + 12) * 16777215) % 16777215
+  ).toString(16)}`;
 
-  const isSelected = selectedComponentId === data.id || false;
+  const childrenList = (
+    <ComponentList components={data.children} level={level + 1} />
+  );
 
   return (
     <>
@@ -95,44 +110,46 @@ const BaseComponent = ({
       >
         {(provided, snapshot) => (
           <Grid
+            item
             container
-            direction="row"
             alignItems="stretch"
             ref={provided.innerRef}
-            spacing={1}
-            {...provided.draggableProps}
-            className={classNames(
-              classes.container,
-              isSelected && classes.selected
-            )}
+            className={classNames([classes.container])}
             onClick={handleOnComponentClick}
+            {...provided.draggableProps}
           >
-            <ComponentHeader data={data} provided={provided} />
-            {preview}
-
-            {data.children.length ? (
-              <Droppable
-                droppableId={`component-list-${data.id}`}
-                type={`${data.type.name}-${data.id}`}
-              >
-                {(provided, snapshot) => (
-                  <Grid
-                    item
-                    container
-                    alignItems="stretch"
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                    style={{ padding: 20 }}
-                  >
-                    <ComponentList
-                      components={data.children}
-                      level={level + 1}
-                    />
-                    {provided.placeholder}
-                  </Grid>
-                )}
-              </Droppable>
-            ) : null}
+            <ComponentHeader
+              data={data}
+              provided={provided}
+              preview={preview}
+            />
+            <ComponentBody content={body} />
+            <Droppable
+              droppableId={`component-list-${data.id}`}
+              type={`${data.type.name}-${data.id}`}
+            >
+              {(provided, snapshot) => (
+                <div
+                  ref={provided.innerRef}
+                  style={{
+                    paddingLeft: data.children.length && 20,
+                    paddingRight: data.children.length && 20,
+                    flex: 1
+                    // display: "none"
+                  }}
+                  {...provided.droppableProps}
+                >
+                  {childrenList}
+                  {/* TODO(df): Only display placeholder if component is selected */}
+                  {isSelected && provided.placeholder && (
+                    <Grid item>
+                      <Dropzone color={color} />
+                    </Grid>
+                  )}
+                  <div>{provided.placeholder}</div>
+                </div>
+              )}
+            </Droppable>
           </Grid>
         )}
       </Draggable>

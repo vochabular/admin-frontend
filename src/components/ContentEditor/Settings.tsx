@@ -1,10 +1,10 @@
 import * as React from "react";
-import { Formik } from "formik";
-import { useQuery, useMutation, useApolloClient } from "@apollo/react-hooks";
+import { FormikValues } from "formik";
+import { useMutation, useApolloClient } from "@apollo/react-hooks";
 import { cloneDeep } from "lodash-es";
 
 import { Theme, makeStyles } from "@material-ui/core/styles";
-import { Grid, Drawer, Button } from "@material-ui/core";
+import { Grid, Drawer, Button, CircularProgress } from "@material-ui/core";
 import { Settings as SettingsIcon, Save as SaveIcon } from "@material-ui/icons";
 
 import Text from "components/Text";
@@ -12,18 +12,14 @@ import { BaseSettings, BaseSettingsProps } from "./BaseComponent";
 import { TitleSettings } from "./components/TitleComponent";
 import { TextSettings } from "./components/TextComponent";
 import { DialogSettings } from "./components/Dialog/DialogComponent";
+import { UPDATE_COMPONENT } from "queries/component";
 import {
-  GET_SELECTED_COMPONENT,
-  GET_LOCAL_SELECTED_COMPONENT_ID,
-  UPDATE_COMPONENT
-} from "queries/component";
-import { getSelectedComponentId } from "queries/__generated__/getSelectedComponentId";
-import {
-  getSelectedComponent,
   getSelectedComponent_component_texts,
   getSelectedComponent_component_media,
   getSelectedComponent_component_texts_translations,
-  getSelectedComponent_component_texts_translations_language
+  getSelectedComponent_component_texts_translations_language,
+  getSelectedComponent_component,
+  getSelectedComponent_languages
 } from "queries/__generated__/getSelectedComponent";
 import { LanguageContext } from "theme";
 import {
@@ -147,31 +143,24 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
+interface ISettingsProps {
+  component?: getSelectedComponent_component;
+  languages?: getSelectedComponent_languages[];
+  loading: boolean;
+}
+
 /**
  * The main Settings Component.
  * Consists of a header with generic, component type agnostic functionality and a "dynamic" settings content implementation depending on the component type
  */
-const Settings = () => {
+const Settings = ({ component, languages, loading }: ISettingsProps) => {
   const classes = useStyles();
-
   const client = useApolloClient();
   // @ts-ignore
   let { subChapterId } = useParams();
 
-  const { data: selectedComponentIdData } = useQuery<getSelectedComponentId>(
-    GET_LOCAL_SELECTED_COMPONENT_ID
-  );
-  const { selectedComponentId = undefined } = selectedComponentIdData || {};
-
-  const { data } = useQuery<getSelectedComponent>(GET_SELECTED_COMPONENT, {
-    skip: !selectedComponentId
-  });
-  const { component: selectedComponent = undefined } = data || {};
-
   const [updateComponent, { loading: updateLoading }] = useMutation<
-    {
-      updateComponent: TupdateComponent;
-    },
+    TupdateComponent,
     updateComponentVariables
   >(UPDATE_COMPONENT, {
     onCompleted: () => client.writeData({ data: { selectedComponentId: null } })
@@ -184,7 +173,7 @@ const Settings = () => {
     event.preventDefault();
   };
 
-  const form = React.useRef<Formik>(null);
+  const form = React.useRef<FormikValues>(null);
 
   const handleOnSaveClick = () => {
     if (!form || !form.current || form.current.handleSubmit(undefined)) {
@@ -223,17 +212,14 @@ const Settings = () => {
       const _text = cloneDeep(_texts[i]);
       upsertableTextData.push({
         id: _text.id,
-        fk_component_id: selectedComponentId,
+        fk_component_id: component && component.id,
         translatable: _text.translatable || false
       });
       const upsertableTranslations: api_translation_insert_input[] = []; // _text.translations;
 
       // TODO(df): Hack for now (since index doesn't have to be the same, but usually is), need to change to lookup based texts id... From client cache?
       const existingTranslations =
-        (data &&
-          data.component &&
-          data.component.texts[i] &&
-          data.component.texts[i].translations) ||
+        (component && component.texts[i] && component.texts[i].translations) ||
         [];
 
       // Remove all native translations if applicable
@@ -292,7 +278,7 @@ const Settings = () => {
         // Either the language is already prefilled or we need to get from the backend
         const language =
           t.language ||
-          (data && data.languages.find(l => l.code === t.languageCode));
+          (languages && languages.find(l => l.code === t.languageCode));
         if (language) {
           upsertableTranslations.push({
             text_field: t.text_field,
@@ -322,7 +308,7 @@ const Settings = () => {
     updateComponent({
       variables: {
         // If no changes in component, then we don't want to update and thus just send null
-        componentId: componentData ? selectedComponentId : null,
+        componentId: component ? component.id : null,
         // The components table fields that should be updated
         componentData,
         // Texts are "upserted" (Check definition in static GQL document UPDATE_COMPONENT)
@@ -344,7 +330,7 @@ const Settings = () => {
       className={classes.drawer}
       variant="persistent"
       anchor="bottom"
-      open={!!selectedComponent}
+      open={!!component}
       onClick={handleBackgroundClick}
     >
       <Grid container className={classes.container} direction="row">
@@ -354,7 +340,7 @@ const Settings = () => {
             <Text
               variant="h5"
               translationOptions={{
-                type: selectedComponent && selectedComponent.type.label
+                type: component && component.type.label
               }}
             >
               chapterEditor:settingsTitle
@@ -366,7 +352,7 @@ const Settings = () => {
               size="small"
               color="primary"
               onClick={handleOnSaveClick}
-              disabled={updateLoading}
+              disabled={loading || updateLoading}
             >
               <SaveIcon />
               <Text>save</Text>
@@ -374,11 +360,16 @@ const Settings = () => {
           </Grid>
         </Grid>
         <Grid xs={12} item container direction="column">
-          {selectedComponent ? (
+          {loading && <CircularProgress />}
+          {!loading && component ? (
             <SettingsContent
               ref={form}
-              type={selectedComponent.type.name}
-              data={selectedComponent}
+              type={
+                (component.type.frontendWidget &&
+                  component.type.frontendWidget.name) ||
+                component.type.name
+              }
+              data={component}
               onSubmit={handleOnSubmit}
             />
           ) : null}
@@ -388,4 +379,4 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export default React.memo(Settings);

@@ -30,14 +30,21 @@ const defaultOptions: DefaultOptions = {
 };
 
 // Setup the cache
-const cache = new InMemoryCache({});
+const cache = new InMemoryCache({
+  freezeResults: true
+});
 
 /**
  * This is a "fake" async call. This resolves however the case, that the IdToken is briefly undefined!
  * TODO(df): Maybe it would be better, if the client is setup only in the private app?
  */
 async function getAsyncConnectionParams() {
-  const { idToken, currentRole } = window.VoCHabularAdminFrontend;
+  if (!window.VoCHabularAdminFrontend) {
+    throw new Error(
+      "Race condition! No portal object 'VoCHabularAdminFrontend' in window found!"
+    );
+  }
+  const { idToken, currentRole } = window.VoCHabularAdminFrontend || {};
   return {
     headers: {
       Authorization: `Bearer ${idToken}`,
@@ -100,6 +107,7 @@ function handleNetworkError(networkError: ApolloError["networkError"]) {
 // https://spectrum.chat/apollo/general/how-to-pass-additional-header-when-calling-query~67b83ba9-a1b8-4cfd-baca-5d792b2a9836
 const request = async (operation: any) => {
   const params = await getAsyncConnectionParams();
+  if (!params) throw new Error("Race condition - No headers defined yet!");
   operation.setContext(params);
 };
 
@@ -203,14 +211,9 @@ const client = new ApolloClient({
     link
   ]),
   typeDefs: typeDefs,
-  resolvers: resolvers
-});
-
-// Initialize state
-cache.writeData({
-  data: {
-    selectedComponentId: undefined
-  }
+  resolvers: resolvers,
+  // TODO(df): If immutability is guaranteed (thus everywhere enforced), setting this to true could bring many performance gains
+  assumeImmutableResults: false
 });
 
 export default client;

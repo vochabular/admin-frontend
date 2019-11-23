@@ -28,6 +28,9 @@ if (process.env.NODE_ENV === "production") {
     release: `${packageJson.name}@${packageJson.version}`,
     debug: false // process.env.NODE_ENV === "development"
   });
+} else {
+  const whyDidYouRender = require("@welldone-software/why-did-you-render/dist/no-classes-transpile/umd/whyDidYouRender.min.js");
+  whyDidYouRender(React);
 }
 
 ReactDOM.render(

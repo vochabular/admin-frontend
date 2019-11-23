@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import * as Yup from "yup";
 import { useQuery, useMutation } from "@apollo/react-hooks";
-import { Form, Formik, FormikActions } from "formik";
+import { Form, Formik, FormikActions as FormikHelpers } from "formik";
 
 import { withStyles, WithStyles } from "@material-ui/styles";
 import Typography from "@material-ui/core/Typography";
@@ -49,7 +49,7 @@ const Settings: React.FunctionComponent<Props> = ({ classes }) => {
   // Here we would now update the backend settings...
   async function handleSave(
     values: profile_profile,
-    actions: FormikActions<any>
+    actions: FormikHelpers<profile_profile>
   ) {
     const newSettings = { ...values };
     delete newSettings.id;
@@ -90,7 +90,8 @@ const Settings: React.FunctionComponent<Props> = ({ classes }) => {
               initialValues={initialProfile}
               validationSchema={UserSetupSchema}
               onSubmit={(values, actions) => handleSave(values, actions)}
-              render={({ submitForm, values }) => (
+            >
+              {({ values, submitForm }) => (
                 <Form>
                   <React.Fragment>
                     <GeneralSection values={values} />
@@ -108,7 +109,7 @@ const Settings: React.FunctionComponent<Props> = ({ classes }) => {
                   </Button>
                 </Form>
               )}
-            />
+            </Formik>
           </CardContent>
         </Card>
       )}

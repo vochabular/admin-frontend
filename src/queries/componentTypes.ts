@@ -10,6 +10,12 @@ export const COMPONENT_TYPE_FRAGMENT = gql`
     schema
     created
     updated
+    frontendWidget {
+      id
+      name
+      label
+      icon
+    }
   }
 `;
 

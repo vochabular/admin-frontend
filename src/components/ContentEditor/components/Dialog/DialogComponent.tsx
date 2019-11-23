@@ -37,11 +37,11 @@ export const DialogSettings = React.forwardRef<any, DialogSettingsProps>(
 
     return (
       <Formik
-        ref={ref}
         initialValues={{ translations }}
         validationSchema={DialogSchema}
         onSubmit={(values, actions) => onSubmit({})}
-        render={({ submitForm, values, isSubmitting, status }) => (
+      >
+        {props => (
           <Form>
             <FieldArray
               name="translations"
@@ -86,12 +86,14 @@ export const DialogSettings = React.forwardRef<any, DialogSettingsProps>(
             />
           </Form>
         )}
-      />
+      </Formik>
     );
   }
 );
 
-const useStyles = makeStyles((theme: Theme) => ({}));
+const useStyles = makeStyles((theme: Theme) => ({
+  container: { margin: 10, backgroundColor: "red" }
+}));
 
 export interface DialogComponentProps extends BaseComponentProps {}
 
@@ -99,9 +101,12 @@ export interface DialogComponentProps extends BaseComponentProps {}
  * How the component should get rendered in the editor
  */
 const DialogComponent = ({ data, ...otherProps }: DialogComponentProps) => {
-  // const classes = useStyles();
-
-  const preview = <Text translate={false}>{data.data}</Text>;
+  const classes = useStyles();
+  const preview = (
+    <Text translate={false} className={classes.container}>
+      Dialog mit 2 Sprechern
+    </Text>
+  );
 
   return <BaseComponent preview={preview} data={data} {...otherProps} />;
 };

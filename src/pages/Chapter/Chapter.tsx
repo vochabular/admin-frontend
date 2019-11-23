@@ -81,11 +81,7 @@ const ChapterContent = ({
 
     const convertedAction: Action = Action[action as keyof typeof Action];
 
-    return (
-      <Section title="chapters:chapter" titleTranslatable>
-        <SubChapterDetail context={convertedAction} data={data.chapter} />
-      </Section>
-    );
+    return <SubChapterDetail context={convertedAction} data={data.chapter} />;
   }
 
   // Else, then render the chapter overview
@@ -124,6 +120,8 @@ const ChapterContent = ({
     </Section>
   );
 };
+
+ChapterContent.whyDidYouRender = true;
 
 // These can come from the router... See the route definitions
 interface ChapterRouterProps {

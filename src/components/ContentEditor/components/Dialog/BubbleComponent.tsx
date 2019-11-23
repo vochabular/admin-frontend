@@ -33,11 +33,11 @@ export const BubbleSettings = React.forwardRef<any, BubbleSettingsProps>(
 
     return (
       <Formik
-        ref={ref}
-        initialValues={"{ Bubble: data.data }"}
+        initialValues={{}}
         validationSchema={BubbleSchema}
         onSubmit={values => onSubmit({})}
-        render={({ submitForm, values, isSubmitting, status }) => (
+      >
+        {props => (
           <Form>
             <Field
               type="string"
@@ -50,7 +50,7 @@ export const BubbleSettings = React.forwardRef<any, BubbleSettingsProps>(
             />
           </Form>
         )}
-      />
+      </Formik>
     );
   }
 );
