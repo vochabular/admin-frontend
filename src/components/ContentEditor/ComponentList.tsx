@@ -9,6 +9,7 @@ import TitleComponent from "./components/TitleComponent";
 import { GET_LOCAL_SELECTED_COMPONENT_ID } from "queries/component";
 import TextComponent from "./components/TextComponent";
 import DefaultComponent from "./components/DefaultComponent";
+import DialogComponent from "./components/Dialog/DialogComponent";
 
 // This defines a mapping of component type names to the React Component, used then to render the content and the settings
 // Originally, directly used BaseComponent here as well (for default), but this gives wierd run time errors due to circular imports
@@ -16,7 +17,7 @@ export const componentTypes: { [key: string]: any } = {
   default: DefaultComponent,
   Title: TitleComponent,
   Text: TextComponent,
-  Dialog: DefaultComponent
+  Dialog: DialogComponent
 };
 
 interface ComponentWrapperProps {

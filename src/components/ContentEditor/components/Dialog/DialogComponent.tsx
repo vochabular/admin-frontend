@@ -92,7 +92,7 @@ export const DialogSettings = React.forwardRef<any, DialogSettingsProps>(
 );
 
 const useStyles = makeStyles((theme: Theme) => ({
-  container: { margin: 10 }
+  container: { margin: 10, backgroundColor: "red" }
 }));
 
 export interface DialogComponentProps extends BaseComponentProps {}
@@ -102,10 +102,9 @@ export interface DialogComponentProps extends BaseComponentProps {}
  */
 const DialogComponent = ({ data, ...otherProps }: DialogComponentProps) => {
   const classes = useStyles();
-
   const preview = (
     <Text translate={false} className={classes.container}>
-      {data.data}
+      Dialog mit 2 Sprechern
     </Text>
   );
 

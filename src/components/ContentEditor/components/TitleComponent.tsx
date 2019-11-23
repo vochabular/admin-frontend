@@ -8,15 +8,12 @@ import i18next from "i18next";
 
 import { makeStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
 import { Grid } from "@material-ui/core";
 
 import BaseComponent, {
   BaseComponentProps,
   BaseSettingsProps
 } from "../BaseComponent";
-import Text from "components/Text";
-import ContextText from "components/ContextText";
 import { LanguageContext } from "theme";
 import Diff from "helper/Diff";
 import {
@@ -25,6 +22,8 @@ import {
   IText,
   ITranslation
 } from "../Settings";
+import MultiTranslationText from "components/MultiTranslationText";
+import { transformTranslations } from "./TextComponent";
 
 interface ITitleSettingsFormFields {
   isSwissGerman: boolean;
@@ -68,17 +67,8 @@ export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
 
     // Hack: Since this is a 1:n relation, but we should only have one text for each title
     const translations = (data.texts[0] && data.texts[0].translations) || [];
-    const swissGerman = translations.find(
-      t => t.language.code === LanguageContext.ch
-    );
-    const german = translations.find(
-      t => t.language.code === LanguageContext.de
-    );
-    const nativeLanguages = translations.filter(
-      t =>
-        !([LanguageContext.ch, LanguageContext.de] as string[]).includes(
-          t.language.code
-        )
+    const { swissGerman, german, nativeLanguages } = transformTranslations(
+      translations
     );
     const initialValues: ITitleSettingsFormFields = {
       isSwissGerman: !!swissGerman,
@@ -235,32 +225,24 @@ export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
-    flexGrow: 1
-    // backgroundColor: "white"
+    //
   }
 }));
 
-export interface TitleComponentProps extends BaseComponentProps {}
+interface TitleComponentProps extends BaseComponentProps {}
 
 /**
  * How the component should get rendered in the editor
  */
 const TitleComponent = ({ data, ...otherProps }: TitleComponentProps) => {
   const classes = useStyles();
+  const text = data.texts[0];
 
-  const translations = (data.texts[0] && data.texts[0].translations) || [];
   const preview = (
-    <Box className={classes.container} bgcolor="text.primary" p={2} m={1}>
-      <Grid xs={12} item container direction="row">
-        <ContextText translations={translations} wantedLanguage="de" />
-        <Text translate={false}> / </Text>
-        <ContextText translations={translations} wantedLanguage="ch" />
-        <Text translate={false}> / </Text>
-        <ContextText translations={translations} />
-      </Grid>
-    </Box>
+    <Grid item container direction="row" className={classes.container}>
+      <MultiTranslationText text={text} />
+    </Grid>
   );
-
   return <BaseComponent preview={preview} data={data} {...otherProps} />;
 };
 

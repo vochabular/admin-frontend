@@ -13,6 +13,7 @@ import ComponentHeader from "./ComponentHeader";
 import Text from "components/Text";
 import { getSelectedComponent_component } from "queries/__generated__/getSelectedComponent";
 import { SubmitConfig } from "./Settings";
+import ComponentBody from "./ComponentBody";
 import Dropzone from "./Dropzone";
 
 export interface BaseSettingsProps {
@@ -41,17 +42,21 @@ export const BaseSettings = React.forwardRef<any, BaseSettingsProps>(
   }
 );
 
+interface StyleProps {
+  level: number;
+  isSelected: boolean;
+}
+
 const useStyles = makeStyles((theme: Theme) => ({
-  container: {
-    flex: 1,
+  container: (props: StyleProps) => ({
+    backgroundColor:
+      // @ts-ignore
+      theme.palette.grey[(props.level + 4) * 100] || theme.palette.grey[100],
     border: "solid",
     borderWidth: 2,
-    borderColor: theme.palette.grey[200],
-    marginBottom: theme.spacing(2)
-  },
-  selected: {
-    borderColor: theme.palette.primary.light
-  }
+    marginBottom: theme.spacing(2),
+    borderColor: props.isSelected ? theme.palette.primary.light : "inherit"
+  })
 }));
 
 export interface BaseComponentProps {
@@ -62,6 +67,7 @@ export interface BaseComponentProps {
   index: number;
   data: subscribeChapterById_chapter_components;
   preview?: React.ReactNode;
+  body?: React.ReactNode;
   selectedComponentId: string;
 }
 
@@ -73,9 +79,11 @@ const BaseComponent = ({
   index,
   data,
   preview,
+  body,
   selectedComponentId
 }: BaseComponentProps) => {
-  const classes = useStyles();
+  const isSelected = selectedComponentId === data.id || false;
+  const classes = useStyles({ level, isSelected });
   const client = useApolloClient();
 
   const handleOnComponentClick = (
@@ -85,8 +93,6 @@ const BaseComponent = ({
     event.preventDefault();
     client.writeData({ data: { selectedComponentId: data.id } });
   };
-
-  const isSelected = selectedComponentId === data.id || false;
   const color = `#${Math.floor(
     Math.abs(Math.sin(level + 12) * 16777215) % 16777215
   ).toString(16)}`;
@@ -108,42 +114,40 @@ const BaseComponent = ({
             container
             alignItems="stretch"
             ref={provided.innerRef}
-            spacing={1}
-            className={classNames(
-              classes.container,
-              isSelected && classes.selected
-            )}
+            className={classNames([classes.container])}
             onClick={handleOnComponentClick}
             {...provided.draggableProps}
           >
-            <ComponentHeader data={data} provided={provided} />
-            {preview}
+            <ComponentHeader
+              data={data}
+              provided={provided}
+              preview={preview}
+            />
+            <ComponentBody content={body} />
             <Droppable
               droppableId={`component-list-${data.id}`}
               type={`${data.type.name}-${data.id}`}
             >
               {(provided, snapshot) => (
-                <Grid
-                  item
-                  container
-                  alignItems="stretch"
-                  direction="column"
+                <div
                   ref={provided.innerRef}
                   style={{
-                    // padding: 20,
-                    flexGrow: 1
+                    paddingLeft: data.children.length && 20,
+                    paddingRight: data.children.length && 20,
+                    flex: 1
+                    // display: "none"
                   }}
                   {...provided.droppableProps}
                 >
                   {childrenList}
-                  {/* TODO(df): Only display placeholder if component is selected*/}
+                  {/* TODO(df): Only display placeholder if component is selected */}
                   {isSelected && provided.placeholder && (
                     <Grid item>
                       <Dropzone color={color} />
                     </Grid>
                   )}
-                  <div style={{ display: "none" }}>{provided.placeholder}</div>
-                </Grid>
+                  <div>{provided.placeholder}</div>
+                </div>
               )}
             </Droppable>
           </Grid>
