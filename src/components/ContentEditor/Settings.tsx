@@ -213,7 +213,8 @@ const Settings = ({ component, languages, loading }: ISettingsProps) => {
       upsertableTextData.push({
         id: _text.id,
         fk_component_id: component && component.id,
-        translatable: _text.translatable || false
+        translatable: _text.translatable || false,
+        placeholder: _text.placeholder || ""
       });
       const upsertableTranslations: api_translation_insert_input[] = []; // _text.translations;
 
@@ -288,7 +289,7 @@ const Settings = ({ component, languages, loading }: ISettingsProps) => {
           });
         } else {
           console.error(
-            "Error! No langauge for this translation found in cache!"
+            "Error! No language for this translation found in cache!"
           );
         }
       });
@@ -312,7 +313,10 @@ const Settings = ({ component, languages, loading }: ISettingsProps) => {
         // The components table fields that should be updated
         componentData,
         // Texts are "upserted" (Check definition in static GQL document UPDATE_COMPONENT)
-        textUpdateColumns: [api_text_update_column.translatable],
+        textUpdateColumns: [
+          api_text_update_column.translatable,
+          api_text_update_column.placeholder
+        ],
         textData: upsertableTextData,
         translationData: [],
         translationUpdateColumns: [

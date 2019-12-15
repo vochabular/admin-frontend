@@ -9,11 +9,13 @@
 export interface getChapters_chapters_languages_language {
   __typename: "api_language";
   id: string;
+  name: string;
 }
 
 export interface getChapters_chapters_languages {
   __typename: "api_chaptertitle";
   id: any;
+  title: string;
   /**
    * An object relationship
    */
@@ -76,6 +78,7 @@ export interface getChapters_chapters_components_texts_translations {
 export interface getChapters_chapters_components_texts {
   __typename: "api_text";
   id: any;
+  placeholder: string | null;
   translatable: boolean;
   /**
    * An array relationship

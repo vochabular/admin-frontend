@@ -10,7 +10,7 @@ import { LanguageContext } from "theme";
 // Note: This type is not exported by default. With this, we can actually import and use it!
 type TOptions = import("i18next").TOptions;
 
-interface IText extends TypographyProps {
+export interface IText extends TypographyProps {
   /**
    * If set as false, then the content (children) passed along will not be attempted to be translated!
    */
@@ -35,14 +35,14 @@ const useStyles = makeStyles<Theme, StyleProps>((theme: Theme) => ({
   })
 }));
 
-const Text: React.FC<IText> = ({
+export default function Text({
   children,
   className,
   translate = true,
   translationOptions = {},
   languageContext,
   ...otherProps
-}) => {
+}: IText) {
   const { t } = useTranslation();
   const classes = useStyles({ languageContext });
 
@@ -53,6 +53,4 @@ const Text: React.FC<IText> = ({
       {translate ? t(text, translationOptions) : text}
     </Typography>
   );
-};
-
-export default Text;
+}

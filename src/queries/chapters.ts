@@ -10,8 +10,10 @@ export const CHAPTER_HEADER_PART = gql`
     updated
     languages {
       id
+      title
       language {
         id
+        name
       }
     }
     parentChapter {
@@ -96,11 +98,23 @@ export const GET_CHAPTER_WORDGROUPS = gql`
 `;
 
 export const UPSERT_CHAPTER = gql`
-  mutation createChapter($input: api_chapter_insert_input!) {
-    insert_api_chapter(objects: [$input]) {
+  mutation upsertChapter(
+    $input: api_chapter_insert_input!
+    $deleteTitleIds: [uuid!]!
+  ) {
+    insert_api_chapter(
+      objects: [$input]
+      on_conflict: {
+        constraint: api_chapter_pkey
+        update_columns: [number, description]
+      }
+    ) {
       returning {
         id
       }
+    }
+    delete_api_chaptertitle(where: { id: { _in: $deleteTitleIds } }) {
+      affected_rows
     }
   }
 `;

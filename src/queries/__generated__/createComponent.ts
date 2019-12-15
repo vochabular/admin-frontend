@@ -51,6 +51,7 @@ export interface createComponent_insert_api_component_returning_texts_translatio
 export interface createComponent_insert_api_component_returning_texts {
   __typename: "api_text";
   id: any;
+  placeholder: string | null;
   translatable: boolean;
   /**
    * An array relationship

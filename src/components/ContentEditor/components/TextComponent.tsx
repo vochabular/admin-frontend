@@ -65,6 +65,7 @@ interface ITextSettingsFormFields {
   isSwissGerman: boolean;
   isGerman: boolean;
   isNative: boolean;
+  placeholder: string;
   swissGerman: ITranslation;
   german: ITranslation;
   native: ITranslation;
@@ -111,6 +112,7 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
       isGerman: !!german,
       isSwissGerman: !!swissGerman,
       isNative: text.translatable || false,
+      placeholder: text.placeholder || "",
       german: german || {
         text_field: "",
         valid: false,
@@ -142,6 +144,7 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
         let text: IText = cloneDeep(data.texts[0]) || {};
         // Initialize the nested translations empty, since we only need to specify those that need to get upserted.
         text.translations = [];
+        text.placeholder = values.placeholder;
 
         // IF flag is active AND value or flag has changed, then we need to upsert the swissGerman translation
         if (
@@ -160,6 +163,10 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
           )
         ) {
           text.translations.push(values.german);
+          // Also, if the placeholder is empty, we want to fill it with the german value!
+          if (!text.placeholder && !values.placeholder) {
+            text.placeholder = values.german.text_field;
+          }
         }
         if (
           values.isNative &&
@@ -188,7 +195,6 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
               }
               break;
             case "isNative":
-              console.log(result);
               const { isNative } = values;
               text.translatable = isNative;
 
@@ -242,6 +248,13 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
                 />
               ) : null}
             </Grid>
+            <Field
+              type="string"
+              name="placeholder"
+              label={t("editor:placeholder")}
+              component={TextField}
+              fullWidth
+            />
             {props.values.isSwissGerman && (
               <Field
                 type="string"

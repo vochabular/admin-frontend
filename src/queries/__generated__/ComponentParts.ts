@@ -49,6 +49,7 @@ export interface ComponentParts_texts_translations {
 export interface ComponentParts_texts {
   __typename: "api_text";
   id: any;
+  placeholder: string | null;
   translatable: boolean;
   /**
    * An array relationship

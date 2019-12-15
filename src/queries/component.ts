@@ -13,6 +13,7 @@ export const COMPONENT_PART = gql`
     }
     texts {
       id
+      placeholder
       translatable
       translations {
         id

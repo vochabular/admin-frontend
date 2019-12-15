@@ -9,11 +9,13 @@
 export interface ChapterHeaderParts_languages_language {
   __typename: "api_language";
   id: string;
+  name: string;
 }
 
 export interface ChapterHeaderParts_languages {
   __typename: "api_chaptertitle";
   id: any;
+  title: string;
   /**
    * An object relationship
    */

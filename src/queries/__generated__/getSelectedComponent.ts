@@ -49,6 +49,7 @@ export interface getSelectedComponent_component_texts_translations {
 export interface getSelectedComponent_component_texts {
   __typename: "api_text";
   id: any;
+  placeholder: string | null;
   translatable: boolean;
   /**
    * An array relationship

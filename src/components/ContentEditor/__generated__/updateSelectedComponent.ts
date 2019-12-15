@@ -51,6 +51,7 @@ export interface updateSelectedComponent_update_api_component_returning_texts_tr
 export interface updateSelectedComponent_update_api_component_returning_texts {
   __typename: "api_text";
   id: any;
+  placeholder: string | null;
   translatable: boolean;
   /**
    * An array relationship
