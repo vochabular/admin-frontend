@@ -32,7 +32,7 @@ export const COMPONENT_PART = gql`
 `;
 
 /**
- * Local query (would replace redux...):
+ * Local query (replaces redux...):
  * https://www.apollographql.com/docs/react/essentials/local-state/
  * Especially, "Using @client fields as variables"!
  * selectedComponentId @client @export(as: "id")
@@ -46,6 +46,7 @@ export const GET_LOCAL_EDITOR_LANGUAGE = gql`
 export const GET_LOCAL_SELECTED_COMPONENT_ID = gql`
   query getLocalSelectedComponent {
     selectedComponentId @client
+    currentChapterId @client
   }
 `;
 

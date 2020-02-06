@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 export const typeDefs = gql`
   extend type query_root {
     selectedComponentId: uuid!
+    currentChapterId: uuid!
     contentEditorLanguage: String!
     contentEditorRole: String!
   }

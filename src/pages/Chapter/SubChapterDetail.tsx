@@ -23,6 +23,7 @@ import ScheduleIcon from "@material-ui/icons/Schedule";
 import EditIcon from "@material-ui/icons/Edit";
 import { ChapterForm } from "components/forms/ChapterForm";
 import { useTranslation } from "react-i18next";
+import { useApolloClient } from "@apollo/react-hooks";
 
 export enum Action {
   edit,
@@ -57,10 +58,18 @@ interface Props {
  * The subchapter Editor. Depending on the role, should display different "functionality"
  */
 const SubChapterDetail = ({ context, data }: Props) => {
-  const { parentChapter, number, description, updated, languages } = data;
+  const { id, parentChapter, number, description, updated, languages } = data;
+  const client = useApolloClient();
   const { t } = useTranslation();
   const classes = useStyles();
   const [isEditing, setIsEditing] = React.useState(false);
+
+  // Set chapter in apollo local cache as well
+  React.useEffect(() => {
+    client.writeData({ data: { currentChapterId: id } });
+    // Cleanup on unmount
+    return () => client.writeData({ data: { currentChapterId: null }})
+  }, [client, data, id])
 
   const title = (
     <Grid container className={classes.container}>

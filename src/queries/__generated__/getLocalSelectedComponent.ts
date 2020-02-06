@@ -8,4 +8,5 @@
 
 export interface getLocalSelectedComponent {
   selectedComponentId: any;
+  currentChapterId: any;
 }

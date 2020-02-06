@@ -27,6 +27,7 @@ import {
 } from "../Settings";
 import Diff from "helper/Diff";
 import { cloneDeep } from "lodash-es";
+import ContextText from "components/ContextText";
 
 /**
  * Transforms an array of translations into an object with SwissGerman, German and all native langauges in an array
@@ -292,7 +293,7 @@ const TextComponent = ({ data, ...otherProps }: TextComponentProps) => {
       <MultiTranslationText text={text} />
     </Grid>
   );
-  const body = <Text>Hello text!</Text>;
+  const body = text.placeholder ? <Text translate={false}>{text.placeholder}</Text> : <ContextText translations={text.translations} wantedLanguage="de" isColorContext={false} />;
 
   return (
     <BaseComponent preview={preview} body={body} data={data} {...otherProps} />
