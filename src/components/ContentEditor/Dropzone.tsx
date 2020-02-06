@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { Theme } from "@material-ui/core/styles/createMuiTheme";
 import { PostAddOutlined } from "@material-ui/icons";
 import Text from "components/Text";

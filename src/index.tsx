@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import * as Sentry from "@sentry/browser";
 import { ApolloProvider } from "@apollo/react-hooks";
 
-import { ThemeProvider } from "@material-ui/styles";
+import { ThemeProvider } from "@material-ui/core/styles";
 
 import "./index.css";
 import App from "./App";

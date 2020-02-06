@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useApolloClient, useQuery } from "@apollo/react-hooks";
 
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { Theme, Chip } from "@material-ui/core";
 
 import { useAuth } from "contexts/AuthContext";

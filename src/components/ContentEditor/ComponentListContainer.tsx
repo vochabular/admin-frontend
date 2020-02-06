@@ -6,7 +6,7 @@ import { subscribeChapterById_chapter_components } from "queries/__generated__/s
 import { Droppable } from "react-beautiful-dnd";
 import Dropzone from "./Dropzone";
 import { TOP_LEVEL_COMPONENT_TYPE } from "./ContentEditor";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import ComponentList from "./ComponentList";
 
 const useStyles = makeStyles((theme: Theme) => ({

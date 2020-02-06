@@ -2,7 +2,7 @@ import React from "react";
 import { Switch, Route } from "react-router";
 import { useQuery } from "@apollo/react-hooks";
 
-import { withStyles, WithStyles } from "@material-ui/styles";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
 
 import { styles } from "styles";
 import { getAllAccessibleRoutes } from "privateRoutes";

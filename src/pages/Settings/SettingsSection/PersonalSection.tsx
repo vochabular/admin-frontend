@@ -9,7 +9,7 @@ import {
 
 import MuiTextField from "@material-ui/core/TextField";
 import { Grid, MenuItem } from "@material-ui/core";
-import { withStyles, WithStyles } from "@material-ui/styles";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
 
 import { styles } from "styles";
 import i18n from "i18n";

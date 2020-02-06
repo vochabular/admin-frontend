@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { Form, Formik, FormikActions as FormikHelpers } from "formik";
 
-import { withStyles, WithStyles } from "@material-ui/styles";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";

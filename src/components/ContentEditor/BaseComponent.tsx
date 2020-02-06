@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { useApolloClient } from "@apollo/react-hooks";
 
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { Theme } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 

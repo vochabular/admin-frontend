@@ -9,7 +9,7 @@ import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { Grid, Paper } from "@material-ui/core";
-import { withStyles, WithStyles } from "@material-ui/styles";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
 
 import { styles } from "styles";
 import PersonalSection from "pages/Settings/SettingsSection/PersonalSection";

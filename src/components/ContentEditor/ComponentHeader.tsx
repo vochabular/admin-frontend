@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useMutation, useApolloClient } from "@apollo/react-hooks";
 
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { Theme } from "@material-ui/core/styles";
 import { Icon, Grid, IconButton, Menu, MenuItem } from "@material-ui/core";
 import { DragHandle, MoreVert } from "@material-ui/icons";

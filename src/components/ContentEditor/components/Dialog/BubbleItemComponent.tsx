@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
 import { TextField } from "formik-material-ui";
 
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { Theme } from "@material-ui/core/styles";
 
 import BaseComponent, {
