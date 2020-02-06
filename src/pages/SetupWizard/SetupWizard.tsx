@@ -79,7 +79,7 @@ function SetupWizard({ classes, profile }: Props) {
           username: user && user.email,
           profileData: updatedProfile,
         },
-        email: user && user.email || ""
+        email: (user && user.email) || ""
       };
       await mutateProfile({
         variables: payload

@@ -12,11 +12,11 @@ import {
 import { withStyles, WithStyles } from "@material-ui/styles";
 
 import { styles } from "styles";
-import configurationJSON from "configuration.json";
 import { FieldArray } from "formik";
 import { getProfile_profiles } from "queries/__generated__/getProfile";
 import { GET_LANGUAGES } from "queries/languages";
 import { getLanguages } from "queries/__generated__/getLanguages";
+import BusyOrErrorCard from "components/BusyOrErrorCard";
 
 interface Props extends WithStyles<typeof styles> {
   values: getProfile_profiles;
@@ -31,6 +31,7 @@ function AdministrativeSection({ classes, values }: Props) {
     <Grid item>
       <FormControl>
         <FormLabel>{t("setupWizard:translatorLanguages")}</FormLabel>
+        <BusyOrErrorCard error={error} loading={loading} showOnNoResults={false} />
         <FieldArray
           name="translatorLanguages"
           render={arrayHelpers =>
