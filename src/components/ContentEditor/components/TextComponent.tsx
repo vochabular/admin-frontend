@@ -68,7 +68,6 @@ interface ITextSettingsFormFields {
   placeholder: string;
   swissGerman: ITranslation;
   german: ITranslation;
-  native: ITranslation;
   shouldInvalidateTranslations?: boolean;
   [key: string]: any;
 }
@@ -102,7 +101,6 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
       german,
       swissGerman,
       nativeLanguages,
-      currentNativeTranslation
     } = transformTranslations(
       text.translations,
       ((editorLanguage as unknown) as string) || "en"
@@ -112,7 +110,7 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
       isGerman: !!german,
       isSwissGerman: !!swissGerman,
       isNative: text.translatable || false,
-      placeholder: text.placeholder || "",
+      placeholder: text.placeholder || german?.text_field || "",
       german: german || {
         text_field: "",
         valid: false,
@@ -122,11 +120,6 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
         text_field: "",
         valid: false,
         languageCode: "ch"
-      },
-      native: currentNativeTranslation || {
-        text_field: "",
-        valid: false,
-        languageCode: editorLanguage
       },
       shouldInvalidateTranslations: false
     };
@@ -269,15 +262,6 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
                 type="string"
                 name="german.text_field"
                 label={t("editor:german")}
-                component={TextField}
-                fullWidth
-              />
-            )}
-            {props.values.isNative && (
-              <Field
-                type="string"
-                name="native.text_field"
-                label={editorLanguage}
                 component={TextField}
                 fullWidth
               />
