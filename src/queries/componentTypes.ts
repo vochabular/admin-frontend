@@ -16,6 +16,11 @@ export const COMPONENT_TYPE_FRAGMENT = gql`
       label
       icon
     }
+    childrenCount: children_aggregate {
+      aggregate {
+        count
+      }
+    }
   }
 `;
 

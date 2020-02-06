@@ -140,8 +140,7 @@ const BaseComponent = ({
                   {...provided.droppableProps}
                 >
                   {childrenList}
-                  {/* TODO(df): Only display placeholder if component is selected */}
-                  {isSelected && provided.placeholder && (
+                  {isSelected && provided.placeholder && !!data.type.childrenCount.aggregate?.count && (
                     <Grid item>
                       <Dropzone color={color} />
                     </Grid>

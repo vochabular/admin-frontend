@@ -43,6 +43,16 @@ export interface getChapters_chapters_components_type_frontendWidget {
   icon: string;
 }
 
+export interface getChapters_chapters_components_type_childrenCount_aggregate {
+  __typename: "api_componenttype_aggregate_fields";
+  count: number | null;
+}
+
+export interface getChapters_chapters_components_type_childrenCount {
+  __typename: "api_componenttype_aggregate";
+  aggregate: getChapters_chapters_components_type_childrenCount_aggregate | null;
+}
+
 export interface getChapters_chapters_components_type {
   __typename: "api_componenttype";
   id: any;
@@ -57,6 +67,10 @@ export interface getChapters_chapters_components_type {
    * An object relationship
    */
   frontendWidget: getChapters_chapters_components_type_frontendWidget | null;
+  /**
+   * An aggregated array relationship
+   */
+  childrenCount: getChapters_chapters_components_type_childrenCount;
 }
 
 export interface getChapters_chapters_components_texts_translations_language {

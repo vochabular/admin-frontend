@@ -14,6 +14,16 @@ export interface ComponentParts_type_frontendWidget {
   icon: string;
 }
 
+export interface ComponentParts_type_childrenCount_aggregate {
+  __typename: "api_componenttype_aggregate_fields";
+  count: number | null;
+}
+
+export interface ComponentParts_type_childrenCount {
+  __typename: "api_componenttype_aggregate";
+  aggregate: ComponentParts_type_childrenCount_aggregate | null;
+}
+
 export interface ComponentParts_type {
   __typename: "api_componenttype";
   id: any;
@@ -28,6 +38,10 @@ export interface ComponentParts_type {
    * An object relationship
    */
   frontendWidget: ComponentParts_type_frontendWidget | null;
+  /**
+   * An aggregated array relationship
+   */
+  childrenCount: ComponentParts_type_childrenCount;
 }
 
 export interface ComponentParts_texts_translations_language {
