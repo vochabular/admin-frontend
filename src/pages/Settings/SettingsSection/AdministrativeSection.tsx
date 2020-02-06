@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useQuery } from "@apollo/react-hooks";
 
 import {
   Grid,
@@ -14,6 +15,8 @@ import { styles } from "styles";
 import configurationJSON from "configuration.json";
 import { FieldArray } from "formik";
 import { getProfile_profiles } from "queries/__generated__/getProfile";
+import { GET_LANGUAGES } from "queries/languages";
+import { getLanguages } from "queries/__generated__/getLanguages";
 
 interface Props extends WithStyles<typeof styles> {
   values: getProfile_profiles;
@@ -21,6 +24,9 @@ interface Props extends WithStyles<typeof styles> {
 
 function AdministrativeSection({ classes, values }: Props) {
   const { t } = useTranslation();
+  const { data, loading, error } = useQuery<getLanguages>(GET_LANGUAGES);
+
+  const languages = (data && data.languages) || [];
   return (
     <Grid item>
       <FormControl>
@@ -28,10 +34,10 @@ function AdministrativeSection({ classes, values }: Props) {
         <FieldArray
           name="translatorLanguages"
           render={arrayHelpers =>
-            configurationJSON.translatorLanguages.map(l => (
+            languages.map(l => (
               <FormControlLabel
-                key={l.code}
-                label={t(l.label)}
+                key={l.id}
+                label={t(l.name)}
                 control={
                   <Checkbox
                   /*
