@@ -31,7 +31,7 @@ const useStyles = makeStyles<Theme, StyleProps>((theme: Theme) => ({
     marginRight: theme.spacing(2),
     color:
       props.languageContext &&
-      theme.languageContextColors[props.languageContext]
+      theme.languageContextColors && theme.languageContextColors[props.languageContext]
   })
 }));
 

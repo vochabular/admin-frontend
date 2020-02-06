@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { TextField, CheckboxWithLabel } from "formik-material-ui";
 import { useQuery } from "@apollo/react-hooks";
 
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { Theme } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 
@@ -28,36 +28,8 @@ import {
 import Diff from "helper/Diff";
 import { cloneDeep } from "lodash-es";
 import ContextText from "components/ContextText";
-
-/**
- * Transforms an array of translations into an object with SwissGerman, German and all native langauges in an array
- * @param translations
- */
-export function transformTranslations(
-  translations: getSelectedComponent_component_texts_translations[],
-  currentNativeLanguage?: string
-) {
-  const swissGerman =
-    translations &&
-    translations.find(t => t.language.id === LanguageContext.ch);
-  const german =
-    translations &&
-    translations.find(t => t.language.id === LanguageContext.de);
-  const currentNativeTranslation =
-    currentNativeLanguage &&
-    translations &&
-    translations.find(t => t.language.id === currentNativeLanguage);
-  const nativeLanguages =
-    (translations &&
-      translations.filter(
-        t =>
-          !([LanguageContext.ch, LanguageContext.de] as string[]).includes(
-            t.language.id
-          )
-      )) ||
-    [];
-  return { swissGerman, german, nativeLanguages, currentNativeTranslation };
-}
+import LanguageBadges from "components/LanguageBadge";
+import { transformTranslations } from "helper/translations";
 
 /**
  * Type for form field of the settings widget of the text component
@@ -98,11 +70,7 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
       editorLanguageData && editorLanguageData.contentEditorLanguage;
 
     const text = (data && data.texts[0]) || {};
-    const {
-      german,
-      swissGerman,
-      nativeLanguages,
-    } = transformTranslations(
+    const { german, swissGerman, nativeLanguages } = transformTranslations(
       text.translations,
       ((editorLanguage as unknown) as string) || "en"
     );
@@ -161,14 +129,6 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
           if (!text.placeholder && !values.placeholder) {
             text.placeholder = values.german.text_field;
           }
-        }
-        if (
-          values.isNative &&
-          result.updated.find(
-            r => r.path[0] === editorLanguage || r.path[0] === "isNative"
-          )
-        ) {
-          text.translations.push(values.native);
         }
 
         // Additionally, also the case of disabled flags need to be covered
@@ -275,9 +235,7 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
 );
 
 const useStyles = makeStyles((theme: Theme) => ({
-  container: {
-    border: "dashed"
-  }
+  container: {}
 }));
 
 interface TextComponentProps extends BaseComponentProps {}
@@ -290,10 +248,18 @@ const TextComponent = ({ data, ...otherProps }: TextComponentProps) => {
   const text = data && data.texts && data.texts[0];
   const preview = (
     <Grid item container direction="row" className={classes.container}>
-      <MultiTranslationText text={text} />
+      <LanguageBadges text={text} />
     </Grid>
   );
-  const body = text.placeholder ? <Text translate={false}>{text.placeholder}</Text> : <ContextText translations={text.translations} wantedLanguage="de" isColorContext={false} />;
+  const body = text.placeholder ? (
+    <Text translate={false}>{text.placeholder}</Text>
+  ) : (
+    <ContextText
+      translations={text.translations}
+      wantedLanguage="de"
+      isColorContext={false}
+    />
+  );
 
   return (
     <BaseComponent preview={preview} body={body} data={data} {...otherProps} />

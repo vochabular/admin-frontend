@@ -6,7 +6,7 @@ import { TextField, CheckboxWithLabel } from "formik-material-ui";
 import { cloneDeep } from "lodash-es";
 import i18next from "i18next";
 
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { Theme } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 
@@ -23,7 +23,7 @@ import {
   ITranslation
 } from "../Settings";
 import MultiTranslationText from "components/MultiTranslationText";
-import { transformTranslations } from "./TextComponent";
+import { transformTranslations } from "helper/translations";
 
 interface ITitleSettingsFormFields {
   isSwissGerman: boolean;
