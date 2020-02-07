@@ -14,9 +14,7 @@ import BaseComponent, {
   BaseSettingsProps
 } from "../BaseComponent";
 import Text from "components/Text";
-import MultiTranslationText from "components/MultiTranslationText";
 import { LanguageContext } from "theme";
-import { getSelectedComponent_component_texts_translations } from "queries/__generated__/getSelectedComponent";
 import { getLocalEditorLanguage } from "queries/__generated__/getLocalEditorLanguage";
 import { GET_LOCAL_EDITOR_LANGUAGE } from "queries/component";
 import {
@@ -28,7 +26,7 @@ import {
 import Diff from "helper/Diff";
 import { cloneDeep } from "lodash-es";
 import ContextText from "components/ContextText";
-import LanguageBadges from "components/LanguageBadge";
+import LanguageBadges from "components/LanguageBadges";
 import { transformTranslations } from "helper/translations";
 
 /**
@@ -208,6 +206,8 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
               label={t("editor:placeholder")}
               component={TextField}
               fullWidth
+              multiline
+              rowsMax="4"
             />
             {props.values.isSwissGerman && (
               <Field
@@ -216,6 +216,8 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
                 label={t("editor:swissGerman")}
                 component={TextField}
                 fullWidth
+                multiline
+                rowsMax="4"
               />
             )}
             {props.values.isGerman && (
@@ -225,6 +227,8 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
                 label={t("editor:german")}
                 component={TextField}
                 fullWidth
+                multiline
+                rowsMax="4"
               />
             )}
           </Form>

@@ -3,6 +3,8 @@ import * as React from "react";
 import { subscribeChapterById_chapter_components_texts } from "queries/__generated__/subscribeChapterById";
 import ContextText from "./ContextText";
 import Text from "./Text";
+import { LanguageBadge } from "./LanguageBadges";
+import { LanguageContext } from "theme";
 
 interface MultiTranslationTextProps {
   text: subscribeChapterById_chapter_components_texts;
@@ -23,10 +25,10 @@ const MultiTranslationText = ({ text }: MultiTranslationTextProps) => {
   const de = translations.find(t => t.language.id === "de") && (
     <ContextText translations={translations} wantedLanguage="de" />
   );
-  const native = translatable && <ContextText translations={translations} />;
+  const native = translatable && <LanguageBadge languageContext={LanguageContext.native} />;
 
   // Filter the (possibly) sparse array
-  const fields = [ch, de, native].filter(f => !!f);
+  const fields = [ch, de, native].filter(Boolean);
 
   if (!fields.length) return <Text>noRelevantTranslationYet</Text>;
 

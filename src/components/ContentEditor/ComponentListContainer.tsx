@@ -14,7 +14,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: "grey",
     padding: theme.spacing(5),
     overflowY: "auto",
-    height: "100%"
+    // Hack to make overflow work properly. Adjust accordingly if the header changes
+    height: "calc(100vh - 64px - 148.9px - 100px)"
   }
 }));
 

@@ -37,7 +37,7 @@ interface ILanguageBadgeProps {
   languageContext?: LanguageContext | undefined;
 }
 
-function LanguageBadge({ languageContext }: ILanguageBadgeProps) {
+export function LanguageBadge({ languageContext }: ILanguageBadgeProps) {
   const classes = useStyles({ languageContext });
   return (
     <Avatar className={classes.avatar}>
