@@ -9,12 +9,12 @@ import {
 
 import MuiTextField from "@material-ui/core/TextField";
 import { Grid, MenuItem } from "@material-ui/core";
-import { withStyles, WithStyles } from "@material-ui/styles";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
 
 import { styles } from "styles";
 import i18n from "i18n";
-import { profile_profile } from "queries/__generated__/profile";
 import { useAuth } from "contexts/AuthContext";
+import { getProfile_profiles } from "queries/__generated__/getProfile";
 
 const UiLanguageField = (props: TextFieldProps) => (
   <MuiTextField
@@ -42,7 +42,7 @@ const DefaultRoleField = (props: TextFieldProps) => {
 };
 
 interface Props extends WithStyles<typeof styles> {
-  values?: profile_profile;
+  values?: getProfile_profiles;
   setFieldValue?: CallableFunction;
 }
 
@@ -87,7 +87,7 @@ function PersonalSection({ classes, values, setFieldValue }: Props) {
       {roles.length ? (
         <Field
           type="text"
-          name="currentRole"
+          name="current_role"
           label={t("settings:currentRoleLabel")}
           select
           helperText={t("settings:currentRoleHelperText")}

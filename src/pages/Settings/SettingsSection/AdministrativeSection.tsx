@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useQuery } from "@apollo/react-hooks";
 
 import {
   Grid,
@@ -8,32 +9,39 @@ import {
   FormLabel,
   FormControl
 } from "@material-ui/core";
-import { withStyles, WithStyles } from "@material-ui/styles";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
 
 import { styles } from "styles";
-import configurationJSON from "configuration.json";
 import { FieldArray } from "formik";
-import { profile_profile } from "queries/__generated__/profile";
+import { getProfile_profiles } from "queries/__generated__/getProfile";
+import { GET_LANGUAGES } from "queries/languages";
+import { getLanguages } from "queries/__generated__/getLanguages";
+import BusyOrErrorCard from "components/BusyOrErrorCard";
 
 interface Props extends WithStyles<typeof styles> {
-  values: profile_profile;
+  values: getProfile_profiles;
 }
 
 function AdministrativeSection({ classes, values }: Props) {
   const { t } = useTranslation();
+  const { data, loading, error } = useQuery<getLanguages>(GET_LANGUAGES);
+
+  const languages = (data && data.languages) || [];
   return (
     <Grid item>
       <FormControl>
         <FormLabel>{t("setupWizard:translatorLanguages")}</FormLabel>
+        <BusyOrErrorCard error={error} loading={loading} showOnNoResults={false} />
         <FieldArray
           name="translatorLanguages"
           render={arrayHelpers =>
-            configurationJSON.translatorLanguages.map(l => (
+            languages.map(l => (
               <FormControlLabel
-                key={l.code}
-                label={t(l.label)}
+                key={l.id}
+                label={t(l.name)}
                 control={
                   <Checkbox
+                  /*
                     checked={values.translatorLanguages.includes(l.code)}
                     onChange={e => {
                       if (e.target.checked) arrayHelpers.push(l.code);
@@ -42,6 +50,7 @@ function AdministrativeSection({ classes, values }: Props) {
                         arrayHelpers.remove(idx);
                       }
                     }}
+                    */
                   />
                 }
               />

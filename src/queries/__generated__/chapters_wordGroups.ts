@@ -41,8 +41,6 @@ export interface chapters_wordGroups_chapters_edges_node {
    * The ID of the object.
    */
   id: string;
-  titleDE: string;
-  titleCH: string;
   parentChapter: chapters_wordGroups_chapters_edges_node_parentChapter | null;
   wordGroups: chapters_wordGroups_chapters_edges_node_wordGroups | null;
 }

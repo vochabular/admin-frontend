@@ -8,7 +8,7 @@
 
 export interface WordgroupParts_words_word_translations_language {
   __typename: "api_language";
-  code: string;
+  id: string;
   name: string;
 }
 
@@ -44,10 +44,8 @@ export interface WordgroupParts_words {
 
 export interface WordgroupParts {
   __typename: "api_wordgroup";
-  parentChapterId: any;
+  parentChapterId: any | null;
   id: any;
-  titleCh: string;
-  titleDe: string;
   /**
    * An array relationship
    */

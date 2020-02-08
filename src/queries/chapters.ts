@@ -1,41 +1,29 @@
 import gql from "graphql-tag";
+import { COMPONENT_PART } from "./component";
 
 export const CHAPTER_HEADER_PART = gql`
   fragment ChapterHeaderParts on api_chapter {
     id
     number
-    titleCH
-    titleDE
     description
     created
     updated
+    languages {
+      id
+      title
+      language {
+        id
+        name
+      }
+    }
     parentChapter {
       id
       number
-      titleCH
-      titleDE
       description
     }
     subChapters {
       id
-      titleCH
-      titleDE
       description
-    }
-  }
-`;
-
-export const COMPONENT_PART = gql`
-  fragment ComponentParts on api_component {
-    id
-    data
-    state
-    texts {
-      id
-      translations {
-        id
-        textField: text_field
-      }
     }
   }
 `;
@@ -53,6 +41,9 @@ export const GET_CHAPTERS = gql`
   ${COMPONENT_PART}
 `;
 
+/**
+ * Since recursion is explicitly not allowed in the GraphQL-Spec (is an attack vector, see: https://github.com/graphql/graphql-spec/issues/91#issuecomment-254895093) we have to explicitly model the levels
+ */
 export const GET_CHAPTER_BY_ID = gql`
   subscription subscribeChapterById($id: uuid!) {
     chapter: api_chapter_by_pk(id: $id) {
@@ -60,8 +51,23 @@ export const GET_CHAPTER_BY_ID = gql`
       subChapters {
         ...ChapterHeaderParts
       }
-      components {
+      components(
+        where: { fk_component_id: { _is_null: true } }
+        order_by: { order_in_chapter: asc }
+      ) {
         ...ComponentParts
+        children(order_by: { order_in_chapter: asc }) {
+          ...ComponentParts
+          children(order_by: { order_in_chapter: asc }) {
+            ...ComponentParts
+            children(order_by: { order_in_chapter: asc }) {
+              ...ComponentParts
+              children(order_by: { order_in_chapter: asc }) {
+                ...ComponentParts
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -75,8 +81,6 @@ export const GET_CHAPTER_WORDGROUPS = gql`
       edges {
         node {
           id
-          titleDE
-          titleCH
           parentChapter: fkBelongsTo {
             id
           }
@@ -93,37 +97,24 @@ export const GET_CHAPTER_WORDGROUPS = gql`
   }
 `;
 
-export const GET_CHAPTER_WORDGROUPS_BY_CHAPTER_ID = gql`
-  query chaptersWordGroupsByChapterId($id: Int) {
-    chapter(id: $id) {
-      id
-      titleDE
-      titleCH
-      parentChapter: fkBelongsTo {
-        id
-      }
-      wordGroups: wordgroupSet {
-        edges {
-          node {
-            id
-            titleCh
-            titleDe
-            words {
-              id
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
 export const UPSERT_CHAPTER = gql`
-  mutation createChapter($input: api_chapter_insert_input!) {
-    insert_api_chapter(objects: [$input]) {
+  mutation upsertChapter(
+    $input: api_chapter_insert_input!
+    $deleteTitleIds: [uuid!]!
+  ) {
+    insert_api_chapter(
+      objects: [$input]
+      on_conflict: {
+        constraint: api_chapter_pkey
+        update_columns: [number, description]
+      }
+    ) {
       returning {
         id
       }
+    }
+    delete_api_chaptertitle(where: { id: { _in: $deleteTitleIds } }) {
+      affected_rows
     }
   }
 `;

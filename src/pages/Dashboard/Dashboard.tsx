@@ -1,6 +1,6 @@
 import React from "react";
 
-import { withStyles, WithStyles } from "@material-ui/styles";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
 import Divider from "@material-ui/core/Divider";
 
 import { styles } from "styles";

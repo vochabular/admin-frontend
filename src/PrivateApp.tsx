@@ -2,7 +2,7 @@ import React from "react";
 import { Switch, Route } from "react-router";
 import { useQuery } from "@apollo/react-hooks";
 
-import { withStyles, WithStyles } from "@material-ui/styles";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
 
 import { styles } from "styles";
 import { getAllAccessibleRoutes } from "privateRoutes";
@@ -11,13 +11,16 @@ import AppBar from "components/AppBar";
 import Drawer from "components/Drawer";
 import useToggle from "hooks/useToggle";
 import SetupWizard from "./pages/SetupWizard/SetupWizard";
-import { GET_PROFILE } from "./queries/profile";
 import BusyOrErrorCard from "./components/BusyOrErrorCard";
-import { profile } from "queries/__generated__/profile";
 import i18n from "i18n";
 import LoadingPage from "pages/LoadingPage";
 import { Role } from "rbac-rules";
 import { useAuth } from "contexts/AuthContext";
+import { GET_PROFILE } from "queries/users";
+import {
+  getProfileVariables,
+  getProfile
+} from "queries/__generated__/getProfile";
 
 function isEmpty(obj: object) {
   return !obj || Object.keys(obj).length === 0;
@@ -36,10 +39,13 @@ const PrivateApp: React.FunctionComponent<Props> = ({ classes }) => {
 
   const currentUserEmail = user && user.email;
 
-  const { data, error, loading } = useQuery<profile>(GET_PROFILE, {
-    variables: { username: currentUserEmail },
-    fetchPolicy: "network-only"
-  });
+  const { data, error, loading } = useQuery<getProfile, getProfileVariables>(
+    GET_PROFILE,
+    {
+      variables: { email: currentUserEmail || "" },
+      fetchPolicy: "network-only"
+    }
+  );
 
   /**
    * Need this hack to "reload", since upon the first request by the user, django has not created yet the user and the profile.
@@ -52,14 +58,15 @@ const PrivateApp: React.FunctionComponent<Props> = ({ classes }) => {
 
     return <LoadingPage />;
   }
+  const profile = data && data.profiles[0];
 
-  const hasCompletedSetup = data && data.profile && data.profile.setupCompleted;
+  const hasCompletedSetup = profile && profile.setupCompleted;
 
   // When we have received the profile data, we can update a few things...
-  if (data && data.profile) {
-    i18n.changeLanguage(data.profile.language.toLowerCase());
-    changeCurrentRole(data.profile.currentRole);
-    setUserId(data.profile.id);
+  if (profile && profile.language) {
+    i18n.changeLanguage(profile.language.id);
+    changeCurrentRole(profile.current_role);
+    setUserId(profile.id);
   }
 
   const accessibleRoutes = getAllAccessibleRoutes(
@@ -83,7 +90,7 @@ const PrivateApp: React.FunctionComponent<Props> = ({ classes }) => {
         {loading ? (
           <BusyOrErrorCard loading={loading} error={error} />
         ) : !hasCompletedSetup ? (
-          data && <SetupWizard profile={data.profile!} />
+          data && profile && <SetupWizard profile={profile} />
         ) : (
           <Switch>
             {accessibleRoutes.map((r: any) => (

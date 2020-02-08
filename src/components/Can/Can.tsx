@@ -7,7 +7,9 @@ const check = (
   action: Permission,
   data: any
 ) => {
+  // @ts-ignore
   const roleKey = Object.keys(Role).find(key => Role[key as any] === role);
+  // @ts-ignore
   const permissions = rules[roleKey as any];
   if (!permissions) {
     // role is not present in the rules

@@ -20,7 +20,9 @@
     "required": "Required!",
     "tooShort": "Too short!",
     "tooLong": "Too long!",
-    "lastSaved": "Last saved"
+    "lastSaved": "Last saved",
+    "characterWithCount": "{{ count }} character",
+    "characterWithCount_plural": "{{ count }} characters"
   },
   "chapters": {
     "chapter": "Chapter",
@@ -44,6 +46,9 @@
     "newChapterLanguage": "Supported languages",
     "newChapterLanguageHelper": "The chapter is available in those languages.",
     "nWordGroups": "# of word groups: "
+  },
+  "chapterEditor": {
+    "settingsTitle": "Settings for {{type}}"
   },
   "voggi": {
     "voggiList": "Voggi-List"

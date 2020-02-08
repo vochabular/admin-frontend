@@ -9,13 +9,13 @@ import {
   FormGroup,
   Checkbox
 } from "@material-ui/core";
-import { withStyles, WithStyles } from "@material-ui/styles";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
 
 import { styles } from "styles";
-import { profile_profile } from "queries/__generated__/profile";
+import { getProfile_profiles } from "queries/__generated__/getProfile";
 
 interface Props extends WithStyles<typeof styles> {
-  values: profile_profile;
+  values: getProfile_profiles;
 }
 
 function NotificationSection({ classes, values }: Props) {

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Formik, FormikActions, Form } from "formik";
+import { Formik, Form, FormikActions as FormikHelpers } from "formik";
 import { useMutation } from "@apollo/react-hooks";
 
 import Stepper from "@material-ui/core/Stepper";
@@ -9,16 +9,18 @@ import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { Grid, Paper } from "@material-ui/core";
-import { withStyles, WithStyles } from "@material-ui/styles";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
 
 import { styles } from "styles";
 import PersonalSection from "pages/Settings/SettingsSection/PersonalSection";
 import AdministrativeSection from "pages/Settings/SettingsSection/AdministrativeSection";
 import NotificationSection from "pages/Settings/SettingsSection/NotificationSection";
-import { UPDATE_PROFILE } from "queries/profile";
 import { UserSetupSchema } from "pages/Settings/Settings";
-import { profile_profile } from "queries/__generated__/profile";
 import { useAuth } from "contexts/AuthContext";
+import { UPDATE_PROFILE } from "queries/users";
+import { getProfile_profiles } from "queries/__generated__/getProfile";
+import { updateProfile } from "queries/__generated__/updateProfile";
+import { update_profileVariables } from "queries/__generated__/update_profile";
 
 function getSteps() {
   return [
@@ -42,21 +44,23 @@ function getStepContent(step: number) {
 }
 
 interface Props extends WithStyles<typeof styles> {
-  profile: profile_profile;
+  profile: getProfile_profiles;
 }
 
 function SetupWizard({ classes, profile }: Props) {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const [mutateProfile] = useMutation(UPDATE_PROFILE);
+  const [mutateProfile] = useMutation<updateProfile, update_profileVariables>(
+    UPDATE_PROFILE
+  );
 
   const [activeStep, setActiveStep] = useState(0);
 
   const steps = getSteps();
 
   async function handleSubmit(
-    values: profile_profile,
-    actions: FormikActions<any>
+    values: getProfile_profiles,
+    actions: FormikHelpers<getProfile_profiles>
   ) {
     if (activeStep === steps.length - 1) {
       const updatedProfile = {
@@ -67,15 +71,15 @@ function SetupWizard({ classes, profile }: Props) {
         language: values.language,
         eventNotifications: values.eventNotifications,
         translatorLanguages:
-          // @ts-ignore
-          values.translatorLanguages && values.translatorLanguages.join(","),
+          values.translatorLanguages && values.translatorLanguages,
         setupCompleted: true
       };
       const payload = {
         profile: {
           username: user && user.email,
-          profileData: updatedProfile
-        }
+          profileData: updatedProfile,
+        },
+        email: (user && user.email) || ""
       };
       await mutateProfile({
         variables: payload
@@ -101,18 +105,13 @@ function SetupWizard({ classes, profile }: Props) {
   // Note here: We are getting a "dynamic" component
   const ActiveStepContent: React.ElementType = getStepContent(activeStep);
 
-  //TODO: Hack until backend has changed type...
   const initialProfile = { ...profile };
-  // @ts-ignore
+
   initialProfile.translatorLanguages =
-    (profile &&
-      profile.translatorLanguages &&
-      profile.translatorLanguages.split(",")) ||
-    "";
-  // @ts-ignore
-  initialProfile.language = (profile && profile.language.toLowerCase()) || "de";
-  initialProfile.currentRole =
-    (profile && profile.currentRole) ||
+    profile && profile.translatorLanguages && profile.translatorLanguages;
+  initialProfile.language = profile && profile.language;
+  initialProfile.current_role =
+    (profile && profile.current_role) ||
     (user && user.currentRole) || // TODO(df): Need to get the current role of the user...
     "";
   initialProfile.firstname = "";
@@ -134,7 +133,8 @@ function SetupWizard({ classes, profile }: Props) {
           initialValues={initialProfile}
           validationSchema={UserSetupSchema}
           onSubmit={(values, actions) => handleSubmit(values, actions)}
-          render={({ submitForm, values, setFieldValue, validateForm }) => (
+        >
+          {({ submitForm, values, setFieldValue, validateForm }) => (
             <Form>
               <Grid item xs={12}>
                 <Stepper activeStep={activeStep}>
@@ -171,7 +171,7 @@ function SetupWizard({ classes, profile }: Props) {
               </Grid>
             </Form>
           )}
-        />
+        </Formik>
       </Grid>
     </Paper>
   );

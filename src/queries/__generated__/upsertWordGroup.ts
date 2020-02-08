@@ -10,7 +10,7 @@ import { api_wordgroup_insert_input } from "./../../__generated__/globalTypes";
 
 export interface upsertWordGroup_insert_api_wordgroup_returning_words_word_translations_language {
   __typename: "api_language";
-  code: string;
+  id: string;
   name: string;
 }
 
@@ -46,10 +46,8 @@ export interface upsertWordGroup_insert_api_wordgroup_returning_words {
 
 export interface upsertWordGroup_insert_api_wordgroup_returning {
   __typename: "api_wordgroup";
-  parentChapterId: any;
+  parentChapterId: any | null;
   id: any;
-  titleCh: string;
-  titleDe: string;
   /**
    * An array relationship
    */

@@ -36,14 +36,17 @@ const ChapterCard = ({ classes, chapter }: Props) => {
     : `/chapters/${chapter.id}`;
   return (
     <Card>
-      <CardActionArea component={RouterLink} {...{ to: path } as any}>
+      <CardActionArea component={RouterLink} {...({ to: path } as any)}>
         <CardContent>
           <Typography
             className={classes.title}
             color="textSecondary"
             gutterBottom
           >
-            {t("chapter:chapter")} {chapter.titleDE} / {chapter.titleCH}
+            {t("chapter:chapter")}{" "}
+            {isSubChapter
+              ? `${chapter.parentChapter!.number}.${chapter.number}`
+              : chapter.number}
           </Typography>
           <Typography variant="h5" component="h2">
             {chapter.description}
