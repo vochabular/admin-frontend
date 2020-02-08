@@ -32,6 +32,9 @@ export interface chapters_wordGroups_chapters_edges_node_wordGroups_edges {
 
 export interface chapters_wordGroups_chapters_edges_node_wordGroups {
   __typename: "WordGroupTypeConnection";
+  /**
+   * Contains the nodes in this connection.
+   */
   edges: (chapters_wordGroups_chapters_edges_node_wordGroups_edges | null)[];
 }
 
@@ -42,7 +45,7 @@ export interface chapters_wordGroups_chapters_edges_node {
    */
   id: string;
   parentChapter: chapters_wordGroups_chapters_edges_node_parentChapter | null;
-  wordGroups: chapters_wordGroups_chapters_edges_node_wordGroups | null;
+  wordGroups: chapters_wordGroups_chapters_edges_node_wordGroups;
 }
 
 export interface chapters_wordGroups_chapters_edges {
@@ -55,6 +58,9 @@ export interface chapters_wordGroups_chapters_edges {
 
 export interface chapters_wordGroups_chapters {
   __typename: "ChapterTypeConnection";
+  /**
+   * Contains the nodes in this connection.
+   */
   edges: (chapters_wordGroups_chapters_edges | null)[];
 }
 

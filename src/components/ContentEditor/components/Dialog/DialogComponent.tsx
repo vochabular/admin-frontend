@@ -2,6 +2,7 @@ import * as React from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { Select } from "formik-material-ui";
+import { useSubscription } from "@apollo/react-hooks";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Theme } from "@material-ui/core/styles";
@@ -12,9 +13,8 @@ import BaseComponent, {
   BaseSettingsProps
 } from "../../BaseComponent";
 import Text from "components/Text";
-import { useSubscription } from "@apollo/react-hooks";
 import { GET_ALL_CHARACTERS } from "queries/characters";
-import { getCharacters } from "queries/__generated__/getCharacters";
+import { getAllCharacters } from "queries/__generated__/getAllCharacters";
 
 interface DialogSettingsData {
   characters: String[];
@@ -41,7 +41,7 @@ export const DialogSettings = React.forwardRef<any, DialogSettingsProps>(
     const { data: settingsData } = data;
 
     const { characters: dialogCharacters = [] } = settingsData;
-    const { data: allCharacterData, loading, } = useSubscription<getCharacters>(GET_ALL_CHARACTERS);
+    const { data: allCharacterData, loading, } = useSubscription<getAllCharacters>(GET_ALL_CHARACTERS);
 
     const handleCharacterSave = ({ characters }: DialogSettingsData) => {
       const newSettingsData = { ...settingsData, characters };

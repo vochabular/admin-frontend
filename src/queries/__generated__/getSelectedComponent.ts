@@ -74,6 +74,8 @@ export interface getSelectedComponent_component_texts {
 export interface getSelectedComponent_component_media {
   __typename: "api_media";
   id: any;
+  type: string;
+  url: string;
 }
 
 export interface getSelectedComponent_component {

@@ -103,6 +103,8 @@ export interface getChapters_chapters_components_texts {
 export interface getChapters_chapters_components_media {
   __typename: "api_media";
   id: any;
+  type: string;
+  url: string;
 }
 
 export interface getChapters_chapters_components {

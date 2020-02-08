@@ -26,6 +26,8 @@ export const COMPONENT_PART = gql`
     }
     media {
       id
+      type
+      url
     }
   }
   ${COMPONENT_TYPE_FRAGMENT}
@@ -88,8 +90,11 @@ export const UPDATE_COMPONENT = gql`
     $textUpdateColumns: [api_text_update_column!]!
     $translationData: [api_translation_insert_input!]!
     $translationUpdateColumns: [api_translation_update_column!]!
+    $mediaData: [api_media_insert_input!]!
+    $mediaUpdateColumns: [api_media_update_column!]!
     $deleteTextIds: [uuid!]!
     $deleteTranslationIds: [uuid!]!
+    $deleteMediaIds: [uuid!]!
   ) {
     update_api_component(
       _set: $componentData
@@ -117,10 +122,22 @@ export const UPDATE_COMPONENT = gql`
     ) {
       affected_rows
     }
+    insert_api_media(
+      objects: $mediaData
+      on_conflict: {
+        constraint: api_media_pkey
+        update_columns: $mediaUpdateColumns
+      }
+    ) {
+      affected_rows
+    }
     delete_api_text(where: { id: { _in: $deleteTextIds } }) {
       affected_rows
     }
     delete_api_translation(where: { id: { _in: $deleteTranslationIds } }) {
+      affected_rows
+    }
+    delete_api_media(where: { id: { _in: $deleteMediaIds } }) {
       affected_rows
     }
   }

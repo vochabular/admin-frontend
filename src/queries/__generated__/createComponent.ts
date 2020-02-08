@@ -76,6 +76,8 @@ export interface createComponent_insert_api_component_returning_texts {
 export interface createComponent_insert_api_component_returning_media {
   __typename: "api_media";
   id: any;
+  type: string;
+  url: string;
 }
 
 export interface createComponent_insert_api_component_returning {

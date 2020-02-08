@@ -74,6 +74,8 @@ export interface ComponentParts_texts {
 export interface ComponentParts_media {
   __typename: "api_media";
   id: any;
+  type: string;
+  url: string;
 }
 
 export interface ComponentParts {

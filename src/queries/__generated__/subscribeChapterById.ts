@@ -147,6 +147,8 @@ export interface subscribeChapterById_chapter_components_texts {
 export interface subscribeChapterById_chapter_components_media {
   __typename: "api_media";
   id: any;
+  type: string;
+  url: string;
 }
 
 export interface subscribeChapterById_chapter_components_children_type_frontendWidget {
@@ -217,6 +219,8 @@ export interface subscribeChapterById_chapter_components_children_texts {
 export interface subscribeChapterById_chapter_components_children_media {
   __typename: "api_media";
   id: any;
+  type: string;
+  url: string;
 }
 
 export interface subscribeChapterById_chapter_components_children_children_type_frontendWidget {
@@ -287,6 +291,8 @@ export interface subscribeChapterById_chapter_components_children_children_texts
 export interface subscribeChapterById_chapter_components_children_children_media {
   __typename: "api_media";
   id: any;
+  type: string;
+  url: string;
 }
 
 export interface subscribeChapterById_chapter_components_children_children_children_type_frontendWidget {
@@ -357,6 +363,8 @@ export interface subscribeChapterById_chapter_components_children_children_child
 export interface subscribeChapterById_chapter_components_children_children_children_media {
   __typename: "api_media";
   id: any;
+  type: string;
+  url: string;
 }
 
 export interface subscribeChapterById_chapter_components_children_children_children_children_type_frontendWidget {
@@ -427,6 +435,8 @@ export interface subscribeChapterById_chapter_components_children_children_child
 export interface subscribeChapterById_chapter_components_children_children_children_children_media {
   __typename: "api_media";
   id: any;
+  type: string;
+  url: string;
 }
 
 export interface subscribeChapterById_chapter_components_children_children_children_children {

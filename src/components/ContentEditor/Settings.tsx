@@ -19,7 +19,8 @@ import {
   getSelectedComponent_component_texts_translations,
   getSelectedComponent_component_texts_translations_language,
   getSelectedComponent_component,
-  getSelectedComponent_languages
+  getSelectedComponent_languages,
+  getSelectedComponent
 } from "queries/__generated__/getSelectedComponent";
 import { LanguageContext } from "theme";
 import {
@@ -27,7 +28,9 @@ import {
   api_translation_insert_input,
   api_translation_constraint,
   api_translation_update_column,
-  api_text_update_column
+  api_text_update_column,
+  api_media_insert_input,
+  api_media_update_column
 } from "__generated__/globalTypes";
 import { CHAPTER_HEADER_PART } from "queries/chapters";
 import { useParams } from "hooks/useRouter";
@@ -65,6 +68,15 @@ export interface IText
   id?: string;
 }
 
+export interface IMedia
+  extends Omit<
+    getSelectedComponent_component_media,
+    "__typename" | "id"
+  > {
+  fk_component_id?: string;
+  id?: string;
+}
+
 export interface ICrudTextOperations {
   upsert: IText[];
   delete: IText[];
@@ -86,8 +98,8 @@ export interface ICrudTranslationOperations {
 }
 
 export interface ICrudMediaOperations {
-  upsert: getSelectedComponent_component_media[];
-  delete: getSelectedComponent_component_media[];
+  upsert: IMedia[];
+  delete: IMedia[];
 }
 
 export interface SubmitConfig {
@@ -196,13 +208,14 @@ const Settings = ({ component, languages, loading }: ISettingsProps) => {
    * @param config
    */
   const handleOnSubmit = (config: SubmitConfig) => {
-    const { settingsData, texts, translations } = config;
+    const { settingsData, texts, translations, media } = config;
 
     // Initialization
     let deleteTranslationIds: string[] =
       (translations &&
         translations.delete.filter(t => !!t.id).map(t => t.id!)) ||
       [];
+    let deleteMediaIds: string[] = (media && media.delete.filter(m => !!m.id).map(m => m.id!)) || [];
 
     // The component "settings" data, contained in a unstructered JSONB field
     const componentData = settingsData ? { data: settingsData } : {};
@@ -210,6 +223,10 @@ const Settings = ({ component, languages, loading }: ISettingsProps) => {
     // Text data
     const _texts = (texts && texts.upsert) || [];
     const upsertableTextData: api_text_insert_input[] = [];
+
+    // media
+    const _media = (media && media.upsert) || [];
+    const upsertableMediaData: api_media_insert_input[] = [];
 
     // Loop through each text (usually anyway just one), and prepare the nested objects for the mutation
     for (let i = 0; i < _texts.length; i++) {
@@ -310,6 +327,19 @@ const Settings = ({ component, languages, loading }: ISettingsProps) => {
         }
       };
     }
+
+    // Loop through each media (usually anyway just one), and prepare the nested objects for the mutation
+    for (let i = 0; i < _media.length; i++) {
+      const _m = cloneDeep(_media[i]);
+      upsertableMediaData.push({
+        id: _m.id,
+        fk_component_id: component && component.id,
+        type: _m.type,
+        url: _m.url
+      });
+    }
+
+
     updateComponent({
       variables: {
         // If no changes in component, then we don't want to update and thus just send null
@@ -327,8 +357,14 @@ const Settings = ({ component, languages, loading }: ISettingsProps) => {
           api_translation_update_column.text_field,
           api_translation_update_column.valid
         ],
+        mediaData: upsertableMediaData,
+        mediaUpdateColumns: [
+          api_media_update_column.type,
+          api_media_update_column.url,
+        ],
         deleteTextIds: [],
-        deleteTranslationIds
+        deleteTranslationIds,
+        deleteMediaIds,
       }
     });
   };
