@@ -3,6 +3,7 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
 import { TextField } from "formik-material-ui";
+import i18next from "i18next";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Theme } from "@material-ui/core/styles";
@@ -11,8 +12,6 @@ import BaseComponent, {
   BaseComponentProps,
   BaseSettingsProps
 } from "../../BaseComponent";
-import Text from "components/Text";
-import i18next from "i18next";
 
 /**
  * Validation Schema definition of the input fields of this component
