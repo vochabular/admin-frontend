@@ -28,6 +28,7 @@ import { cloneDeep } from "lodash-es";
 import ContextText from "components/ContextText";
 import LanguageBadges from "components/LanguageBadges";
 import { transformTranslations } from "helper/translations";
+import i18next from "i18next";
 
 /**
  * Type for form field of the settings widget of the text component
@@ -47,7 +48,20 @@ interface ITextSettingsFormFields {
  * Validation Schema definition of the input fields of this component
  */
 const TextSchema = Yup.object().shape({
-  isNative: Yup.boolean()
+  isSwissGerman: Yup.boolean(),
+  isGerman: Yup.boolean(),
+  isNative: Yup.boolean(),
+  swissGerman: Yup.object().when("isSwissGerman", {
+    is: true,
+    then: Yup.string().required(i18next.t("required")),
+    otherwise: Yup.string()
+  }),
+  german: Yup.object().when("isSwissGerman", {
+    is: true,
+    then: Yup.string().required(i18next.t("required")),
+    otherwise: Yup.string()
+  }),
+  placeholder: Yup.string()
 });
 
 interface TextSettingsProps extends BaseSettingsProps {}
@@ -255,11 +269,11 @@ const TextComponent = ({ data, ...otherProps }: TextComponentProps) => {
       <LanguageBadges text={text} />
     </Grid>
   );
-  const body = text.placeholder ? (
+  const body = text?.placeholder ? (
     <Text translate={false}>{text.placeholder}</Text>
   ) : (
     <ContextText
-      translations={text.translations}
+      translations={text?.translations || []}
       wantedLanguage="de"
       isColorContext={false}
     />

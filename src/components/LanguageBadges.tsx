@@ -55,6 +55,7 @@ interface ILanguageBadgesProps {
 }
 
 export default function LanguageBadges({ text }: ILanguageBadgesProps) {
+  if (!text) return null
   const languages = [
     text.translations.some(t => t.language.id === LanguageContext.ch) &&
       LanguageContext.ch,

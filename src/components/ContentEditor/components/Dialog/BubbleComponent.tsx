@@ -11,14 +11,13 @@ import BaseComponent, {
   BaseComponentProps,
   BaseSettingsProps
 } from "../../BaseComponent";
-import Text from "components/Text";
-import i18next from "i18next";
 
 /**
  * Validation Schema definition of the input fields of this component
  */
 const BubbleSchema = Yup.object().shape({
-  Bubble: Yup.string().required(i18next.t("required"))
+  link: Yup.string(),
+  languageCode: Yup.string(),
 });
 
 export interface BubbleSettingsProps extends BaseSettingsProps {}
@@ -41,7 +40,7 @@ export const BubbleSettings = React.forwardRef<any, BubbleSettingsProps>(
           <Form>
             <Field
               type="string"
-              name="text"
+              name="introduction"
               label={t("editor:Text")}
               helperText={t("editor:TextHelper")}
               component={TextField}
@@ -68,6 +67,7 @@ export interface BubbleComponentProps extends BaseComponentProps {}
  * How the component should get rendered in the editor
  */
 const BubbleComponent = ({ data, ...otherProps }: BubbleComponentProps) => {
+  console.log(data)
   const classes = useStyles();
   const preview = <div className={classes.container}></div>;
 

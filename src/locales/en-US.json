@@ -20,7 +20,9 @@
     "required": "Required!",
     "tooShort": "Too short!",
     "tooLong": "Too long!",
-    "lastSaved": "Last saved"
+    "lastSaved": "Last saved",
+    "characterWithCount": "{{ count }} character",
+    "characterWithCount_plural": "{{ count }} characters"
   },
   "chapters": {
     "chapter": "Chapter",

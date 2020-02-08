@@ -631,6 +631,7 @@ export interface api_character_bool_exp {
   _and?: (api_character_bool_exp | null)[] | null;
   _not?: api_character_bool_exp | null;
   _or?: (api_character_bool_exp | null)[] | null;
+  book?: api_book_bool_exp | null;
   created?: timestamptz_comparison_exp | null;
   fk_book_id?: uuid_comparison_exp | null;
   formal_name?: String_comparison_exp | null;
@@ -646,6 +647,7 @@ export interface api_character_bool_exp {
  * input type for inserting data into table "api_character"
  */
 export interface api_character_insert_input {
+  book?: api_book_obj_rel_insert_input | null;
   created?: any | null;
   fk_book_id?: any | null;
   formal_name?: string | null;
