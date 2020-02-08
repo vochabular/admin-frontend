@@ -25,6 +25,7 @@ import {
   GET_ALL_COMPONENTTYPES,
   GET_COMPONENTTYPE_BY_ID
 } from "queries/componentTypes";
+
 import BusyOrErrorCard from "components/BusyOrErrorCard";
 import {
   getAllComponentTypes,
