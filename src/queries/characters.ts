@@ -25,8 +25,18 @@ export const GET_ALL_CHARACTERS = gql`
 
 export const GET_CHARACTERS_BY_IDS = gql`
   subscription getCharactersByIds($ids: [uuid!]!) {
-    api_character(where: { id: { _in: $ids } }) {
+    characters: api_character(where: { id: { _in: $ids } }) {
       ...CharacterParts
     }
   }
+  ${CHARACTER_FRAGMENT}
+`;
+
+export const GET_CHARACTER_BY_ID = gql`
+  subscription getCharacterById($id: uuid!) {
+    character: api_character_by_pk(id: $id) {
+      ...CharacterParts
+    }
+  }
+  ${CHARACTER_FRAGMENT}
 `;

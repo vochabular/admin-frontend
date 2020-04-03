@@ -11,7 +11,7 @@ import { Grid } from "@material-ui/core";
 
 import BaseComponent, {
   BaseComponentProps,
-  BaseSettingsProps
+  BaseSettingsProps,
 } from "../BaseComponent";
 import Text from "components/Text";
 import { LanguageContext } from "theme";
@@ -21,7 +21,7 @@ import {
   ITranslation,
   ICrudTextOperations,
   ICrudTranslationOperations,
-  IText
+  IText,
 } from "../Settings";
 import Diff from "helper/Diff";
 import { cloneDeep } from "lodash-es";
@@ -54,14 +54,14 @@ const TextSchema = Yup.object().shape({
   swissGerman: Yup.object().when("isSwissGerman", {
     is: true,
     then: Yup.string().required(i18next.t("required")),
-    otherwise: Yup.string()
+    otherwise: Yup.string(),
   }),
   german: Yup.object().when("isSwissGerman", {
     is: true,
     then: Yup.string().required(i18next.t("required")),
-    otherwise: Yup.string()
+    otherwise: Yup.string(),
   }),
-  placeholder: Yup.string()
+  placeholder: Yup.string(),
 });
 
 interface TextSettingsProps extends BaseSettingsProps {}
@@ -91,18 +91,18 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
       isGerman: !!german,
       isSwissGerman: !!swissGerman,
       isNative: text.translatable || false,
-      placeholder: text.placeholder || german?.text_field || "",
+      placeholder: text.placeholder || swissGerman?.text_field || "",
       german: german || {
         text_field: "",
         valid: false,
-        languageCode: "de"
+        languageCode: "de",
       },
       swissGerman: swissGerman || {
         text_field: "",
         valid: false,
-        languageCode: "ch"
+        languageCode: "ch",
       },
-      shouldInvalidateTranslations: false
+      shouldInvalidateTranslations: false,
     };
 
     function handleTextSave(values: ITextSettingsFormFields, actions: any) {
@@ -124,7 +124,7 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
         if (
           values.isSwissGerman &&
           result.updated.find(
-            r => r.path[0] === "swissGerman" || r.path[0] === "isSwissGerman"
+            (r) => r.path[0] === "swissGerman" || r.path[0] === "isSwissGerman"
           )
         ) {
           text.translations.push(values.swissGerman);
@@ -133,7 +133,7 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
         if (
           values.isGerman &&
           result.updated.find(
-            r => r.path[0] === "german" || r.path[0] === "isGerman"
+            (r) => r.path[0] === "german" || r.path[0] === "isGerman"
           )
         ) {
           text.translations.push(values.german);
@@ -144,14 +144,14 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
         }
 
         // Additionally, also the case of disabled flags need to be covered
-        result.updated.forEach(i => {
+        result.updated.forEach((i) => {
           switch (i.path[0]) {
             // If the flag value has changed to false, then add this translation to the delete object
             case "isSwissGerman":
             case "isGerman":
               if (!i.val) {
                 const originalTranslation = data.texts[0].translations.find(
-                  t =>
+                  (t) =>
                     t.language.id ===
                     (i.path[0] === "isSwissGerman"
                       ? LanguageContext.ch
@@ -188,7 +188,7 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
         validationSchema={TextSchema}
         onSubmit={handleTextSave}
       >
-        {props => (
+        {(props) => (
           <Form>
             <Grid container item alignItems="flex-start">
               <Field
@@ -253,15 +253,47 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
 );
 
 const useStyles = makeStyles((theme: Theme) => ({
-  container: {}
+  container: {},
+  compactContainer: {
+    border: "groove",
+    borderRadius: 0.5,
+    // padding: theme.spacing(2),
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+    backgroundColor: "white",
+  },
 }));
+
+interface PlaceholderOrContextTextProps {
+  text: any;
+  isColorContext?: boolean;
+}
+const PlaceholderOrContextText = ({
+  text,
+  isColorContext,
+}: PlaceholderOrContextTextProps) => {
+  if (text?.placeholder) {
+    return <Text translate={false}>{text.placeholder}</Text>;
+  }
+  return (
+    <ContextText
+      translations={text?.translations || []}
+      wantedLanguage="ch"
+      isColorContext={isColorContext}
+    />
+  );
+};
 
 interface TextComponentProps extends BaseComponentProps {}
 
 /**
  * How the component should get rendered in the editor:
  */
-const TextComponent = ({ data, ...otherProps }: TextComponentProps) => {
+const TextComponent = ({
+  data,
+  renderCompact,
+  ...otherProps
+}: TextComponentProps) => {
   const classes = useStyles();
   const text = data && data.texts && data.texts[0];
   const preview = (
@@ -269,15 +301,22 @@ const TextComponent = ({ data, ...otherProps }: TextComponentProps) => {
       <LanguageBadges text={text} />
     </Grid>
   );
-  const body = text?.placeholder ? (
-    <Text translate={false}>{text.placeholder}</Text>
-  ) : (
-    <ContextText
-      translations={text?.translations || []}
-      wantedLanguage="de"
-      isColorContext={false}
-    />
-  );
+  const body = <PlaceholderOrContextText text={text} />;
+  if (renderCompact) {
+    const compactBody = (
+      <div className={classes.compactContainer}>
+        <PlaceholderOrContextText text={text} isColorContext />
+      </div>
+    );
+    return (
+      <BaseComponent
+        data={data}
+        body={compactBody}
+        renderCompact
+        {...otherProps}
+      />
+    );
+  }
 
   return (
     <BaseComponent preview={preview} body={body} data={data} {...otherProps} />

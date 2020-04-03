@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useQuery } from "@apollo/react-hooks";
 
-import { List } from "@material-ui/core";
+import { List, Box } from "@material-ui/core";
 
 import { BaseComponentProps } from "./BaseComponent";
 import { subscribeChapterById_chapter_components } from "queries/__generated__/subscribeChapterById";
@@ -48,42 +48,53 @@ interface ComponentListProps {
    * An array of components
    */
   components: any; // TODO(df): Improve typing: Somehow there is a bug and can't use: subscribeChapterById_chapter_components[];
+  /**
+   * Flag if the component should be rendered inline (not in a list)
+   */
+  renderChildrenInline?: boolean;
+  /**
+   * An optional children data type used to pass the generic data property down to the children. Can be anything (BAD! Don't shoot me!)
+   */
+  childrenData?: any;
 }
 
 /**
  * Wrap with React Memo to avoid rerender
  */
 const ComponentList = React.memo<ComponentListProps>(
-  ({ level, components }) => {
+  ({ level, components, renderChildrenInline, childrenData }) => {
     const { data: selectedComponentData } = useQuery(
       GET_LOCAL_SELECTED_COMPONENT_ID
     );
 
     const { selectedComponentId = undefined } = selectedComponentData || {};
 
-    return (
-      <List>
-        {components.map(
-          (
-            component: subscribeChapterById_chapter_components,
-            index: number
-          ) => (
-            <ComponentWrapper
-              key={component.id}
-              index={index}
-              data={component}
-              level={level}
-              type={
-                (component.type.frontendWidget &&
-                  component.type.frontendWidget.name) ||
-                component.type.name
-              }
-              selectedComponentId={selectedComponentId}
-            />
-          )
-        )}
-      </List>
+    const children = components.map(
+      (component: subscribeChapterById_chapter_components, index: number) => (
+        <ComponentWrapper
+          key={component.id}
+          index={index}
+          data={component}
+          childrenData={childrenData}
+          level={level}
+          type={
+            (component.type.frontendWidget &&
+              component.type.frontendWidget.name) ||
+            component.type.name
+          }
+          selectedComponentId={selectedComponentId}
+          renderCompact={renderChildrenInline}
+        />
+      )
     );
+
+    if (renderChildrenInline)
+      return (
+        <Box display="flex" flexWrap="wrap">
+          {children}
+        </Box>
+      );
+    return <List>{children}</List>;
   }
 );
 

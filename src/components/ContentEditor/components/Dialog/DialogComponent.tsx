@@ -10,7 +10,7 @@ import { MenuItem } from "@material-ui/core";
 
 import BaseComponent, {
   BaseComponentProps,
-  BaseSettingsProps
+  BaseSettingsProps,
 } from "../../BaseComponent";
 import Text from "components/Text";
 import { GET_ALL_CHARACTERS } from "queries/characters";
@@ -40,22 +40,26 @@ export const DialogSettings = React.forwardRef<any, DialogSettingsProps>(
     // The "settings" JSONB field
     const { data: settingsData } = data;
 
-    const { characters: dialogCharacters = [] } = settingsData;
-    const { data: allCharacterData, loading, } = useSubscription<getAllCharacters>(GET_ALL_CHARACTERS);
+    const { characters: dialogCharacters = [] } = settingsData;
+    const { data: allCharacterData, loading } = useSubscription<
+      getAllCharacters
+    >(GET_ALL_CHARACTERS);
 
     const handleCharacterSave = ({ characters }: DialogSettingsData) => {
       const newSettingsData = { ...settingsData, characters };
-      onSubmit({ settingsData: newSettingsData })
-    }
+      onSubmit({ settingsData: newSettingsData });
+    };
 
     return (
       <Formik
         ref={ref}
-        initialValues={{ characters: dialogCharacters.length ? dialogCharacters : [] }}
+        initialValues={{
+          characters: dialogCharacters.length ? dialogCharacters : [],
+        }}
         validationSchema={DialogSchema}
         onSubmit={handleCharacterSave}
       >
-        {props => (
+        {(props) => (
           <Form>
             <Field
               type="text"
@@ -64,11 +68,12 @@ export const DialogSettings = React.forwardRef<any, DialogSettingsProps>(
               multiple={true}
               disabled={loading}
             >
-              {allCharacterData && allCharacterData.characters.map(c => (
-                <MenuItem key={c.id} value={c.id}>
-                  {`${c.informalName} - ${c.formalName} - ${c.speaker}`}
-                </MenuItem>
-              ))}
+              {allCharacterData &&
+                allCharacterData.characters.map((c) => (
+                  <MenuItem key={c.id} value={c.id}>
+                    {`${c.informalName} - ${c.formalName} - ${c.speaker}`}
+                  </MenuItem>
+                ))}
             </Field>
           </Form>
         )}
@@ -78,7 +83,7 @@ export const DialogSettings = React.forwardRef<any, DialogSettingsProps>(
 );
 
 const useStyles = makeStyles((theme: Theme) => ({
-  container: { margin: 10 }
+  container: { margin: 10 },
 }));
 
 export interface DialogComponentProps extends BaseComponentProps {}
@@ -86,14 +91,35 @@ export interface DialogComponentProps extends BaseComponentProps {}
 /**
  * How the component should get rendered in the editor
  */
-const DialogComponent = ({ data, ...otherProps }: DialogComponentProps) => {
+const DialogComponent = ({
+  data,
+  childrenData,
+  ...otherProps
+}: DialogComponentProps) => {
   const classes = useStyles();
   const numberOfCharacters = data?.data?.characters?.length || 0;
   const preview = (
-  <><Text className={classes.container} translationOptions={{ count: numberOfCharacters}}>characterWithCount</Text></>
+    <>
+      <Text
+        className={classes.container}
+        translationOptions={{ count: numberOfCharacters }}
+      >
+        characterWithCount
+      </Text>
+    </>
   );
 
-  return <BaseComponent preview={preview} data={data} {...otherProps} />;
+  return (
+    <BaseComponent
+      preview={preview}
+      data={data}
+      childrenData={{
+        ...childrenData,
+        characters: data?.data?.characters || [],
+      }}
+      {...otherProps}
+    />
+  );
 };
 
 export default DialogComponent;
