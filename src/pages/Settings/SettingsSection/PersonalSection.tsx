@@ -4,7 +4,7 @@ import { Field } from "formik";
 import {
   fieldToTextField,
   TextField,
-  TextFieldProps
+  TextFieldProps,
 } from "formik-material-ui";
 
 import MuiTextField from "@material-ui/core/TextField";
@@ -56,7 +56,7 @@ function PersonalSection({ classes, values, setFieldValue }: Props) {
     <Grid>
       <Field
         type="text"
-        name="language"
+        name="language.id"
         component={UiLanguageField}
         label={t("settings:uiLanguage")}
         helperText={t("settings:uiLanguageHelperText")}
@@ -95,7 +95,7 @@ function PersonalSection({ classes, values, setFieldValue }: Props) {
           component={DefaultRoleField}
           fullWidth
         >
-          {roles.map(r => (
+          {roles.map((r) => (
             <MenuItem key={r} value={r}>
               {t(r)}
             </MenuItem>
