@@ -47,7 +47,7 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 function PersonalSection({ classes, values, setFieldValue }: Props) {
-  const { t } = useTranslation();
+  const { t } = useTranslation("settings");
 
   const { user } = useAuth();
 
@@ -58,8 +58,7 @@ function PersonalSection({ classes, values, setFieldValue }: Props) {
         type="text"
         name="language.id"
         component={UiLanguageField}
-        label={t("settings:uiLanguage")}
-        helperText={t("settings:uiLanguageHelperText")}
+        label={t("uiLanguage")}
         select
         margin="normal"
         fullWidth
@@ -72,14 +71,14 @@ function PersonalSection({ classes, values, setFieldValue }: Props) {
       </Field>
       <Field
         name="firstname"
-        label={t("settings:firstname")}
+        label={t("firstname")}
         component={TextField}
         margin="normal"
         fullWidth
       />
       <Field
         name="lastname"
-        label={t("settings:lastname")}
+        label={t("lastname")}
         component={TextField}
         margin="normal"
         fullWidth
@@ -88,9 +87,8 @@ function PersonalSection({ classes, values, setFieldValue }: Props) {
         <Field
           type="text"
           name="current_role"
-          label={t("settings:currentRoleLabel")}
+          label={t("currentRole")}
           select
-          helperText={t("settings:currentRoleHelperText")}
           margin="normal"
           component={DefaultRoleField}
           fullWidth

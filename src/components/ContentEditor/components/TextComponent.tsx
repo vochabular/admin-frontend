@@ -11,7 +11,7 @@ import { Grid } from "@material-ui/core";
 
 import BaseComponent, {
   BaseComponentProps,
-  BaseSettingsProps
+  BaseSettingsProps,
 } from "../BaseComponent";
 import Text from "components/Text";
 import { LanguageContext } from "theme";
@@ -21,7 +21,7 @@ import {
   ITranslation,
   ICrudTextOperations,
   ICrudTranslationOperations,
-  IText
+  IText,
 } from "../Settings";
 import Diff from "helper/Diff";
 import { cloneDeep } from "lodash-es";
@@ -54,14 +54,14 @@ const TextSchema = Yup.object().shape({
   swissGerman: Yup.object().when("isSwissGerman", {
     is: true,
     then: Yup.string().required(i18next.t("required")),
-    otherwise: Yup.string()
+    otherwise: Yup.string(),
   }),
   german: Yup.object().when("isSwissGerman", {
     is: true,
     then: Yup.string().required(i18next.t("required")),
-    otherwise: Yup.string()
+    otherwise: Yup.string(),
   }),
-  placeholder: Yup.string()
+  placeholder: Yup.string(),
 });
 
 interface TextSettingsProps extends BaseSettingsProps {}
@@ -73,7 +73,7 @@ interface TextSettingsProps extends BaseSettingsProps {}
 export const TextSettings = React.forwardRef<any, TextSettingsProps>(
   (props, ref) => {
     const { data, onSubmit } = props;
-    const { t } = useTranslation();
+    const { t } = useTranslation("chapterEditor");
 
     const { data: editorLanguageData } = useQuery<getLocalEditorLanguage>(
       GET_LOCAL_EDITOR_LANGUAGE
@@ -95,14 +95,14 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
       german: german || {
         text_field: "",
         valid: false,
-        languageCode: "de"
+        languageCode: "de",
       },
       swissGerman: swissGerman || {
         text_field: "",
         valid: false,
-        languageCode: "ch"
+        languageCode: "ch",
       },
-      shouldInvalidateTranslations: false
+      shouldInvalidateTranslations: false,
     };
 
     function handleTextSave(values: ITextSettingsFormFields, actions: any) {
@@ -124,7 +124,7 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
         if (
           values.isSwissGerman &&
           result.updated.find(
-            r => r.path[0] === "swissGerman" || r.path[0] === "isSwissGerman"
+            (r) => r.path[0] === "swissGerman" || r.path[0] === "isSwissGerman"
           )
         ) {
           text.translations.push(values.swissGerman);
@@ -133,7 +133,7 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
         if (
           values.isGerman &&
           result.updated.find(
-            r => r.path[0] === "german" || r.path[0] === "isGerman"
+            (r) => r.path[0] === "german" || r.path[0] === "isGerman"
           )
         ) {
           text.translations.push(values.german);
@@ -144,14 +144,14 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
         }
 
         // Additionally, also the case of disabled flags need to be covered
-        result.updated.forEach(i => {
+        result.updated.forEach((i) => {
           switch (i.path[0]) {
             // If the flag value has changed to false, then add this translation to the delete object
             case "isSwissGerman":
             case "isGerman":
               if (!i.val) {
                 const originalTranslation = data.texts[0].translations.find(
-                  t =>
+                  (t) =>
                     t.language.id ===
                     (i.path[0] === "isSwissGerman"
                       ? LanguageContext.ch
@@ -188,28 +188,30 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
         validationSchema={TextSchema}
         onSubmit={handleTextSave}
       >
-        {props => (
+        {(props) => (
           <Form>
             <Grid container item alignItems="flex-start">
               <Field
                 name={`isSwissGerman`}
-                Label={{ label: t("editor:swissGerman") }}
+                Label={{ label: t("swissGerman") }}
                 component={CheckboxWithLabel}
               />
               <Field
                 name={`isGerman`}
-                Label={{ label: t("editor:german") }}
+                Label={{ label: t("german") }}
                 component={CheckboxWithLabel}
               />
               <Field
                 name={`isNative`}
-                Label={{ label: t("editor:translatable") }}
+                Label={{ label: t("translatable") }}
                 component={CheckboxWithLabel}
               />
               {nativeLanguages && nativeLanguages.length ? (
                 <Field
                   name={`shouldInvalidateTranslations`}
-                  Label={{ label: t("editor:shouldInvalidateTranslations") }}
+                  Label={{
+                    label: t("shouldInvalidateTranslations"),
+                  }}
                   component={CheckboxWithLabel}
                 />
               ) : null}
@@ -217,7 +219,7 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
             <Field
               type="string"
               name="placeholder"
-              label={t("editor:placeholder")}
+              label={t("placeholder")}
               component={TextField}
               fullWidth
               multiline
@@ -227,7 +229,7 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
               <Field
                 type="string"
                 name="swissGerman.text_field"
-                label={t("editor:swissGerman")}
+                label={t("swissGerman")}
                 component={TextField}
                 fullWidth
                 multiline
@@ -238,7 +240,7 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
               <Field
                 type="string"
                 name="german.text_field"
-                label={t("editor:german")}
+                label={t("german")}
                 component={TextField}
                 fullWidth
                 multiline
@@ -253,7 +255,7 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
 );
 
 const useStyles = makeStyles((theme: Theme) => ({
-  container: {}
+  container: {},
 }));
 
 interface TextComponentProps extends BaseComponentProps {}
