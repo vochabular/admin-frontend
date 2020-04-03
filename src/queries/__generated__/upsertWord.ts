@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 import { api_wordtranslation_insert_input } from "./../../__generated__/globalTypes";

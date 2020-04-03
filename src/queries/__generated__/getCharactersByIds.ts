@@ -1,17 +1,18 @@
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
 // GraphQL subscription operation: getCharactersByIds
 // ====================================================
 
-export interface getCharactersByIds_api_character_book {
+export interface getCharactersByIds_characters_book {
   __typename: "api_book";
   id: any;
 }
 
-export interface getCharactersByIds_api_character {
+export interface getCharactersByIds_characters {
   __typename: "api_character";
   id: any;
   formalName: string;
@@ -21,14 +22,14 @@ export interface getCharactersByIds_api_character {
   /**
    * An object relationship
    */
-  book: getCharactersByIds_api_character_book | null;
+  book: getCharactersByIds_characters_book | null;
 }
 
 export interface getCharactersByIds {
   /**
    * fetch data from the table: "api_character"
    */
-  api_character: getCharactersByIds_api_character[];
+  characters: getCharactersByIds_characters[];
 }
 
 export interface getCharactersByIdsVariables {
