@@ -10,6 +10,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { Grid, Paper } from "@material-ui/core";
 import { withStyles, WithStyles } from "@material-ui/core/styles";
+import i18n from "i18n";
 
 import { styles } from "styles";
 import PersonalSection from "pages/Settings/SettingsSection/PersonalSection";
@@ -17,16 +18,18 @@ import AdministrativeSection from "pages/Settings/SettingsSection/Administrative
 import NotificationSection from "pages/Settings/SettingsSection/NotificationSection";
 import { UserSetupSchema } from "pages/Settings/Settings";
 import { useAuth } from "contexts/AuthContext";
-import { UPDATE_PROFILE } from "queries/users";
-import { getProfile_profiles } from "queries/__generated__/getProfile";
-import { updateProfile } from "queries/__generated__/updateProfile";
-import { update_profileVariables } from "queries/__generated__/update_profile";
+import {
+  updateProfile,
+  updateProfileVariables,
+} from "queries/__generated__/updateProfile";
+import { UPDATE_DJANGO_PROFILE } from "queries/profile";
+import { profile_profile } from "queries/__generated__/profile";
 
 function getSteps() {
   return [
     "setupWizard:chooseGeneralSettings",
     "setupWizard:chooseLanguages",
-    "setupWizard:chooseNotifications"
+    "setupWizard:chooseNotifications",
   ];
 }
 
@@ -44,14 +47,14 @@ function getStepContent(step: number) {
 }
 
 interface Props extends WithStyles<typeof styles> {
-  profile: getProfile_profiles;
+  profile: profile_profile;
 }
 
 function SetupWizard({ classes, profile }: Props) {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const [mutateProfile] = useMutation<updateProfile, update_profileVariables>(
-    UPDATE_PROFILE
+  const [mutateProfile] = useMutation<updateProfile, updateProfileVariables>(
+    UPDATE_DJANGO_PROFILE
   );
 
   const [activeStep, setActiveStep] = useState(0);
@@ -59,8 +62,8 @@ function SetupWizard({ classes, profile }: Props) {
   const steps = getSteps();
 
   async function handleSubmit(
-    values: getProfile_profiles,
-    actions: FormikHelpers<getProfile_profiles>
+    values: profile_profile,
+    actions: FormikHelpers<profile_profile>
   ) {
     if (activeStep === steps.length - 1) {
       const updatedProfile = {
@@ -68,21 +71,21 @@ function SetupWizard({ classes, profile }: Props) {
         lastname: values.lastname,
         roles: user && user.allowedRoles.join(","),
         currentRole: user && user.allowedRoles[0], // TODO(df): need to set this in the AuthContext, based from the userprofile query on startup...
-        language: values.language,
+        language: values.language?.id,
         eventNotifications: values.eventNotifications,
         translatorLanguages:
-          values.translatorLanguages && values.translatorLanguages,
-        setupCompleted: true
+          values.translatorLanguages?.map((l) => l.id) || null,
+        setupCompleted: true,
       };
       const payload = {
         profile: {
           username: user && user.email,
           profileData: updatedProfile,
         },
-        email: (user && user.email) || ""
+        email: (user && user.email) || "",
       };
       await mutateProfile({
-        variables: payload
+        variables: payload,
       });
     } else {
       handleNext(actions.validateForm);
@@ -95,11 +98,11 @@ function SetupWizard({ classes, profile }: Props) {
     if (activeStep === steps.length - 1) {
       return null;
     }
-    setActiveStep(prevActiveStep => prevActiveStep + 1);
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
   }
 
   function handleBack() {
-    setActiveStep(prevActiveStep => prevActiveStep - 1);
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
   }
 
   // Note here: We are getting a "dynamic" component
@@ -107,15 +110,18 @@ function SetupWizard({ classes, profile }: Props) {
 
   const initialProfile = { ...profile };
 
-  initialProfile.translatorLanguages =
-    profile && profile.translatorLanguages && profile.translatorLanguages;
-  initialProfile.language = profile && profile.language;
-  initialProfile.current_role =
-    (profile && profile.current_role) ||
-    (user && user.currentRole) || // TODO(df): Need to get the current role of the user...
+  initialProfile.translatorLanguages = profile?.translatorLanguages;
+  initialProfile.language = profile?.language || {
+    id: i18n.language,
+    name: i18n.language,
+    __typename: "LanguageType",
+  };
+  initialProfile.currentRole =
+    (profile && profile.currentRole) ||
+    (user && user.allowedRoles[0]) || // TODO(df): Need to get the current role of the user...
     "";
-  initialProfile.firstname = "";
-  initialProfile.lastname = "";
+  initialProfile.firstname = profile.firstname || "";
+  initialProfile.lastname = profile.lastname || "";
 
   return (
     <Paper className={classes.card}>
@@ -138,7 +144,7 @@ function SetupWizard({ classes, profile }: Props) {
             <Form>
               <Grid item xs={12}>
                 <Stepper activeStep={activeStep}>
-                  {steps.map(label => {
+                  {steps.map((label) => {
                     return (
                       <Step key={label}>
                         <StepLabel>{t(label)}</StepLabel>

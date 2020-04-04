@@ -7,6 +7,18 @@
 // GraphQL fragment: ProfileParts
 // ====================================================
 
+export interface ProfileParts_language {
+  __typename: "LanguageType";
+  id: string;
+  name: string;
+}
+
+export interface ProfileParts_translatorLanguages {
+  __typename: "LanguageType";
+  id: string;
+  name: string;
+}
+
 export interface ProfileParts {
   __typename: "ProfileType";
   id: any;
@@ -16,4 +28,6 @@ export interface ProfileParts {
   currentRole: string;
   eventNotifications: boolean;
   setupCompleted: boolean;
+  language: ProfileParts_language | null;
+  translatorLanguages: ProfileParts_translatorLanguages[];
 }

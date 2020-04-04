@@ -4,18 +4,19 @@ import { useTranslation } from "react-i18next";
 import {
   FormControl,
   Grid,
-  FormControlLabel,
   FormLabel,
   FormGroup,
-  Checkbox
+  FormControlLabel,
 } from "@material-ui/core";
 import { withStyles, WithStyles } from "@material-ui/core/styles";
 
 import { styles } from "styles";
-import { getProfile_profiles } from "queries/__generated__/getProfile";
+import { profile_profile } from "queries/__generated__/profile";
+import { Field } from "formik";
+import { CheckboxWithLabel } from "formik-material-ui";
 
 interface Props extends WithStyles<typeof styles> {
-  values: getProfile_profiles;
+  values: profile_profile;
 }
 
 function NotificationSection({ classes, values }: Props) {
@@ -28,7 +29,15 @@ function NotificationSection({ classes, values }: Props) {
         <FormGroup>
           <FormControlLabel
             label={t("setupWizard:receiveEventNotifications")}
-            control={<Checkbox checked={values.eventNotifications} />}
+            control={
+              <Field
+                type="checkbox"
+                name="eventNotifications"
+                label={t("setupWizard:receiveEventNotifications")}
+                component={CheckboxWithLabel}
+                margin="normal"
+              />
+            }
           />
         </FormGroup>
       </FormControl>

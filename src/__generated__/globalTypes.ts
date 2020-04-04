@@ -429,7 +429,7 @@ export interface ProfileInput {
   lastname?: string | null;
   roles?: string | null;
   setupCompleted?: boolean | null;
-  translatorLanguages?: string | null;
+  translatorLanguages?: (string | null)[] | null;
 }
 
 /**

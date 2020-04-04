@@ -102,6 +102,7 @@
   },
   "setupWizard": {
     "title": "Setup your user account",
+    "chooseGeneralSettings": "General settings",
     "chooseDisplayName": "Choose your user name",
     "chooseLanguages": "Choose your language",
     "translatorLanguages": "Select your translating languages",

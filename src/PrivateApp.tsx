@@ -16,11 +16,11 @@ import i18n from "i18n";
 import LoadingPage from "pages/LoadingPage";
 import { Role } from "rbac-rules";
 import { useAuth } from "contexts/AuthContext";
-import { GET_PROFILE } from "queries/users";
+import { GET_DJANGO_PROFILE } from "queries/profile";
 import {
-  getProfileVariables,
-  getProfile
-} from "queries/__generated__/getProfile";
+  profile as TProfile,
+  profileVariables,
+} from "queries/__generated__/profile";
 
 function isEmpty(obj: object) {
   return !obj || Object.keys(obj).length === 0;
@@ -39,11 +39,14 @@ const PrivateApp: React.FunctionComponent<Props> = ({ classes }) => {
 
   const currentUserEmail = user && user.email;
 
-  const { data, error, loading } = useQuery<getProfile, getProfileVariables>(
-    GET_PROFILE,
+  /**
+   * Note: Getting the user profile via Django, as the user will be created on the fly by Django!
+   */
+  const { data, error, loading } = useQuery<TProfile, profileVariables>(
+    GET_DJANGO_PROFILE,
     {
-      variables: { email: currentUserEmail || "" },
-      fetchPolicy: "network-only"
+      variables: { username: currentUserEmail || "" },
+      fetchPolicy: "network-only",
     }
   );
 
@@ -52,20 +55,21 @@ const PrivateApp: React.FunctionComponent<Props> = ({ classes }) => {
    * So we reload the page after a while, hoping that the user was created...
    */
   if (!loading && data && isEmpty(data)) {
-    setTimeout(function() {
+    setTimeout(function () {
       window.location.reload();
     }, 1000);
 
     return <LoadingPage />;
   }
-  const profile = data && data.profiles[0];
 
-  const hasCompletedSetup = profile && profile.setupCompleted;
+  const profile = data?.profile;
+
+  const hasCompletedSetup = (profile && profile.setupCompleted) || false;
 
   // When we have received the profile data, we can update a few things...
-  if (profile && profile.language) {
-    i18n.changeLanguage(profile.language.id);
-    changeCurrentRole(profile.current_role);
+  if (profile) {
+    profile.language && i18n.changeLanguage(profile.language.id);
+    changeCurrentRole(profile?.currentRole);
     setUserId(profile.id);
   }
 
