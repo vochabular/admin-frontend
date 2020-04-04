@@ -73,7 +73,7 @@ interface TextSettingsProps extends BaseSettingsProps {}
 export const TextSettings = React.forwardRef<any, TextSettingsProps>(
   (props, ref) => {
     const { data, onSubmit } = props;
-    const { t } = useTranslation();
+    const { t } = useTranslation("chapterEditor");
 
     const { data: editorLanguageData } = useQuery<getLocalEditorLanguage>(
       GET_LOCAL_EDITOR_LANGUAGE
@@ -193,23 +193,25 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
             <Grid container item alignItems="flex-start">
               <Field
                 name={`isSwissGerman`}
-                Label={{ label: t("editor:swissGerman") }}
+                Label={{ label: t("swissGerman") }}
                 component={CheckboxWithLabel}
               />
               <Field
                 name={`isGerman`}
-                Label={{ label: t("editor:german") }}
+                Label={{ label: t("german") }}
                 component={CheckboxWithLabel}
               />
               <Field
                 name={`isNative`}
-                Label={{ label: t("editor:translatable") }}
+                Label={{ label: t("translatable") }}
                 component={CheckboxWithLabel}
               />
               {nativeLanguages && nativeLanguages.length ? (
                 <Field
                   name={`shouldInvalidateTranslations`}
-                  Label={{ label: t("editor:shouldInvalidateTranslations") }}
+                  Label={{
+                    label: t("shouldInvalidateTranslations"),
+                  }}
                   component={CheckboxWithLabel}
                 />
               ) : null}
@@ -217,7 +219,7 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
             <Field
               type="string"
               name="placeholder"
-              label={t("editor:placeholder")}
+              label={t("placeholder")}
               component={TextField}
               fullWidth
               multiline
@@ -227,7 +229,7 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
               <Field
                 type="string"
                 name="swissGerman.text_field"
-                label={t("editor:swissGerman")}
+                label={t("swissGerman")}
                 component={TextField}
                 fullWidth
                 multiline
@@ -238,7 +240,7 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
               <Field
                 type="string"
                 name="german.text_field"
-                label={t("editor:german")}
+                label={t("german")}
                 component={TextField}
                 fullWidth
                 multiline
