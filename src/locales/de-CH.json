@@ -108,6 +108,7 @@
   },
   "setupWizard": {
     "title": "Benutzer einrichten",
+    "chooseGeneralSettings": "Allgemeine Einstellungen",
     "chooseDisplayName": "Wähle deinen Benutzername",
     "chooseLanguages": "Sprachen auswählen",
     "translatorLanguages": "Wähle deine Übersetzungssprachen aus",
