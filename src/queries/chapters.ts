@@ -44,8 +44,14 @@ export const WORD_FRAGMENT = gql`
 
 export const WORDGROUP_FRAGMENT = gql`
   fragment WordgroupParts on api_wordgroup {
-    parentChapterId: fk_chapter_id
+    chapterId: fk_chapter_id
     id
+    titles {
+      title
+      language {
+        name
+      }
+    }
     words {
       id
       word {
@@ -121,6 +127,9 @@ export const GET_CHAPTER_WORDGROUPS_BY_CHAPTER_ID = gql`
   subscription subscribeChaptersWordGroupsByChapterId($id: uuid!) {
     chapters: api_chapter_by_pk(id: $id) {
       id
+      languages {
+        title
+      }
       wordgroups {
         ...WordgroupParts
       }

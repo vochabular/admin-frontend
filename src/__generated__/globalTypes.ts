@@ -198,7 +198,6 @@ export enum api_profile_update_column {
  * unique or primary key constraints on table "api_text"
  */
 export enum api_text_constraint {
-  api_text_master_translation_id_key = "api_text_master_translation_id_key",
   api_text_pkey = "api_text_pkey",
 }
 
@@ -209,7 +208,7 @@ export enum api_text_update_column {
   created = "created",
   fk_component_id = "fk_component_id",
   id = "id",
-  master_translation_id = "master_translation_id",
+  placeholder = "placeholder",
   translatable = "translatable",
   updated = "updated",
 }
@@ -247,6 +246,23 @@ export enum api_word_constraint {
  */
 export enum api_word_update_column {
   created = "created",
+  id = "id",
+  updated = "updated",
+}
+
+/**
+ * unique or primary key constraints on table "api_wordgroup"
+ */
+export enum api_wordgroup_constraint {
+  api_wordgroup_pkey = "api_wordgroup_pkey",
+}
+
+/**
+ * update columns of table "api_wordgroup"
+ */
+export enum api_wordgroup_update_column {
+  created = "created",
+  fk_chapter_id = "fk_chapter_id",
   id = "id",
   updated = "updated",
 }
@@ -428,6 +444,7 @@ export interface api_chapter_bool_exp {
   parentChapter?: api_chapter_bool_exp | null;
   subChapters?: api_chapter_bool_exp | null;
   updated?: timestamptz_comparison_exp | null;
+  wordgroups?: api_wordgroup_bool_exp | null;
 }
 
 /**
@@ -446,6 +463,7 @@ export interface api_chapter_insert_input {
   parentChapter?: api_chapter_obj_rel_insert_input | null;
   subChapters?: api_chapter_arr_rel_insert_input | null;
   updated?: any | null;
+  wordgroups?: api_wordgroup_arr_rel_insert_input | null;
 }
 
 /**
@@ -945,8 +963,7 @@ export interface api_text_bool_exp {
   created?: timestamptz_comparison_exp | null;
   fk_component_id?: uuid_comparison_exp | null;
   id?: uuid_comparison_exp | null;
-  masterTranslation?: api_translation_bool_exp | null;
-  master_translation_id?: uuid_comparison_exp | null;
+  placeholder?: String_comparison_exp | null;
   translatable?: Boolean_comparison_exp | null;
   translations?: api_translation_bool_exp | null;
   updated?: timestamptz_comparison_exp | null;
@@ -959,8 +976,7 @@ export interface api_text_insert_input {
   created?: any | null;
   fk_component_id?: any | null;
   id?: any | null;
-  masterTranslation?: api_translation_obj_rel_insert_input | null;
-  master_translation_id?: any | null;
+  placeholder?: string | null;
   translatable?: boolean | null;
   translations?: api_translation_arr_rel_insert_input | null;
   updated?: any | null;
@@ -1015,14 +1031,6 @@ export interface api_translation_insert_input {
 }
 
 /**
- * input type for inserting object relation for remote table "api_translation"
- */
-export interface api_translation_obj_rel_insert_input {
-  data: api_translation_insert_input;
-  on_conflict?: api_translation_on_conflict | null;
-}
-
-/**
  * on conflict condition type for table "api_translation"
  */
 export interface api_translation_on_conflict {
@@ -1042,6 +1050,7 @@ export interface api_word_bool_exp {
   id?: uuid_comparison_exp | null;
   translations?: api_wordtranslation_bool_exp | null;
   updated?: timestamptz_comparison_exp | null;
+  wordgroup_words?: api_wordgroup_words_bool_exp | null;
 }
 
 /**
@@ -1052,6 +1061,7 @@ export interface api_word_insert_input {
   id?: any | null;
   translations?: api_wordtranslation_arr_rel_insert_input | null;
   updated?: any | null;
+  wordgroup_words?: api_wordgroup_words_arr_rel_insert_input | null;
 }
 
 /**
@@ -1072,6 +1082,30 @@ export interface api_word_on_conflict {
 }
 
 /**
+ * input type for inserting array relation for remote table "api_wordgroup"
+ */
+export interface api_wordgroup_arr_rel_insert_input {
+  data: api_wordgroup_insert_input[];
+  on_conflict?: api_wordgroup_on_conflict | null;
+}
+
+/**
+ * Boolean expression to filter rows from the table "api_wordgroup". All fields are combined with a logical 'AND'.
+ */
+export interface api_wordgroup_bool_exp {
+  _and?: (api_wordgroup_bool_exp | null)[] | null;
+  _not?: api_wordgroup_bool_exp | null;
+  _or?: (api_wordgroup_bool_exp | null)[] | null;
+  chapter?: api_chapter_bool_exp | null;
+  created?: timestamptz_comparison_exp | null;
+  fk_chapter_id?: uuid_comparison_exp | null;
+  id?: uuid_comparison_exp | null;
+  titles?: api_wordgrouptitle_bool_exp | null;
+  updated?: timestamptz_comparison_exp | null;
+  words?: api_wordgroup_words_bool_exp | null;
+}
+
+/**
  * input type for inserting data into table "api_wordgroup"
  */
 export interface api_wordgroup_insert_input {
@@ -1082,6 +1116,15 @@ export interface api_wordgroup_insert_input {
   titles?: api_wordgrouptitle_arr_rel_insert_input | null;
   updated?: any | null;
   words?: api_wordgroup_words_arr_rel_insert_input | null;
+}
+
+/**
+ * on conflict condition type for table "api_wordgroup"
+ */
+export interface api_wordgroup_on_conflict {
+  constraint: api_wordgroup_constraint;
+  update_columns: api_wordgroup_update_column[];
+  where?: api_wordgroup_bool_exp | null;
 }
 
 /**

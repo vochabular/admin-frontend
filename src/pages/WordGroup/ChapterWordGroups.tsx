@@ -18,7 +18,6 @@ import {
 } from "../../queries/__generated__/subscribeChaptersWordGroupsByChapterId";
 import WordGroupCard from "../../components/WordGroupCard";
 import LinkCard from "../../components/LinkCard";
-import { GET_CHAPTER_BY_ID } from "queries/chapters";
 
 interface WordGroupRouterProps {
   id: string;
@@ -41,10 +40,11 @@ const ChapterWordGroups = ({ classes, match }: Props) => {
   // Note: MUI links together with react-router-dom and Typescript are a bit tricky due to their dynamic nature
   // See the discussion and provided solutions here... https://github.com/mui-org/material-ui/issues/7877
   // <Button component={Link} {...{ to: "/about" } as any} />
+
   let chapter_name =
-    data && data.chapter
-      ? `${data.chapter.titleDE} / ${data.chapter.titleCH}`
-      : "";
+    data && data.chapters && data.chapters.languages && data.chapters.languages.length ?
+      data.chapters.languages.map((language) => language.title) : "";
+
   return <Section title={t("wordGroups:wordGroupsChapter") + ` ${chapter_name}`}>
     <SectionCardContainer>
       <BusyOrErrorCard
