@@ -1,18 +1,24 @@
 import * as React from "react";
-import { Formik, Form, Field, FieldArray } from "formik";
+import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import { useTranslation } from "react-i18next";
-import { TextField, Select } from "formik-material-ui";
+import { Select } from "formik-material-ui";
+import { useSubscription } from "@apollo/react-hooks";
 
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { Theme } from "@material-ui/core/styles";
-import { Grid, MenuItem } from "@material-ui/core";
+import { MenuItem } from "@material-ui/core";
 
 import BaseComponent, {
   BaseComponentProps,
-  BaseSettingsProps
+  BaseSettingsProps,
 } from "../../BaseComponent";
 import Text from "components/Text";
+import { GET_ALL_CHARACTERS } from "queries/characters";
+import { getAllCharacters } from "queries/__generated__/getAllCharacters";
+
+interface DialogSettingsData {
+  characters: String[];
+}
 
 /**
  * Validation Schema definition of the input fields of this component
@@ -31,59 +37,44 @@ export const DialogSettings = React.forwardRef<any, DialogSettingsProps>(
   (props, ref) => {
     const { data, onSubmit } = props;
 
-    const translations = (data.texts[0] && data.texts[0].translations) || [];
+    // The "settings" JSONB field
+    const { data: settingsData } = data;
 
-    const { t } = useTranslation();
+    const { characters: dialogCharacters = [] } = settingsData;
+    const { data: allCharacterData, loading } = useSubscription<
+      getAllCharacters
+    >(GET_ALL_CHARACTERS);
+
+    const handleCharacterSave = ({ characters }: DialogSettingsData) => {
+      const newSettingsData = { ...settingsData, characters };
+      onSubmit({ settingsData: newSettingsData });
+    };
 
     return (
       <Formik
-        initialValues={{ translations }}
+        ref={ref}
+        initialValues={{
+          characters: dialogCharacters.length ? dialogCharacters : [],
+        }}
         validationSchema={DialogSchema}
-        onSubmit={(values, actions) => onSubmit({})}
+        onSubmit={handleCharacterSave}
       >
-        {props => (
+        {(props) => (
           <Form>
-            <FieldArray
-              name="translations"
-              render={arrayHelpers => (
-                <>
-                  {translations.map((trans, idx) => (
-                    <Grid
-                      item
-                      container
-                      spacing={2}
-                      key={trans.language.id}
-                      alignItems="stretch"
-                      //justify="center"
-                    >
-                      <Grid item>
-                        <Field
-                          name={`translations[${idx}].language.code`}
-                          label={t("editor:Language")}
-                          component={Select}
-                          disabled={true}
-                        >
-                          <MenuItem value="de">Deutsch</MenuItem>
-                          <MenuItem value="ch">Schweizerdeutsch</MenuItem>
-                          {/* TODO(df): Does that need to come dynamically?*/}
-                          <MenuItem value="en">English</MenuItem>
-                        </Field>
-                      </Grid>
-                      <Grid item>
-                        <Field
-                          name={`translations[${idx}].text_field`}
-                          label={t("editor:Dialog")}
-                          helperText={t("editor:DialogHelper")}
-                          component={TextField}
-                          margin="normal"
-                          fullWidth
-                        />
-                      </Grid>
-                    </Grid>
-                  ))}
-                </>
-              )}
-            />
+            <Field
+              type="text"
+              name="characters"
+              component={Select}
+              multiple={true}
+              disabled={loading}
+            >
+              {allCharacterData &&
+                allCharacterData.characters.map((c) => (
+                  <MenuItem key={c.id} value={c.id}>
+                    {`${c.informalName} - ${c.formalName} - ${c.speaker}`}
+                  </MenuItem>
+                ))}
+            </Field>
           </Form>
         )}
       </Formik>
@@ -92,7 +83,7 @@ export const DialogSettings = React.forwardRef<any, DialogSettingsProps>(
 );
 
 const useStyles = makeStyles((theme: Theme) => ({
-  container: { margin: 10, backgroundColor: "red" }
+  container: { margin: 10 },
 }));
 
 export interface DialogComponentProps extends BaseComponentProps {}
@@ -100,15 +91,35 @@ export interface DialogComponentProps extends BaseComponentProps {}
 /**
  * How the component should get rendered in the editor
  */
-const DialogComponent = ({ data, ...otherProps }: DialogComponentProps) => {
+const DialogComponent = ({
+  data,
+  childrenData,
+  ...otherProps
+}: DialogComponentProps) => {
   const classes = useStyles();
+  const numberOfCharacters = data?.data?.characters?.length || 0;
   const preview = (
-    <Text translate={false} className={classes.container}>
-      Dialog mit 2 Sprechern
-    </Text>
+    <>
+      <Text
+        className={classes.container}
+        translationOptions={{ count: numberOfCharacters }}
+      >
+        characterWithCount
+      </Text>
+    </>
   );
 
-  return <BaseComponent preview={preview} data={data} {...otherProps} />;
+  return (
+    <BaseComponent
+      preview={preview}
+      data={data}
+      childrenData={{
+        ...childrenData,
+        characters: data?.data?.characters || [],
+      }}
+      {...otherProps}
+    />
+  );
 };
 
 export default DialogComponent;

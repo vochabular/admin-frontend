@@ -1,11 +1,13 @@
 import * as React from "react";
 
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { Theme } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) => ({
-  container: {}
+  container: {
+    padding: theme.spacing(1)
+  }
 }));
 
 interface Props {
@@ -13,7 +15,7 @@ interface Props {
 }
 
 const ComponentBody = ({ content }: Props) => {
-  const classes = useStyles({});
+  const classes = useStyles();
 
   if (!content) return null;
 

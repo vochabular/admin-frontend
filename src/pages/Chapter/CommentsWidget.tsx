@@ -13,6 +13,18 @@ import { Tabs, Tab } from "@material-ui/core";
 import DiscussionList from "components/DiscussionList";
 import { GET_ACTIVE_COMMENTS, GET_ALL_COMMENTS } from "queries/comments";
 
+interface ITabPanelProps {
+  value: Number;
+  index: Number;
+  children?: React.ReactNode;
+}
+
+const TabPanel = ({ value, index, children }: ITabPanelProps) => {
+
+  return (value === index) ? <>{children}</> : null;
+}
+
+
 const styles = (theme: Theme) =>
   createStyles({
     header: {
@@ -41,14 +53,18 @@ const CommentsWidget = ({ classes, theme }: Props) => {
         <Tab label={t("active")} />
         <Tab label={t("all")} />
       </Tabs>
+      <TabPanel value={activeCommentTab} index={0}>
       <DiscussionList
         query={GET_ACTIVE_COMMENTS}
         variables={"TODO: FILTER BY Active AND Context"}
       />
+      </TabPanel>
+      <TabPanel value={activeCommentTab} index={1}>
       <DiscussionList
         query={GET_ALL_COMMENTS}
-        variables={"TODO: ALL (WITH CONTEXT...)"}
+        variables={"TODO: FILTER BY Active AND Context"}
       />
+      </TabPanel>
     </Paper>
   );
 };

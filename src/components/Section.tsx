@@ -5,7 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import { withTheme, WithTheme, Color } from "@material-ui/core";
 import { Theme } from "@material-ui/core/styles/createMuiTheme";
 import Paper from "@material-ui/core/Paper";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme: Theme) => ({
   header: (greyScale: number) => ({

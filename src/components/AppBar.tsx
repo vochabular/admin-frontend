@@ -1,7 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 
-import { withStyles, WithStyles } from "@material-ui/styles";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import AppBarMui from "@material-ui/core/AppBar";

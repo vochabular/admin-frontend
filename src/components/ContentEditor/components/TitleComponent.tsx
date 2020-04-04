@@ -6,13 +6,13 @@ import { TextField, CheckboxWithLabel } from "formik-material-ui";
 import { cloneDeep } from "lodash-es";
 import i18next from "i18next";
 
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { Theme } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 
 import BaseComponent, {
   BaseComponentProps,
-  BaseSettingsProps
+  BaseSettingsProps,
 } from "../BaseComponent";
 import { LanguageContext } from "theme";
 import Diff from "helper/Diff";
@@ -20,10 +20,10 @@ import {
   ICrudTextOperations,
   ICrudTranslationOperations,
   IText,
-  ITranslation
+  ITranslation,
 } from "../Settings";
 import MultiTranslationText from "components/MultiTranslationText";
-import { transformTranslations } from "./TextComponent";
+import { transformTranslations } from "helper/translations";
 
 interface ITitleSettingsFormFields {
   isSwissGerman: boolean;
@@ -46,13 +46,13 @@ const TitleSchema = Yup.object().shape({
   swissGerman: Yup.object().when("isSwissGerman", {
     is: true,
     then: Yup.string().required(i18next.t("required")),
-    otherwise: Yup.string()
+    otherwise: Yup.string(),
   }),
   german: Yup.object().when("isSwissGerman", {
     is: true,
     then: Yup.string().required(i18next.t("required")),
-    otherwise: Yup.string()
-  })
+    otherwise: Yup.string(),
+  }),
 });
 
 export interface TitleSettingsProps extends BaseSettingsProps {}
@@ -63,7 +63,7 @@ export interface TitleSettingsProps extends BaseSettingsProps {}
 export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
   (props, ref) => {
     const { data, onSubmit } = props;
-    const { t } = useTranslation();
+    const { t } = useTranslation("chapterEditor");
 
     // Hack: Since this is a 1:n relation, but we should only have one text for each title
     const translations = (data.texts[0] && data.texts[0].translations) || [];
@@ -77,11 +77,11 @@ export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
       swissGerman: swissGerman || {
         text_field: "",
         valid: false,
-        languageCode: "ch"
+        languageCode: "ch",
       },
       german: german || { text_field: "", valid: false, languageCode: "de" },
       shouldInvalidateTranslations:
-        (data.texts[0] && data.texts[0].translatable) || true
+        (data.texts[0] && data.texts[0].translatable) || true,
     };
 
     function handleTitleSave(values: ITitleSettingsFormFields, actions: any) {
@@ -102,7 +102,7 @@ export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
         if (
           values.isSwissGerman &&
           result.updated.find(
-            r => r.path[0] === "swissGerman" || r.path[0] === "isSwissGerman"
+            (r) => r.path[0] === "swissGerman" || r.path[0] === "isSwissGerman"
           )
         ) {
           text.translations.push(values.swissGerman);
@@ -111,21 +111,21 @@ export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
         if (
           values.isGerman &&
           result.updated.find(
-            r => r.path[0] === "german" || r.path[0] === "isGerman"
+            (r) => r.path[0] === "german" || r.path[0] === "isGerman"
           )
         ) {
           text.translations.push(values.german);
         }
 
         // Additionally, also the case of disabled flags need to be covered
-        result.updated.forEach(i => {
+        result.updated.forEach((i) => {
           switch (i.path[0]) {
             // If the flag value has changed to false, then add this translation to the delete object
             case "isSwissGerman":
             case "isGerman":
               if (!i.val) {
                 const originalTranslation = data.texts[0].translations.find(
-                  t =>
+                  (t) =>
                     t.language.id ===
                     (i.path[0] === "isSwissGerman"
                       ? LanguageContext.ch
@@ -175,24 +175,24 @@ export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
               <Grid container item alignItems="flex-start">
                 <Field
                   name={`isSwissGerman`}
-                  Label={{ label: t("editor:swissGerman") }}
+                  Label={{ label: t("swissGerman") }}
                   component={CheckboxWithLabel}
                 />
                 <Field
                   name={`isGerman`}
-                  Label={{ label: t("editor:german") }}
+                  Label={{ label: t("german") }}
                   component={CheckboxWithLabel}
                 />
                 <Field
                   name={`isNative`}
-                  Label={{ label: t("editor:translatable") }}
+                  Label={{ label: t("translatable") }}
                   component={CheckboxWithLabel}
                 />
 
                 {nativeLanguages && nativeLanguages.length ? (
                   <Field
                     name={`shouldInvalidateTranslations`}
-                    Label={{ label: t("editor:shouldInvalidateTranslations") }}
+                    Label={{ label: t("shouldInvalidateTranslations") }}
                     component={CheckboxWithLabel}
                   />
                 ) : null}
@@ -200,7 +200,7 @@ export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
               <Grid item>
                 <Field
                   name={`swissGerman.text_field`}
-                  label={t("editor:swissGerman")}
+                  label={t("swissGerman")}
                   component={TextField}
                   margin="normal"
                   fullWidth
@@ -208,7 +208,7 @@ export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
                 />
                 <Field
                   name={`german.text_field`}
-                  label={t("editor:german")}
+                  label={t("german")}
                   component={TextField}
                   margin="normal"
                   fullWidth
@@ -226,7 +226,7 @@ export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
     //
-  }
+  },
 }));
 
 interface TitleComponentProps extends BaseComponentProps {}

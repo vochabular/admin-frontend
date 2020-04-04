@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Theme } from "@material-ui/core/styles/createMuiTheme";
-import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
+import { withStyles, WithStyles, createStyles } from "@material-ui/core/styles";
 
 import CircularProgress from "@material-ui/core/CircularProgress";
 

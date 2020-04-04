@@ -25,6 +25,7 @@ import {
   GET_ALL_COMPONENTTYPES,
   GET_COMPONENTTYPE_BY_ID
 } from "queries/componentTypes";
+
 import BusyOrErrorCard from "components/BusyOrErrorCard";
 import {
   getAllComponentTypes,
@@ -103,7 +104,7 @@ const ComponentTypeItem = ({
     >
       <CardContent>
         <Typography color="textSecondary" gutterBottom>
-          {item.name}
+          {item.label}
         </Typography>
         <Icon>{item.icon}</Icon>
       </CardContent>
@@ -188,9 +189,9 @@ const ComponentSelectorWithData = ({
                                 snapshot={snapshot}
                                 {...otherProps}
                               />
-                              {/* react-beautiful-dnd unfortunately does not support Copy & Clone.
-                          See here for the workaround with this "Clone":
-                          https://github.com/atlassian/react-beautiful-dnd/issues/216#issuecomment-423708497
+                              {/* react-beautiful-dnd unfortunately does not support Copy & Clone. 
+                          See here for the workaround with this "Clone": 
+                          https://github.com/atlassian/react-beautiful-dnd/issues/216#issuecomment-423708497  
                           */}
                               {snapshot.isDragging && (
                                 <ComponentTypeItem

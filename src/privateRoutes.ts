@@ -37,7 +37,7 @@ export const mainRoutes: IPrivateRouteConfig[] = [
     exact: true,
     label: "dashboard",
     icon: DashboardIcon,
-    path: "/"
+    path: "/",
   },
   {
     showInDrawer: false,
@@ -45,7 +45,7 @@ export const mainRoutes: IPrivateRouteConfig[] = [
     component: Chapter,
     exact: false, // TODO: Unfortunately, this doesn't match even if set to false, so we have to include it twice
     path:
-      "/chapters/:chapterId/(subChapterId)?/:subChapterId?/(action)?/:action?"
+      "/chapters/:chapterId/(subChapterId)?/:subChapterId?/(action)?/:action?",
   },
   {
     showInDrawer: true,
@@ -54,45 +54,38 @@ export const mainRoutes: IPrivateRouteConfig[] = [
     exact: true,
     label: "chapters",
     icon: FormatListIcon,
-    path: "/chapters"
+    path: "/chapters",
   },
   {
     showInDrawer: true,
     allowedRoles: allUsers,
     component: WordGroups,
     exact: true,
-    label: "voCHi Liste",
+    label: "vochiList",
     icon: FormatListBulleted,
-    path: "/wordgroups"
+    path: "/wordgroups",
   },
   {
     showInDrawer: false,
     allowedRoles: allUsers,
     component: ChapterWordGroups,
     exact: true,
-    path: "/wordgroups/chapter/:id"
+    path: "/wordgroups/chapter/:id",
   },
   {
     showInDrawer: false,
     allowedRoles: allUsers,
     component: WordGroup,
     exact: true,
-    path: "/wordgroups/:id"
+    path: "/wordgroups/:id",
   },
   {
     showInDrawer: false,
     allowedRoles: allUsers,
     component: WordEditor,
     exact: true,
-    path: "/wordgroups/:wordgroupId/word/new"
+    path: "/wordgroups/:id/add",
   },
-  {
-    showInDrawer: false,
-    allowedRoles: allUsers,
-    component: WordEditor,
-    exact: true,
-    path: "/wordgroups/:wordgroupId/word/:wordId"
-  }
 ];
 
 export const administrativeRoutes: IPrivateRouteConfig[] = [
@@ -103,13 +96,13 @@ export const administrativeRoutes: IPrivateRouteConfig[] = [
     exact: true,
     label: "settings",
     icon: SettingsIcon,
-    path: "/settings"
-  }
+    path: "/settings",
+  },
 ];
 
 export function getMainRoutes(role: Role, filterOnlyInDrawer: boolean) {
   return mainRoutes.filter(
-    e =>
+    (e) =>
       e.allowedRoles.includes(role) &&
       (filterOnlyInDrawer ? e.showInDrawer : true)
   );
@@ -120,7 +113,7 @@ export function getAdministrativeRoutes(
   filterOnlyInDrawer: boolean
 ) {
   return administrativeRoutes.filter(
-    a =>
+    (a) =>
       a.allowedRoles.includes(role) &&
       (filterOnlyInDrawer ? a.showInDrawer : true)
   );

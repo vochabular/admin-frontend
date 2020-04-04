@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -12,6 +13,16 @@ export interface getSelectedComponent_component_type_frontendWidget {
   name: string;
   label: string;
   icon: string;
+}
+
+export interface getSelectedComponent_component_type_childrenCount_aggregate {
+  __typename: "api_componenttype_aggregate_fields";
+  count: number | null;
+}
+
+export interface getSelectedComponent_component_type_childrenCount {
+  __typename: "api_componenttype_aggregate";
+  aggregate: getSelectedComponent_component_type_childrenCount_aggregate | null;
 }
 
 export interface getSelectedComponent_component_type {
@@ -28,6 +39,10 @@ export interface getSelectedComponent_component_type {
    * An object relationship
    */
   frontendWidget: getSelectedComponent_component_type_frontendWidget | null;
+  /**
+   * An aggregated array relationship
+   */
+  childrenCount: getSelectedComponent_component_type_childrenCount;
 }
 
 export interface getSelectedComponent_component_texts_translations_language {
@@ -38,7 +53,7 @@ export interface getSelectedComponent_component_texts_translations_language {
 export interface getSelectedComponent_component_texts_translations {
   __typename: "api_translation";
   id: any;
-  text_field: string;
+  text_field: string | null;
   valid: boolean;
   /**
    * An object relationship
@@ -49,6 +64,7 @@ export interface getSelectedComponent_component_texts_translations {
 export interface getSelectedComponent_component_texts {
   __typename: "api_text";
   id: any;
+  placeholder: string | null;
   translatable: boolean;
   /**
    * An array relationship
@@ -59,6 +75,8 @@ export interface getSelectedComponent_component_texts {
 export interface getSelectedComponent_component_media {
   __typename: "api_media";
   id: any;
+  type: string;
+  url: string;
 }
 
 export interface getSelectedComponent_component {

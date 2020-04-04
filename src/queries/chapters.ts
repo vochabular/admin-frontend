@@ -10,8 +10,10 @@ export const CHAPTER_HEADER_PART = gql`
     updated
     languages {
       id
+      title
       language {
         id
+        name
       }
     }
     parentChapter {
@@ -24,42 +26,6 @@ export const CHAPTER_HEADER_PART = gql`
       description
     }
   }
-`;
-
-export const WORD_FRAGMENT = gql`
-  fragment WordParts on api_word {
-    id
-    translations {
-      id
-      text
-      audio
-      exampleSentence: example_sentence
-      language {
-        code
-        name
-      }
-    }
-  }
-`;
-
-export const WORDGROUP_FRAGMENT = gql`
-  fragment WordgroupParts on api_wordgroup {
-    chapterId: fk_chapter_id
-    id
-    titles {
-      title
-      language {
-        name
-      }
-    }
-    words {
-      id
-      word {
-        ...WordParts
-      }
-    }
-  }
-  ${WORD_FRAGMENT}
 `;
 
 export const GET_CHAPTERS = gql`
@@ -110,42 +76,45 @@ export const GET_CHAPTER_BY_ID = gql`
 `;
 
 export const GET_CHAPTER_WORDGROUPS = gql`
-  subscription chapters_wordGroups {
-    chapters: api_chapter(where: { fk_belongs_to_id: { _is_null: false } }) {
-      ...ChapterHeaderParts
-      wordgroups {
-        ...WordgroupParts
+  query chapters_wordGroups {
+    chapters {
+      edges {
+        node {
+          id
+          parentChapter: fkBelongsTo {
+            id
+          }
+          wordGroups: wordgroupSet {
+            edges {
+              node {
+                id
+              }
+            }
+          }
+        }
       }
     }
   }
-  ${CHAPTER_HEADER_PART}
-  ${WORDGROUP_FRAGMENT}
-`;
-
-
-export const GET_CHAPTER_WORDGROUPS_BY_CHAPTER_ID = gql`
-  subscription subscribeChaptersWordGroupsByChapterId($id: uuid!) {
-    chapters: api_chapter_by_pk(id: $id) {
-      id
-      languages {
-        title
-      }
-      wordgroups {
-        ...WordgroupParts
-      }
-      parentChapter: fk_belongs_to_id
-        id
-      }
-    }
-    ${WORDGROUP_FRAGMENT}
 `;
 
 export const UPSERT_CHAPTER = gql`
-  mutation createChapter($input: api_chapter_insert_input!) {
-    insert_api_chapter(objects: [$input]) {
+  mutation upsertChapter(
+    $input: api_chapter_insert_input!
+    $deleteTitleIds: [uuid!]!
+  ) {
+    insert_api_chapter(
+      objects: [$input]
+      on_conflict: {
+        constraint: api_chapter_pkey
+        update_columns: [number, description]
+      }
+    ) {
       returning {
         id
       }
+    }
+    delete_api_chaptertitle(where: { id: { _in: $deleteTitleIds } }) {
+      affected_rows
     }
   }
 `;

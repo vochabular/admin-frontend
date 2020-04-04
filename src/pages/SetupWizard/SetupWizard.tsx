@@ -9,17 +9,18 @@ import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { Grid, Paper } from "@material-ui/core";
-import { withStyles, WithStyles } from "@material-ui/styles";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
 
 import { styles } from "styles";
 import PersonalSection from "pages/Settings/SettingsSection/PersonalSection";
 import AdministrativeSection from "pages/Settings/SettingsSection/AdministrativeSection";
 import NotificationSection from "pages/Settings/SettingsSection/NotificationSection";
 import { UserSetupSchema } from "pages/Settings/Settings";
-import { profile_profile } from "queries/__generated__/profile";
 import { useAuth } from "contexts/AuthContext";
 import { UPDATE_PROFILE } from "queries/users";
 import { getProfile_profiles } from "queries/__generated__/getProfile";
+import { updateProfile } from "queries/__generated__/updateProfile";
+import { update_profileVariables } from "queries/__generated__/update_profile";
 
 function getSteps() {
   return [
@@ -49,7 +50,9 @@ interface Props extends WithStyles<typeof styles> {
 function SetupWizard({ classes, profile }: Props) {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const [mutateProfile] = useMutation(UPDATE_PROFILE);
+  const [mutateProfile] = useMutation<updateProfile, update_profileVariables>(
+    UPDATE_PROFILE
+  );
 
   const [activeStep, setActiveStep] = useState(0);
 
@@ -65,18 +68,18 @@ function SetupWizard({ classes, profile }: Props) {
         lastname: values.lastname,
         roles: user && user.allowedRoles.join(","),
         currentRole: user && user.allowedRoles[0], // TODO(df): need to set this in the AuthContext, based from the userprofile query on startup...
-        language: values,
+        language: values.language,
         eventNotifications: values.eventNotifications,
         translatorLanguages:
-          // @ts-ignore
-          values.translatorLanguages && values.translatorLanguages.join(","),
+          values.translatorLanguages && values.translatorLanguages,
         setupCompleted: true
       };
       const payload = {
         profile: {
           username: user && user.email,
-          profileData: updatedProfile
-        }
+          profileData: updatedProfile,
+        },
+        email: (user && user.email) || ""
       };
       await mutateProfile({
         variables: payload

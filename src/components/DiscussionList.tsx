@@ -1,20 +1,19 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useMutation, useSubscription } from "@apollo/react-hooks";
+import { useMutation, useSubscription, useQuery } from "@apollo/react-hooks";
 import { getOperationName, DocumentNode } from "apollo-link";
-import { useSelector } from "react-redux";
 
 import {
   withStyles,
   WithStyles,
   createStyles,
-  Theme
+  Theme,
 } from "@material-ui/core/styles";
 import {
   CircularProgress,
   Typography,
   TextField,
-  Button
+  Button,
 } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 
@@ -23,22 +22,22 @@ import { subscribeAllComments } from "queries/__generated__/subscribeAllComments
 import ErrorMessage from "./ErrorMessage";
 import Discussion from "./Discussion";
 import { useAuth } from "contexts/AuthContext";
-import { TAppState } from "reducers";
-import { IContentEditorState } from "reducers/contentEditorSlice";
+import { GET_LOCAL_SELECTED_COMPONENT_ID } from "queries/component";
+import { getLocalSelectedComponent } from "queries/__generated__/getLocalSelectedComponent";
 
 const styles = (theme: Theme) =>
   createStyles({
     container: {
       padding: theme.spacing(2),
       //height: "100%",
-      backgroundColor: theme.palette.grey[500]
+      backgroundColor: theme.palette.grey[500],
       //height: "300px"
     },
     wrapper: {
       display: "flex",
       flexFlow: "column",
-      height: "100%"
-    }
+      height: "100%",
+    },
   });
 
 interface Props extends WithStyles<typeof styles> {
@@ -47,14 +46,15 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 const DiscussionList = ({ classes, query }: Props) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("chapterEditor");
   const [newComment, setNewComment] = useState("");
   const { user } = useAuth();
 
-  const { selectedComponent, currentChapterId } = useSelector<
-    TAppState,
-    IContentEditorState
-  >(state => state.contentEditor);
+  const { data: editorStateData } = useQuery<getLocalSelectedComponent>(
+    GET_LOCAL_SELECTED_COMPONENT_ID
+  );
+  const { selectedComponentId = undefined, currentChapterId } =
+    editorStateData || {};
 
   const [createComment, { loading: mutationLoading }] = useMutation(
     CREATE_COMMENT
@@ -63,7 +63,7 @@ const DiscussionList = ({ classes, query }: Props) => {
   // TODO(df): Pass variables (chapter, context) down.
   const { data, loading, error } = useSubscription<subscribeAllComments>(
     query,
-    { variables: { chapterId: currentChapterId } }
+    { variables: { chapterId: currentChapterId }, skip: !currentChapterId }
   );
   const discussions = data && data.comments;
 
@@ -81,10 +81,10 @@ const DiscussionList = ({ classes, query }: Props) => {
           active: true,
           fk_author_id: user!.userId,
           fk_parent_comment_id: null,
-          fk_component_id: selectedComponent!.id
-        }
+          fk_component_id: selectedComponentId,
+        },
       },
-      refetchQueries: [getOperationName(query) || ""]
+      refetchQueries: [getOperationName(query) || ""],
     });
     setNewComment("");
   }
@@ -94,11 +94,11 @@ const DiscussionList = ({ classes, query }: Props) => {
       {loading && <CircularProgress />}
       <ErrorMessage error={error && error.message} />
       {discussions ? (
-        discussions.map(d => <Discussion key={d.id} data={d} />)
+        discussions.map((d) => <Discussion key={d.id} data={d} />)
       ) : (
         <Typography>{t("noCommentsYet")}</Typography>
       )}
-      {selectedComponent && (
+      {selectedComponentId && (
         <>
           <TextField
             id="new-comment"

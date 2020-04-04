@@ -1,19 +1,22 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useQuery } from "@apollo/react-hooks";
 
 import {
   Grid,
   FormControlLabel,
   Checkbox,
   FormLabel,
-  FormControl
+  FormControl,
 } from "@material-ui/core";
-import { withStyles, WithStyles } from "@material-ui/styles";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
 
 import { styles } from "styles";
-import configurationJSON from "configuration.json";
 import { FieldArray } from "formik";
 import { getProfile_profiles } from "queries/__generated__/getProfile";
+import { GET_LANGUAGES } from "queries/languages";
+import { getLanguages } from "queries/__generated__/getLanguages";
+import BusyOrErrorCard from "components/BusyOrErrorCard";
 
 interface Props extends WithStyles<typeof styles> {
   values: getProfile_profiles;
@@ -21,17 +24,25 @@ interface Props extends WithStyles<typeof styles> {
 
 function AdministrativeSection({ classes, values }: Props) {
   const { t } = useTranslation();
+  const { data, loading, error } = useQuery<getLanguages>(GET_LANGUAGES);
+
+  const languages = (data && data.languages) || [];
   return (
     <Grid item>
       <FormControl>
         <FormLabel>{t("setupWizard:translatorLanguages")}</FormLabel>
+        <BusyOrErrorCard
+          error={error}
+          loading={loading}
+          showOnNoResults={false}
+        />
         <FieldArray
-          name="translatorLanguages"
-          render={arrayHelpers =>
-            configurationJSON.translatorLanguages.map(l => (
+          name={t("setupWizard:translatorLanguages")}
+          render={(arrayHelpers) =>
+            languages.map((l) => (
               <FormControlLabel
-                key={l.code}
-                label={t(l.label)}
+                key={l.id}
+                label={t(l.name)}
                 control={
                   <Checkbox
                   /*

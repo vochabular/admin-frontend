@@ -10,12 +10,9 @@ import { useTranslation } from "react-i18next";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import { styles } from "styles";
 import { subscribeWordGroups_wordGroups } from "queries/__generated__/subscribeWordGroups";
-import {subscribeChaptersWordGroupsByChapterId_chapters_wordgroups} from "../queries/__generated__/subscribeChaptersWordGroupsByChapterId";
 
 interface Props extends WithStyles<typeof styles> {
-  wordGroup:
-    | subscribeWordGroups_wordGroups
-    | subscribeChaptersWordGroupsByChapterId_chapters_wordgroups;
+  wordGroup: subscribeWordGroups_wordGroups | any;
 }
 
 const WordGroupCard = ({ classes, wordGroup }: Props) => {

@@ -1,14 +1,20 @@
 import React from "react";
 
 import Text from "./Text";
-import { subscribeChapterById_chapter_components_texts_translations } from "../queries/__generated__/subscribeChapterById";
+import {
+  subscribeChapterById_chapter_components_texts_translations,
+  subscribeChapterById_chapter_languages
+} from "../queries/__generated__/subscribeChapterById";
 import { LanguageContext } from "theme";
+import { IText } from "./Text";
 
-interface IContextText {
+interface IContextText extends IText {
   /**
    * Input an array of translations, uses then the curren'ts user native language (or set manually on the wantedLangauge prop) to render the current language
    */
-  translations: subscribeChapterById_chapter_components_texts_translations[];
+  translations:
+    | subscribeChapterById_chapter_components_texts_translations[]
+    | subscribeChapterById_chapter_languages[];
   /**
    * In case you want to override the default user settings based "native" language. I.e. "ch" for Swiss german, "de"...
    */
@@ -21,6 +27,10 @@ interface IContextText {
    * Placeholder to render if no requested translation found
    */
   placeholder?: string;
+  /**
+   * Specify the name of the field you want the value from. By default, the "text_field" of texts...
+   */
+  textField?: string;
 }
 
 /**
@@ -32,6 +42,7 @@ const ContextText = ({
   wantedLanguage,
   isColorContext = true,
   placeholder = "...",
+  textField = "text_field",
   ...otherProps
 }: IContextText) => {
   // TODO(df): Get current language. But from where? Which context?
@@ -42,7 +53,11 @@ const ContextText = ({
   const wantedTranslation =
     translations[
       translations.findIndex(
-        t =>
+        (
+          t:
+            | subscribeChapterById_chapter_components_texts_translations
+            | subscribeChapterById_chapter_languages
+        ) =>
           t.language.id === (wantedLanguage ? wantedLanguage : currentLanguage)
       )
     ];
@@ -64,9 +79,9 @@ const ContextText = ({
       {...otherProps}
     >
       {wantedTranslation &&
-      wantedTranslation.text_field &&
-      wantedTranslation.text_field.length
-        ? wantedTranslation.text_field
+      (wantedTranslation as { [key: string]: any })[textField] &&
+      (wantedTranslation as { [key: string]: any })[textField].length
+        ? (wantedTranslation as { [key: string]: any })[textField]
         : placeholder}
     </Text>
   );

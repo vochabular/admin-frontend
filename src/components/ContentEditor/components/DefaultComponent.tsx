@@ -2,7 +2,7 @@ import * as React from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { Theme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import { Grid } from "@material-ui/core";

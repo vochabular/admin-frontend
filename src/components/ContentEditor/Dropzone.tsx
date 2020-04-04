@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { Theme } from "@material-ui/core/styles/createMuiTheme";
 import { PostAddOutlined } from "@material-ui/icons";
 import Text from "components/Text";
@@ -10,8 +10,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     flex: 1,
     backgroundColor: props.color,
     padding: 20,
-    borderStyle: "dashed"
-  })
+    borderStyle: "dashed",
+  }),
 }));
 
 interface DropzoneProps {
@@ -26,7 +26,7 @@ const Dropzone = ({ color = "black" }: DropzoneProps) => {
   return (
     <div className={classes.container}>
       <PostAddOutlined />
-      <Text>addFromComponentSelector</Text>
+      <Text>chapterEditor:addFromComponentSelector</Text>
     </div>
   );
 };

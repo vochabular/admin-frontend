@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { useApolloClient } from "@apollo/react-hooks";
 
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { Theme } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 
@@ -55,8 +55,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     border: "solid",
     borderWidth: 2,
     marginBottom: theme.spacing(2),
-    borderColor: props.isSelected ? theme.palette.primary.light : "inherit"
-  })
+    borderColor: props.isSelected ? theme.palette.primary.light : "inherit",
+  }),
 }));
 
 export interface BaseComponentProps {
@@ -66,9 +66,21 @@ export interface BaseComponentProps {
   level: number;
   index: number;
   data: subscribeChapterById_chapter_components;
+  /**
+   * Can be used to pass the generic "data" property of the component down to the children (for context)
+   */
+  childrenData?: any;
   preview?: React.ReactNode;
   body?: React.ReactNode;
   selectedComponentId: string;
+  /**
+   * If true the children list will be rendered inline without a list
+   */
+  renderChildrenInline?: boolean;
+  /**
+   * If true, the component will render in a compact form (without flex 1)
+   */
+  renderCompact?: boolean;
 }
 
 /**
@@ -78,9 +90,12 @@ const BaseComponent = ({
   level,
   index,
   data,
+  childrenData,
   preview,
   body,
-  selectedComponentId
+  selectedComponentId,
+  renderChildrenInline,
+  renderCompact = false,
 }: BaseComponentProps) => {
   const isSelected = selectedComponentId === data.id || false;
   const classes = useStyles({ level, isSelected });
@@ -98,8 +113,17 @@ const BaseComponent = ({
   ).toString(16)}`;
 
   const childrenList = (
-    <ComponentList components={data.children} level={level + 1} />
+    <ComponentList
+      components={data.children}
+      level={level + 1}
+      renderChildrenInline={renderChildrenInline}
+      childrenData={childrenData}
+    />
   );
+
+  if (renderCompact) {
+    return <div onClick={handleOnComponentClick}>{body}</div>;
+  }
 
   return (
     <>
@@ -129,25 +153,27 @@ const BaseComponent = ({
               type={`${data.type.name}-${data.id}`}
             >
               {(provided, snapshot) => (
-                <div
+                <Grid
                   ref={provided.innerRef}
                   style={{
                     paddingLeft: data.children.length && 20,
                     paddingRight: data.children.length && 20,
-                    flex: 1
+                    paddingBottom: data.children.length && 20,
+                    flex: 1,
                     // display: "none"
                   }}
                   {...provided.droppableProps}
                 >
                   {childrenList}
-                  {/* TODO(df): Only display placeholder if component is selected */}
-                  {isSelected && provided.placeholder && (
-                    <Grid item>
-                      <Dropzone color={color} />
-                    </Grid>
-                  )}
+                  {isSelected &&
+                    provided.placeholder &&
+                    !!data.type.childrenCount.aggregate?.count && (
+                      <Grid item>
+                        <Dropzone color={color} />
+                      </Grid>
+                    )}
                   <div>{provided.placeholder}</div>
-                </div>
+                </Grid>
               )}
             </Droppable>
           </Grid>

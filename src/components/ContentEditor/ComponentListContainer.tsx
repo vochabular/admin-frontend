@@ -6,7 +6,7 @@ import { subscribeChapterById_chapter_components } from "queries/__generated__/s
 import { Droppable } from "react-beautiful-dnd";
 import Dropzone from "./Dropzone";
 import { TOP_LEVEL_COMPONENT_TYPE } from "./ContentEditor";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import ComponentList from "./ComponentList";
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -14,7 +14,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: "grey",
     padding: theme.spacing(5),
     overflowY: "auto",
-    height: "100%"
+    // Hack to make overflow work properly. Adjust accordingly if the header changes
+    height: "calc(100vh - 64px - 148.9px - 100px)"
   }
 }));
 

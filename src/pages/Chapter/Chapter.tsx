@@ -19,8 +19,6 @@ import SectionCardContainer from "components/SectionCardContainer";
 import { Permission } from "rbac-rules";
 import Can from "components/Can/Can";
 import { subscribeChapterById } from "queries/__generated__/subscribeChapterById";
-import { useDispatch } from "react-redux";
-import { actions } from "reducers/contentEditorSlice";
 
 interface ChapterContentProps {
   chapterId: string;
@@ -37,7 +35,6 @@ const ChapterContent = ({
   action
 }: ChapterContentProps) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
 
   // Either load directly the subchapter or else the chapter
   const { loading, data, error } = useSubscription<subscribeChapterById>(
@@ -72,7 +69,6 @@ const ChapterContent = ({
 
   // Render the subchapter screen
   if (subChapterId) {
-    dispatch(actions.setCurrentChapter(subChapterId));
     if (!action) {
       // TODO(df): Need to dynamically set "edit" to either "review", "translate" based on current role
       return <Redirect to={`${subChapterId}/edit`} />;
@@ -87,7 +83,10 @@ const ChapterContent = ({
   // Else, then render the chapter overview
   return (
     <Section
-      title={t("chapters:chapter") + ` ${data.chapter} / ${data.chapter}`}
+      title={
+        t("chapters:chapter") +
+        ` ${data.chapter.number}: ${data.chapter.description}`
+      }
     >
       <SectionCardContainer>
         {data.chapter &&

@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -12,6 +13,16 @@ export interface ComponentTypeParts_frontendWidget {
   name: string;
   label: string;
   icon: string;
+}
+
+export interface ComponentTypeParts_childrenCount_aggregate {
+  __typename: "api_componenttype_aggregate_fields";
+  count: number | null;
+}
+
+export interface ComponentTypeParts_childrenCount {
+  __typename: "api_componenttype_aggregate";
+  aggregate: ComponentTypeParts_childrenCount_aggregate | null;
 }
 
 export interface ComponentTypeParts {
@@ -28,4 +39,8 @@ export interface ComponentTypeParts {
    * An object relationship
    */
   frontendWidget: ComponentTypeParts_frontendWidget | null;
+  /**
+   * An aggregated array relationship
+   */
+  childrenCount: ComponentTypeParts_childrenCount;
 }

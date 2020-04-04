@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -9,11 +10,13 @@
 export interface subscribeChapterById_chapter_languages_language {
   __typename: "api_language";
   id: string;
+  name: string;
 }
 
 export interface subscribeChapterById_chapter_languages {
   __typename: "api_chaptertitle";
   id: any;
+  title: string;
   /**
    * An object relationship
    */
@@ -30,11 +33,13 @@ export interface subscribeChapterById_chapter_parentChapter {
 export interface subscribeChapterById_chapter_subChapters_languages_language {
   __typename: "api_language";
   id: string;
+  name: string;
 }
 
 export interface subscribeChapterById_chapter_subChapters_languages {
   __typename: "api_chaptertitle";
   id: any;
+  title: string;
   /**
    * An object relationship
    */
@@ -83,6 +88,16 @@ export interface subscribeChapterById_chapter_components_type_frontendWidget {
   icon: string;
 }
 
+export interface subscribeChapterById_chapter_components_type_childrenCount_aggregate {
+  __typename: "api_componenttype_aggregate_fields";
+  count: number | null;
+}
+
+export interface subscribeChapterById_chapter_components_type_childrenCount {
+  __typename: "api_componenttype_aggregate";
+  aggregate: subscribeChapterById_chapter_components_type_childrenCount_aggregate | null;
+}
+
 export interface subscribeChapterById_chapter_components_type {
   __typename: "api_componenttype";
   id: any;
@@ -97,6 +112,10 @@ export interface subscribeChapterById_chapter_components_type {
    * An object relationship
    */
   frontendWidget: subscribeChapterById_chapter_components_type_frontendWidget | null;
+  /**
+   * An aggregated array relationship
+   */
+  childrenCount: subscribeChapterById_chapter_components_type_childrenCount;
 }
 
 export interface subscribeChapterById_chapter_components_texts_translations_language {
@@ -107,7 +126,7 @@ export interface subscribeChapterById_chapter_components_texts_translations_lang
 export interface subscribeChapterById_chapter_components_texts_translations {
   __typename: "api_translation";
   id: any;
-  text_field: string;
+  text_field: string | null;
   valid: boolean;
   /**
    * An object relationship
@@ -118,6 +137,7 @@ export interface subscribeChapterById_chapter_components_texts_translations {
 export interface subscribeChapterById_chapter_components_texts {
   __typename: "api_text";
   id: any;
+  placeholder: string | null;
   translatable: boolean;
   /**
    * An array relationship
@@ -128,6 +148,8 @@ export interface subscribeChapterById_chapter_components_texts {
 export interface subscribeChapterById_chapter_components_media {
   __typename: "api_media";
   id: any;
+  type: string;
+  url: string;
 }
 
 export interface subscribeChapterById_chapter_components_children_type_frontendWidget {
@@ -136,6 +158,16 @@ export interface subscribeChapterById_chapter_components_children_type_frontendW
   name: string;
   label: string;
   icon: string;
+}
+
+export interface subscribeChapterById_chapter_components_children_type_childrenCount_aggregate {
+  __typename: "api_componenttype_aggregate_fields";
+  count: number | null;
+}
+
+export interface subscribeChapterById_chapter_components_children_type_childrenCount {
+  __typename: "api_componenttype_aggregate";
+  aggregate: subscribeChapterById_chapter_components_children_type_childrenCount_aggregate | null;
 }
 
 export interface subscribeChapterById_chapter_components_children_type {
@@ -152,6 +184,10 @@ export interface subscribeChapterById_chapter_components_children_type {
    * An object relationship
    */
   frontendWidget: subscribeChapterById_chapter_components_children_type_frontendWidget | null;
+  /**
+   * An aggregated array relationship
+   */
+  childrenCount: subscribeChapterById_chapter_components_children_type_childrenCount;
 }
 
 export interface subscribeChapterById_chapter_components_children_texts_translations_language {
@@ -162,7 +198,7 @@ export interface subscribeChapterById_chapter_components_children_texts_translat
 export interface subscribeChapterById_chapter_components_children_texts_translations {
   __typename: "api_translation";
   id: any;
-  text_field: string;
+  text_field: string | null;
   valid: boolean;
   /**
    * An object relationship
@@ -173,6 +209,7 @@ export interface subscribeChapterById_chapter_components_children_texts_translat
 export interface subscribeChapterById_chapter_components_children_texts {
   __typename: "api_text";
   id: any;
+  placeholder: string | null;
   translatable: boolean;
   /**
    * An array relationship
@@ -183,6 +220,8 @@ export interface subscribeChapterById_chapter_components_children_texts {
 export interface subscribeChapterById_chapter_components_children_media {
   __typename: "api_media";
   id: any;
+  type: string;
+  url: string;
 }
 
 export interface subscribeChapterById_chapter_components_children_children_type_frontendWidget {
@@ -191,6 +230,16 @@ export interface subscribeChapterById_chapter_components_children_children_type_
   name: string;
   label: string;
   icon: string;
+}
+
+export interface subscribeChapterById_chapter_components_children_children_type_childrenCount_aggregate {
+  __typename: "api_componenttype_aggregate_fields";
+  count: number | null;
+}
+
+export interface subscribeChapterById_chapter_components_children_children_type_childrenCount {
+  __typename: "api_componenttype_aggregate";
+  aggregate: subscribeChapterById_chapter_components_children_children_type_childrenCount_aggregate | null;
 }
 
 export interface subscribeChapterById_chapter_components_children_children_type {
@@ -207,6 +256,10 @@ export interface subscribeChapterById_chapter_components_children_children_type 
    * An object relationship
    */
   frontendWidget: subscribeChapterById_chapter_components_children_children_type_frontendWidget | null;
+  /**
+   * An aggregated array relationship
+   */
+  childrenCount: subscribeChapterById_chapter_components_children_children_type_childrenCount;
 }
 
 export interface subscribeChapterById_chapter_components_children_children_texts_translations_language {
@@ -217,7 +270,7 @@ export interface subscribeChapterById_chapter_components_children_children_texts
 export interface subscribeChapterById_chapter_components_children_children_texts_translations {
   __typename: "api_translation";
   id: any;
-  text_field: string;
+  text_field: string | null;
   valid: boolean;
   /**
    * An object relationship
@@ -228,6 +281,7 @@ export interface subscribeChapterById_chapter_components_children_children_texts
 export interface subscribeChapterById_chapter_components_children_children_texts {
   __typename: "api_text";
   id: any;
+  placeholder: string | null;
   translatable: boolean;
   /**
    * An array relationship
@@ -238,6 +292,8 @@ export interface subscribeChapterById_chapter_components_children_children_texts
 export interface subscribeChapterById_chapter_components_children_children_media {
   __typename: "api_media";
   id: any;
+  type: string;
+  url: string;
 }
 
 export interface subscribeChapterById_chapter_components_children_children_children_type_frontendWidget {
@@ -246,6 +302,16 @@ export interface subscribeChapterById_chapter_components_children_children_child
   name: string;
   label: string;
   icon: string;
+}
+
+export interface subscribeChapterById_chapter_components_children_children_children_type_childrenCount_aggregate {
+  __typename: "api_componenttype_aggregate_fields";
+  count: number | null;
+}
+
+export interface subscribeChapterById_chapter_components_children_children_children_type_childrenCount {
+  __typename: "api_componenttype_aggregate";
+  aggregate: subscribeChapterById_chapter_components_children_children_children_type_childrenCount_aggregate | null;
 }
 
 export interface subscribeChapterById_chapter_components_children_children_children_type {
@@ -262,6 +328,10 @@ export interface subscribeChapterById_chapter_components_children_children_child
    * An object relationship
    */
   frontendWidget: subscribeChapterById_chapter_components_children_children_children_type_frontendWidget | null;
+  /**
+   * An aggregated array relationship
+   */
+  childrenCount: subscribeChapterById_chapter_components_children_children_children_type_childrenCount;
 }
 
 export interface subscribeChapterById_chapter_components_children_children_children_texts_translations_language {
@@ -272,7 +342,7 @@ export interface subscribeChapterById_chapter_components_children_children_child
 export interface subscribeChapterById_chapter_components_children_children_children_texts_translations {
   __typename: "api_translation";
   id: any;
-  text_field: string;
+  text_field: string | null;
   valid: boolean;
   /**
    * An object relationship
@@ -283,6 +353,7 @@ export interface subscribeChapterById_chapter_components_children_children_child
 export interface subscribeChapterById_chapter_components_children_children_children_texts {
   __typename: "api_text";
   id: any;
+  placeholder: string | null;
   translatable: boolean;
   /**
    * An array relationship
@@ -293,6 +364,8 @@ export interface subscribeChapterById_chapter_components_children_children_child
 export interface subscribeChapterById_chapter_components_children_children_children_media {
   __typename: "api_media";
   id: any;
+  type: string;
+  url: string;
 }
 
 export interface subscribeChapterById_chapter_components_children_children_children_children_type_frontendWidget {
@@ -301,6 +374,16 @@ export interface subscribeChapterById_chapter_components_children_children_child
   name: string;
   label: string;
   icon: string;
+}
+
+export interface subscribeChapterById_chapter_components_children_children_children_children_type_childrenCount_aggregate {
+  __typename: "api_componenttype_aggregate_fields";
+  count: number | null;
+}
+
+export interface subscribeChapterById_chapter_components_children_children_children_children_type_childrenCount {
+  __typename: "api_componenttype_aggregate";
+  aggregate: subscribeChapterById_chapter_components_children_children_children_children_type_childrenCount_aggregate | null;
 }
 
 export interface subscribeChapterById_chapter_components_children_children_children_children_type {
@@ -317,6 +400,10 @@ export interface subscribeChapterById_chapter_components_children_children_child
    * An object relationship
    */
   frontendWidget: subscribeChapterById_chapter_components_children_children_children_children_type_frontendWidget | null;
+  /**
+   * An aggregated array relationship
+   */
+  childrenCount: subscribeChapterById_chapter_components_children_children_children_children_type_childrenCount;
 }
 
 export interface subscribeChapterById_chapter_components_children_children_children_children_texts_translations_language {
@@ -327,7 +414,7 @@ export interface subscribeChapterById_chapter_components_children_children_child
 export interface subscribeChapterById_chapter_components_children_children_children_children_texts_translations {
   __typename: "api_translation";
   id: any;
-  text_field: string;
+  text_field: string | null;
   valid: boolean;
   /**
    * An object relationship
@@ -338,6 +425,7 @@ export interface subscribeChapterById_chapter_components_children_children_child
 export interface subscribeChapterById_chapter_components_children_children_children_children_texts {
   __typename: "api_text";
   id: any;
+  placeholder: string | null;
   translatable: boolean;
   /**
    * An array relationship
@@ -348,6 +436,8 @@ export interface subscribeChapterById_chapter_components_children_children_child
 export interface subscribeChapterById_chapter_components_children_children_children_children_media {
   __typename: "api_media";
   id: any;
+  type: string;
+  url: string;
 }
 
 export interface subscribeChapterById_chapter_components_children_children_children_children {

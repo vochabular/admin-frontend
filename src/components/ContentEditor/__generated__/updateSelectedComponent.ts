@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 import { api_component_set_input } from "./../../../__generated__/globalTypes";
@@ -16,6 +17,16 @@ export interface updateSelectedComponent_update_api_component_returning_type_fro
   icon: string;
 }
 
+export interface updateSelectedComponent_update_api_component_returning_type_childrenCount_aggregate {
+  __typename: "api_componenttype_aggregate_fields";
+  count: number | null;
+}
+
+export interface updateSelectedComponent_update_api_component_returning_type_childrenCount {
+  __typename: "api_componenttype_aggregate";
+  aggregate: updateSelectedComponent_update_api_component_returning_type_childrenCount_aggregate | null;
+}
+
 export interface updateSelectedComponent_update_api_component_returning_type {
   __typename: "api_componenttype";
   id: any;
@@ -30,6 +41,10 @@ export interface updateSelectedComponent_update_api_component_returning_type {
    * An object relationship
    */
   frontendWidget: updateSelectedComponent_update_api_component_returning_type_frontendWidget | null;
+  /**
+   * An aggregated array relationship
+   */
+  childrenCount: updateSelectedComponent_update_api_component_returning_type_childrenCount;
 }
 
 export interface updateSelectedComponent_update_api_component_returning_texts_translations_language {
@@ -40,7 +55,7 @@ export interface updateSelectedComponent_update_api_component_returning_texts_tr
 export interface updateSelectedComponent_update_api_component_returning_texts_translations {
   __typename: "api_translation";
   id: any;
-  text_field: string;
+  text_field: string | null;
   valid: boolean;
   /**
    * An object relationship
@@ -51,6 +66,7 @@ export interface updateSelectedComponent_update_api_component_returning_texts_tr
 export interface updateSelectedComponent_update_api_component_returning_texts {
   __typename: "api_text";
   id: any;
+  placeholder: string | null;
   translatable: boolean;
   /**
    * An array relationship
@@ -61,6 +77,8 @@ export interface updateSelectedComponent_update_api_component_returning_texts {
 export interface updateSelectedComponent_update_api_component_returning_media {
   __typename: "api_media";
   id: any;
+  type: string;
+  url: string;
 }
 
 export interface updateSelectedComponent_update_api_component_returning {

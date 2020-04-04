@@ -5,58 +5,30 @@ import { useTranslation } from "react-i18next";
 import { TextField, CheckboxWithLabel } from "formik-material-ui";
 import { useQuery } from "@apollo/react-hooks";
 
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { Theme } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 
 import BaseComponent, {
   BaseComponentProps,
-  BaseSettingsProps
+  BaseSettingsProps,
 } from "../BaseComponent";
 import Text from "components/Text";
-import MultiTranslationText from "components/MultiTranslationText";
 import { LanguageContext } from "theme";
-import { getSelectedComponent_component_texts_translations } from "queries/__generated__/getSelectedComponent";
 import { getLocalEditorLanguage } from "queries/__generated__/getLocalEditorLanguage";
 import { GET_LOCAL_EDITOR_LANGUAGE } from "queries/component";
 import {
   ITranslation,
   ICrudTextOperations,
   ICrudTranslationOperations,
-  IText
+  IText,
 } from "../Settings";
 import Diff from "helper/Diff";
 import { cloneDeep } from "lodash-es";
-
-/**
- * Transforms an array of translations into an object with SwissGerman, German and all native langauges in an array
- * @param translations
- */
-export function transformTranslations(
-  translations: getSelectedComponent_component_texts_translations[],
-  currentNativeLanguage?: string
-) {
-  const swissGerman =
-    translations &&
-    translations.find(t => t.language.id === LanguageContext.ch);
-  const german =
-    translations &&
-    translations.find(t => t.language.id === LanguageContext.de);
-  const currentNativeTranslation =
-    currentNativeLanguage &&
-    translations &&
-    translations.find(t => t.language.id === currentNativeLanguage);
-  const nativeLanguages =
-    (translations &&
-      translations.filter(
-        t =>
-          !([LanguageContext.ch, LanguageContext.de] as string[]).includes(
-            t.language.id
-          )
-      )) ||
-    [];
-  return { swissGerman, german, nativeLanguages, currentNativeTranslation };
-}
+import ContextText from "components/ContextText";
+import LanguageBadges from "components/LanguageBadges";
+import { transformTranslations } from "helper/translations";
+import i18next from "i18next";
 
 /**
  * Type for form field of the settings widget of the text component
@@ -65,9 +37,9 @@ interface ITextSettingsFormFields {
   isSwissGerman: boolean;
   isGerman: boolean;
   isNative: boolean;
+  placeholder: string;
   swissGerman: ITranslation;
   german: ITranslation;
-  native: ITranslation;
   shouldInvalidateTranslations?: boolean;
   [key: string]: any;
 }
@@ -76,7 +48,20 @@ interface ITextSettingsFormFields {
  * Validation Schema definition of the input fields of this component
  */
 const TextSchema = Yup.object().shape({
-  isNative: Yup.boolean()
+  isSwissGerman: Yup.boolean(),
+  isGerman: Yup.boolean(),
+  isNative: Yup.boolean(),
+  swissGerman: Yup.object().when("isSwissGerman", {
+    is: true,
+    then: Yup.string().required(i18next.t("required")),
+    otherwise: Yup.string(),
+  }),
+  german: Yup.object().when("isSwissGerman", {
+    is: true,
+    then: Yup.string().required(i18next.t("required")),
+    otherwise: Yup.string(),
+  }),
+  placeholder: Yup.string(),
 });
 
 interface TextSettingsProps extends BaseSettingsProps {}
@@ -88,7 +73,7 @@ interface TextSettingsProps extends BaseSettingsProps {}
 export const TextSettings = React.forwardRef<any, TextSettingsProps>(
   (props, ref) => {
     const { data, onSubmit } = props;
-    const { t } = useTranslation();
+    const { t } = useTranslation("chapterEditor");
 
     const { data: editorLanguageData } = useQuery<getLocalEditorLanguage>(
       GET_LOCAL_EDITOR_LANGUAGE
@@ -97,12 +82,7 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
       editorLanguageData && editorLanguageData.contentEditorLanguage;
 
     const text = (data && data.texts[0]) || {};
-    const {
-      german,
-      swissGerman,
-      nativeLanguages,
-      currentNativeTranslation
-    } = transformTranslations(
+    const { german, swissGerman, nativeLanguages } = transformTranslations(
       text.translations,
       ((editorLanguage as unknown) as string) || "en"
     );
@@ -111,22 +91,18 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
       isGerman: !!german,
       isSwissGerman: !!swissGerman,
       isNative: text.translatable || false,
+      placeholder: text.placeholder || swissGerman?.text_field || "",
       german: german || {
         text_field: "",
         valid: false,
-        languageCode: "de"
+        languageCode: "de",
       },
       swissGerman: swissGerman || {
         text_field: "",
         valid: false,
-        languageCode: "ch"
+        languageCode: "ch",
       },
-      native: currentNativeTranslation || {
-        text_field: "",
-        valid: false,
-        languageCode: editorLanguage
-      },
-      shouldInvalidateTranslations: false
+      shouldInvalidateTranslations: false,
     };
 
     function handleTextSave(values: ITextSettingsFormFields, actions: any) {
@@ -142,12 +118,13 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
         let text: IText = cloneDeep(data.texts[0]) || {};
         // Initialize the nested translations empty, since we only need to specify those that need to get upserted.
         text.translations = [];
+        text.placeholder = values.placeholder;
 
         // IF flag is active AND value or flag has changed, then we need to upsert the swissGerman translation
         if (
           values.isSwissGerman &&
           result.updated.find(
-            r => r.path[0] === "swissGerman" || r.path[0] === "isSwissGerman"
+            (r) => r.path[0] === "swissGerman" || r.path[0] === "isSwissGerman"
           )
         ) {
           text.translations.push(values.swissGerman);
@@ -156,29 +133,25 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
         if (
           values.isGerman &&
           result.updated.find(
-            r => r.path[0] === "german" || r.path[0] === "isGerman"
+            (r) => r.path[0] === "german" || r.path[0] === "isGerman"
           )
         ) {
           text.translations.push(values.german);
-        }
-        if (
-          values.isNative &&
-          result.updated.find(
-            r => r.path[0] === editorLanguage || r.path[0] === "isNative"
-          )
-        ) {
-          text.translations.push(values.native);
+          // Also, if the placeholder is empty, we want to fill it with the german value!
+          if (!text.placeholder && !values.placeholder) {
+            text.placeholder = values.german.text_field;
+          }
         }
 
         // Additionally, also the case of disabled flags need to be covered
-        result.updated.forEach(i => {
+        result.updated.forEach((i) => {
           switch (i.path[0]) {
             // If the flag value has changed to false, then add this translation to the delete object
             case "isSwissGerman":
             case "isGerman":
               if (!i.val) {
                 const originalTranslation = data.texts[0].translations.find(
-                  t =>
+                  (t) =>
                     t.language.id ===
                     (i.path[0] === "isSwissGerman"
                       ? LanguageContext.ch
@@ -188,7 +161,6 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
               }
               break;
             case "isNative":
-              console.log(result);
               const { isNative } = values;
               text.translatable = isNative;
 
@@ -216,57 +188,63 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
         validationSchema={TextSchema}
         onSubmit={handleTextSave}
       >
-        {props => (
+        {(props) => (
           <Form>
             <Grid container item alignItems="flex-start">
               <Field
                 name={`isSwissGerman`}
-                Label={{ label: t("editor:swissGerman") }}
+                Label={{ label: t("swissGerman") }}
                 component={CheckboxWithLabel}
               />
               <Field
                 name={`isGerman`}
-                Label={{ label: t("editor:german") }}
+                Label={{ label: t("german") }}
                 component={CheckboxWithLabel}
               />
               <Field
                 name={`isNative`}
-                Label={{ label: t("editor:translatable") }}
+                Label={{ label: t("translatable") }}
                 component={CheckboxWithLabel}
               />
               {nativeLanguages && nativeLanguages.length ? (
                 <Field
                   name={`shouldInvalidateTranslations`}
-                  Label={{ label: t("editor:shouldInvalidateTranslations") }}
+                  Label={{
+                    label: t("shouldInvalidateTranslations"),
+                  }}
                   component={CheckboxWithLabel}
                 />
               ) : null}
             </Grid>
+            <Field
+              type="string"
+              name="placeholder"
+              label={t("placeholder")}
+              component={TextField}
+              fullWidth
+              multiline
+              rowsMax="4"
+            />
             {props.values.isSwissGerman && (
               <Field
                 type="string"
                 name="swissGerman.text_field"
-                label={t("editor:swissGerman")}
+                label={t("swissGerman")}
                 component={TextField}
                 fullWidth
+                multiline
+                rowsMax="4"
               />
             )}
             {props.values.isGerman && (
               <Field
                 type="string"
                 name="german.text_field"
-                label={t("editor:german")}
+                label={t("german")}
                 component={TextField}
                 fullWidth
-              />
-            )}
-            {props.values.isNative && (
-              <Field
-                type="string"
-                name="native.text_field"
-                label={editorLanguage}
-                component={TextField}
-                fullWidth
+                multiline
+                rowsMax="4"
               />
             )}
           </Form>
@@ -277,24 +255,70 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
 );
 
 const useStyles = makeStyles((theme: Theme) => ({
-  container: {
-    border: "dashed"
-  }
+  container: {},
+  compactContainer: {
+    border: "groove",
+    borderRadius: 0.5,
+    // padding: theme.spacing(2),
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+    backgroundColor: "white",
+  },
 }));
+
+interface PlaceholderOrContextTextProps {
+  text: any;
+  isColorContext?: boolean;
+}
+const PlaceholderOrContextText = ({
+  text,
+  isColorContext,
+}: PlaceholderOrContextTextProps) => {
+  if (text?.placeholder) {
+    return <Text translate={false}>{text.placeholder}</Text>;
+  }
+  return (
+    <ContextText
+      translations={text?.translations || []}
+      wantedLanguage="ch"
+      isColorContext={isColorContext}
+    />
+  );
+};
 
 interface TextComponentProps extends BaseComponentProps {}
 
 /**
  * How the component should get rendered in the editor:
  */
-const TextComponent = ({ data, ...otherProps }: TextComponentProps) => {
+const TextComponent = ({
+  data,
+  renderCompact,
+  ...otherProps
+}: TextComponentProps) => {
+  const classes = useStyles();
   const text = data && data.texts && data.texts[0];
   const preview = (
-    <Grid item container direction="row">
-      <MultiTranslationText text={text} />
+    <Grid item container direction="row" className={classes.container}>
+      <LanguageBadges text={text} />
     </Grid>
   );
-  const body = <Text>Hello text!</Text>;
+  const body = <PlaceholderOrContextText text={text} />;
+  if (renderCompact) {
+    const compactBody = (
+      <div className={classes.compactContainer}>
+        <PlaceholderOrContextText text={text} isColorContext />
+      </div>
+    );
+    return (
+      <BaseComponent
+        data={data}
+        body={compactBody}
+        renderCompact
+        {...otherProps}
+      />
+    );
+  }
 
   return (
     <BaseComponent preview={preview} body={body} data={data} {...otherProps} />

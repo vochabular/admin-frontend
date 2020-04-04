@@ -12,6 +12,8 @@
     "administrative": "Administrative",
     "settings": "Settings",
     "dashboard": "Dashboard",
+    "chapters": "Chapters",
+    "vochiList": "voCHi List",
     "noResultsYetAvailable": "No results available yet",
     "arabic": "Arabic",
     "english": "English",
@@ -20,7 +22,9 @@
     "required": "Required!",
     "tooShort": "Too short!",
     "tooLong": "Too long!",
-    "lastSaved": "Last saved"
+    "lastSaved": "Last saved",
+    "characterWithCount": "{{ count }} character",
+    "characterWithCount_plural": "{{ count }} characters"
   },
   "chapters": {
     "chapter": "Chapter",
@@ -33,13 +37,8 @@
   "chapter": {
     "chapter": "Chapter",
     "newChapterTitle": "Create new chapter",
-    "newSubChapterTitle": "Create new subchapter for chapter",
     "chapterNumber": "Chapter number",
     "chapterNumberHelper": "The sequential (main) chapter number. For example in 'Chapter 1', then set '1'",
-    "chapterNumberTooLow": "Chapter start at 1",
-    "chapterNumberTooHigh": "Chapter number too high",
-    "subChapterNumber": "Subchapter number",
-    "subChapterNumberHelper": "The sequentiel subchapter number. For example in 'Chapter 1.3', then set '3'",
     "newChapterDescription": "Description",
     "newChapterDescriptionHelper": "The chapter description in german. For example: 'Kennenlernen'",
     "newSubChapterDescriptionHelper": "The subchapter description (in german). For example: 'Wie geht es dir? Wie geht es Ihnen?'",
@@ -48,7 +47,15 @@
     "nWordGroups": "# of word groups: "
   },
   "chapterEditor": {
-    "settingsTitle": "Settings for {{type}}"
+    "settingsTitle": "Settings for {{type}}",
+    "noCommentsYet": "No comments yet!",
+    "newComment": "Add a new comment",
+    "addFromComponentSelector": "Drop here a component type from the list above...",
+    "swissGerman": "Swiss german",
+    "german": "German",
+    "translatable": "Requires a translation",
+    "shouldInvalidateTranslations": "Invalidate existing translations",
+    "placeholder": "Text as placeholder"
   },
   "voggi": {
     "voggiList": "Voggi-List"
@@ -79,25 +86,28 @@
     "exampleSentenceCH": "Swiss German example sentence",
     "exampleSentenceCHHelper": "E.g. Iich gaa go Poschte.",
     "audioCH": "Audio file",
-    "audioCHHelper": "Swiss German audio file with spoken word and sentence",
-    "emptyWord": "No translations"
+    "audioCHHelper": "Swiss German audio file with spoken word and sentence"
   },
   "settings": {
     "title": "Settings",
-    "language": "Language",
+    "uiLanguage": "The language of the user interface",
+    "firstname": "Your first name",
+    "lastname": "Your last name",
     "currentRole": "Current active role",
     "admin": "Administrator",
     "translator": "Translator",
     "approver": "Approver",
-    "content-creator": "Content Creatror",
+    "content-creator": "Content Creator",
     "viewer": "Viewer"
   },
   "setupWizard": {
     "title": "Setup your user account",
     "chooseDisplayName": "Choose your user name",
     "chooseLanguages": "Choose your language",
+    "translatorLanguages": "Select your translating languages",
     "chooseNotifications": "Notifications",
-    "receiveNotifications": "Receive notifications",
+    "eventNotificationsTitle": "Select your notification settings",
+    "receiveEventNotifications": "Receive notifications",
     "allStepsCompletedMessage": "All steps completed - you&apos;re finished"
   }
 }

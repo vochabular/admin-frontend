@@ -1,10 +1,28 @@
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 //==============================================================
 // START Enums and Input Objects
 //==============================================================
+
+/**
+ * unique or primary key constraints on table "api_book"
+ */
+export enum api_book_constraint {
+  api_book_pkey = "api_book_pkey",
+}
+
+/**
+ * update columns of table "api_book"
+ */
+export enum api_book_update_column {
+  created = "created",
+  id = "id",
+  number = "number",
+  updated = "updated",
+}
 
 /**
  * unique or primary key constraints on table "api_chapter"
@@ -41,6 +59,30 @@ export enum api_chaptertitle_update_column {
   created = "created",
   id = "id",
   language_id = "language_id",
+  title = "title",
+  updated = "updated",
+}
+
+/**
+ * unique or primary key constraints on table "api_character"
+ */
+export enum api_character_constraint {
+  api_character_formal_name_fk_book_id_01f452af_uniq = "api_character_formal_name_fk_book_id_01f452af_uniq",
+  api_character_informal_name_fk_book_id_4ca7aa6d_uniq = "api_character_informal_name_fk_book_id_4ca7aa6d_uniq",
+  api_character_pkey = "api_character_pkey",
+}
+
+/**
+ * update columns of table "api_character"
+ */
+export enum api_character_update_column {
+  created = "created",
+  fk_book_id = "fk_book_id",
+  formal_name = "formal_name",
+  gender = "gender",
+  id = "id",
+  informal_name = "informal_name",
+  speaker = "speaker",
   title = "title",
   updated = "updated",
 }
@@ -418,6 +460,50 @@ export interface UpdateProfileInput {
 }
 
 /**
+ * Boolean expression to filter rows from the table "api_book". All fields are combined with a logical 'AND'.
+ */
+export interface api_book_bool_exp {
+  _and?: (api_book_bool_exp | null)[] | null;
+  _not?: api_book_bool_exp | null;
+  _or?: (api_book_bool_exp | null)[] | null;
+  chapters?: api_chapter_bool_exp | null;
+  characters?: api_character_bool_exp | null;
+  created?: timestamptz_comparison_exp | null;
+  id?: uuid_comparison_exp | null;
+  number?: Int_comparison_exp | null;
+  updated?: timestamptz_comparison_exp | null;
+}
+
+/**
+ * input type for inserting data into table "api_book"
+ */
+export interface api_book_insert_input {
+  chapters?: api_chapter_arr_rel_insert_input | null;
+  characters?: api_character_arr_rel_insert_input | null;
+  created?: any | null;
+  id?: any | null;
+  number?: number | null;
+  updated?: any | null;
+}
+
+/**
+ * input type for inserting object relation for remote table "api_book"
+ */
+export interface api_book_obj_rel_insert_input {
+  data: api_book_insert_input;
+  on_conflict?: api_book_on_conflict | null;
+}
+
+/**
+ * on conflict condition type for table "api_book"
+ */
+export interface api_book_on_conflict {
+  constraint: api_book_constraint;
+  update_columns: api_book_update_column[];
+  where?: api_book_bool_exp | null;
+}
+
+/**
  * input type for inserting array relation for remote table "api_chapter"
  */
 export interface api_chapter_arr_rel_insert_input {
@@ -432,6 +518,7 @@ export interface api_chapter_bool_exp {
   _and?: (api_chapter_bool_exp | null)[] | null;
   _not?: api_chapter_bool_exp | null;
   _or?: (api_chapter_bool_exp | null)[] | null;
+  book?: api_book_bool_exp | null;
   comments?: api_comment_bool_exp | null;
   components?: api_component_bool_exp | null;
   created?: timestamptz_comparison_exp | null;
@@ -451,6 +538,7 @@ export interface api_chapter_bool_exp {
  * input type for inserting data into table "api_chapter"
  */
 export interface api_chapter_insert_input {
+  book?: api_book_obj_rel_insert_input | null;
   comments?: api_comment_arr_rel_insert_input | null;
   components?: api_component_arr_rel_insert_input | null;
   created?: any | null;
@@ -527,6 +615,58 @@ export interface api_chaptertitle_on_conflict {
   constraint: api_chaptertitle_constraint;
   update_columns: api_chaptertitle_update_column[];
   where?: api_chaptertitle_bool_exp | null;
+}
+
+/**
+ * input type for inserting array relation for remote table "api_character"
+ */
+export interface api_character_arr_rel_insert_input {
+  data: api_character_insert_input[];
+  on_conflict?: api_character_on_conflict | null;
+}
+
+/**
+ * Boolean expression to filter rows from the table "api_character". All fields are combined with a logical 'AND'.
+ */
+export interface api_character_bool_exp {
+  _and?: (api_character_bool_exp | null)[] | null;
+  _not?: api_character_bool_exp | null;
+  _or?: (api_character_bool_exp | null)[] | null;
+  book?: api_book_bool_exp | null;
+  created?: timestamptz_comparison_exp | null;
+  fk_book_id?: uuid_comparison_exp | null;
+  formal_name?: String_comparison_exp | null;
+  gender?: String_comparison_exp | null;
+  id?: uuid_comparison_exp | null;
+  informal_name?: String_comparison_exp | null;
+  speaker?: String_comparison_exp | null;
+  title?: String_comparison_exp | null;
+  updated?: timestamptz_comparison_exp | null;
+}
+
+/**
+ * input type for inserting data into table "api_character"
+ */
+export interface api_character_insert_input {
+  book?: api_book_obj_rel_insert_input | null;
+  created?: any | null;
+  fk_book_id?: any | null;
+  formal_name?: string | null;
+  gender?: string | null;
+  id?: any | null;
+  informal_name?: string | null;
+  speaker?: string | null;
+  title?: string | null;
+  updated?: any | null;
+}
+
+/**
+ * on conflict condition type for table "api_character"
+ */
+export interface api_character_on_conflict {
+  constraint: api_character_constraint;
+  update_columns: api_character_update_column[];
+  where?: api_character_bool_exp | null;
 }
 
 /**
@@ -628,6 +768,7 @@ export interface api_component_bool_exp {
   locked_ts?: timestamptz_comparison_exp | null;
   media?: api_media_bool_exp | null;
   order_in_chapter?: Int_comparison_exp | null;
+  parent?: api_component_bool_exp | null;
   state?: String_comparison_exp | null;
   texts?: api_text_bool_exp | null;
   type?: api_componenttype_bool_exp | null;
@@ -652,6 +793,7 @@ export interface api_component_insert_input {
   locked_ts?: any | null;
   media?: api_media_arr_rel_insert_input | null;
   order_in_chapter?: number | null;
+  parent?: api_component_obj_rel_insert_input | null;
   state?: string | null;
   texts?: api_text_arr_rel_insert_input | null;
   type?: api_componenttype_obj_rel_insert_input | null;
@@ -811,6 +953,7 @@ export interface api_media_bool_exp {
   _and?: (api_media_bool_exp | null)[] | null;
   _not?: api_media_bool_exp | null;
   _or?: (api_media_bool_exp | null)[] | null;
+  component?: api_component_bool_exp | null;
   created?: timestamptz_comparison_exp | null;
   fk_component_id?: uuid_comparison_exp | null;
   id?: uuid_comparison_exp | null;
@@ -823,6 +966,7 @@ export interface api_media_bool_exp {
  * input type for inserting data into table "api_media"
  */
 export interface api_media_insert_input {
+  component?: api_component_obj_rel_insert_input | null;
   created?: any | null;
   fk_component_id?: any | null;
   id?: any | null;

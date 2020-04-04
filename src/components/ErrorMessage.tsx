@@ -1,19 +1,34 @@
 import * as React from "react";
 import { useTranslation } from "react-i18next";
+import { ApolloError } from "apollo-client";
 
-import { withStyles, WithStyles } from "@material-ui/core/styles";
-
-import { styles } from "styles";
+import { makeStyles } from "@material-ui/core/styles";
+import { Theme } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 
-interface Props extends WithStyles<typeof styles> {
-  error?: string;
+const useStyles = makeStyles((theme: Theme) => ({
+  container: {
+    backgroundColor: theme.palette.error.main,
+    border: "solid",
+    borderWidth: 2,
+    marginBottom: theme.spacing(2),
+    padding: theme.spacing(2)
+  }
+}));
+
+interface Props {
+  error?: string | ApolloError;
 }
 
-const ErrorMessage = ({ classes, error }: Props) => {
+export default function ErrorMessage({ error }: Props) {
+  const classes = useStyles();
   const { t } = useTranslation();
 
-  return <Typography>{t(error || "")}</Typography>;
-};
+  const errorMessage = typeof error === "string" ? error : error?.message;
 
-export default withStyles(styles, { withTheme: true })(ErrorMessage);
+  if (!errorMessage) return null;
+
+  return (
+    <Typography className={classes.container}>{t(errorMessage)}</Typography>
+  );
+}
