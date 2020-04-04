@@ -44,13 +44,7 @@
     "newSubChapterDescriptionHelper": "Die Unterkapitelbeschreibung (auf Deutsch). Z.B. 'Wie geht es dir? Wie geht es Ihnen?'",
     "newChapterLanguage": "Unterstütze Sprachen",
     "newChapterLanguageHelper": "Das Kapitel ist in diesen Sprachen verfügbar.",
-    "nWordGroups": "# Wortgruppen: ",
-    "noRelevantTranslationYet": "Noch nichts...",
-    "title": "Titel",
-    "text": "Text",
-    "dialog": "Dialog",
-    "bubble": "Sprechblase",
-    "bubbleItem": "Eine Zeile"
+    "nWordGroups": "# Wortgruppen: "
   },
   "chapterEditor": {
     "settingsTitle": "Konfiguration für {{type}}",
@@ -61,7 +55,13 @@
     "german": "Deutsch",
     "translatable": "Benötigt eine Übersetzung",
     "shouldInvalidateTranslations": "Setze bestehende Übersetzungen zurück",
-    "placeholder": "Text als Platzhalter"
+    "placeholder": "Text als Platzhalter",
+    "noRelevantTranslationYet": "Noch nichts...",
+    "title": "Titel",
+    "text": "Text",
+    "dialog": "Dialog",
+    "bubble": "Sprechblase",
+    "bubbleItem": "Eine Zeile"
   },
   "voggi": {
     "voggiList": "Voggi-Liste"
