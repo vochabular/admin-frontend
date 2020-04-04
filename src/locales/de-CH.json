@@ -32,11 +32,14 @@
     "chaptersOverview": "Kapitelübersicht",
     "noChaptersAvailable": "No keine Kapitel verfügbar",
     "chapterNumber": "Kapitel nummer",
-    "chapterDescriptionPlaceholder": "Um was geht es in diesem Kapitel?"
+    "chapterDescriptionPlaceholder": "Um was geht es in diesem Kapitel?",
+    "createNewChapter": "Kapitel anlegen",
+    "createNewSubChapter": "Subkapitel anlegen"
   },
   "chapter": {
     "chapter": "Kapitel",
     "newChapterTitle": "Neues Kapitel anlegen",
+    "newSubChapterTitle": "Neues Unterkapitel anlegen",
     "chapterNumber": "Kapitelnummer",
     "chapterNumberHelper": "Die fortlaufende Haupt-Kapitelnummer, z.B. bei 'Kapitel 1' also '1' ",
     "newChapterDescription": "Beschreibung",
@@ -44,7 +47,8 @@
     "newSubChapterDescriptionHelper": "Die Unterkapitelbeschreibung (auf Deutsch). Z.B. 'Wie geht es dir? Wie geht es Ihnen?'",
     "newChapterLanguage": "Unterstütze Sprachen",
     "newChapterLanguageHelper": "Das Kapitel ist in diesen Sprachen verfügbar.",
-    "nWordGroups": "# Wortgruppen: "
+    "nWordGroups": "# Wortgruppen: ",
+    "disableChildren": "Deaktiviere Subkapitel"
   },
   "chapterEditor": {
     "settingsTitle": "Konfiguration für {{type}}",

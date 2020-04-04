@@ -6,16 +6,16 @@ import {
   Form,
   Field,
   FormikActions as FormikHelpers,
-  ErrorMessage as FormikErrorMessage
+  ErrorMessage as FormikErrorMessage,
 } from "formik";
-import { TextField, Select } from "formik-material-ui";
+import { TextField, Select, CheckboxWithLabel } from "formik-material-ui";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 
 import {
   MenuItem,
   FormControl,
   InputLabel,
-  FormHelperText
+  FormHelperText,
 } from "@material-ui/core";
 
 import { UPSERT_CHAPTER } from "queries/chapters";
@@ -27,16 +27,16 @@ import { GET_LANGUAGES } from "../../queries/languages";
 import { getLanguages } from "queries/__generated__/getLanguages";
 import {
   subscribeChapterById_chapter_parentChapter,
-  subscribeChapterById_chapter
+  subscribeChapterById_chapter,
 } from "queries/__generated__/subscribeChapterById";
 import {
   api_chapter_insert_input,
   api_chaptertitle_constraint,
-  api_chaptertitle_update_column
+  api_chaptertitle_update_column,
 } from "__generated__/globalTypes";
 import {
   upsertChapter as TupsertChapter,
-  upsertChapterVariables as TupsertChapterVariables
+  upsertChapterVariables as TupsertChapterVariables,
 } from "queries/__generated__/upsertChapter";
 import Diff from "helper/Diff";
 
@@ -55,7 +55,7 @@ export const ChapterSchema = Yup.object().shape({
   languages: Yup.array()
     .required()
     .min(1, i18next.t("At least one language required!"))
-    .required(i18next.t("At least one language required!"))
+    .required(i18next.t("At least one language required!")),
 });
 
 interface ChapterFormProps {
@@ -64,23 +64,29 @@ interface ChapterFormProps {
 }
 
 export function ChapterForm({ chapterData, parentChapter }: ChapterFormProps) {
-  const { number = 0, description = "", languages = [] } = chapterData || {};
+  const {
+    number = 0,
+    description = "",
+    languages = [],
+    disable_children = true,
+  } = chapterData || {};
 
-  const { t } = useTranslation();
+  const { t } = useTranslation("chapter");
   const { data, error, loading } = useQuery<getLanguages>(GET_LANGUAGES);
 
   const allLanguages = data?.languages || [];
 
   const [
     upsertChapter,
-    { loading: upsertLoading, error: upsertError }
+    { loading: upsertLoading, error: upsertError },
   ] = useMutation<TupsertChapter, TupsertChapterVariables>(UPSERT_CHAPTER);
   const isSubChapter = !!parentChapter;
 
   const initialValues = {
     number,
     description,
-    languages: languages.map(l => l.language.id)
+    languages: languages.map((l) => l.language.id),
+    disable_children,
   };
 
   async function handleSave(
@@ -98,22 +104,23 @@ export function ChapterForm({ chapterData, parentChapter }: ChapterFormProps) {
     input.languages = {
       on_conflict: {
         constraint: api_chaptertitle_constraint.api_chaptertitle_pkey,
-        update_columns: [api_chaptertitle_update_column.title]
+        update_columns: [api_chaptertitle_update_column.title],
       },
       data: values.languages.map((key: string) => ({
-        id: languages.find(l => l.language.id === key)?.id,
+        id: languages.find((l) => l.language.id === key)?.id,
         title: "",
-        language_id: key
-      }))
+        language_id: key,
+      })),
     };
     await upsertChapter({
       variables: {
         input,
         deleteTitleIds:
           result.deleted
-            .filter(r => r.path[0] === "languages")[0]
-            ?.vals.map(v => languages.find(l => l.language.id === v)?.id) || []
-      }
+            .filter((r) => r.path[0] === "languages")[0]
+            ?.vals.map((v) => languages.find((l) => l.language.id === v)?.id) ||
+          [],
+      },
     });
     isSubChapter
       ? history.push(`/chapters/${parentChapter!.id}`)
@@ -131,15 +138,9 @@ export function ChapterForm({ chapterData, parentChapter }: ChapterFormProps) {
           <Field
             type="number"
             name="number"
-            label={t(
-              isSubChapter
-                ? "chapter:subChapterNumber"
-                : "chapter:chapterNumber"
-            )}
+            label={t(isSubChapter ? "subChapterNumber" : "chapterNumber")}
             helperText={t(
-              isSubChapter
-                ? "chapter:subChapterNumberHelper"
-                : "chapter:chapterNumberHelper"
+              isSubChapter ? "subChapterNumberHelper" : "chapterNumberHelper"
             )}
             component={TextField}
             margin="normal"
@@ -148,11 +149,11 @@ export function ChapterForm({ chapterData, parentChapter }: ChapterFormProps) {
           <Field
             type="text"
             name="description"
-            label={t("chapter:newChapterDescription")}
+            label={t("newChapterDescription")}
             helperText={t(
               isSubChapter
-                ? "chapter:newSubChapterDescriptionHelper"
-                : "chapter:newChapterDescriptionHelper"
+                ? "newSubChapterDescriptionHelper"
+                : "newChapterDescriptionHelper"
             )}
             component={TextField}
             margin="normal"
@@ -161,7 +162,7 @@ export function ChapterForm({ chapterData, parentChapter }: ChapterFormProps) {
 
           <FormControl margin="normal" fullWidth>
             <InputLabel shrink={true} htmlFor="languages">
-              {t("chapter:newChapterLanguage")}
+              {t("newChapterLanguage")}
             </InputLabel>
             <Field
               type="text"
@@ -170,17 +171,23 @@ export function ChapterForm({ chapterData, parentChapter }: ChapterFormProps) {
               multiple={true}
               disabled={loading}
             >
-              {allLanguages.map(l => (
+              {allLanguages.map((l) => (
                 <MenuItem key={l.id} value={l.id}>
                   {l.name}
                 </MenuItem>
               ))}
             </Field>
-            <FormHelperText>
-              {t("chapter:newChapterLanguageHelper")}
-            </FormHelperText>
+            <FormHelperText>{t("newChapterLanguageHelper")}</FormHelperText>
             <FormikErrorMessage name="languages" />
           </FormControl>
+          {!isSubChapter ? (
+            <Field
+              name="disable_children"
+              Label={{ label: t("disableChildren") }}
+              component={CheckboxWithLabel}
+              margin="normal"
+            />
+          ) : null}
 
           {status && status.response && (
             <ErrorMessage error={status.response} />

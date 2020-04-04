@@ -32,11 +32,14 @@
     "chaptersOverview": "Chapter overview",
     "noChaptersAvailable": "No chapters available yet",
     "chapterNumber": "Chapter number",
-    "chapterDescriptionPlaceholder": "What is the chapter about?"
+    "chapterDescriptionPlaceholder": "What is the chapter about?",
+    "createNewChapter": "Create new chapter",
+    "createNewSubChapter": "Create new subchapter"
   },
   "chapter": {
     "chapter": "Chapter",
     "newChapterTitle": "Create new chapter",
+    "newSubChapterTitle": "Create new subchapter",
     "chapterNumber": "Chapter number",
     "chapterNumberHelper": "The sequential (main) chapter number. For example in 'Chapter 1', then set '1'",
     "newChapterDescription": "Description",
@@ -44,7 +47,8 @@
     "newSubChapterDescriptionHelper": "The subchapter description (in german). For example: 'Wie geht es dir? Wie geht es Ihnen?'",
     "newChapterLanguage": "Supported languages",
     "newChapterLanguageHelper": "The chapter is available in those languages.",
-    "nWordGroups": "# of word groups: "
+    "nWordGroups": "# of word groups: ",
+    "disableChildren": "Disable subchapters"
   },
   "chapterEditor": {
     "settingsTitle": "Settings for {{type}}",
