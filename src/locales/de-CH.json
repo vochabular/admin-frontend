@@ -55,7 +55,13 @@
     "german": "Deutsch",
     "translatable": "Benötigt eine Übersetzung",
     "shouldInvalidateTranslations": "Setze bestehende Übersetzungen zurück",
-    "placeholder": "Text als Platzhalter"
+    "placeholder": "Text als Platzhalter",
+    "noRelevantTranslationYet": "Noch nichts...",
+    "title": "Titel",
+    "text": "Text",
+    "dialog": "Dialog",
+    "bubble": "Sprechblase",
+    "bubbleItem": "Eine Zeile"
   },
   "voggi": {
     "voggiList": "Voggi-Liste"

@@ -3,12 +3,13 @@ import {
   Draggable,
   DraggableProvided,
   DraggableStateSnapshot,
-  Droppable
+  Droppable,
 } from "react-beautiful-dnd";
 import { useQuery } from "@apollo/react-hooks";
 import classNames from "classnames";
 import styled from "styled-components";
 import { ApolloError } from "apollo-client";
+import { useTranslation } from "react-i18next";
 
 import { Theme, makeStyles } from "@material-ui/core/styles";
 import {
@@ -18,48 +19,48 @@ import {
   CardContent,
   Icon,
   AppBar,
-  Toolbar
+  Toolbar,
 } from "@material-ui/core";
 
 import {
   GET_ALL_COMPONENTTYPES,
-  GET_COMPONENTTYPE_BY_ID
+  GET_COMPONENTTYPE_BY_ID,
 } from "queries/componentTypes";
 
 import BusyOrErrorCard from "components/BusyOrErrorCard";
 import {
   getAllComponentTypes,
-  getAllComponentTypes_types
+  getAllComponentTypes_types,
 } from "queries/__generated__/getAllComponentTypes";
 import {
   getComponentTypeById,
   getComponentTypeById_type_children,
-  getComponentTypeByIdVariables
+  getComponentTypeByIdVariables,
 } from "queries/__generated__/getComponentTypeById";
 import { getSelectedComponent_component } from "queries/__generated__/getSelectedComponent";
 import {
   TOP_LEVEL_COMPONENT_TYPE,
-  IHandleComponentCreation
+  IHandleComponentCreation,
 } from "./ContentEditor";
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
     height: "100px",
-    backgroundColor: theme.palette.grey[800]
+    backgroundColor: theme.palette.grey[800],
     //padding: theme.spacing(2)
   },
   item: {
-    backgroundColor: theme.palette.grey[600]
+    backgroundColor: theme.palette.grey[600],
   },
   dragging: {
-    backgroundColor: theme.palette.grey[400]
+    backgroundColor: theme.palette.grey[400],
   },
   copying: {
-    backgroundColor: theme.palette.grey[400]
+    backgroundColor: theme.palette.grey[400],
   },
   hideElement: {
-    display: "none"
-  }
+    display: "none",
+  },
 }));
 
 const Clone = styled.div`
@@ -81,9 +82,10 @@ const ComponentTypeItem = ({
   provided,
   snapshot,
   isCopying = false,
-  onCreate
+  onCreate,
 }: ComponentTypeItemProps) => {
   const classes = useStyles();
+  const { t } = useTranslation("chapterEditor");
 
   function handleClick() {
     if (!onCreate)
@@ -104,7 +106,7 @@ const ComponentTypeItem = ({
     >
       <CardContent>
         <Typography color="textSecondary" gutterBottom>
-          {item.label}
+          {t(item.label)}
         </Typography>
         <Icon>{item.icon}</Icon>
       </CardContent>
@@ -161,7 +163,7 @@ const ComponentSelectorWithData = ({
       isDropDisabled={true}
       direction="horizontal"
     >
-      {provided => (
+      {(provided) => (
         <>
           <div ref={provided.innerRef} {...provided.droppableProps}>
             <AppBar position="static" color="inherit">
