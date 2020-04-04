@@ -14,7 +14,7 @@ import { withStyles, WithStyles } from "@material-ui/core/styles";
 import { styles } from "styles";
 import i18n from "i18n";
 import { useAuth } from "contexts/AuthContext";
-import { getProfile_profiles } from "queries/__generated__/getProfile";
+import { profile_profile } from "queries/__generated__/profile";
 
 const UiLanguageField = (props: TextFieldProps) => (
   <MuiTextField
@@ -42,7 +42,7 @@ const DefaultRoleField = (props: TextFieldProps) => {
 };
 
 interface Props extends WithStyles<typeof styles> {
-  values?: getProfile_profiles;
+  values?: profile_profile;
   setFieldValue?: CallableFunction;
 }
 
@@ -86,7 +86,7 @@ function PersonalSection({ classes, values, setFieldValue }: Props) {
       {roles.length ? (
         <Field
           type="text"
-          name="current_role"
+          name="currentRole"
           label={t("currentRole")}
           select
           margin="normal"

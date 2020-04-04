@@ -17,16 +17,17 @@ import NotificationSection from "pages/Settings/SettingsSection/NotificationSect
 import i18next from "i18n";
 import BusyOrErrorCard from "components/BusyOrErrorCard";
 import { useAuth } from "contexts/AuthContext";
+
 import {
-  getProfile,
-  getProfileVariables,
-  getProfile_profiles
-} from "queries/__generated__/getProfile";
-import { GET_PROFILE, UPDATE_PROFILE } from "queries/users";
+  profile as TProfile,
+  profileVariables,
+  profile_profile,
+} from "queries/__generated__/profile";
 import {
-  update_profile,
-  update_profileVariables
-} from "queries/__generated__/update_profile";
+  updateProfileVariables,
+  updateProfile,
+} from "queries/__generated__/updateProfile";
+import { GET_DJANGO_PROFILE, UPDATE_DJANGO_PROFILE } from "queries/profile";
 
 export const UserSetupSchema = Yup.object().shape({
   language: Yup.string().required(i18next.t("required")),
@@ -36,7 +37,7 @@ export const UserSetupSchema = Yup.object().shape({
   lastname: Yup.string()
     .required(i18next.t("required"))
     .max(50, i18next.t("tooLong")),
-  currentRole: Yup.string().required(i18next.t("required"))
+  currentRole: Yup.string().required(i18next.t("required")),
 });
 
 interface Props extends WithStyles<typeof styles> {}
@@ -46,35 +47,39 @@ const Settings: React.FunctionComponent<Props> = ({ classes }) => {
   const email = (user && user.email) || "";
 
   const { t, i18n } = useTranslation();
-  const { data, loading, error } = useQuery<getProfile, getProfileVariables>(
-    GET_PROFILE,
+  const { data, loading, error } = useQuery<TProfile, profileVariables>(
+    GET_DJANGO_PROFILE,
     {
       variables: {
-        email
-      }
+        username: email,
+      },
     }
   );
-  const profile = data && data.profiles[0];
+  const profile = data && data.profile;
 
-  const [mutateProfile] = useMutation<update_profile, update_profileVariables>(
-    UPDATE_PROFILE
+  const [mutateProfile] = useMutation<updateProfile, updateProfileVariables>(
+    UPDATE_DJANGO_PROFILE
   );
 
   // Here we would now update the backend settings...
   async function handleSave(
-    values: getProfile_profiles,
-    actions: FormikHelpers<getProfile_profiles>
+    values: profile_profile,
+    actions: FormikHelpers<any> // FormikHelpers<updateProfileVariables>
   ) {
-    const newSettings = { ...values };
+    const newSettings: any = { ...values };
     delete newSettings.id;
+    delete newSettings.language;
+    delete newSettings.translatorLanguages;
 
-    i18n.changeLanguage(
-      (newSettings.language && newSettings.language.id) || "en"
+    i18n.changeLanguage((values.language && values.language.id) || "en");
+
+    newSettings.language = values?.language?.id || null;
+    newSettings.translatorLanguages = values?.translatorLanguages?.map(
+      (t) => t.id
     );
 
     await mutateProfile({
-      // variables: { profile: { username: email, profileData: profile } }
-      variables: { email }
+      variables: { profile: { username: email, profileData: newSettings } },
     });
     actions.setSubmitting(false);
   }

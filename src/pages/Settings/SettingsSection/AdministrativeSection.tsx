@@ -13,13 +13,13 @@ import { withStyles, WithStyles } from "@material-ui/core/styles";
 
 import { styles } from "styles";
 import { FieldArray } from "formik";
-import { getProfile_profiles } from "queries/__generated__/getProfile";
 import { GET_LANGUAGES } from "queries/languages";
 import { getLanguages } from "queries/__generated__/getLanguages";
 import BusyOrErrorCard from "components/BusyOrErrorCard";
+import { profile_profile } from "queries/__generated__/profile";
 
 interface Props extends WithStyles<typeof styles> {
-  values: getProfile_profiles;
+  values: profile_profile;
 }
 
 function AdministrativeSection({ classes, values }: Props) {
@@ -27,6 +27,7 @@ function AdministrativeSection({ classes, values }: Props) {
   const { data, loading, error } = useQuery<getLanguages>(GET_LANGUAGES);
 
   const languages = (data && data.languages) || [];
+
   return (
     <Grid item>
       <FormControl>
@@ -37,24 +38,25 @@ function AdministrativeSection({ classes, values }: Props) {
           showOnNoResults={false}
         />
         <FieldArray
-          name={t("setupWizard:translatorLanguages")}
+          name="translatorLanguages"
           render={(arrayHelpers) =>
-            languages.map((l) => (
+            languages.map((l, index) => (
               <FormControlLabel
                 key={l.id}
                 label={t(l.name)}
                 control={
                   <Checkbox
-                  /*
-                    checked={values.translatorLanguages.includes(l.code)}
-                    onChange={e => {
-                      if (e.target.checked) arrayHelpers.push(l.code);
-                      else {
-                        const idx = values.translatorLanguages.indexOf(l.code);
-                        arrayHelpers.remove(idx);
+                    checked={values.translatorLanguages?.some(
+                      (t) => t.id === l.id
+                    )}
+                    onChange={(e) => {
+                      // We get the UPDATED value, so need to change the array accordingly
+                      if (e.target.checked) {
+                        arrayHelpers.insert(index, l);
+                      } else {
+                        arrayHelpers.remove(index);
                       }
                     }}
-                    */
                   />
                 }
               />

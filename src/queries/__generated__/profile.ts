@@ -7,6 +7,18 @@
 // GraphQL query operation: profile
 // ====================================================
 
+export interface profile_profile_language {
+  __typename: "LanguageType";
+  id: string;
+  name: string;
+}
+
+export interface profile_profile_translatorLanguages {
+  __typename: "LanguageType";
+  id: string;
+  name: string;
+}
+
 export interface profile_profile {
   __typename: "ProfileType";
   id: any;
@@ -16,6 +28,8 @@ export interface profile_profile {
   currentRole: string;
   eventNotifications: boolean;
   setupCompleted: boolean;
+  language: profile_profile_language | null;
+  translatorLanguages: profile_profile_translatorLanguages[];
 }
 
 export interface profile {
