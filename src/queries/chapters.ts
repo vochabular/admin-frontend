@@ -28,6 +28,42 @@ export const CHAPTER_HEADER_PART = gql`
   }
 `;
 
+export const WORD_FRAGMENT = gql`
+  fragment WordParts on api_word {
+    id
+    translations {
+      id
+      text
+      audio
+      exampleSentence: example_sentence
+      language {
+        code
+        name
+      }
+    }
+  }
+`;
+
+export const WORDGROUP_FRAGMENT = gql`
+  fragment WordgroupParts on api_wordgroup {
+    chapterId: fk_chapter_id
+    id
+    titles {
+      title
+      language {
+        name
+      }
+    }
+    words {
+      id
+      word {
+        ...WordParts
+      }
+    }
+  }
+  ${WORD_FRAGMENT}
+`;
+
 export const GET_CHAPTERS = gql`
   query getChapters {
     chapters: api_chapter(where: { fk_belongs_to_id: { _is_null: true } }) {
@@ -76,25 +112,33 @@ export const GET_CHAPTER_BY_ID = gql`
 `;
 
 export const GET_CHAPTER_WORDGROUPS = gql`
-  query chapters_wordGroups {
-    chapters {
-      edges {
-        node {
-          id
-          parentChapter: fkBelongsTo {
-            id
-          }
-          wordGroups: wordgroupSet {
-            edges {
-              node {
-                id
-              }
-            }
-          }
-        }
+  subscription chapters_wordGroups {
+    chapters: api_chapter(where: { fk_belongs_to_id: { _is_null: false } }) {
+      ...ChapterHeaderParts
+      wordgroups {
+        ...WordgroupParts
       }
     }
   }
+  ${CHAPTER_HEADER_PART}
+  ${WORDGROUP_FRAGMENT}
+`;
+
+export const GET_CHAPTER_WORDGROUPS_BY_CHAPTER_ID = gql`
+  subscription subscribeChaptersWordGroupsByChapterId($id: uuid!) {
+    chapters: api_chapter_by_pk(id: $id) {
+      id
+      languages {
+        title
+      }
+      wordgroups {
+        ...WordgroupParts
+      }
+      parentChapter: fk_belongs_to_id
+        id
+      }
+    }
+    ${WORDGROUP_FRAGMENT}
 `;
 
 export const UPSERT_CHAPTER = gql`
