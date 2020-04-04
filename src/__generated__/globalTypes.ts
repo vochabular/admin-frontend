@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 //==============================================================
@@ -767,6 +768,7 @@ export interface api_component_bool_exp {
   locked_ts?: timestamptz_comparison_exp | null;
   media?: api_media_bool_exp | null;
   order_in_chapter?: Int_comparison_exp | null;
+  parent?: api_component_bool_exp | null;
   state?: String_comparison_exp | null;
   texts?: api_text_bool_exp | null;
   type?: api_componenttype_bool_exp | null;
@@ -791,6 +793,7 @@ export interface api_component_insert_input {
   locked_ts?: any | null;
   media?: api_media_arr_rel_insert_input | null;
   order_in_chapter?: number | null;
+  parent?: api_component_obj_rel_insert_input | null;
   state?: string | null;
   texts?: api_text_arr_rel_insert_input | null;
   type?: api_componenttype_obj_rel_insert_input | null;
@@ -950,6 +953,7 @@ export interface api_media_bool_exp {
   _and?: (api_media_bool_exp | null)[] | null;
   _not?: api_media_bool_exp | null;
   _or?: (api_media_bool_exp | null)[] | null;
+  component?: api_component_bool_exp | null;
   created?: timestamptz_comparison_exp | null;
   fk_component_id?: uuid_comparison_exp | null;
   id?: uuid_comparison_exp | null;
@@ -962,6 +966,7 @@ export interface api_media_bool_exp {
  * input type for inserting data into table "api_media"
  */
 export interface api_media_insert_input {
+  component?: api_component_obj_rel_insert_input | null;
   created?: any | null;
   fk_component_id?: any | null;
   id?: any | null;

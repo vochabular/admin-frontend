@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -52,7 +53,7 @@ export interface getSelectedComponent_component_texts_translations_language {
 export interface getSelectedComponent_component_texts_translations {
   __typename: "api_translation";
   id: any;
-  text_field: string;
+  text_field: string | null;
   valid: boolean;
   /**
    * An object relationship
@@ -74,6 +75,8 @@ export interface getSelectedComponent_component_texts {
 export interface getSelectedComponent_component_media {
   __typename: "api_media";
   id: any;
+  type: string;
+  url: string;
 }
 
 export interface getSelectedComponent_component {
