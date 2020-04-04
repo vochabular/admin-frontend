@@ -1,3 +1,10 @@
+##########
+#
+# For full config example: 
+# https://docs.netlify.com/configure-builds/file-based-configuration/#sample-file
+#
+###########
+
 # Global settings applied to the whole site.
 #[build]
 #  command = "sed -i s@API_PLACEHOLDER@$API_URL@g netlify.toml && yarn build"
@@ -10,6 +17,14 @@
 # Disable ugflifcation for branch deploys
 [build.deploy-preview.environment]
   GENERATE_SOURCEMAP = "true"
+
+# Production release
+[context.production]
+  REACT_APP_BACKEND_URL = "https://vochabular-admin-hasura-prod.herokuapp.com/v1/graphql"
+
+# Staging
+[context.master]
+  REACT_APP_BACKEND_URL = "https://vochabular-admin-hasura.herokuapp.com/v1/graphql"
 
 
 # This a general rule for Single Page Applications like React
