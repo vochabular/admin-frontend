@@ -91,7 +91,7 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
       isGerman: !!german,
       isSwissGerman: !!swissGerman,
       isNative: text.translatable || false,
-      placeholder: text.placeholder || german?.text_field || "",
+      placeholder: text.placeholder || swissGerman?.text_field || "",
       german: german || {
         text_field: "",
         valid: false,
@@ -256,14 +256,46 @@ export const TextSettings = React.forwardRef<any, TextSettingsProps>(
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {},
+  compactContainer: {
+    border: "groove",
+    borderRadius: 0.5,
+    // padding: theme.spacing(2),
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+    backgroundColor: "white",
+  },
 }));
+
+interface PlaceholderOrContextTextProps {
+  text: any;
+  isColorContext?: boolean;
+}
+const PlaceholderOrContextText = ({
+  text,
+  isColorContext,
+}: PlaceholderOrContextTextProps) => {
+  if (text?.placeholder) {
+    return <Text translate={false}>{text.placeholder}</Text>;
+  }
+  return (
+    <ContextText
+      translations={text?.translations || []}
+      wantedLanguage="ch"
+      isColorContext={isColorContext}
+    />
+  );
+};
 
 interface TextComponentProps extends BaseComponentProps {}
 
 /**
  * How the component should get rendered in the editor:
  */
-const TextComponent = ({ data, ...otherProps }: TextComponentProps) => {
+const TextComponent = ({
+  data,
+  renderCompact,
+  ...otherProps
+}: TextComponentProps) => {
   const classes = useStyles();
   const text = data && data.texts && data.texts[0];
   const preview = (
@@ -271,15 +303,22 @@ const TextComponent = ({ data, ...otherProps }: TextComponentProps) => {
       <LanguageBadges text={text} />
     </Grid>
   );
-  const body = text?.placeholder ? (
-    <Text translate={false}>{text.placeholder}</Text>
-  ) : (
-    <ContextText
-      translations={text?.translations || []}
-      wantedLanguage="de"
-      isColorContext={false}
-    />
-  );
+  const body = <PlaceholderOrContextText text={text} />;
+  if (renderCompact) {
+    const compactBody = (
+      <div className={classes.compactContainer}>
+        <PlaceholderOrContextText text={text} isColorContext />
+      </div>
+    );
+    return (
+      <BaseComponent
+        data={data}
+        body={compactBody}
+        renderCompact
+        {...otherProps}
+      />
+    );
+  }
 
   return (
     <BaseComponent preview={preview} body={body} data={data} {...otherProps} />

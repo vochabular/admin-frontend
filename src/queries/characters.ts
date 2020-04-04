@@ -15,7 +15,7 @@ const CHARACTER_FRAGMENT = gql`
 
 // TODO: Would have to query by book...
 export const GET_ALL_CHARACTERS = gql`
-  subscription getCharacters {
+  subscription getAllCharacters {
     characters: api_character {
       ...CharacterParts
     }
@@ -24,9 +24,19 @@ export const GET_ALL_CHARACTERS = gql`
 `;
 
 export const GET_CHARACTERS_BY_IDS = gql`
-  subscription getCharacters($ids: [uuid!]!) {
-    api_character(where: { id: { _in: $ids } }) {
+  subscription getCharactersByIds($ids: [uuid!]!) {
+    characters: api_character(where: { id: { _in: $ids } }) {
       ...CharacterParts
     }
   }
+  ${CHARACTER_FRAGMENT}
+`;
+
+export const GET_CHARACTER_BY_ID = gql`
+  subscription getCharacterById($id: uuid!) {
+    character: api_character_by_pk(id: $id) {
+      ...CharacterParts
+    }
+  }
+  ${CHARACTER_FRAGMENT}
 `;

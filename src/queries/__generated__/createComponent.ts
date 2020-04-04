@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 import { api_component_insert_input } from "./../../__generated__/globalTypes";
@@ -54,7 +55,7 @@ export interface createComponent_insert_api_component_returning_texts_translatio
 export interface createComponent_insert_api_component_returning_texts_translations {
   __typename: "api_translation";
   id: any;
-  text_field: string;
+  text_field: string | null;
   valid: boolean;
   /**
    * An object relationship
@@ -76,6 +77,8 @@ export interface createComponent_insert_api_component_returning_texts {
 export interface createComponent_insert_api_component_returning_media {
   __typename: "api_media";
   id: any;
+  type: string;
+  url: string;
 }
 
 export interface createComponent_insert_api_component_returning {

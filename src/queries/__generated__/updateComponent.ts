@@ -1,8 +1,9 @@
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
-import { api_component_set_input, api_text_insert_input, api_text_update_column, api_translation_insert_input, api_translation_update_column } from "./../../__generated__/globalTypes";
+import { api_component_set_input, api_text_insert_input, api_text_update_column, api_translation_insert_input, api_translation_update_column, api_media_insert_input, api_media_update_column } from "./../../__generated__/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: updateComponent
@@ -54,7 +55,7 @@ export interface updateComponent_update_api_component_returning_texts_translatio
 export interface updateComponent_update_api_component_returning_texts_translations {
   __typename: "api_translation";
   id: any;
-  text_field: string;
+  text_field: string | null;
   valid: boolean;
   /**
    * An object relationship
@@ -76,6 +77,8 @@ export interface updateComponent_update_api_component_returning_texts {
 export interface updateComponent_update_api_component_returning_media {
   __typename: "api_media";
   id: any;
+  type: string;
+  url: string;
 }
 
 export interface updateComponent_update_api_component_returning {
@@ -122,6 +125,14 @@ export interface updateComponent_insert_api_translation {
   affected_rows: number;
 }
 
+export interface updateComponent_insert_api_media {
+  __typename: "api_media_mutation_response";
+  /**
+   * number of affected rows by the mutation
+   */
+  affected_rows: number;
+}
+
 export interface updateComponent_delete_api_text {
   __typename: "api_text_mutation_response";
   /**
@@ -132,6 +143,14 @@ export interface updateComponent_delete_api_text {
 
 export interface updateComponent_delete_api_translation {
   __typename: "api_translation_mutation_response";
+  /**
+   * number of affected rows by the mutation
+   */
+  affected_rows: number;
+}
+
+export interface updateComponent_delete_api_media {
+  __typename: "api_media_mutation_response";
   /**
    * number of affected rows by the mutation
    */
@@ -152,6 +171,10 @@ export interface updateComponent {
    */
   insert_api_translation: updateComponent_insert_api_translation | null;
   /**
+   * insert data into the table: "api_media"
+   */
+  insert_api_media: updateComponent_insert_api_media | null;
+  /**
    * delete data from the table: "api_text"
    */
   delete_api_text: updateComponent_delete_api_text | null;
@@ -159,6 +182,10 @@ export interface updateComponent {
    * delete data from the table: "api_translation"
    */
   delete_api_translation: updateComponent_delete_api_translation | null;
+  /**
+   * delete data from the table: "api_media"
+   */
+  delete_api_media: updateComponent_delete_api_media | null;
 }
 
 export interface updateComponentVariables {
@@ -168,6 +195,9 @@ export interface updateComponentVariables {
   textUpdateColumns: api_text_update_column[];
   translationData: api_translation_insert_input[];
   translationUpdateColumns: api_translation_update_column[];
+  mediaData: api_media_insert_input[];
+  mediaUpdateColumns: api_media_update_column[];
   deleteTextIds: any[];
   deleteTranslationIds: any[];
+  deleteMediaIds: any[];
 }
