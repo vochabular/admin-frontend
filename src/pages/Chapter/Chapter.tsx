@@ -19,11 +19,13 @@ import SectionCardContainer from "components/SectionCardContainer";
 import { Permission } from "rbac-rules";
 import Can from "components/Can/Can";
 import { subscribeChapterById } from "queries/__generated__/subscribeChapterById";
+import useURLQuery from "hooks/useURLQuery";
+import { useLocation } from "hooks/useRouter";
 
 interface ChapterContentProps {
   chapterId: string;
   subChapterId: string | undefined;
-  action?: string;
+  action: string | null;
 }
 
 /**
@@ -35,6 +37,7 @@ const ChapterContent = ({
   action,
 }: ChapterContentProps) => {
   const { t } = useTranslation("chapter");
+  let { location } = useLocation();
 
   // Either load directly the subchapter or else the chapter
   const { loading, data, error } = useSubscription<subscribeChapterById>(
@@ -42,7 +45,6 @@ const ChapterContent = ({
     {
       variables: {
         id: subChapterId && subChapterId !== "new" ? subChapterId : chapterId,
-        // TODO(df): Should we only get translations for the current user's native language?
       },
     }
   );
@@ -67,11 +69,11 @@ const ChapterContent = ({
     );
   }
 
-  // Render the subchapter screen
-  if (subChapterId) {
+  // Render the Chapter Detail screen if applicable
+  if (data.chapter.disable_children) {
     if (!action) {
       // TODO(df): Need to dynamically set "edit" to either "review", "translate" based on current role
-      return <Redirect to={`${subChapterId}/edit`} />;
+      return <Redirect to={`${location.pathname}?action=edit`} />;
     }
     // TODO(df): Get default "action" and render this in case the conversion below is undefined
 
@@ -135,7 +137,8 @@ interface Props
  * Chapter wrapper Component, necessary to return early in case of a new chapter. Gets the chapter id via the route allowing to create links etc.
  */
 const Chapter = ({ classes, match }: Props) => {
-  const { chapterId, subChapterId, action } = match.params;
+  const { chapterId, subChapterId } = match.params;
+  let query = useURLQuery();
 
   // If its a new main chapter, don't need to query anything
   if (chapterId === "new") {
@@ -151,7 +154,7 @@ const Chapter = ({ classes, match }: Props) => {
     <ChapterContent
       chapterId={chapterId}
       subChapterId={subChapterId}
-      action={action}
+      action={query.get("action")}
     />
   );
 };

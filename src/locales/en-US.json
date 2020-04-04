@@ -39,6 +39,7 @@
   "chapter": {
     "chapter": "Chapter",
     "newChapterTitle": "Create new chapter",
+    "newSubChapterTitle": "Create new subchapter",
     "chapterNumber": "Chapter number",
     "chapterNumberHelper": "The sequential (main) chapter number. For example in 'Chapter 1', then set '1'",
     "newChapterDescription": "Description",

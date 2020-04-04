@@ -12,7 +12,7 @@ import { styles } from "styles";
 import { getChapters_chapters } from "queries/__generated__/getChapters";
 import {
   subscribeChapterById_chapter,
-  subscribeChapterById_chapter_subChapters
+  subscribeChapterById_chapter_subChapters,
 } from "queries/__generated__/subscribeChapterById";
 
 interface Props extends WithStyles<typeof styles> {
@@ -23,7 +23,7 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 const ChapterCard = ({ classes, chapter }: Props) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("chapter");
 
   // Note: MUI links together with react-router-dom and Typescript are a bit tricky due to their dynamic nature
   // See the discussion and provided solutions here... https://github.com/mui-org/material-ui/issues/7877
@@ -43,7 +43,7 @@ const ChapterCard = ({ classes, chapter }: Props) => {
             color="textSecondary"
             gutterBottom
           >
-            {t("chapter:chapter")}{" "}
+            {t("chapter")}{" "}
             {isSubChapter
               ? `${chapter.parentChapter!.number}.${chapter.number}`
               : chapter.number}

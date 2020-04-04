@@ -39,6 +39,7 @@
   "chapter": {
     "chapter": "Kapitel",
     "newChapterTitle": "Neues Kapitel anlegen",
+    "newSubChapterTitle": "Neues Unterkapitel anlegen",
     "chapterNumber": "Kapitelnummer",
     "chapterNumberHelper": "Die fortlaufende Haupt-Kapitelnummer, z.B. bei 'Kapitel 1' also '1' ",
     "newChapterDescription": "Beschreibung",
