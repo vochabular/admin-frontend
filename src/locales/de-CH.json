@@ -12,27 +12,33 @@
     "administrative": "Administratives",
     "settings": "Einstellungen",
     "dashboard": "Dashboard",
+    "chapters": "Kapitel",
+    "vochiList": "voCHi Liste",
     "noResultsYetAvailable": "Keine Resultate bisher verfügbar",
     "arabic": "Arabisch",
     "english": "Englisch",
     "persian": "Persisch/Farsi",
     "swissGerman": "Schweizer Deutsch",
     "required": "Wird benötigt...",
-    "lastSaved": "Zuletzt gespeichert"
+    "tooShort": "Zu kurz!",
+    "tooLong": "Zu lang!",
+    "lastSaved": "Zuletzt gespeichert",
+    "characterWithCount": "{{ count }} Charakter",
+    "characterWithCount_plural": "{{ count }} Charakteren"
   },
   "chapters": {
     "chapter": "Kapitel",
     "chapters": "Kapitel",
     "chaptersOverview": "Kapitelübersicht",
-    "noChaptersAvailable": "No keine Kapitel verfügbar"
+    "noChaptersAvailable": "No keine Kapitel verfügbar",
+    "chapterNumber": "Kapitel nummer",
+    "chapterDescriptionPlaceholder": "Um was geht es in diesem Kapitel?"
   },
   "chapter": {
     "chapter": "Kapitel",
     "newChapterTitle": "Neues Kapitel anlegen",
     "chapterNumber": "Kapitelnummer",
     "chapterNumberHelper": "Die fortlaufende Haupt-Kapitelnummer, z.B. bei 'Kapitel 1' also '1' ",
-    "subChapterNumber": "Unterkapitelnummer",
-    "subChapterNumberHelper": "Fortlaufend Unterkapitelnummer, bei 'Kapitel 1.3' also '3' ",
     "newChapterDescription": "Beschreibung",
     "newChapterDescriptionHelper": "Die Kapitelbeschreibung (auf Deutsch). Z.B. 'Kennenlernen'",
     "newSubChapterDescriptionHelper": "Die Unterkapitelbeschreibung (auf Deutsch). Z.B. 'Wie geht es dir? Wie geht es Ihnen?'",
@@ -41,7 +47,15 @@
     "nWordGroups": "# Wortgruppen: "
   },
   "chapterEditor": {
-    "settingsTitle": "Konfiguration für {{type}}"
+    "settingsTitle": "Konfiguration für {{type}}",
+    "noCommentsYet": "Noch keine Kommentare",
+    "newComment": "Füge einen neuen Kommentar hinzu!",
+    "addFromComponentSelector": "Ziehe einen einen Baustein von der Liste oben hierher",
+    "swissGerman": "Schweizerdeutsch",
+    "german": "Deutsch",
+    "translatable": "Benötigt eine Übersetzung",
+    "shouldInvalidateTranslations": "Setze bestehende Übersetzungen zurück",
+    "placeholder": "Text als Platzhalter"
   },
   "voggi": {
     "voggiList": "Voggi-Liste"
@@ -76,13 +90,24 @@
   },
   "settings": {
     "title": "Einstellungen",
-    "language": "Sprache"
+    "uiLanguage": "Die Sprache der Applikation",
+    "firstname": "Dein Vorname",
+    "lastname": "Dein Nachname",
+    "currentRole": "Deine zurzeit aktive Rolle",
+    "admin": "Administrator",
+    "translator": "Übersetzer",
+    "approver": "Approver",
+    "content-creator": "Content Creator",
+    "viewer": "Viewer"
   },
   "setupWizard": {
     "title": "Benutzer einrichten",
     "chooseDisplayName": "Wähle deinen Benutzername",
     "chooseLanguages": "Sprachen auswählen",
+    "translatorLanguages": "Wähle deine Übersetzungssprachen aus",
     "chooseNotifications": "Benachrichtigungen",
+    "eventNotificationsTitle": "Konfiguriere deine Nachrichteneinstellungen",
+    "receiveEventNotifications": "Erhalte Benachrichtigungen",
     "allStepsCompletedMessage": "Alle Schritte beendet - Fortfahren"
   }
 }

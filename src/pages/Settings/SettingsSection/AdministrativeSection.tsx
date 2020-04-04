@@ -7,7 +7,7 @@ import {
   FormControlLabel,
   Checkbox,
   FormLabel,
-  FormControl
+  FormControl,
 } from "@material-ui/core";
 import { withStyles, WithStyles } from "@material-ui/core/styles";
 
@@ -31,11 +31,15 @@ function AdministrativeSection({ classes, values }: Props) {
     <Grid item>
       <FormControl>
         <FormLabel>{t("setupWizard:translatorLanguages")}</FormLabel>
-        <BusyOrErrorCard error={error} loading={loading} showOnNoResults={false} />
+        <BusyOrErrorCard
+          error={error}
+          loading={loading}
+          showOnNoResults={false}
+        />
         <FieldArray
-          name="translatorLanguages"
-          render={arrayHelpers =>
-            languages.map(l => (
+          name={t("setupWizard:translatorLanguages")}
+          render={(arrayHelpers) =>
+            languages.map((l) => (
               <FormControlLabel
                 key={l.id}
                 label={t(l.name)}

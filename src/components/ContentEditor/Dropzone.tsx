@@ -10,8 +10,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     flex: 1,
     backgroundColor: props.color,
     padding: 20,
-    borderStyle: "dashed"
-  })
+    borderStyle: "dashed",
+  }),
 }));
 
 interface DropzoneProps {
@@ -26,7 +26,7 @@ const Dropzone = ({ color = "black" }: DropzoneProps) => {
   return (
     <div className={classes.container}>
       <PostAddOutlined />
-      <Text>addFromComponentSelector</Text>
+      <Text>chapterEditor:addFromComponentSelector</Text>
     </div>
   );
 };
