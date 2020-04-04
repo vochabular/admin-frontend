@@ -36,7 +36,7 @@ const Chapters = ({ classes }: Props) => {
         />
         {data &&
           data.chapters &&
-          data.chapters.map(c => (
+          data.chapters.map((c) => (
             <Grid item key={c.id}>
               <ChapterCard chapter={c} />
             </Grid>
@@ -48,7 +48,7 @@ const Chapters = ({ classes }: Props) => {
               <LinkCard
                 path="/chapters/new"
                 icon={<AddIcon />}
-                helperText="createNewChapter"
+                helperText="chapters:createNewChapter"
               />
             </Grid>
           )}

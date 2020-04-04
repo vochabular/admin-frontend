@@ -37,6 +37,7 @@ export enum api_chapter_constraint {
 export enum api_chapter_update_column {
   created = "created",
   description = "description",
+  disable_children = "disable_children",
   fk_belongs_to_id = "fk_belongs_to_id",
   fk_book_id = "fk_book_id",
   id = "id",
@@ -523,6 +524,7 @@ export interface api_chapter_bool_exp {
   components?: api_component_bool_exp | null;
   created?: timestamptz_comparison_exp | null;
   description?: String_comparison_exp | null;
+  disable_children?: Boolean_comparison_exp | null;
   fk_belongs_to_id?: uuid_comparison_exp | null;
   fk_book_id?: uuid_comparison_exp | null;
   id?: uuid_comparison_exp | null;
@@ -543,6 +545,7 @@ export interface api_chapter_insert_input {
   components?: api_component_arr_rel_insert_input | null;
   created?: any | null;
   description?: string | null;
+  disable_children?: boolean | null;
   fk_belongs_to_id?: any | null;
   fk_book_id?: any | null;
   id?: any | null;
