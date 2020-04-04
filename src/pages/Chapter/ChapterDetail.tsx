@@ -77,8 +77,8 @@ const ChapterDetail = ({ context, data }: Props) => {
         <Grid item>
           <Typography variant="h4" gutterBottom>
             {`${
-              parentChapter && parentChapter.number
-            }.${number}: ${description}`}
+              parentChapter ? `${parentChapter.number}.` : ""
+            }${number}: ${description}`}
           </Typography>
         </Grid>
         <Grid item>
