@@ -9,7 +9,7 @@ import AddIcon from "@material-ui/icons/Add";
 
 import { styles } from "styles";
 import NewChapter from "./NewChapter";
-import SubChapterDetail, { Action } from "./SubChapterDetail";
+import ChapterDetail, { Action } from "./ChapterDetail";
 import { GET_CHAPTER_BY_ID } from "queries/chapters";
 import BusyOrErrorCard from "components/BusyOrErrorCard";
 import ChapterCard from "components/ChapterCard";
@@ -79,7 +79,7 @@ const ChapterContent = ({
 
     const convertedAction: Action = Action[action as keyof typeof Action];
 
-    return <SubChapterDetail context={convertedAction} data={data.chapter} />;
+    return <ChapterDetail context={convertedAction} data={data.chapter} />;
   }
 
   // Else, then render the chapter overview
