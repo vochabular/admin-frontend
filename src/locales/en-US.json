@@ -55,7 +55,13 @@
     "german": "German",
     "translatable": "Requires a translation",
     "shouldInvalidateTranslations": "Invalidate existing translations",
-    "placeholder": "Text as placeholder"
+    "placeholder": "Text as placeholder",
+    "noRelevantTranslationYet": "Nothing yet...",
+    "title": "Title",
+    "text": "Text",
+    "dialog": "Dialog",
+    "bubble": "Bubble",
+    "bubbleItem": "A row in the bubble"
   },
   "voggi": {
     "voggiList": "Voggi-List"

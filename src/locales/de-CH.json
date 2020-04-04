@@ -44,7 +44,13 @@
     "newSubChapterDescriptionHelper": "Die Unterkapitelbeschreibung (auf Deutsch). Z.B. 'Wie geht es dir? Wie geht es Ihnen?'",
     "newChapterLanguage": "Unterstütze Sprachen",
     "newChapterLanguageHelper": "Das Kapitel ist in diesen Sprachen verfügbar.",
-    "nWordGroups": "# Wortgruppen: "
+    "nWordGroups": "# Wortgruppen: ",
+    "noRelevantTranslationYet": "Noch nichts...",
+    "title": "Titel",
+    "text": "Text",
+    "dialog": "Dialog",
+    "bubble": "Sprechblase",
+    "bubbleItem": "Eine Zeile"
   },
   "chapterEditor": {
     "settingsTitle": "Konfiguration für {{type}}",
