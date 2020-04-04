@@ -8,6 +8,7 @@ export const CHAPTER_HEADER_PART = gql`
     description
     created
     updated
+    disable_children
     languages {
       id
       title

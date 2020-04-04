@@ -32,18 +32,18 @@ interface ChapterContentProps {
 const ChapterContent = ({
   chapterId,
   subChapterId,
-  action
+  action,
 }: ChapterContentProps) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("chapter");
 
   // Either load directly the subchapter or else the chapter
   const { loading, data, error } = useSubscription<subscribeChapterById>(
     GET_CHAPTER_BY_ID,
     {
       variables: {
-        id: subChapterId && subChapterId !== "new" ? subChapterId : chapterId
+        id: subChapterId && subChapterId !== "new" ? subChapterId : chapterId,
         // TODO(df): Should we only get translations for the current user's native language?
-      }
+      },
     }
   );
 
@@ -91,7 +91,7 @@ const ChapterContent = ({
       <SectionCardContainer>
         {data.chapter &&
           data.chapter.subChapters &&
-          data.chapter.subChapters.map(c => {
+          data.chapter.subChapters.map((c) => {
             return (
               <Grid item key={c.id}>
                 <ChapterCard chapter={c} />
@@ -103,11 +103,11 @@ const ChapterContent = ({
           yes={() => (
             <Grid item>
               <LinkCard
-                path={`/chapters/${data &&
-                  data.chapter &&
-                  data.chapter.id}/new`}
+                path={`/chapters/${
+                  data && data.chapter && data.chapter.id
+                }/new`}
                 icon={<AddIcon />}
-                helperText="createNewSubChapter"
+                helperText={t("chapters:createNewSubChapter")}
               />
             </Grid>
           )}

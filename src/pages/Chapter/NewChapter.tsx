@@ -16,7 +16,7 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 const NewChapter = ({ classes, parentChapter }: Props) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("chapter");
   const isSubChapter = !!parentChapter;
 
   return (
@@ -24,9 +24,9 @@ const NewChapter = ({ classes, parentChapter }: Props) => {
       <Card className={classes.card}>
         <Typography variant="h3">
           {isSubChapter
-            ? t("chapter:newSubChapterTitle") +
+            ? t("newSubChapterTitle") +
               ` ${parentChapter!.number}: ${parentChapter!.description!}`
-            : t("chapter:newChapterTitle")}
+            : t("newChapterTitle")}
         </Typography>
         <CardContent>
           <ChapterForm parentChapter={parentChapter} />
