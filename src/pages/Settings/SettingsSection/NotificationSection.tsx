@@ -36,6 +36,7 @@ function NotificationSection({ classes, values }: Props) {
                 label={t("setupWizard:receiveEventNotifications")}
                 component={CheckboxWithLabel}
                 margin="normal"
+                value={values.eventNotifications}
               />
             }
           />
