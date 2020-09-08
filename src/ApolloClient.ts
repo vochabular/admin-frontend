@@ -155,7 +155,10 @@ const httpLink = new HttpLink({
 
 const wssUrl =
   (process.env.REACT_APP_BACKEND_URL &&
-    process.env.REACT_APP_BACKEND_URL.replace("https://", "wss://")) ||
+    process.env.REACT_APP_BACKEND_URL.replace("https://", "wss://").replace(
+      "http://",
+      "ws://"
+    )) ||
   "";
 
 // Create a WebSocket link:
