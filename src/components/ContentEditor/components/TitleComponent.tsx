@@ -29,6 +29,7 @@ interface ITitleSettingsFormFields {
   isSwissGerman: boolean;
   isGerman: boolean;
   isNative: boolean;
+  placeholder: string;
   swissGerman: ITranslation;
   german: ITranslation;
   shouldInvalidateTranslations?: boolean;
@@ -53,6 +54,7 @@ const TitleSchema = Yup.object().shape({
     then: Yup.string().required(i18next.t("required")),
     otherwise: Yup.string(),
   }),
+  placeholder: Yup.string(),
 });
 
 export interface TitleSettingsProps extends BaseSettingsProps {}
@@ -66,22 +68,23 @@ export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
     const { t } = useTranslation("chapterEditor");
 
     // Hack: Since this is a 1:n relation, but we should only have one text for each title
-    const translations = (data.texts[0] && data.texts[0].translations) || [];
+    const text = (data && data.texts[0]) || {};
+    const translations = text.translations || [];
     const { swissGerman, german, nativeLanguages } = transformTranslations(
       translations
     );
     const initialValues: ITitleSettingsFormFields = {
       isSwissGerman: !!swissGerman,
       isGerman: !!german,
-      isNative: (data.texts[0] && data.texts[0].translatable) || false,
+      isNative: text.translatable || false,
+      placeholder: text.placeholder || swissGerman?.text_field || "",
       swissGerman: swissGerman || {
         text_field: "",
         valid: false,
         languageCode: "ch",
       },
       german: german || { text_field: "", valid: false, languageCode: "de" },
-      shouldInvalidateTranslations:
-        (data.texts[0] && data.texts[0].translatable) || true,
+      shouldInvalidateTranslations: text.translatable || true,
     };
 
     function handleTitleSave(values: ITitleSettingsFormFields, actions: any) {
@@ -97,12 +100,13 @@ export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
         let text: IText = cloneDeep(data.texts[0]) || {};
         // Initialize the nested translations empty, since we only need to specify those that need to get upserted.
         text.translations = [];
+        text.placeholder = values.placeholder;
 
         // IF flag is active AND value or flag has changed, then we need to upsert the swissGerman translation
         if (
           values.isSwissGerman &&
           result.updated.find(
-            (r) => r.path[0] === "swissGerman" || r.path[0] === "isSwissGerman"
+            r => r.path[0] === "swissGerman" || r.path[0] === "isSwissGerman"
           )
         ) {
           text.translations.push(values.swissGerman);
@@ -111,22 +115,26 @@ export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
         if (
           values.isGerman &&
           result.updated.find(
-            (r) => r.path[0] === "german" || r.path[0] === "isGerman"
+            r => r.path[0] === "german" || r.path[0] === "isGerman"
           )
         ) {
           text.translations.push(values.german);
+          // Also, if the placeholder is empty, we want to fill it with the german value!
+          if (!text.placeholder && !values.placeholder) {
+            text.placeholder = values.german.text_field;
+          }
         }
 
         // Additionally, also the case of disabled flags need to be covered
-        result.updated.forEach((i) => {
+        result.updated.forEach(i => {
           switch (i.path[0]) {
             // If the flag value has changed to false, then add this translation to the delete object
             case "isSwissGerman":
             case "isGerman":
               if (!i.val) {
-                const originalTranslation = data.texts[0].translations.find(
-                  (t) =>
-                    t.language.id ===
+                const originalTranslation = text.translations.find(
+                  t =>
+                    t?.language?.id ===
                     (i.path[0] === "isSwissGerman"
                       ? LanguageContext.ch
                       : LanguageContext.de)
@@ -198,6 +206,15 @@ export const TitleSettings = React.forwardRef<any, TitleSettingsProps>(
                 ) : null}
               </Grid>
               <Grid item>
+                <Field
+                  type="string"
+                  name="placeholder"
+                  label={t("placeholder")}
+                  component={TextField}
+                  fullWidth
+                  multiline
+                  rowsMax="4"
+                />
                 <Field
                   name={`swissGerman.text_field`}
                   label={t("swissGerman")}
