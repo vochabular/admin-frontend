@@ -17,7 +17,7 @@ interface MultiTranslationTextProps {
  * native language (current users language...)
  */
 const MultiTranslationText = ({ text }: MultiTranslationTextProps) => {
-  const { translations = [], translatable } = text || {};
+  const { translations = [], translatable, placeholder } = text || {};
 
   const ch = translations.find(t => t.language.id === "ch") && (
     <ContextText translations={translations} wantedLanguage="ch" />
@@ -25,10 +25,24 @@ const MultiTranslationText = ({ text }: MultiTranslationTextProps) => {
   const de = translations.find(t => t.language.id === "de") && (
     <ContextText translations={translations} wantedLanguage="de" />
   );
-  const native = translatable && <LanguageBadge languageContext={LanguageContext.native} />;
+  const native = translatable && (
+    <LanguageBadge languageContext={LanguageContext.native} />
+  );
 
   // Filter the (possibly) sparse array
-  const fields = [ch, de, native].filter(Boolean);
+  const fields = [
+    placeholder && (
+      <Text
+        translate={false}
+        languageContext={translatable ? LanguageContext.native : undefined}
+      >
+        {placeholder}
+      </Text>
+    ),
+    ch,
+    de,
+    native,
+  ].filter(Boolean);
 
   if (!fields.length) return <Text>noRelevantTranslationYet</Text>;
 
