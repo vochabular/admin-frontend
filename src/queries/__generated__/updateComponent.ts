@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { api_component_set_input, api_text_insert_input, api_text_update_column, api_translation_insert_input, api_translation_update_column, api_media_insert_input, api_media_update_column } from "./../../__generated__/globalTypes";
+import { api_component_set_input, api_text_insert_input, api_text_update_column, api_translation_insert_input, api_translation_update_column, api_media_insert_input, api_media_update_column } from "./../../../__generated__/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: updateComponent
