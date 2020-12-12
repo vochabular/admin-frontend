@@ -47,7 +47,7 @@ i18n
     defaultNS: "common",
     resources,
     keySeparator: false, // we do not use keys in form messages.welcome
-
+    whitelist: Object.keys(resources),
     interpolation: {
       escapeValue: false // react already safes from xss
     },
