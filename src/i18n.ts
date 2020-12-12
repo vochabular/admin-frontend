@@ -5,6 +5,7 @@ import LanguageDetector from "i18next-browser-languagedetector";
 // import translations
 import en from "locales/en-US.json";
 import de from "locales/de-CH.json";
+import {object} from "yup";
 
 // Language detector options
 const options = {
@@ -47,7 +48,7 @@ i18n
     defaultNS: "common",
     resources,
     keySeparator: false, // we do not use keys in form messages.welcome
-
+    whitelist: Object.keys(resources),
     interpolation: {
       escapeValue: false // react already safes from xss
     },
