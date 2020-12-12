@@ -170,7 +170,7 @@ const Settings = ({ component, languages, loading }: ISettingsProps) => {
   const classes = useStyles();
   const client = useApolloClient();
   // @ts-ignore
-  let { subChapterId } = useParams();
+  let { chapterId, subChapterId } = useParams();
 
   const [updateComponent, { loading: updateLoading }] = useMutation<
     TupdateComponent,
@@ -263,7 +263,7 @@ const Settings = ({ component, languages, loading }: ISettingsProps) => {
         // Get all native languages of this chapter. Need this to generate the native languages on demand
         const chapter: subscribeChapterById_chapter | null = client.readFragment(
           {
-            id: `api_chapter:${subChapterId}`,
+            id: `api_chapter:${subChapterId || chapterId}`,
             fragment: CHAPTER_HEADER_PART,
           }
         );

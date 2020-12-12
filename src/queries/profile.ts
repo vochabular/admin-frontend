@@ -9,6 +9,14 @@ export const PROFILE_PART = gql`
     currentRole
     eventNotifications
     setupCompleted
+    language: fkLanguage {
+      id
+      name
+    }
+    translatorLanguages {
+      id
+      name
+    }
   }
 `;
 

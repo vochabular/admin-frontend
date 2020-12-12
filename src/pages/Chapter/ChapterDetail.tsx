@@ -11,7 +11,7 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogContentText
+  DialogContentText,
 } from "@material-ui/core";
 
 import ContentEditor from "components/ContentEditor/ContentEditor";
@@ -28,25 +28,25 @@ import { useApolloClient } from "@apollo/react-hooks";
 export enum Action {
   edit,
   translate,
-  approve
+  approve,
 }
 
 const useStyles = makeStyles<Theme>((theme: Theme) => ({
   container: {
-    padding: theme.spacing(3)
+    padding: theme.spacing(3),
   },
   titlesContainer: {
     // backgroundColor: "grey",
     // padding: theme.spacing(1),
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   button: {
     // margin: theme.spacing(1)
   },
   seperator: {
-    marginHorizontal: theme.spacing(2)
-  }
+    marginHorizontal: theme.spacing(2),
+  },
 }));
 
 interface Props {
@@ -57,7 +57,7 @@ interface Props {
 /**
  * The subchapter Editor. Depending on the role, should display different "functionality"
  */
-const SubChapterDetail = ({ context, data }: Props) => {
+const ChapterDetail = ({ context, data }: Props) => {
   const { id, parentChapter, number, description, updated, languages } = data;
   const client = useApolloClient();
   const { t } = useTranslation();
@@ -68,16 +68,17 @@ const SubChapterDetail = ({ context, data }: Props) => {
   React.useEffect(() => {
     client.writeData({ data: { currentChapterId: id } });
     // Cleanup on unmount
-    return () => client.writeData({ data: { currentChapterId: null }})
-  }, [client, data, id])
+    return () => client.writeData({ data: { currentChapterId: null } });
+  }, [client, data, id]);
 
   const title = (
     <Grid container className={classes.container}>
       <Grid container item direction="row" justify="space-between">
         <Grid item>
           <Typography variant="h4" gutterBottom>
-            {`${parentChapter &&
-              parentChapter.number}.${number}: ${description}`}
+            {`${
+              parentChapter ? `${parentChapter.number}.` : ""
+            }${number}: ${description}`}
           </Typography>
         </Grid>
         <Grid item>
@@ -141,8 +142,8 @@ const SubChapterDetail = ({ context, data }: Props) => {
   );
 };
 
-SubChapterDetail.whyDidYouRender = {
+ChapterDetail.whyDidYouRender = {
   // logOnDifferentValues: true
 };
 
-export default SubChapterDetail;
+export default ChapterDetail;

@@ -2,11 +2,23 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { UpdateProfileInput } from "./../../__generated__/globalTypes";
+import { UpdateProfileInput } from "./../../../__generated__/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: updateProfile
 // ====================================================
+
+export interface updateProfile_updateProfile_profile_language {
+  __typename: "LanguageType";
+  id: string;
+  name: string;
+}
+
+export interface updateProfile_updateProfile_profile_translatorLanguages {
+  __typename: "LanguageType";
+  id: string;
+  name: string;
+}
 
 export interface updateProfile_updateProfile_profile {
   __typename: "ProfileType";
@@ -17,6 +29,8 @@ export interface updateProfile_updateProfile_profile {
   currentRole: string;
   eventNotifications: boolean;
   setupCompleted: boolean;
+  language: updateProfile_updateProfile_profile_language | null;
+  translatorLanguages: updateProfile_updateProfile_profile_translatorLanguages[];
 }
 
 export interface updateProfile_updateProfile {

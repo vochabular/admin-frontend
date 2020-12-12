@@ -65,6 +65,7 @@ export interface subscribeChapterById_chapter_subChapters {
   number: number;
   created: any;
   updated: any;
+  disable_children: boolean;
   /**
    * An array relationship
    */
@@ -562,6 +563,7 @@ export interface subscribeChapterById_chapter {
   description: string;
   created: any;
   updated: any;
+  disable_children: boolean;
   /**
    * An array relationship
    */

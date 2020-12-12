@@ -42,6 +42,7 @@ export interface ChapterHeaderParts {
   description: string;
   created: any;
   updated: any;
+  disable_children: boolean;
   /**
    * An array relationship
    */
