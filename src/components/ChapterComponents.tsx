@@ -21,9 +21,8 @@ type ChapterState = {
   };
 };
 
-type ChapterComponent = getChapters_chapters_components;
 interface Props extends WithStyles<typeof styles> {
-  components: ChapterComponent[];
+  components: getChapters_chapters_components[];
 }
 
 const ChapterComponents: React.FC<Props> = ({ components }) => {
