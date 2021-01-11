@@ -14,34 +14,30 @@ import {
   subscribeChapterById_chapter,
   subscribeChapterById_chapter_subChapters,
 } from "queries/__generated__/subscribeChapterById";
+import ChapterComponents from "./ChapterComponents";
 
 interface Props extends WithStyles<typeof styles> {
-  chapter: getChapters_chapters | subscribeChapterById_chapter_subChapters;
-  // | subscribeChapterById_chapter; // TODO: typing
+  chapter:
+    | getChapters_chapters
+    | subscribeChapterById_chapter_subChapters
+    | subscribeChapterById_chapter;
 }
 
 const ChapterCard: React.FC<Props> = ({ classes, chapter }) => {
   const { t } = useTranslation("chapter");
 
-  // Note: MUI links together with react-router-dom and Typescript are a bit tricky due to their dynamic nature
-  // See the discussion and provided solutions here... https://github.com/mui-org/material-ui/issues/7877
-  // <Button component={Link} {...{ to: "/about" } as any} />
   const isSubChapter = !!chapter.parentChapter;
   const path = isSubChapter
     ? `/chapters/${chapter.parentChapter && chapter.parentChapter.id}/${chapter.id}`
     : `/chapters/${chapter.id}`;
 
   const rootComponents = hasComponents(chapter)
-    ? chapter.components.filter(({ type }) => type.base)
+    ? chapter.components?.filter(({ type }) => type.base)
     : [];
-  const rootComponentCount = rootComponents.reduce((acc, component) => {
-    const typeName = component.type.name;
-    return { ...acc, [typeName]: (acc[typeName] || 0) + 1 };
-  }, {} as { [key: string]: number });
 
   return (
     <Card>
-      <CardActionArea component={RouterLink} {...({ to: path } as any)}>
+      <CardActionArea component={RouterLink} to={path}>
         <CardContent>
           <Typography className={classes.title} color="textSecondary" gutterBottom>
             {t("chapter")}{" "}
@@ -52,21 +48,16 @@ const ChapterCard: React.FC<Props> = ({ classes, chapter }) => {
           <Typography variant="h5" component="h2">
             {chapter.description}
           </Typography>
-          <ul>
-            {Object.entries(rootComponentCount).map(([typeName, count]) => (
-              <li key={typeName}>
-                {typeName}: {count}
-              </li>
-            ))}
-          </ul>
+          {rootComponents.length > 0 && <ChapterComponents components={rootComponents} />}
         </CardContent>
       </CardActionArea>
     </Card>
   );
 };
 
-// TODO
-const hasComponents = (chapter: any): chapter is getChapters_chapters =>
-  !!chapter.components;
+const hasComponents = (
+  chapter: any,
+): chapter is getChapters_chapters | subscribeChapterById_chapter =>
+  "components" in chapter;
 
 export default withStyles(styles, { withTheme: true })(ChapterCard);
