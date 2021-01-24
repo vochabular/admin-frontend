@@ -76,8 +76,8 @@ const StateListItem = withTheme(styled.li<{ state: EditStates }>`
   justify-content: center;
   align-items: center;
   margin-right: 8px;
-  height: 30px;
-  width: 30px;
+  height: 24px;
+  width: 24px;
   border-radius: 99px;
   padding: 0;
   background: ${({ state, theme: { editStateColors } }) => editStateColors[state]};

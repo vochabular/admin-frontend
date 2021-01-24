@@ -39,7 +39,8 @@
     "editStateR": "in review",
     "editStateU": "to be updated",
     "editStateT": "to be translated",
-    "editStateF": "final"
+    "editStateF": "final",
+    "translationProgress": "Translation prgoress"
   },
   "chapter": {
     "chapter": "Chapter",

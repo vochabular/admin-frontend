@@ -39,7 +39,8 @@
     "editStateR": "im Review",
     "editStateU": "Korrektur",
     "editStateT": "Übersetzung",
-    "editStateF": "fertig"
+    "editStateF": "fertig",
+    "translationProgress": "Übersetzungen"
   },
   "chapter": {
     "chapter": "Kapitel",

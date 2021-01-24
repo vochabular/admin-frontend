@@ -49,8 +49,15 @@ const ChapterCard: React.FC<Props> = ({ classes, chapter }) => {
           <Typography variant="h5" component="h2">
             {chapter.description}
           </Typography>
-          {rootComponents.length > 0 && <ChapterComponents components={rootComponents} />}
-          {<ChapterLanguages components={rootComponents} languages={chapter.languages} />}
+          {rootComponents.length > 0 && (
+            <>
+              <ChapterComponents components={rootComponents} />
+              <ChapterLanguages
+                components={rootComponents}
+                languages={chapter.languages}
+              />
+            </>
+          )}
         </CardContent>
       </CardActionArea>
     </Card>
