@@ -30,11 +30,16 @@
     "chapter": "Kapitel",
     "chapters": "Kapitel",
     "chaptersOverview": "Kapitelübersicht",
-    "noChaptersAvailable": "No keine Kapitel verfügbar",
+    "noChaptersAvailable": "Noch keine Kapitel verfügbar",
     "chapterNumber": "Kapitel nummer",
     "chapterDescriptionPlaceholder": "Um was geht es in diesem Kapitel?",
     "createNewChapter": "Kapitel anlegen",
-    "createNewSubChapter": "Subkapitel anlegen"
+    "createNewSubChapter": "Subkapitel anlegen",
+    "editStateC": "creation",
+    "editStateR": "im Review",
+    "editStateU": "to be updated",
+    "editStateT": "Übersetzung",
+    "editStateF": "fertig"
   },
   "chapter": {
     "chapter": "Kapitel",

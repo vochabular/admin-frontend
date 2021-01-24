@@ -34,7 +34,12 @@
     "chapterNumber": "Chapter number",
     "chapterDescriptionPlaceholder": "What is the chapter about?",
     "createNewChapter": "Create new chapter",
-    "createNewSubChapter": "Create new subchapter"
+    "createNewSubChapter": "Create new subchapter",
+    "editStateC": "creation",
+    "editStateR": "in review",
+    "editStateU": "to be updated",
+    "editStateT": "to be translated",
+    "editStateF": "final"
   },
   "chapter": {
     "chapter": "Chapter",
