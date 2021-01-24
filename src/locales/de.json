@@ -35,9 +35,9 @@
     "chapterDescriptionPlaceholder": "Um was geht es in diesem Kapitel?",
     "createNewChapter": "Kapitel anlegen",
     "createNewSubChapter": "Subkapitel anlegen",
-    "editStateC": "creation",
+    "editStateC": "angelegt",
     "editStateR": "im Review",
-    "editStateU": "to be updated",
+    "editStateU": "Korrektur",
     "editStateT": "Übersetzung",
     "editStateF": "fertig"
   },

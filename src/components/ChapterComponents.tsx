@@ -1,11 +1,11 @@
 import { Table, TableBody, TableCell, TableHead, TableRow } from "@material-ui/core";
-import { WithStyles, withStyles } from "@material-ui/core/styles";
+import { WithStyles, withStyles, withTheme } from "@material-ui/core/styles";
 import { getChapters_chapters_components } from "queries/__generated__/getChapters";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { styles } from "styles";
-import { EditStates, EDIT_STATES_COLORS } from "types/editStates";
+import { EditStates } from "types/editStates";
 
 type ChapterState = {
   [key: string]: {
@@ -37,7 +37,9 @@ const ChapterComponents: React.FC<Props> = ({ components }) => {
       <TableBody>
         {Object.entries(chapterState).map(([typeName, counts]) => (
           <TableRow key={typeName}>
-            <TableCell variant="head">{typeName}</TableCell>
+            <TableCell variant="head" padding="none">
+              {typeName}
+            </TableCell>
             <TableCell>
               <StateList>
                 {Object.values(EditStates)
@@ -69,7 +71,7 @@ const StateList = styled.ul`
   padding: 0;
 `;
 
-const StateListItem = styled.li<{ state: EditStates }>`
+const StateListItem = withTheme(styled.li<{ state: EditStates }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -78,5 +80,5 @@ const StateListItem = styled.li<{ state: EditStates }>`
   width: 30px;
   border-radius: 99px;
   padding: 0;
-  background: ${({ state }) => EDIT_STATES_COLORS[state]};
-`;
+  background: ${({ state, theme: { editStateColors } }) => editStateColors[state]};
+`);
