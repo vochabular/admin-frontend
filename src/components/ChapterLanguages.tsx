@@ -7,8 +7,8 @@ import {
   withTheme,
 } from "@material-ui/core/styles";
 import {
-  getChapters_chapters_components,
   getChapters_chapters_languages,
+  getChapters_chapters_subChapters_components,
 } from "queries/__generated__/getChapters";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
@@ -16,10 +16,10 @@ import styled from "styled-components";
 import { styles } from "styles";
 
 interface Props extends WithStyles<typeof styles> {
-  components: getChapters_chapters_components[];
+  components: getChapters_chapters_subChapters_components[];
   languages: getChapters_chapters_languages[];
 }
-const ChapterLanguages: React.FC<Props> = ({ components, languages }) => {
+const ChapterLanguages = ({ components, languages }: Props) => {
   const { t } = useTranslation("chapters");
   const { spacing } = useStyles();
 

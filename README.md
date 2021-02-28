@@ -23,12 +23,10 @@ The schema is publicly available. But if you login first to the [Django admin in
 
 ## Additional steps to generate types with Apollo Codegen
 
-- Install the apollo package globally:
-  `npm install -g apollo`
 - Make sure that the settings in `apollo.config.js` in the root directory are correct
 - Write a new GraphQL query, preferably in the "queries" directory
 - Then generate the types with:
-  `apollo client:codegen --target typescript`
+  `npm run types`
 - This should generate some files in a **generated** folder. You can then import these types and use them in your components...
 
 ### Note:

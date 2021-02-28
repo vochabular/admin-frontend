@@ -1,6 +1,6 @@
 import { Table, TableBody, TableCell, TableHead, TableRow } from "@material-ui/core";
 import { WithStyles, withStyles, withTheme } from "@material-ui/core/styles";
-import { getChapters_chapters_components } from "queries/__generated__/getChapters";
+import { getChapters_chapters_subChapters_components } from "queries/__generated__/getChapters";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
@@ -14,9 +14,9 @@ type ChapterState = {
 };
 
 interface Props extends WithStyles<typeof styles> {
-  components: getChapters_chapters_components[];
+  components: getChapters_chapters_subChapters_components[];
 }
-const ChapterComponents: React.FC<Props> = ({ components }) => {
+const ChapterComponents = ({ components }: Props) => {
   const { t } = useTranslation("chapter");
   const chapterState: ChapterState = components.reduce(
     (acc, { state, type: { name } }) => ({

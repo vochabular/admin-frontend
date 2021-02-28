@@ -24,9 +24,10 @@ interface Props extends WithStyles<typeof styles> {
     | subscribeChapterById_chapter;
 }
 
-const ChapterCard: React.FC<Props> = ({ classes, chapter }) => {
+const ChapterCard = ({ classes, chapter }: Props) => {
   const { t } = useTranslation("chapter");
 
+  const subChapterCount = chapter.subChapters.length;
   const isSubChapter = !!chapter.parentChapter;
   const path = isSubChapter
     ? `/chapters/${chapter.parentChapter && chapter.parentChapter.id}/${chapter.id}`
@@ -49,7 +50,14 @@ const ChapterCard: React.FC<Props> = ({ classes, chapter }) => {
           <Typography variant="h5" component="h2">
             {chapter.description}
           </Typography>
-          {rootComponents.length > 0 && (
+
+          {subChapterCount > 0 && (
+            <Typography variant="subtitle2" color="textSecondary" gutterBottom>
+              {t("subChapter", { count: subChapterCount })}
+            </Typography>
+          )}
+
+          {isSubChapter && rootComponents.length > 0 && (
             <>
               <ChapterComponents components={rootComponents} />
               <ChapterLanguages
@@ -66,7 +74,6 @@ const ChapterCard: React.FC<Props> = ({ classes, chapter }) => {
 
 const hasComponents = (
   chapter: any,
-): chapter is getChapters_chapters | subscribeChapterById_chapter =>
-  "components" in chapter;
+): chapter is subscribeChapterById_chapter_subChapters => "components" in chapter;
 
 export default withStyles(styles, { withTheme: true })(ChapterCard);

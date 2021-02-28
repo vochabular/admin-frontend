@@ -40,10 +40,12 @@
     "editStateU": "to be updated",
     "editStateT": "to be translated",
     "editStateF": "final",
-    "translationProgress": "Translation prgoress"
+    "translationProgress": "Translation progress"
   },
   "chapter": {
     "chapter": "Chapter",
+    "subChapter": "{{count}} subchapter",
+    "subChapter_plural": "{{count}} subchapters",
     "newChapterTitle": "Create new chapter",
     "newSubChapterTitle": "Create new subchapter",
     "chapterNumber": "Chapter number",

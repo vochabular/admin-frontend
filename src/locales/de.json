@@ -39,11 +39,13 @@
     "editStateR": "im Review",
     "editStateU": "Korrektur",
     "editStateT": "Übersetzung",
-    "editStateF": "fertig",
+    "editStateF": "Fertig",
     "translationProgress": "Übersetzungen"
   },
   "chapter": {
     "chapter": "Kapitel",
+    "subChapter": "{{count}} Subkapitel",
+    "subChapter_plural": "{{count}} Subkapitel",
     "newChapterTitle": "Neues Kapitel anlegen",
     "newSubChapterTitle": "Neues Unterkapitel anlegen",
     "chapterNumber": "Kapitelnummer",
