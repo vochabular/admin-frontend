@@ -14,6 +14,8 @@ import {
   subscribeChapterById_chapter,
   subscribeChapterById_chapter_subChapters,
 } from "queries/__generated__/subscribeChapterById";
+import ChapterComponents from "./ChapterComponents";
+import ChapterLanguages from "./ChapterLanguages";
 
 interface Props extends WithStyles<typeof styles> {
   chapter:
@@ -25,24 +27,21 @@ interface Props extends WithStyles<typeof styles> {
 const ChapterCard = ({ classes, chapter }: Props) => {
   const { t } = useTranslation("chapter");
 
-  // Note: MUI links together with react-router-dom and Typescript are a bit tricky due to their dynamic nature
-  // See the discussion and provided solutions here... https://github.com/mui-org/material-ui/issues/7877
-  // <Button component={Link} {...{ to: "/about" } as any} />
+  const subChapterCount = chapter.subChapters.length;
   const isSubChapter = !!chapter.parentChapter;
   const path = isSubChapter
-    ? `/chapters/${chapter.parentChapter && chapter.parentChapter.id}/${
-        chapter.id
-      }`
+    ? `/chapters/${chapter.parentChapter && chapter.parentChapter.id}/${chapter.id}`
     : `/chapters/${chapter.id}`;
+
+  const rootComponents = hasComponents(chapter)
+    ? chapter.components?.filter(({ type }) => type.base)
+    : [];
+
   return (
     <Card>
-      <CardActionArea component={RouterLink} {...({ to: path } as any)}>
+      <CardActionArea component={RouterLink} to={path}>
         <CardContent>
-          <Typography
-            className={classes.title}
-            color="textSecondary"
-            gutterBottom
-          >
+          <Typography className={classes.title} color="textSecondary" gutterBottom>
             {t("chapter")}{" "}
             {isSubChapter
               ? `${chapter.parentChapter!.number}.${chapter.number}`
@@ -51,10 +50,30 @@ const ChapterCard = ({ classes, chapter }: Props) => {
           <Typography variant="h5" component="h2">
             {chapter.description}
           </Typography>
+
+          {subChapterCount > 0 && (
+            <Typography variant="subtitle2" color="textSecondary" gutterBottom>
+              {t("subChapter", { count: subChapterCount })}
+            </Typography>
+          )}
+
+          {isSubChapter && rootComponents.length > 0 && (
+            <>
+              <ChapterComponents components={rootComponents} />
+              <ChapterLanguages
+                components={rootComponents}
+                languages={chapter.languages}
+              />
+            </>
+          )}
         </CardContent>
       </CardActionArea>
     </Card>
   );
 };
+
+const hasComponents = (
+  chapter: any,
+): chapter is subscribeChapterById_chapter_subChapters => "components" in chapter;
 
 export default withStyles(styles, { withTheme: true })(ChapterCard);

@@ -1,4 +1,5 @@
 import { createMuiTheme } from "@material-ui/core/styles";
+import { EditStates } from "types/editStates";
 
 /**
  * Language contexts are used for example to color the text accordingly, whether its CH, de or native language
@@ -6,7 +7,7 @@ import { createMuiTheme } from "@material-ui/core/styles";
 export enum LanguageContext {
   ch = "ch",
   de = "de",
-  native = "native"
+  native = "native",
 }
 
 type LanguageContextColors = { [key in LanguageContext]: string };
@@ -22,6 +23,7 @@ declare module "@material-ui/core/styles/createMuiTheme" {
   // allow configuration using `createMuiTheme`
   interface ThemeOptions {
     languageContextColors: LanguageContextColors;
+    editStateColors: { [key in EditStates]: string };
   }
 }
 
@@ -30,18 +32,25 @@ const theme = createMuiTheme({
   palette: {
     type: "dark",
     primary: {
-      main: "#006699"
+      main: "#006699",
     },
     secondary: {
       main: "#f44336",
-      dark: "#ba000d"
-    }
+      dark: "#ba000d",
+    },
   },
   languageContextColors: {
     ch: "#2E76AD",
     de: "#1C9D5A",
-    native: "#1D1D1B"
-  }
+    native: "#1D1D1B",
+  },
+  editStateColors: {
+    C: "#9b6a6c",
+    R: "#554348",
+    U: "#077187",
+    T: "#337357",
+    F: "#6d9f71",
+  },
 });
 
 export default theme;

@@ -30,13 +30,7 @@ export interface getChapters_chapters_parentChapter {
   description: string;
 }
 
-export interface getChapters_chapters_subChapters {
-  __typename: "api_chapter";
-  id: any;
-  description: string;
-}
-
-export interface getChapters_chapters_components_type_frontendWidget {
+export interface getChapters_chapters_subChapters_components_type_frontendWidget {
   __typename: "api_componenttype";
   id: any;
   name: string;
@@ -44,17 +38,17 @@ export interface getChapters_chapters_components_type_frontendWidget {
   icon: string;
 }
 
-export interface getChapters_chapters_components_type_childrenCount_aggregate {
+export interface getChapters_chapters_subChapters_components_type_childrenCount_aggregate {
   __typename: "api_componenttype_aggregate_fields";
   count: number | null;
 }
 
-export interface getChapters_chapters_components_type_childrenCount {
+export interface getChapters_chapters_subChapters_components_type_childrenCount {
   __typename: "api_componenttype_aggregate";
-  aggregate: getChapters_chapters_components_type_childrenCount_aggregate | null;
+  aggregate: getChapters_chapters_subChapters_components_type_childrenCount_aggregate | null;
 }
 
-export interface getChapters_chapters_components_type {
+export interface getChapters_chapters_subChapters_components_type {
   __typename: "api_componenttype";
   id: any;
   name: string;
@@ -67,19 +61,19 @@ export interface getChapters_chapters_components_type {
   /**
    * An object relationship
    */
-  frontendWidget: getChapters_chapters_components_type_frontendWidget | null;
+  frontendWidget: getChapters_chapters_subChapters_components_type_frontendWidget | null;
   /**
    * An aggregated array relationship
    */
-  childrenCount: getChapters_chapters_components_type_childrenCount;
+  childrenCount: getChapters_chapters_subChapters_components_type_childrenCount;
 }
 
-export interface getChapters_chapters_components_texts_translations_language {
+export interface getChapters_chapters_subChapters_components_texts_translations_language {
   __typename: "api_language";
   id: string;
 }
 
-export interface getChapters_chapters_components_texts_translations {
+export interface getChapters_chapters_subChapters_components_texts_translations {
   __typename: "api_translation";
   id: any;
   text_field: string | null;
@@ -87,10 +81,10 @@ export interface getChapters_chapters_components_texts_translations {
   /**
    * An object relationship
    */
-  language: getChapters_chapters_components_texts_translations_language;
+  language: getChapters_chapters_subChapters_components_texts_translations_language;
 }
 
-export interface getChapters_chapters_components_texts {
+export interface getChapters_chapters_subChapters_components_texts {
   __typename: "api_text";
   id: any;
   placeholder: string | null;
@@ -98,17 +92,17 @@ export interface getChapters_chapters_components_texts {
   /**
    * An array relationship
    */
-  translations: getChapters_chapters_components_texts_translations[];
+  translations: getChapters_chapters_subChapters_components_texts_translations[];
 }
 
-export interface getChapters_chapters_components_media {
+export interface getChapters_chapters_subChapters_components_media {
   __typename: "api_media";
   id: any;
   type: string;
   url: string;
 }
 
-export interface getChapters_chapters_components {
+export interface getChapters_chapters_subChapters_components {
   __typename: "api_component";
   id: any;
   data: any;
@@ -117,15 +111,25 @@ export interface getChapters_chapters_components {
   /**
    * An object relationship
    */
-  type: getChapters_chapters_components_type;
+  type: getChapters_chapters_subChapters_components_type;
   /**
    * An array relationship
    */
-  texts: getChapters_chapters_components_texts[];
+  texts: getChapters_chapters_subChapters_components_texts[];
   /**
    * An array relationship
    */
-  media: getChapters_chapters_components_media[];
+  media: getChapters_chapters_subChapters_components_media[];
+}
+
+export interface getChapters_chapters_subChapters {
+  __typename: "api_chapter";
+  id: any;
+  description: string;
+  /**
+   * An array relationship
+   */
+  components: getChapters_chapters_subChapters_components[];
 }
 
 export interface getChapters_chapters {
@@ -148,10 +152,6 @@ export interface getChapters_chapters {
    * An array relationship
    */
   subChapters: getChapters_chapters_subChapters[];
-  /**
-   * An array relationship
-   */
-  components: getChapters_chapters_components[];
 }
 
 export interface getChapters {

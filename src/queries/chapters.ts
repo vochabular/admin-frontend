@@ -25,6 +25,9 @@ export const CHAPTER_HEADER_PART = gql`
     subChapters {
       id
       description
+      components {
+        ...ComponentParts
+      }
     }
   }
 `;
@@ -33,9 +36,6 @@ export const GET_CHAPTERS = gql`
   query getChapters {
     chapters: api_chapter(where: { fk_belongs_to_id: { _is_null: true } }) {
       ...ChapterHeaderParts
-      components {
-        ...ComponentParts
-      }
     }
   }
   ${CHAPTER_HEADER_PART}
@@ -99,16 +99,10 @@ export const GET_CHAPTER_WORDGROUPS = gql`
 `;
 
 export const UPSERT_CHAPTER = gql`
-  mutation upsertChapter(
-    $input: api_chapter_insert_input!
-    $deleteTitleIds: [uuid!]!
-  ) {
+  mutation upsertChapter($input: api_chapter_insert_input!, $deleteTitleIds: [uuid!]!) {
     insert_api_chapter(
       objects: [$input]
-      on_conflict: {
-        constraint: api_chapter_pkey
-        update_columns: [number, description]
-      }
+      on_conflict: { constraint: api_chapter_pkey, update_columns: [number, description] }
     ) {
       returning {
         id

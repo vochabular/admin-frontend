@@ -16,26 +16,18 @@ interface Props extends WithStyles<typeof styles> {}
 const ChapterSection: React.FunctionComponent<Props> = ({ classes }) => {
   const { data, error, loading } = useQuery<getChapters>(GET_CHAPTERS);
 
-  if (loading || error || (data && data.chapters && !data.chapters.length)) {
-    return (
-      <BusyOrErrorCard
-        loading={loading}
-        error={error}
-        noResults={(data && data.chapters && !data.chapters.length) || false}
-      />
-    );
+  const hasChapters = !!data?.chapters?.length;
+  if (loading || error || !hasChapters) {
+    return <BusyOrErrorCard loading={loading} error={error} noResults={!hasChapters} />;
   }
+
   return (
     <SectionCardContainer>
-      {data &&
-        data.chapters &&
-        data.chapters.map((c, i: number) =>
-          c ? (
-            <Grid item key={c.id}>
-              <ChapterCard chapter={c} />
-            </Grid>
-          ) : null
-        )}
+      {data?.chapters?.filter(Boolean).map((c) => (
+        <Grid item key={c.id}>
+          <ChapterCard chapter={c} />
+        </Grid>
+      ))}
     </SectionCardContainer>
   );
 };
